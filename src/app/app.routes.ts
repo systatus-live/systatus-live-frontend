@@ -3,6 +3,8 @@ import { LandingPageComponent } from './pages/landing-page/landing-page.componen
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { TermsOfServiceComponent } from './pages/agreement/terms-of-service/terms-of-service.component';
 import { PrivacyPolicyComponent } from './pages/agreement/privacy-policy/privacy-policy.component';
+import { LoginComponent } from './pages/auth/login/login.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 export const routes: Routes = [
   {
@@ -15,6 +17,10 @@ export const routes: Routes = [
       {
         path: "register",
         component: RegisterComponent
+      },
+      {
+        path: "login",
+        component: LoginComponent
       }
     ]
   },
@@ -30,5 +36,9 @@ export const routes: Routes = [
         component: PrivacyPolicyComponent
       }
     ]
+  },
+  {
+    path: "**",
+    component: NotFoundComponent
   }
 ];
