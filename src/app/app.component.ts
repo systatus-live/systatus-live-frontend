@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { PrimengModule } from './primeng/primeng.module';
+import { PrimengModule } from './modules/primeng/primeng.module';
 
 @Component({
   selector: 'app-root',
@@ -13,4 +13,8 @@ import { PrimengModule } from './primeng/primeng.module';
 })
 export class AppComponent {
   title = 'systatus-live-frontend';
+
+  constructor() {
+    
+  }
 }
