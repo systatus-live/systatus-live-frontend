@@ -9,20 +9,20 @@
         <h2 class="mb-2 text-center">Create your account</h2>
         <p class="text-center text-sm">Start monitoring your systems today</p>
       </div>
-      <form>
+      <form [formGroup]="form!">
         <!-- Name -->
         <p-iftalabel class="mb-3">
-          <input pInputText id="name" pSize="small" />
-          <label for="name">Full name *</label>
+          <input pInputText id="name" formControlName="name" pSize="small" />
+          <label for="name">Full name <span class="text-red-500">*</span></label>
         </p-iftalabel>
         <!-- E-mail -->
         <p-iftalabel class="mb-3">
-          <input pInputText id="email" pSize="small" />
-          <label for="email">E-mail *</label>
+          <input pInputText id="email" formControlName="email" pSize="small" />
+          <label for="email">E-mail <span class="text-red-500">*</span></label>
         </p-iftalabel>
         <!-- Password -->
         <p-iftalabel class="mb-3">
-          <p-password id="password" [feedback]="true" pSize="small" [toggleMask]="true">
+          <p-password id="password" formControlName="password" [feedback]="true" pSize="small" [toggleMask]="true">
             <ng-template #footer>
               <p-divider />
               <ul class="pl-2 ml-2 my-0 leading-normal">
@@ -33,25 +33,31 @@
               </ul>
             </ng-template>
           </p-password>
-          <label for="password">Password *</label>
+          <label for="password">Password <span class="text-red-500">*</span></label>
+          @if ((form?.hasError("passwordComplexity"))) {
+            <small class="text-red-500">Check password complexity</small>
+          }
         </p-iftalabel>
         <!-- Confirm password -->
         <p-iftalabel class="mb-3">
-          <p-password id="confirmPassword" [feedback]="false" pSize="small" [toggleMask]="true" />
-          <label for="confirmPassword">Confirm password *</label>
+          <p-password id="confirmPassword" formControlName="confirmPassword" [feedback]="false" pSize="small" [toggleMask]="true" />
+          <label for="confirmPassword">Confirm password <span class="text-red-500">*</span></label>
+          @if ((form?.hasError("passwordNotMatch"))) {
+            <small class="text-red-500">Passwords do not match</small>
+          }
         </p-iftalabel>
         <!-- Discovery -->
         <p-iftalabel class="mb-3">
-          <p-select id="discovery" [options]="discoveryList" optionValue="code" optionLabel="name" placeholder="Optional" [checkmark]="true" />
+          <p-select id="discovery" formControlName="discovery" [options]="discoveryList" optionValue="code" optionLabel="name" placeholder="Optional" [checkmark]="true" />
           <label for="discovery">How did you hear about us? (optional)</label>
         </p-iftalabel>
         <!-- Actions -->
         <div class="flex align-items-center mb-3">
-          <p-checkbox [binary]="true" inputId="acceptTerms" />
+          <p-checkbox [binary]="true" inputId="acceptTerms" formControlName="acceptTerms" />
           <label for="acceptTerms" class="ml-2 text-sm">I agree to the <a href="/agreements/terms-of-service">Terms of Service</a> and <a href="/agreements/privacy-policy">Privacy Policy</a></label>
         </div>
         <div>
-          <button pButton label="Create account" class="w-full p-button-contrast" type="button"></button>
+          <button pButton label="Create account" class="w-full p-button-contrast" type="button" (click)="submit()"></button>
         </div>
         <div class="text-center mt-3">
           <p class="text-sm">Already have an account? <a href="/auth/login">Sign in</a></p>
