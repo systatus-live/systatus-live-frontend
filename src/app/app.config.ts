@@ -9,6 +9,7 @@ import { provideLottieOptions } from 'ngx-lottie';
 import player from 'lottie-web';
 import { MessageService } from 'primeng/api';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { DialogService } from 'primeng/dynamicdialog';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,6 +25,7 @@ export const appConfig: ApplicationConfig = {
       }
     }),
     MessageService,
+    DialogService,
     // Lottie
     provideLottieOptions({
       player: () => player,

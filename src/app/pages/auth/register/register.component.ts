@@ -10,6 +10,10 @@ import { PasswordModule } from 'primeng/password';
 import { SelectModule } from 'primeng/select';
 import { AuthService } from '../../../services/auth.service';
 import { NotifyService } from '../../../services/notify.service';
+import { LogoComponent } from '../../../components/logo/logo.component';
+import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
+import { VerifyUserComponent } from '../../../components/verify-user/verify-user.component';
+import { InputOtpModule } from 'primeng/inputotp';
 
 @Component({
   selector: 'app-register',
@@ -23,7 +27,9 @@ import { NotifyService } from '../../../services/notify.service';
     SelectModule,
     CheckboxModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    LogoComponent,
+    DynamicDialogModule,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
@@ -41,7 +47,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private notifyService: NotifyService
+    private notifyService: NotifyService,
+    private dialogService: DialogService
   ) { }
 
   ngOnInit() {
@@ -91,15 +98,21 @@ export class RegisterComponent implements OnInit {
       } else {
         this.authService.register(this.form.getRawValue()).subscribe({
           next: (response) => {
+            this.form?.reset();
             this.notifyService.alert("Register", response.message, "success");
+            this.dialogService.open(VerifyUserComponent, { 
+              header: "Verify your e-mail ",
+              focusOnShow: false,
+              closable: true,
+              width: "30rem",
+              modal: true
+            });
           },
           error: ({ error }) => {
             this.notifyService.alert("Register", error.message, "error");
           }
         })
       }
-    } else {
-      this.notifyService.alert("Register", "Please fill in all required fields.", "warn");
     }
   }
 }
