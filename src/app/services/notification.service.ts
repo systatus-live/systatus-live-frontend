@@ -4,7 +4,7 @@ import { MessageService } from 'primeng/api';
 @Injectable({
   providedIn: 'root'
 })
-export class NotifyService {
+export class NotificationService {
 
   constructor(
     private messageService: MessageService

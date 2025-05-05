@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, inject, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -8,8 +8,10 @@ import Aura from '@primeng/themes/aura';
 import { provideLottieOptions } from 'ngx-lottie';
 import player from 'lottie-web';
 import { MessageService } from 'primeng/api';
-import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpHandlerFn, HttpRequest, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { DialogService } from 'primeng/dynamicdialog';
+import { LoadingService } from './services/loading.service';
+import { HttpInterceptorService } from './services/http-interceptor.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,7 +19,14 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideAnimationsAsync(),
-    provideHttpClient(),
+    provideHttpClient(
+      withInterceptorsFromDi()
+    ),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpInterceptorService,
+      multi: true
+    },
     // PrimeNG
     providePrimeNG({
       theme: {

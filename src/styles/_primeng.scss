@@ -28,3 +28,10 @@
 .p-select {
   font-size: 0.9rem !important;
 }
+
+.p-blockui-mask-document.p-overlay-mask {
+  background: transparent !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

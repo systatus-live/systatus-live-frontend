@@ -1,3 +1,10 @@
-<router-outlet />
-
 <p-toast position="top-center" />
+
+<p-blockui [blocked]="isLoading">
+  <div class="flex flex-column align-items-center">
+    <h1>Loading</h1>
+    <span class="loader"></span>
+  </div>
+</p-blockui>
+
+<router-outlet />

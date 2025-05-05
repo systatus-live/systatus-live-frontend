@@ -9,7 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { SelectModule } from 'primeng/select';
 import { AuthService } from '../../../services/auth.service';
-import { NotifyService } from '../../../services/notify.service';
+import { NotificationService } from '../../../services/notification.service';
 import { LogoComponent } from '../../../components/logo/logo.component';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { VerifyUserComponent } from '../../../components/verify-user/verify-user.component';
@@ -47,7 +47,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private notifyService: NotifyService,
+    private notificationService: NotificationService,
     private dialogService: DialogService
   ) { }
 
@@ -94,12 +94,11 @@ export class RegisterComponent implements OnInit {
 
     if (this.form?.valid) {
       if (!formValues.acceptTerms) {
-        this.notifyService.alert("Register", "Please read and accept the Terms of Service and Privacy Policy", "warn");
+        this.notificationService.alert("Register", "Please read and accept the Terms of Service and Privacy Policy", "warn");
       } else {
         this.authService.register(this.form.getRawValue()).subscribe({
           next: (response) => {
             this.form?.reset();
-            this.notifyService.alert("Register", response.message, "success");
             this.dialogService.open(VerifyUserComponent, { 
               header: "Verify your e-mail ",
               focusOnShow: false,
@@ -109,7 +108,7 @@ export class RegisterComponent implements OnInit {
             });
           },
           error: ({ error }) => {
-            this.notifyService.alert("Register", error.message, "error");
+            this.notificationService.alert("Register", error.message, "error");
           }
         })
       }
