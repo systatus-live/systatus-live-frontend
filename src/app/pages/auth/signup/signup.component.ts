@@ -14,9 +14,10 @@ import { LogoComponent } from '../../../components/logo/logo.component';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { VerifyUserComponent } from '../../../components/verify-user/verify-user.component';
 import { InputOtpModule } from 'primeng/inputotp';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-register',
+  selector: 'app-signup',
   imports: [
     CardModule,
     InputTextModule,
@@ -31,10 +32,10 @@ import { InputOtpModule } from 'primeng/inputotp';
     LogoComponent,
     DynamicDialogModule,
   ],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+  templateUrl: './signup.component.html',
+  styleUrl: './signup.component.scss'
 })
-export class RegisterComponent implements OnInit {
+export class SignupComponent implements OnInit {
   public discoveryList: any[] = [
     { code: "REFERRAL", name: "Friend referral" },
     { code: "SEARCH", name: "Google search" },
@@ -48,7 +49,8 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private notificationService: NotificationService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -94,21 +96,29 @@ export class RegisterComponent implements OnInit {
 
     if (this.form?.valid) {
       if (!formValues.acceptTerms) {
-        this.notificationService.alert("Register", "Please read and accept the Terms of Service and Privacy Policy", "warn");
+        this.notificationService.alert("Sign Up", "Please read and accept the Terms of Service and Privacy Policy", "warn");
       } else {
-        this.authService.register(this.form.getRawValue()).subscribe({
+        this.authService.signup(this.form.getRawValue()).subscribe({
           next: (response) => {
             this.form?.reset();
-            this.dialogService.open(VerifyUserComponent, { 
+
+            const dialogRef = this.dialogService.open(VerifyUserComponent, { 
               header: "Verify your e-mail ",
               focusOnShow: false,
               closable: true,
               width: "30rem",
               modal: true
             });
+
+            dialogRef.onClose.subscribe(value => {
+              if (value === true) {
+                this.notificationService.alert(response.message, "Sig in to continue", "success");
+                this.router.navigate(["/auth/signin"]);
+              }
+            })
           },
           error: ({ error }) => {
-            this.notificationService.alert("Register", error.message, "error");
+            this.notificationService.alert("Sign Up", error.message, "error");
           }
         })
       }

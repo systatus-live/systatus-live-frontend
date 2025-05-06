@@ -12,7 +12,11 @@ export class AuthService {
     private http: HttpClient
   ) { }
 
-  public register(data: any) {
-    return this.http.post<DefaultAPIResponseDTO>(`${environment.api}/auth/register`, data);
+  public signup(data: any) {
+    return this.http.post<DefaultAPIResponseDTO>(`${environment.api}/auth/signup`, data);
+  }
+
+  public verifyCode(code: string) {
+    return this.http.patch<DefaultAPIResponseDTO>(`${environment.api}/auth/code-verifications`, { code });
   }
 }

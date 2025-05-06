@@ -10,12 +10,12 @@
         <!-- Name -->
         <p-iftalabel class="mb-3">
           <input pInputText id="name" formControlName="name" pSize="small" />
-          <label for="name">Full name <span class="text-red-500">*</span></label>
+          <label for="name">Full name *</label>
         </p-iftalabel>
         <!-- E-mail -->
         <p-iftalabel class="mb-3">
           <input pInputText id="email" formControlName="email" pSize="small" />
-          <label for="email">E-mail <span class="text-red-500">*</span></label>
+          <label for="email">E-mail *</label>
         </p-iftalabel>
         <!-- Password -->
         <p-iftalabel class="mb-3">
@@ -30,7 +30,7 @@
               </ul>
             </ng-template>
           </p-password>
-          <label for="password">Password <span class="text-red-500">*</span></label>
+          <label for="password">Password *</label>
           @if ((form?.hasError("passwordComplexity"))) {
             <small class="text-red-500">Check password complexity</small>
           }
@@ -38,7 +38,7 @@
         <!-- Confirm password -->
         <p-iftalabel class="mb-3">
           <p-password id="confirmPassword" formControlName="confirmPassword" [feedback]="false" pSize="small" [toggleMask]="true" />
-          <label for="confirmPassword">Confirm password <span class="text-red-500">*</span></label>
+          <label for="confirmPassword">Confirm password *</label>
           @if ((form?.hasError("passwordNotMatch"))) {
             <small class="text-red-500">Passwords do not match</small>
           }
@@ -57,7 +57,7 @@
           <button pButton label="Create account" class="w-full p-button-contrast" type="button" (click)="submit()" [disabled]="!form?.valid"></button>
         </div>
         <div class="text-center mt-3">
-          <p class="text-sm">Already have an account? <a href="/auth/login">Sign in</a></p>
+          <p class="text-sm">Already have an account? <a href="/auth/signin">Sign in</a></p>
         </div>
       </form>
     </p-card>

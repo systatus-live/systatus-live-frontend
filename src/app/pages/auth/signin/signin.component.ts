@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-signin',
   imports: [
   ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+  templateUrl: './signin.component.html',
+  styleUrl: './signin.component.scss',
 })
-export class LoginComponent {
+export class SigninComponent {
  
 }

@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
-import { RegisterComponent } from './pages/auth/register/register.component';
+import { SignupComponent } from './pages/auth/signup/signup.component';
 import { TermsOfServiceComponent } from './pages/agreement/terms-of-service/terms-of-service.component';
 import { PrivacyPolicyComponent } from './pages/agreement/privacy-policy/privacy-policy.component';
-import { LoginComponent } from './pages/auth/login/login.component';
+import { SigninComponent } from './pages/auth/signin/signin.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 export const routes: Routes = [
@@ -15,12 +15,12 @@ export const routes: Routes = [
     path: "auth",
     children: [
       {
-        path: "register",
-        component: RegisterComponent
+        path: "signup",
+        component: SignupComponent
       },
       {
-        path: "login",
-        component: LoginComponent
+        path: "signin",
+        component: SigninComponent
       }
     ]
   },
