@@ -9,17 +9,17 @@
       <form [formGroup]="form!">
         <!-- Name -->
         <p-iftalabel class="mb-3">
-          <input pInputText id="name" formControlName="name" pSize="small" />
+          <input pInputText id="name" formControlName="name" />
           <label for="name">Full name *</label>
         </p-iftalabel>
         <!-- E-mail -->
         <p-iftalabel class="mb-3">
-          <input pInputText id="email" formControlName="email" pSize="small" />
+          <input pInputText id="email" formControlName="email" />
           <label for="email">E-mail *</label>
         </p-iftalabel>
         <!-- Password -->
         <p-iftalabel class="mb-3">
-          <p-password id="password" formControlName="password" [feedback]="true" pSize="small" [toggleMask]="true">
+          <p-password id="password" formControlName="password" [feedback]="true" [toggleMask]="true">
             <ng-template #footer>
               <p-divider />
               <ul class="pl-2 ml-2 my-0 leading-normal">
@@ -37,7 +37,7 @@
         </p-iftalabel>
         <!-- Confirm password -->
         <p-iftalabel class="mb-3">
-          <p-password id="confirmPassword" formControlName="confirmPassword" [feedback]="false" pSize="small" [toggleMask]="true" />
+          <p-password id="confirmPassword" formControlName="confirmPassword" [feedback]="false" [toggleMask]="true" />
           <label for="confirmPassword">Confirm password *</label>
           @if ((form?.hasError("passwordNotMatch"))) {
             <small class="text-red-500">Passwords do not match</small>

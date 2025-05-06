@@ -1,20 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DividerModule } from 'primeng/divider';
+import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { SelectModule } from 'primeng/select';
+import { LogoComponent } from '../../../components/logo/logo.component';
+import { VerifyUserComponent } from '../../../components/verify-user/verify-user.component';
 import { AuthService } from '../../../services/auth.service';
 import { NotificationService } from '../../../services/notification.service';
-import { LogoComponent } from '../../../components/logo/logo.component';
-import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
-import { VerifyUserComponent } from '../../../components/verify-user/verify-user.component';
-import { InputOtpModule } from 'primeng/inputotp';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -98,7 +97,7 @@ export class SignupComponent implements OnInit {
       if (!formValues.acceptTerms) {
         this.notificationService.alert("Sign Up", "Please read and accept the Terms of Service and Privacy Policy", "warn");
       } else {
-        this.authService.signup(this.form.getRawValue()).subscribe({
+        this.authService.signUp(formValues).subscribe({
           next: (response) => {
             this.form?.reset();
 

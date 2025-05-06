@@ -5,6 +5,7 @@ import { TermsOfServiceComponent } from './pages/agreement/terms-of-service/term
 import { PrivacyPolicyComponent } from './pages/agreement/privacy-policy/privacy-policy.component';
 import { SigninComponent } from './pages/auth/signin/signin.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { PanelComponent } from './pages/panel/panel.component';
 
 export const routes: Routes = [
   {
@@ -36,6 +37,10 @@ export const routes: Routes = [
         component: PrivacyPolicyComponent
       }
     ]
+  },
+  {
+    path: "panel",
+    component: PanelComponent
   },
   {
     path: "**",

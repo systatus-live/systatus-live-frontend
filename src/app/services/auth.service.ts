@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { DefaultAPIResponseDTO } from '../dtos/DefaultAPIResponseDTO';
+import { DefaultAPIResponseDTO } from '../../dtos/DefaultAPIResponseDTO';
+import { SigninTypeEnum } from '../../enums/SigninTypeEnum';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -9,14 +11,29 @@ import { DefaultAPIResponseDTO } from '../dtos/DefaultAPIResponseDTO';
 export class AuthService {
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) { }
 
-  public signup(data: any) {
+  public signUp(data: any) {
     return this.http.post<DefaultAPIResponseDTO>(`${environment.api}/auth/signup`, data);
   }
 
   public verifyCode(code: string) {
     return this.http.patch<DefaultAPIResponseDTO>(`${environment.api}/auth/code-verifications`, { code });
+  }
+
+  public signinWithPassword(email: string, password: string) {
+    const data = {
+      email: email,
+      password: password,
+      type: SigninTypeEnum.EMAIL_PASSWORD
+    }
+    return this.http.post<DefaultAPIResponseDTO>(`${environment.api}/auth/signin`, data);
+  }
+
+  public signOut() {
+    localStorage.clear();
+    this.router.navigate(["/auth/signin"]);
   }
 }
