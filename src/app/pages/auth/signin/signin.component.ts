@@ -5,7 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DividerModule } from 'primeng/divider';
-import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
@@ -14,6 +14,7 @@ import { environment } from '../../../../environments/environment';
 import { LogoComponent } from '../../../components/logo/logo.component';
 import { AuthService } from '../../../services/auth.service';
 import { NotificationService } from '../../../services/notification.service';
+import { VerifyUserComponent } from '../../../components/verify-user/verify-user.component';
 
 @Component({
   selector: 'app-signin',
@@ -38,17 +39,17 @@ import { NotificationService } from '../../../services/notification.service';
 export class SigninComponent {
   public form: FormGroup | null = null;
   public googleClientId = environment.googleClientId;
-  
+
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private notificationService: NotificationService,
-    private router: Router
-  ) {
-    (window as any).googleLoginCallback = (response: any) => this.signinWithGoogle(response);
-  }
+    private router: Router,
+    private dialogService: DialogService
+  ) { }
 
   ngOnInit() {
+    (window as any).googleLoginCallback = (response: any) => this.signinWithGoogle(response);
     this.loadInitialData();
   }
 
@@ -65,9 +66,26 @@ export class SigninComponent {
     if (this.form?.valid) {
       this.authService.signinWithPassword(email, password).subscribe({
         next: (response) => {
-          this.form?.reset();
-          localStorage.setItem("access_token", response.data.access_token)
-          this.router.navigate(["/panel"]);
+          if (response.data.verified) {
+            this.signinCallback(response.data.access_token);
+          } else {
+            const dialogRef = this.dialogService.open(VerifyUserComponent, { 
+              header: "Verify your e-mail ",
+              focusOnShow: false,
+              closable: true,
+              width: "30rem",
+              modal: true,
+              data: {
+                email: email
+              }
+            });
+
+            dialogRef.onClose.subscribe(value => {
+              if (value === true) {
+                this.signinCallback(response.data.access_token);
+              }
+            })
+          }
         },
         error: ({ error }) => {
           this.notificationService.alert("Sign In", error.message, "error");
@@ -77,6 +95,20 @@ export class SigninComponent {
   }
 
   private signinWithGoogle(response: any) {
-    console.log(response);
+    console.log(response.credential);
+    this.authService.signinWithGoogle(response.credential).subscribe({
+      next: (response) => {
+        this.signinCallback(response.data.access_token);
+      },
+      error: ({ error }) => {
+        this.notificationService.alert("Google sign In", error.message, "error");
+      }
+    })
+  }
+
+  private signinCallback(accessToken: string) {
+    this.form?.reset();
+    localStorage.setItem("access_token", accessToken)
+    this.router.navigate(["/panel"]);
   }
 }

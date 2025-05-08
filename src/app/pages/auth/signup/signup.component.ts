@@ -99,22 +99,25 @@ export class SignupComponent implements OnInit {
       } else {
         this.authService.signUp(formValues).subscribe({
           next: (response) => {
-            this.form?.reset();
-
             const dialogRef = this.dialogService.open(VerifyUserComponent, { 
               header: "Verify your e-mail ",
               focusOnShow: false,
               closable: true,
               width: "30rem",
-              modal: true
+              modal: true,
+              data: {
+                email: formValues.email
+              }
             });
-
+            
             dialogRef.onClose.subscribe(value => {
               if (value === true) {
                 this.notificationService.alert(response.message, "Sig in to continue", "success");
                 this.router.navigate(["/auth/signin"]);
               }
             })
+
+            this.form?.reset();
           },
           error: ({ error }) => {
             this.notificationService.alert("Sign Up", error.message, "error");

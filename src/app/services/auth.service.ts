@@ -19,8 +19,16 @@ export class AuthService {
     return this.http.post<DefaultAPIResponseDTO>(`${environment.api}/auth/signup`, data);
   }
 
+  public sendCode(email: string) {
+    return this.http.post<DefaultAPIResponseDTO>(`${environment.api}/auth/codes`, {
+      email: email
+    });
+  }
+
   public verifyCode(code: string) {
-    return this.http.patch<DefaultAPIResponseDTO>(`${environment.api}/auth/code-verifications`, { code });
+    return this.http.patch<DefaultAPIResponseDTO>(`${environment.api}/auth/codes`, {
+      code: code
+    });
   }
 
   public signinWithPassword(email: string, password: string) {
@@ -28,6 +36,14 @@ export class AuthService {
       email: email,
       password: password,
       type: SigninTypeEnum.EMAIL_PASSWORD
+    }
+    return this.http.post<DefaultAPIResponseDTO>(`${environment.api}/auth/signin`, data);
+  }
+
+  public signinWithGoogle(credential: string) {
+    const data = {
+      credential: credential,
+      type: SigninTypeEnum.GOOGLE
     }
     return this.http.post<DefaultAPIResponseDTO>(`${environment.api}/auth/signin`, data);
   }
