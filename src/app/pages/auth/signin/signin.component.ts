@@ -39,6 +39,7 @@ import { VerifyUserComponent } from '../../../components/verify-user/verify-user
 export class SigninComponent {
   public form: FormGroup | null = null;
   public googleClientId = environment.googleClientId;
+  public rememberLogin: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -116,7 +117,6 @@ export class SigninComponent {
   }
 
   private signinWithGoogle(response: any) {
-    console.log(response.credential);
     this.authService.signinWithGoogle(response.credential).subscribe({
       next: (response) => {
         this.signinCallback(response.data.access_token);
@@ -129,7 +129,11 @@ export class SigninComponent {
 
   private signinCallback(accessToken: string) {
     this.form?.reset();
-    localStorage.setItem("access_token", accessToken)
+    if (this.rememberLogin) {
+      localStorage.setItem("access_token", accessToken)
+    } else {
+      sessionStorage.setItem("access_token", accessToken)
+    }
     this.router.navigate(["/panel"]);
   }
 }

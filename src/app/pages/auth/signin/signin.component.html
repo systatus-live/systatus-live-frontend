@@ -26,7 +26,7 @@
         <!-- Actions -->
         <div class="flex align-items-center justify-content-between mb-3">
           <div class="flex align-items-center">
-            <p-checkbox [binary]="true" inputId="rememberLogin" />
+            <p-checkbox [binary]="true" inputId="rememberLogin" [(ngModel)]="rememberLogin" [ngModelOptions]="{ standalone: true }" />
             <label for="rememberLogin" class="ml-2 text-sm">Remember me</label>
           </div>
           <p class="text-sm"><a href="#">Forgot password?</a></p>

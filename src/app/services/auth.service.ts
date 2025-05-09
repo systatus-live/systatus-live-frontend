@@ -50,6 +50,11 @@ export class AuthService {
 
   public signOut() {
     localStorage.clear();
+    sessionStorage.clear();
     this.router.navigate(["/auth/signin"]);
+  }
+
+  public getToken() {
+    return localStorage.getItem("access_token") || sessionStorage.getItem("access_token");
   }
 }
