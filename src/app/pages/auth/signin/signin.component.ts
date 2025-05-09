@@ -49,7 +49,6 @@ export class SigninComponent {
   ) { }
 
   ngOnInit() {
-    (window as any).googleLoginCallback = (response: any) => this.signinWithGoogle(response);
     this.loadInitialData();
   }
 
@@ -58,6 +57,28 @@ export class SigninComponent {
       email: new FormControl({ value: null, disabled: false }, [Validators.required, Validators.email]),
       password: new FormControl({ value: null, disabled: false }, [Validators.required])
     })
+
+    this.initializeGoogleSignin();
+  }
+
+  private initializeGoogleSignin() {
+    (window as any).google.accounts.id.initialize({
+      client_id: this.googleClientId,
+      callback: this.signinWithGoogle.bind(this),
+      auto_select: true,
+      itp_support: true,
+    });
+
+    (window as any).google.accounts.id.renderButton(
+      document.getElementById("google-button"),
+      {
+        shape: "rectangular",
+        theme: "outline",
+        text: "signin_with",
+        size: "large",
+        logo_alignment: "left"
+      }
+    );
   }
 
   public signinWithPassword() {
@@ -69,7 +90,7 @@ export class SigninComponent {
           if (response.data.verified) {
             this.signinCallback(response.data.access_token);
           } else {
-            const dialogRef = this.dialogService.open(VerifyUserComponent, { 
+            const dialogRef = this.dialogService.open(VerifyUserComponent, {
               header: "Verify your e-mail ",
               focusOnShow: false,
               closable: true,
