@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 import { SignupComponent } from './pages/auth/signup/signup.component';
-import { TermsOfServiceComponent } from './pages/agreement/terms-of-service/terms-of-service.component';
+import { TermsOfUseComponent } from './pages/agreement/terms-of-use/terms-of-use.component';
 import { PrivacyPolicyComponent } from './pages/agreement/privacy-policy/privacy-policy.component';
 import { SigninComponent } from './pages/auth/signin/signin.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
@@ -29,11 +29,11 @@ export const routes: Routes = [
     path: "agreements",
     children: [
       {
-        path: "terms-of-service",
-        component: TermsOfServiceComponent
+        path: "terms-of-use",
+        component: TermsOfUseComponent
       },
       {
-        path: "policy-privacy",
+        path: "privacy-policy",
         component: PrivacyPolicyComponent
       }
     ]
