@@ -33,7 +33,7 @@ export const routes: Routes = [
         component: TermsOfServiceComponent
       },
       {
-        path: "privacy-policy",
+        path: "policy-privacy",
         component: PrivacyPolicyComponent
       }
     ]

@@ -1,0 +1,79 @@
+@use "../../../styles/theme" as theme;
+
+.landing-page-container {
+  min-height: 100%;
+}
+
+.page-title {
+  font-size: 2.5rem;
+}
+
+.page-legend {
+  color: #4B5563;
+  font-weight: 500;
+}
+
+.page-subtitle {
+  font-size: 1.8rem;
+}
+
+.statistic-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 18rem);
+  column-gap: 1rem;
+  justify-content: center;
+}
+
+.statistic-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  border-radius: 0.3rem;
+
+  h4 {
+    color: theme.$info-color;
+    font-size: 2.3rem;
+  }
+
+  p {
+    font-weight: 500;
+    color: #4B5563;
+  }
+}
+
+.integration-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  column-gap: 1rem;
+  row-gap: 1rem;
+  justify-content: center;
+}
+
+.integration-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  border-radius: 0.3rem;
+  background: #f1f6fc;
+
+
+  p {
+    font-weight: 500;
+    margin-top: 0.5rem;
+  }
+
+  img {
+    width: 2rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .statistic-grid {
+    grid-template-columns: 1fr;
+    row-gap: 1rem;
+  }
+}
