@@ -51,13 +51,13 @@
         <!-- Actions -->
         <div class="flex align-items-center mb-3">
           <p-checkbox [binary]="true" inputId="acceptTerms" formControlName="acceptTerms" />
-          <label for="acceptTerms" class="ml-2 text-sm">I agree to the <a href="/agreements/terms-of-use" target="_blank">Terms of Use</a> and <a href="/agreements/privacy-policy" target="_blank">Privacy Policy</a></label>
+          <label for="acceptTerms" class="ml-2 text-sm">I agree to the <a routerLink="/agreements/terms-of-use" target="_blank">Terms of Use</a> and <a routerLink="/agreements/privacy-policy" target="_blank">Privacy Policy</a></label>
         </div>
         <div>
           <button pButton label="Create account" class="w-full p-button-contrast" type="button" (click)="submit()" [disabled]="!form?.valid"></button>
         </div>
         <div class="text-center mt-3">
-          <p class="text-sm">Already have an account? <a href="/auth/signin">Sign in</a></p>
+          <p class="text-sm">Already have an account? <a routerLink="/auth/signin">Sign in</a></p>
         </div>
       </form>
     </p-card>

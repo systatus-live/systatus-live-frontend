@@ -29,13 +29,13 @@
             <p-checkbox [binary]="true" inputId="rememberLogin" [(ngModel)]="rememberLogin" [ngModelOptions]="{ standalone: true }" />
             <label for="rememberLogin" class="ml-2 text-sm">Remember me</label>
           </div>
-          <p class="text-sm"><a href="#">Forgot password?</a></p>
+          <p class="text-sm"><a routerLink="#">Forgot password?</a></p>
         </div>
         <div>
           <button pButton label="Sign In" class="w-full p-button-contrast" type="button" (click)="signinWithPassword()" [disabled]="!form?.valid"></button>
         </div>
         <div class="text-center mt-3">
-          <p class="text-sm">Don't have an account? <a href="/auth/signup">Sign up free</a></p>
+          <p class="text-sm">Don't have an account? <a routerLink="/auth/signup">Sign up free</a></p>
         </div>
       </form>
     </p-card>

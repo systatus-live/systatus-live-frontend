@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -31,7 +31,8 @@ import { VerifyUserComponent } from '../../../components/verify-user/verify-user
     ReactiveFormsModule,
     LogoComponent,
     DynamicDialogModule,
-    DividerModule
+    DividerModule,
+    RouterLink
   ],
   templateUrl: './signin.component.html',
   styleUrl: './signin.component.scss',
