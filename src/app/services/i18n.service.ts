@@ -17,8 +17,8 @@ export class I18nService {
 
   public getLanguageList() {
     return [
-      { code: "en-us", language: "English", flag: "🇺🇸" },
       { code: "pt-br", language: "Português", flag: "🇧🇷" },
+      { code: "en-us", language: "English (beta)", flag: "🇺🇸" },
     ]
   }
 

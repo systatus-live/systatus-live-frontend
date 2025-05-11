@@ -6,6 +6,8 @@ import { PrivacyPolicyComponent } from './pages/agreement/privacy-policy/privacy
 import { SigninComponent } from './pages/auth/signin/signin.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { PanelComponent } from './pages/panel/panel.component';
+import { TermsOfUseEnUsComponent } from './pages/agreement/terms-of-use/terms-of-use-en-us/terms-of-use-en-us.component';
+import { TermsOfUsePtBrComponent } from './pages/agreement/terms-of-use/terms-of-use-pt-br/terms-of-use-pt-br.component';
 
 export const routes: Routes = [
   {
