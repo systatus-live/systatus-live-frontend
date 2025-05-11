@@ -1,7 +1,7 @@
 <div class="flex flex-column justify-content-center align-items-center h-full">
-  <h1>Page not found</h1>
+  <h1>{{ 'all.pageNotFound' | translate }}</h1>
   <ng-lottie [options]="animationOptions" width="100%"></ng-lottie>
   <div>
-    <button pButton class="p-button-contrast" label="Go to home page" icon="pi pi-map-marker" (click)="navigate()"></button>
+    <button pButton severity="contrast" label="{{ 'notFoundComponent.navigate' | translate }}" icon="pi pi-home" (click)="navigate()"></button>
   </div>
 </div>

@@ -14,6 +14,7 @@ import { LogoComponent } from '../../../components/logo/logo.component';
 import { VerifyUserComponent } from '../../../components/verify-user/verify-user.component';
 import { AuthService } from '../../../services/auth.service';
 import { NotificationService } from '../../../services/notification.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-signup',
@@ -30,7 +31,8 @@ import { NotificationService } from '../../../services/notification.service';
     ReactiveFormsModule,
     LogoComponent,
     DynamicDialogModule,
-    RouterLink
+    RouterLink,
+    TranslateModule
   ],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss'

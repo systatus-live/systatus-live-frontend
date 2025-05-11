@@ -29,8 +29,8 @@
       </div>
       
       <div class="text-center mt-4">
-        <h1 class="page-title">{{ 'landing_page_component.title' | translate }}</h1>
-        <p class="page-legend my-2">{{ 'landing_page_component.legend' | translate }} </p>
+        <h1 class="page-title">{{ 'landingPageComponent.title' | translate }}</h1>
+        <p class="page-legend my-2">{{ 'landingPageComponent.legend' | translate }} </p>
       </div>
     
       <div class="statistic-grid mt-6">
@@ -43,8 +43,8 @@
       </div>
     
       <div class="text-center mt-6">
-        <h1 class="page-subtitle">{{ 'landing_page_component.integration_title' | translate }}</h1>
-        <p class="page-legend">{{ 'landing_page_component.integration_subtitle' | translate }}</p>
+        <h1 class="page-subtitle">{{ 'landingPageComponent.integrationTitle' | translate }}</h1>
+        <p class="page-legend">{{ 'landingPageComponent.integrationSubTitle' | translate }}</p>
         <div class="integration-grid mt-4">
           @for (item of integrationList; track item.label) {
             <div class="integration-card">
@@ -55,7 +55,7 @@
         </div>
         <div class="mt-4">
           <a routerLink="/auth/signup">
-            <p-button label="{{ 'landing_page_component.signup' | translate }}" severity="contrast" icon="pi pi-caret-right" />
+            <p-button label="{{ 'landingPageComponent.signup' | translate }}" severity="contrast" icon="pi pi-caret-right" />
           </a>
         </div>
       </div>
@@ -63,16 +63,16 @@
 
     <div class="mt-6 flex flex-column align-items-center">
       <div class="flex align-items-center">
-        <span class="mr-1 mb-2 font-medium">{{ 'all.developed_by' | translate }}</span>
+        <span class="mr-1 mb-2 font-medium">{{ 'all.developedBy' | translate }}</span>
         <a href="https://artcode.dev" target="_blank">
           <img src="/images/artcode-logo.png" style="width: 6rem;" alt="artcode-logo">
         </a>
       </div>
-      <div class="my-2">{{ 'landing_page_component.contact' | translate }}</div>
+      <div class="my-2">{{ 'landingPageComponent.contact' | translate }}</div>
       <small class="mt-3">
         © {{ currentYear }} {{ 'all.copyright' | translate }} • 
-        <a routerLink="/agreements/terms-of-use">{{ 'all.terms_of_use' | translate }}</a> • 
-        <a routerLink="/agreements/privacy-policy">{{ 'all.privacy_policy' | translate }}</a>
+        <a routerLink="/agreements/terms-of-use">{{ 'all.termsOfUse' | translate }}</a> • 
+        <a routerLink="/agreements/privacy-policy">{{ 'all.privacyPolicy' | translate }}</a>
       </small>
     </div>
   </div>
