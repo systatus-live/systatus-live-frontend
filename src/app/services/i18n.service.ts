@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -10,25 +9,20 @@ export class I18nService {
   private language: BehaviorSubject<string> = new BehaviorSubject<string>("");
 
   constructor(
-    private httpService: HttpClient,
     private translate: TranslateService
   ) {
-    this.translate.addLangs(["pt-br", "en"]);
-    this.translate.setDefaultLang("en");
-  }
-
-  public getIPInfo() {
-    return this.httpService.get("http://ip-api.com/json/");
+    this.translate.addLangs(["pt-br", "en-us"]);
+    this.translate.setDefaultLang("en-us");
   }
 
   public getLanguageList() {
     return [
-      { code: "en", language: "English", flag: "🇺🇸" },
+      { code: "en-us", language: "English", flag: "🇺🇸" },
       { code: "pt-br", language: "Português", flag: "🇧🇷" },
     ]
   }
 
-  public async setLanguage(value: string = "") {
+  public setLanguage(value: string = "") {
     if (value != "") {
       this.language.next(value);
     } else {
@@ -41,22 +35,12 @@ export class I18nService {
         language = languageList.find(l => l.code == cacheLanguage);
       }
 
-      // Try get language from API
+      // Try get language from browser
       if (!language) {
-        await new Promise((resolve) => {
-          this.getIPInfo().subscribe({
-            next: (response: any) => {
-              language = languageList.find(l => l.code == response.country_code);
-              resolve(1);
-            },
-            error: (error) => {
-              console.log(error);
-            }
-          })
-        })
+        language = languageList.find(l => l.code == navigator.language.toLowerCase());
       }
 
-      // If not find from cache or API, set a default language
+      // If not find from cache or browser, set a default language
       if (!language) {
         language = this.getLanguageList()[0];
       }
