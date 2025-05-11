@@ -3,6 +3,14 @@
   "all.terms_of_use": "Termos de Uso",
   "all.privacy_policy": "Política de Privacidade",
   "all.copyright": "Todos os direitos reservados",
+  "all.developed_by": "Desenvolvido por",
   "landing_page_component.title": "Monitore quando seus sistemas saírem do ar",
-  "landing_page_component.legend": "Receba alertas quando seus sistemas saírem do ar. Monitore sites, APIs e servidores."
+  "landing_page_component.legend": "Receba alertas quando seus sistemas saírem do ar. Monitore sites, APIs e servidores.",
+  "landing_page_component.contact": "Precisa de ajuda? Entre em contato: support@artcode.dev",
+  "Monitoring Uptime": "Disponibilidade",
+  "Multi-check": "Flexível",
+  "Min Check Interval": "Tempo mínimo possível",
+  "landing_page_component.integration_title": "Seja notificado em qualquer lugar",
+  "landing_page_component.integration_description": "Integre com suas ferramentas e canais favoritos.",
+  "landing_page_component.signup": "Cadastre Gratuitamente"
 }

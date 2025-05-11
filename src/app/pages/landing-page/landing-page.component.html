@@ -36,15 +36,15 @@
       <div class="statistic-grid mt-6">
         @for (item of statisticList; track item.label) {
           <div class="statistic-card">
-            <h4 class="mb-1">{{ item.label }}</h4>
-            <p>{{ item.description }}</p>
+            <h4 class="mb-1">{{ item.label | translate }}</h4>
+            <p>{{ item.description | translate }}</p>
           </div>
         }
       </div>
     
       <div class="text-center mt-6">
-        <h1 class="page-subtitle">Get Notified Everywhere</h1>
-        <p class="page-legend">Integrate with your favorite tools and channels.</p>
+        <h1 class="page-subtitle">{{ 'landing_page_component.integration_title' | translate }}</h1>
+        <p class="page-legend">{{ 'landing_page_component.integration_description' | translate }}</p>
         <div class="integration-grid mt-4">
           @for (item of integrationList; track item.label) {
             <div class="integration-card">
@@ -55,7 +55,7 @@
         </div>
         <div class="mt-4">
           <a routerLink="/auth/signup">
-            <p-button label="Start Monitoring Free" severity="contrast" icon="pi pi-caret-right" />
+            <p-button label="{{ 'landing_page_component.signup' | translate }}" severity="contrast" icon="pi pi-caret-right" />
           </a>
         </div>
       </div>
@@ -63,12 +63,12 @@
 
     <div class="mt-6 flex flex-column align-items-center">
       <div class="flex align-items-center">
-        <span class="mr-1 mb-2 font-medium">Developed by</span>
+        <span class="mr-1 mb-2 font-medium">{{ 'all.developed_by' | translate }}</span>
         <a href="https://artcode.dev" target="_blank">
           <img src="/images/artcode-logo.png" style="width: 6rem;" alt="artcode-logo">
         </a>
       </div>
-      <div class="my-2">Need help? Contact us at {{ 'support@artcode.dev' }}</div>
+      <div class="my-2">{{ 'landing_page_component.contact' | translate }}</div>
       <small class="mt-3">
         © {{ currentYear }} {{ 'all.copyright' | translate }} • 
         <a routerLink="/agreements/terms-of-use">{{ 'all.terms_of_use' | translate }}</a> • 
