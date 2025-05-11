@@ -30,9 +30,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "allowedCommonJsDependencies": [
-              "lottie-web"
-            ],
             "outputPath": "dist/systatus-live-frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -51,7 +48,18 @@
               "src/styles.scss",
               "./node_modules/primeflex/primeflex.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "lottie-web"
+            ],
+            "optimization": {
+              "scripts": true,
+              "styles": {
+                "minify": true,
+                "inlineCritical": true
+              },
+              "fonts": true
+            }
           },
           "configurations": {
             "production": {
