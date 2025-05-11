@@ -1,17 +1,20 @@
-import { ApplicationConfig, inject, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
-import { routes } from './app.routes';
+import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { providePrimeNG } from 'primeng/config';
+import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import Aura from '@primeng/themes/aura';
-import { provideLottieOptions } from 'ngx-lottie';
 import player from 'lottie-web';
+import { provideLottieOptions } from 'ngx-lottie';
 import { MessageService } from 'primeng/api';
-import { HTTP_INTERCEPTORS, HttpClient, HttpHandlerFn, HttpRequest, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
+import { providePrimeNG } from 'primeng/config';
 import { DialogService } from 'primeng/dynamicdialog';
-import { LoadingService } from './services/loading.service';
+import { routes } from './app.routes';
 import { HttpInterceptorService } from './services/http-interceptor.service';
+
+const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) => new TranslateHttpLoader(http, "./i18n/", ".json");
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -39,5 +42,13 @@ export const appConfig: ApplicationConfig = {
     provideLottieOptions({
       player: () => player,
     }),
+    // i18n
+    importProvidersFrom([TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpLoaderFactory,
+        deps: [HttpClient]
+      },
+    })])
   ],
 };

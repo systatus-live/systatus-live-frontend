@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private loadingService: LoadingService,
-    private i18nService: I18nService
+    private i18nService: I18nService,
   ) { }
 
   ngOnInit(): void {

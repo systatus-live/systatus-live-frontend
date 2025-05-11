@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -9,17 +10,21 @@ export class I18nService {
   private language: BehaviorSubject<string> = new BehaviorSubject<string>("");
 
   constructor(
-    private httpService: HttpClient
-  ) { }
+    private httpService: HttpClient,
+    private translate: TranslateService
+  ) {
+    this.translate.addLangs(["pt-br", "en"]);
+    this.translate.setDefaultLang("en");
+  }
 
   public getIPInfo() {
-    return this.httpService.get("https://ipapi.co/json/");
+    return this.httpService.get("http://ip-api.com/json/");
   }
 
   public getLanguageList() {
     return [
-      { code: "EN", language: "English", flag: "🇺🇸" },
-      { code: "BR", language: "Português", flag: "🇧🇷" },
+      { code: "en", language: "English", flag: "🇺🇸" },
+      { code: "pt-br", language: "Português", flag: "🇧🇷" },
     ]
   }
 
@@ -43,6 +48,9 @@ export class I18nService {
             next: (response: any) => {
               language = languageList.find(l => l.code == response.country_code);
               resolve(1);
+            },
+            error: (error) => {
+              console.log(error);
             }
           })
         })
@@ -55,6 +63,9 @@ export class I18nService {
 
       this.language.next(language.code);
     }
+
+
+    this.translate.use(this.language.value);
   }
 
   public getLanguage(): Observable<string> {

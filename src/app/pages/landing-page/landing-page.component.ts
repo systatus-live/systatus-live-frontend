@@ -6,6 +6,7 @@ import { SelectModule } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-landing-page',
@@ -14,7 +15,8 @@ import { RouterLink } from '@angular/router';
     ButtonModule,
     SelectModule,
     FormsModule,
-    RouterLink
+    RouterLink,
+    TranslateModule
   ],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.scss'
