@@ -15,6 +15,7 @@ import { LogoComponent } from '../../../components/logo/logo.component';
 import { AuthService } from '../../../services/auth.service';
 import { NotificationService } from '../../../services/notification.service';
 import { VerifyUserComponent } from '../../../components/verify-user/verify-user.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-signin',
@@ -32,7 +33,8 @@ import { VerifyUserComponent } from '../../../components/verify-user/verify-user
     LogoComponent,
     DynamicDialogModule,
     DividerModule,
-    RouterLink
+    RouterLink,
+    TranslateModule
   ],
   templateUrl: './signin.component.html',
   styleUrl: './signin.component.scss',

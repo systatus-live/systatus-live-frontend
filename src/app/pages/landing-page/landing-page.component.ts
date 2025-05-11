@@ -50,7 +50,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
 
   private loadStatisticList() {
     this.statisticList = [
-      { label: "Multi-check", description: "HTTP • HTTPS • Ping" },
+      { label: "Monitor", description: "HTTP • HTTPS • Ping" },
       { label: "99.99%", description: "Monitoring Uptime" },
       { label: "60s", description: "Min Check Interval" },
     ]
