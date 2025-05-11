@@ -1,24 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { I18nService } from '../../../services/i18n.service';
+import { TranslateModule } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { PrivacyPolicyEnUsComponent } from '../../../components/privacy-policy-en-us/privacy-policy-en-us.component';
 import { PrivacyPolicyPtBrComponent } from '../../../components/privacy-policy-pt-br/privacy-policy-pt-br.component';
-import { LogoComponent } from '../../../components/logo/logo.component';
-import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
-import { ButtonModule } from 'primeng/button';
-import { SelectModule } from 'primeng/select';
+import { PublicHeaderComponent } from '../../../components/public-header/public-header.component';
+import { I18nService } from '../../../services/i18n.service';
 
 @Component({
   selector: 'app-privacy-policy',
   imports: [
     PrivacyPolicyEnUsComponent,
     PrivacyPolicyPtBrComponent,
-    SelectModule,
     TranslateModule,
-    ButtonModule,
-    FormsModule,
-    LogoComponent
+    PublicHeaderComponent
   ],
   templateUrl: './privacy-policy.component.html',
   styleUrl: './privacy-policy.component.scss'

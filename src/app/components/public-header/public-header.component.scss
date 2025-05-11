@@ -1,0 +1,17 @@
+.header-container {
+  height: 6rem;
+}
+
+.short-language-selected {
+  display: none;
+}
+
+@media (max-width: 380px) {
+  .short-language-selected {
+    display: block;
+  }
+
+  .language-selected {
+    display: none;
+  }
+}

@@ -1,33 +1,27 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { LogoComponent } from '../../components/logo/logo.component';
-import { ButtonModule } from 'primeng/button';
-import { I18nService } from '../../services/i18n.service';
-import { SelectModule } from 'primeng/select';
-import { FormsModule } from '@angular/forms';
-import { Subscription } from 'rxjs';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { ButtonModule } from 'primeng/button';
+import { Subscription } from 'rxjs';
+import { PublicHeaderComponent } from '../../components/public-header/public-header.component';
+import { I18nService } from '../../services/i18n.service';
 
 @Component({
   selector: 'app-landing-page',
   imports: [
-    LogoComponent,
     ButtonModule,
-    SelectModule,
-    FormsModule,
     RouterLink,
-    TranslateModule
+    TranslateModule,
+    PublicHeaderComponent
   ],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.scss'
 })
-export class LandingPageComponent implements OnInit, OnDestroy {
+export class LandingPageComponent implements OnInit {
   public statisticList: any[] = [];
   public integrationList: any[] = [];
   public currentYear: number = new Date().getFullYear();
   public languageList: any[] = [];
-  public selectedLanguage: string | null = null;
-  public subscriptionList: Subscription[] = [];
 
   constructor(
     private i18nService: I18nService
@@ -36,11 +30,6 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadInitialData();
   }
-
-  ngOnDestroy(): void {
-    this.subscriptionList.forEach(subscription => subscription.unsubscribe());
-  }
-
 
   private loadInitialData() {
     this.loadLanguageList();
@@ -69,15 +58,5 @@ export class LandingPageComponent implements OnInit, OnDestroy {
 
   private loadLanguageList() {
     this.languageList = this.i18nService.getLanguageList();
-
-    this.i18nService.getLanguage().subscribe(language => {
-      if (language) {
-        this.selectedLanguage = language;
-      }
-    })
-  }
-
-  public onChangeLanguage(language: string) {
-    this.i18nService.setLanguage(language);
   }
 }

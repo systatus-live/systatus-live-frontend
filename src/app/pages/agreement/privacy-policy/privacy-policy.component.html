@@ -1,27 +1,11 @@
-<div class="privacy-container grid grid-nogutter justify-content-center p-3">
-  <div class="col-12 md:col-8 lg:col-8">
-    <div class="flex justify-content-between align-items-center mb-6">
-      <app-logo></app-logo>
-      <div class="flex align-items-center">
-        <div class="mr-2">
-          <p-select [options]="languageList" [(ngModel)]="selectedLanguage" optionValue="code" optionLabel="language" (onChange)="onChangeLanguage($event.value)">
-            <ng-template #selectedItem let-item>
-              <div>
-                <span class="mr-2">{{ item.flag }}</span>
-                <span>{{ item.language }}</span>
-              </div>
-            </ng-template>
-            <ng-template let-item #item>
-              <div>
-                <span class="mr-2">{{ item.flag }}</span>
-                <span>{{ item.language }}</span>
-              </div>
-            </ng-template>
-          </p-select>
-        </div>
-      </div>
-    </div>
+<div class="grid grid-nogutter justify-content-center px-3">
+  <div class="col-12 md:col-8 lg:col-8 flex flex-column justify-content-between">
+    <app-public-header></app-public-header>
+  </div>
+</div>
 
+<div class="privacy-container grid grid-nogutter justify-content-center px-3 pb-3" style="height: calc(100% - 6rem); overflow-y: auto;">
+  <div class="col-12 md:col-8 lg:col-8">
     @if (selectedLanguage == "pt-br") {
       <app-privacy-policy-pt-br></app-privacy-policy-pt-br>
     } @else {
