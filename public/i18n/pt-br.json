@@ -42,5 +42,10 @@
   "signupComponent.form.password.weakLabel": "Fraca",
   "signupComponent.form.password.mediumLabel": "Média",
   "signupComponent.form.password.strongLabel": "Forte",
+  "Friend referral": "Indicação de amigo",
+  "Google search": "Pesquisa no Google",
+  "Online ad": "Anúncio Online",
+  "Blog or article": "Blog ou artigo",
+  "Other": "Outro",
   "notFoundComponent.navigate": "Ir para página inicial"
 }

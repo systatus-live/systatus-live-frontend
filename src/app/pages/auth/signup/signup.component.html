@@ -54,7 +54,14 @@
         </p-iftalabel>
         <!-- Discovery -->
         <p-iftalabel class="mb-3">
-          <p-select id="discovery" formControlName="discovery" [options]="discoveryList" optionValue="code" optionLabel="name" [checkmark]="true" />
+          <p-select id="discovery" formControlName="discovery" [options]="discoveryList" optionValue="code" optionLabel="name" [checkmark]="true">
+            <ng-template #selectedItem let-item>
+              <span>{{ item.name | translate }}</span>
+            </ng-template>
+            <ng-template let-item #item>
+              <span>{{ item.name | translate }}</span>
+            </ng-template>
+          </p-select>
           <label for="discovery">{{ 'signupComponent.form.discovery' | translate }}</label>
         </p-iftalabel>
         <!-- Actions -->

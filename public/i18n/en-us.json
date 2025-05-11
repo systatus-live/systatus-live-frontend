@@ -42,5 +42,10 @@
   "signupComponent.form.password.weakLabel": "Weak",
   "signupComponent.form.password.mediumLabel": "Medium",
   "signupComponent.form.password.strongLabel": "Strong",
+  "Friend referral": "Friend referral",
+  "Google search": "Google search",
+  "Online ad": "Online ad",
+  "Blog or article": "Blog or article",
+  "Other": "Other",
   "notFoundComponent.navigate": "Go to home page"
 }

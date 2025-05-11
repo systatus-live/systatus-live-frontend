@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -14,7 +15,6 @@ import { LogoComponent } from '../../../components/logo/logo.component';
 import { VerifyUserComponent } from '../../../components/verify-user/verify-user.component';
 import { AuthService } from '../../../services/auth.service';
 import { NotificationService } from '../../../services/notification.service';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-signup',
@@ -41,7 +41,7 @@ export class SignupComponent implements OnInit {
   public discoveryList: any[] = [
     { code: "REFERRAL", name: "Friend referral" },
     { code: "SEARCH", name: "Google search" },
-    { code: "AD", name: "Online ad" },
+    { code: "AD", name: "Online AD" },
     { code: "PAGE", name: "Blog or article" },
     { code: "OTHER", name: "Other" },
   ];
