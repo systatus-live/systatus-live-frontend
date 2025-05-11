@@ -13,7 +13,7 @@
   "landingPageComponent.title": "Saiba quando seus sistemas saírem do ar",
   "landingPageComponent.legend": "Receba alertas quando seus sistemas saírem do ar. Monitore sites, APIs e servidores.",
   "landingPageComponent.contact": "Precisa de ajuda? Entre em contato: support@artcode.dev",
-  "Monitoring Uptime": "Disponibilidade",
+  "Availability": "Disponibilidade",
   "Monitor": "Monitore",
   "Min Check Interval": "Intervalo mínimo",
   "landingPageComponent.integrationTitle": "Seja notificado em qualquer lugar",

@@ -43,16 +43,17 @@ export class LandingPageComponent implements OnInit, OnDestroy {
 
 
   private loadInitialData() {
+    this.loadLanguageList();
     this.loadStatisticList();
     this.loadIntegrationList();
-    this.loadLanguageList();
   }
 
   private loadStatisticList() {
     this.statisticList = [
-      { label: "Monitor", description: "HTTP • HTTPS • Ping" },
-      { label: "99.99%", description: "Monitoring Uptime" },
+      { label: "Monitor", description: "HTTP • HTTPS • IP" },
+      { label: "24/7", description: "Availability" },
       { label: "60s", description: "Min Check Interval" },
+      { label: "i18n", description: this.languageList.map(lang => lang.flag).join(" ") },
     ]
   }
 
