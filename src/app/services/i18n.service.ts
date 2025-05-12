@@ -12,7 +12,7 @@ export class I18nService {
     private translate: TranslateService
   ) {
     this.translate.addLangs(["pt-br", "en-us"]);
-    this.translate.setDefaultLang("en-us");
+    this.translate.setDefaultLang("pt-br");
   }
 
   public getLanguageList() {
