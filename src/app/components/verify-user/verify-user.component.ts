@@ -5,6 +5,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { InputOtpModule } from 'primeng/inputotp';
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../services/notification.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-verify-user',
@@ -13,6 +14,7 @@ import { NotificationService } from '../../services/notification.service';
     ButtonModule,
     FormsModule,
     ReactiveFormsModule,
+    TranslateModule
   ],
   templateUrl: './verify-user.component.html',
   styleUrl: './verify-user.component.scss'

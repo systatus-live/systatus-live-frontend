@@ -1,11 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
-import { Subscription } from 'rxjs';
+import { TableModule } from 'primeng/table';
 import { PublicHeaderComponent } from '../../components/public-header/public-header.component';
 import { I18nService } from '../../services/i18n.service';
-import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-landing-page',

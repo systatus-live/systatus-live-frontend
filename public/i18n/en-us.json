@@ -10,6 +10,8 @@
   "all.createAccount": "Create account",
   "all.pageNotFound": "Page not found",
   "all.homePage": "Home",
+  "all.subscribe": "Subscribe",
+  "all.comingSoon": "Coming soon",
   "landingPageComponent.title": "Know when your systems go down",
   "landingPageComponent.legend": "Real-time alerts when your systems go down. Monitor websites, APIs and servers.",
   "landingPageComponent.contact": "Need help? Contact us at support@artcode.dev",
@@ -39,6 +41,11 @@
   "signupComponent.form.password.weakLabel": "Weak",
   "signupComponent.form.password.mediumLabel": "Medium",
   "signupComponent.form.password.strongLabel": "Strong",
+  "notFoundComponent.navigate": "Go to home page",
+  "verifyUserComponent.title": "Verify your e-mail",
+  "verifyUserComponent.description": "We sent a verification code to {{ email }}. To verify your account, enter the 6-digit code.",
+  "verifyUserComponent.submit": "Submit code",
+  "verifyUserComponent.resendCode": "Resend code{{ timer }}",
   "Availability": "Monitoring Uptime",
   "Monitor": "Monitor",
   "Min Check Interval": "Min Check Interval",
@@ -64,6 +71,5 @@
   "Google search": "Google search",
   "Online ad": "Online ad",
   "Blog or article": "Blog or article",
-  "Other": "Other",
-  "notFoundComponent.navigate": "Go to home page"
+  "Other": "Other"
 }

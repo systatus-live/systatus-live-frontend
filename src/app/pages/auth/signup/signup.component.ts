@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -52,7 +52,8 @@ export class SignupComponent implements OnInit {
     private authService: AuthService,
     private notificationService: NotificationService,
     private dialogService: DialogService,
-    private router: Router
+    private router: Router,
+    private translateService: TranslateService
   ) { }
 
   ngOnInit() {
@@ -102,8 +103,8 @@ export class SignupComponent implements OnInit {
       } else {
         this.authService.signUp(formValues).subscribe({
           next: (response) => {
-            const dialogRef = this.dialogService.open(VerifyUserComponent, { 
-              header: "Verify your e-mail ",
+            const dialogRef = this.dialogService.open(VerifyUserComponent, {
+              header: this.translateService.instant("verifyUserComponent.title", { email: formValues.email }),
               focusOnShow: false,
               closable: true,
               width: "30rem",
@@ -112,7 +113,7 @@ export class SignupComponent implements OnInit {
                 email: formValues.email
               }
             });
-            
+
             dialogRef.onClose.subscribe(value => {
               if (value === true) {
                 this.notificationService.alert(response.message, "Sig in to continue", "success");

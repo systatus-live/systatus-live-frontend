@@ -57,10 +57,10 @@
                 <div class="mt-4">
                   @if (plan.link) {
                     <a [routerLink]="plan.link">
-                      <p-button label="Subscribe" severity="contrast" styleClass="w-full" />
+                      <p-button label="{{ 'all.subscribe' | translate }}" severity="contrast" styleClass="w-full" />
                     </a>
                   } @else {
-                    <p-button label="Coming soon" severity="contrast" styleClass="w-full" [disabled]="true" />
+                    <p-button label="{{ 'all.comingSoon' | translate }}" severity="contrast" styleClass="w-full" [disabled]="true" />
                   }
                 </div>
               </div>
