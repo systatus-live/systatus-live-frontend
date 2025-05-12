@@ -2,6 +2,7 @@
 
 .page-title {
   font-size: 2.5rem;
+  color: theme.$black-color;
 }
 
 .page-legend {
@@ -11,14 +12,14 @@
 
 .page-subtitle {
   font-size: 1.8rem;
+  color: theme.$black-color;
 }
 
 .statistic-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 1rem;
   justify-content: center;
-  background: theme.$info-color;
-  border-radius: 0.3rem;
 }
 
 .statistic-card {
@@ -27,23 +28,23 @@
   align-items: center;
   justify-content: center;
   padding: 1rem;
+  color: theme.$info-color;
+  border-radius: 0.3rem;
+  background: #F3F9FF;
 
   h4 {
-    color: #fff;
-    font-size: 2.3rem;
+    font-size: 2rem;
   }
 
   p {
     font-weight: 500;
-    color: #fff;
   }
 }
 
 .integration-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
-  column-gap: 1rem;
-  row-gap: 1rem;
+  gap: 1rem;
   justify-content: center;
 }
 
@@ -54,7 +55,7 @@
   justify-content: center;
   padding: 1rem;
   border-radius: 0.3rem;
-  background: #f1f6fc;
+  background: #F3F9FF;
 
 
   p {
@@ -64,5 +65,45 @@
 
   img {
     width: 2rem;
+  }
+}
+
+.plan-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 20rem);
+  gap: 1rem;
+  justify-content: center;
+  width: 100%;
+}
+
+.plan-card {
+  background: #f1f6fc;
+  border-radius: 0.3rem;
+  border: 1px solid theme.$info-color;
+}
+
+.plan {
+  font-size: 1.5rem;
+}
+
+.plan-card-header {
+  background: theme.$info-color;
+  padding: 0.5rem;
+  color: #fff;
+  padding: 1rem;
+}
+
+.feature-card {
+  padding: 0 1rem 1rem 1rem;
+}
+
+.feature {
+  align-items: center;
+  margin-top: 1rem;
+}
+
+@media (max-width: 540px) {
+  .plan-grid {
+    grid-template-columns: 1fr;
   }
 }

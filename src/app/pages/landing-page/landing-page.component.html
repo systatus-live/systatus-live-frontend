@@ -11,7 +11,7 @@
         <h1 class="page-title">{{ 'landingPageComponent.title' | translate }}</h1>
         <p class="page-legend my-2">{{ 'landingPageComponent.legend' | translate }} </p>
       </div>
-    
+      <!-- Statistics -->
       <div class="statistic-grid mt-6 px-3">
         @for (item of statisticList; track item.label) {
           <div class="statistic-card">
@@ -20,7 +20,7 @@
           </div>
         }
       </div>
-
+      <!-- Integrations -->
       <div class="text-center mt-6">
         <h1 class="page-subtitle">{{ 'landingPageComponent.integrationTitle' | translate }}</h1>
         <p class="page-legend">{{ 'landingPageComponent.integrationSubTitle' | translate }}</p>
@@ -32,15 +32,46 @@
             </div>
           }
         </div>
-        <div class="mt-4">
-          <a routerLink="/auth/signup">
-            <p-button label="{{ 'landingPageComponent.signup' | translate }}" severity="contrast" icon="pi pi-caret-right" />
-          </a>
+      </div>
+      <!-- Pricing & Plans -->
+      <div class="flex flex-column align-items-center mt-6">
+        <h1 class="page-subtitle">{{ 'landingPageComponent.featureTitle' | translate }}</h1>
+        <div class="plan-grid mt-4">
+          @for (plan of planList; track plan.name) {
+            <div class="plan-card">
+              <div class="plan-card-header">
+                <h4 class="plan">{{ plan.name | translate }}</h4>
+                <p>{{ plan.note | translate }}</p>
+              </div>
+              <div class="feature-card">
+                @for (feature of plan.features; track feature.label) {
+                  <div class="feature">
+                    @if (feature.checked == true) {
+                      <i class="pi pi-check-circle" style="color: #27AE60; font-weight: 700;"></i>
+                    } @else {
+                      <i class="pi pi-times-circle" style="color: #EB5757; font-weight: 700;"></i>
+                    }
+                    <span class="ml-1">{{ feature.label | translate }}</span>
+                  </div>
+                }
+                <div class="mt-4">
+                  @if (plan.link) {
+                    <a [routerLink]="plan.link">
+                      <p-button label="Subscribe" severity="contrast" styleClass="w-full" />
+                    </a>
+                  } @else {
+                    <p-button label="Coming soon" severity="contrast" styleClass="w-full" [disabled]="true" />
+                  }
+                </div>
+              </div>
+              
+            </div>
+          }
         </div>
       </div>
     </div>
-
-    <div class="flex flex-column align-items-center">
+    <!-- Contact and copyright  -->
+    <div class="flex flex-column align-items-center mt-6">
       <div class="flex align-items-center">
         <span class="mr-1 mb-2 font-medium">{{ 'all.developedBy' | translate }}</span>
         <a href="https://artcode.dev" target="_blank">

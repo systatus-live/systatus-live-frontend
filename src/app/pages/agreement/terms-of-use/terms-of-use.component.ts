@@ -3,8 +3,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { PublicHeaderComponent } from '../../../components/public-header/public-header.component';
 import { TermsOfUseEnUsComponent } from '../../../components/terms-of-use-en-us/terms-of-use-en-us.component';
-import { TermsOfUsePtBrComponent } from '../../../components/terms-of-use-pt-br/terms-of-use-pt-br.component';
 import { I18nService } from '../../../services/i18n.service';
+import { TermsOfUsePtBrComponent } from '../../../components/terms-of-use-pt-br/terms-of-use-pt-br.component';
 
 @Component({
   selector: 'app-terms-of-use',
