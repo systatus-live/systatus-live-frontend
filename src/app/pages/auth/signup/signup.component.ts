@@ -41,7 +41,7 @@ export class SignupComponent implements OnInit {
   public discoveryList: any[] = [
     { code: "REFERRAL", name: "Friend referral" },
     { code: "SEARCH", name: "Google search" },
-    { code: "AD", name: "Online AD" },
+    { code: "AD", name: "Online ad" },
     { code: "PAGE", name: "Blog or article" },
     { code: "OTHER", name: "Other" },
   ];

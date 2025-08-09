@@ -13,8 +13,11 @@ export class HttpInterceptorService implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.loadingService.setLoading(true);
 
-    let authReq = req.clone();
-    
+    const cacheLanguage = localStorage.getItem("language");
+    let authReq = req.clone({
+      headers: req.headers.append("Accept-Language", cacheLanguage || "pt-br")
+    });
+
     return next.handle(authReq).pipe(
       catchError((error: HttpErrorResponse) => {
         return throwError(() => error);

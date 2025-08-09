@@ -53,7 +53,6 @@ export class LandingPageComponent implements OnInit {
     this.integrationList = [
       { label: "Slack", image: "/images/slack-logo.svg" },
       { label: "Discord", image: "/images/discord-logo.svg" },
-      { label: "E-mail", image: "/images/email-logo.svg" },
       { label: "Google Chat", image: "/images/google-chat-logo.svg" },
     ]
   }
@@ -72,14 +71,11 @@ export class LandingPageComponent implements OnInit {
           { label: "Up to 10 monitors", checked: true },
           { label: "5 min. check interval", checked: true },
           { label: "HTTP, HTTPS, Ping", checked: true },
-          { label: "Normal e-mail support", checked: true },
-          { label: "24h live chat support", checked: false },
           { label: "Slack integration", checked: true },
           { label: "Discord integration", checked: true },
-          { label: "E-mail integration", checked: true },
           { label: "Google Chat integration", checked: true },
           { label: "WhatsApp integration", checked: false },
-          { label: "Customizable messages", checked: false }
+          { label: "Customizable messages", checked: false },
         ],
       },
       {
@@ -87,17 +83,14 @@ export class LandingPageComponent implements OnInit {
         note: "Coming soon",
         link: "",
         features: [
-          { label: "Up to 50 monitors", checked: true },
+          { label: "Unlimited monitors", checked: true },
           { label: "1 min. check interval", checked: true },
           { label: "HTTP, HTTPS, Ping", checked: true },
-          { label: "Normal e-mail support", checked: true },
-          { label: "24h live chat support", checked: true },
           { label: "Slack integration", checked: true },
           { label: "Discord integration", checked: true },
-          { label: "E-mail integration", checked: true },
           { label: "Google Chat integration", checked: true },
           { label: "WhatsApp integration", checked: true },
-          { label: "Customizable messages", checked: true }
+          { label: "Customizable messages", checked: true },
         ]
       }
     ]

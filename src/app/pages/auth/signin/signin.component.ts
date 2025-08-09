@@ -16,6 +16,7 @@ import { AuthService } from '../../../services/auth.service';
 import { NotificationService } from '../../../services/notification.service';
 import { VerifyUserComponent } from '../../../components/verify-user/verify-user.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { I18nService } from '../../../services/i18n.service';
 
 @Component({
   selector: 'app-signin',
@@ -50,7 +51,7 @@ export class SigninComponent {
     private notificationService: NotificationService,
     private router: Router,
     private dialogService: DialogService,
-    private translateService: TranslateService
+    private i18nService: I18nService
   ) { }
 
   ngOnInit() {
@@ -96,7 +97,7 @@ export class SigninComponent {
             this.signinCallback(response.data.access_token);
           } else {
             const dialogRef = this.dialogService.open(VerifyUserComponent, {
-              header: this.translateService.instant("verifyUserComponent.title", { email: email }),
+              header: this.i18nService.getTranslate("verifyUserComponent.title", { email: email }),
               focusOnShow: false,
               closable: true,
               width: "30rem",

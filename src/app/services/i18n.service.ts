@@ -52,7 +52,11 @@ export class I18nService {
     this.translate.use(this.language.value);
   }
 
-  public getLanguage(): Observable<string> {
-    return this.language.asObservable();
+  public getLanguage(asObservable : boolean): Observable<string> | string {
+    return asObservable ? this.language.asObservable() : this.language.getValue();
+  }
+
+  public getTranslate(key: string, fields = {}) {
+    return this.translate.instant(key, fields);
   }
 }

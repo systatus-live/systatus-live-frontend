@@ -5,7 +5,7 @@ import { SelectModule } from 'primeng/select';
 import { TranslateModule } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
 import { I18nService } from '../../services/i18n.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -46,7 +46,7 @@ export class PublicHeaderComponent implements OnInit {
   private loadLanguageList() {
     this.languageList = this.i18nService.getLanguageList();
 
-    this.i18nService.getLanguage().subscribe(language => {
+    (this.i18nService.getLanguage(true) as Observable<string>).subscribe(language => {
       if (language) {
         this.selectedLanguage = language;
       }

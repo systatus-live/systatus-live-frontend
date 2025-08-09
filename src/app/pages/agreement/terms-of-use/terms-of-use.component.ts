@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { PublicHeaderComponent } from '../../../components/public-header/public-header.component';
 import { TermsOfUseEnUsComponent } from '../../../components/terms-of-use-en-us/terms-of-use-en-us.component';
 import { I18nService } from '../../../services/i18n.service';
@@ -27,7 +27,7 @@ export class TermsOfUseComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.subscription = this.i18nService.getLanguage().subscribe(value => {
+    this.subscription = (this.i18nService.getLanguage(true) as Observable<string>).subscribe(value => {
       if (value) {
         this.selectedLanguage = value;
       }

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { PrivacyPolicyEnUsComponent } from '../../../components/privacy-policy-en-us/privacy-policy-en-us.component';
 import { PrivacyPolicyPtBrComponent } from '../../../components/privacy-policy-pt-br/privacy-policy-pt-br.component';
 import { PublicHeaderComponent } from '../../../components/public-header/public-header.component';
@@ -27,7 +27,7 @@ export class PrivacyPolicyComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.subscription = this.i18nService.getLanguage().subscribe(value => {
+    this.subscription = (this.i18nService.getLanguage(true) as Observable<string>).subscribe(value => {
       if (value) {
         this.selectedLanguage = value;
       }

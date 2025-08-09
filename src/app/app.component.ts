@@ -4,6 +4,7 @@ import { BlockUIModule } from 'primeng/blockui';
 import { ToastModule } from 'primeng/toast';
 import { I18nService } from './services/i18n.service';
 import { LoadingService } from './services/loading.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +28,7 @@ export class AppComponent implements OnInit {
     this.listenLoading();
 
     this.i18nService.setLanguage();
-    this.i18nService.getLanguage().subscribe(language => {
+    (this.i18nService.getLanguage(true) as Observable<string>).subscribe(language => {
       if (language) {
         localStorage.setItem("language", language);
       }
