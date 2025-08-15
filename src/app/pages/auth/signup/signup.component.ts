@@ -99,7 +99,7 @@ export class SignupComponent implements OnInit {
 
     if (this.form?.valid) {
       if (!formValues.acceptTerms) {
-        this.notificationService.alert("Sign Up", "Please read and accept the Terms of Service and Privacy Policy", "warn");
+        this.notificationService.alert("Please read and accept the Terms of Service and Privacy Policy", "warn");
       } else {
         this.authService.signUp(formValues).subscribe({
           next: (response) => {
@@ -116,7 +116,7 @@ export class SignupComponent implements OnInit {
 
             dialogRef.onClose.subscribe(value => {
               if (value === true) {
-                this.notificationService.alert(response.message, "Sig in to continue", "success");
+                this.notificationService.alert("Sig in to continue", "success");
                 this.router.navigate(["/auth/signin"]);
               }
             })
@@ -124,7 +124,7 @@ export class SignupComponent implements OnInit {
             this.form?.reset();
           },
           error: ({ error }) => {
-            this.notificationService.alert("Sign Up", error.message, "error");
+            this.notificationService.alert(error.message, "error");
           }
         })
       }

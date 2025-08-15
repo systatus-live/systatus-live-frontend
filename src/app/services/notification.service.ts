@@ -10,7 +10,7 @@ export class NotificationService {
     private messageService: MessageService
   ) { }
 
-  public alert(title: string, message: string, type: "success" | "error" | "warn", duration: number = 3000) {
-    this.messageService.add({ severity: type, summary: title, detail: message, life: duration });
+  public alert(message: string, type: "success" | "error" | "warn", duration: number = 3000) {
+    this.messageService.add({ severity: type, detail: message, life: duration });
   }
 }

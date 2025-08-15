@@ -115,7 +115,7 @@ export class SigninComponent {
           }
         },
         error: ({ error }) => {
-          this.notificationService.alert("Sign In", error.message, "error");
+          this.notificationService.alert(error.message, "error");
         }
       })
     }
@@ -127,7 +127,7 @@ export class SigninComponent {
         this.signinCallback(response.data.access_token);
       },
       error: ({ error }) => {
-        this.notificationService.alert("Google sign In", error.message, "error");
+        this.notificationService.alert(error.message, "error");
       }
     })
   }

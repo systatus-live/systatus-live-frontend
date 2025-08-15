@@ -36,3 +36,11 @@
   align-items: center;
   justify-content: center;
 }
+
+.p-toast-message-text {
+  flex-direction: row !important;
+}
+
+.p-toast-message-content {
+  align-items: center !important;
+}

@@ -56,7 +56,7 @@ export class VerifyUserComponent implements OnInit {
           this.dynamicDialogRef.close(true);
         },
         error: ({ error }) => {
-          this.notificationService.alert("Verify", error.message, "error");
+          this.notificationService.alert(error.message, "error");
         }
       })
     }
@@ -76,10 +76,10 @@ export class VerifyUserComponent implements OnInit {
           }, 1000);
 
           this.form?.reset();
-          this.notificationService.alert("Verify", response.message, "success");
+          this.notificationService.alert(response.message, "success");
         },
         error: ({ error }) => {
-          this.notificationService.alert("Resend code", error.message, "error");
+          this.notificationService.alert(error.message, "error");
 
         }
       })
