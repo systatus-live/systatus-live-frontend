@@ -16,17 +16,17 @@ export class AuthService {
   ) { }
 
   public signUp(data: any) {
-    return this.http.post<DefaultAPIResponseDTO>(`${environment.api}/auth/signup`, data);
+    return this.http.post<DefaultAPIResponseDTO>(`${environment.api}/v1/auth/signup`, data);
   }
 
   public sendCode(email: string) {
-    return this.http.post<DefaultAPIResponseDTO>(`${environment.api}/auth/codes`, {
+    return this.http.post<DefaultAPIResponseDTO>(`${environment.api}/v1/auth/codes`, {
       email: email
     });
   }
 
   public verifyCode(code: string) {
-    return this.http.patch<DefaultAPIResponseDTO>(`${environment.api}/auth/codes`, {
+    return this.http.patch<DefaultAPIResponseDTO>(`${environment.api}/v1/auth/codes`, {
       code: code
     });
   }
@@ -37,7 +37,7 @@ export class AuthService {
       password: password,
       type: SigninTypeEnum.EMAIL_PASSWORD
     }
-    return this.http.post<DefaultAPIResponseDTO>(`${environment.api}/auth/signin`, data);
+    return this.http.post<DefaultAPIResponseDTO>(`${environment.api}/v1/auth/signin`, data);
   }
 
   public signinWithGoogle(credential: string) {
@@ -45,7 +45,7 @@ export class AuthService {
       credential: credential,
       type: SigninTypeEnum.GOOGLE
     }
-    return this.http.post<DefaultAPIResponseDTO>(`${environment.api}/auth/signin`, data);
+    return this.http.post<DefaultAPIResponseDTO>(`${environment.api}/v1/auth/signin`, data);
   }
 
   public signOut() {
