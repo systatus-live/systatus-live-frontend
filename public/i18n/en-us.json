@@ -41,6 +41,8 @@
   "signupComponent.form.password.weakLabel": "Weak",
   "signupComponent.form.password.mediumLabel": "Medium",
   "signupComponent.form.password.strongLabel": "Strong",
+  "signupComponent.signinToContinue": "Sign in to continue",
+  "signupComponent.terms": "Please read and accept the Terms of Use and Privacy Policy",
   "notFoundComponent.navigate": "Go to home page",
   "verifyUserComponent.title": "Verify your e-mail",
   "verifyUserComponent.description": "We sent a verification code to {{ email }}. To verify your account, enter the 6-digit code.",

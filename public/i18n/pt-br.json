@@ -41,6 +41,8 @@
   "signupComponent.form.password.weakLabel": "Fraca",
   "signupComponent.form.password.mediumLabel": "Média",
   "signupComponent.form.password.strongLabel": "Forte",
+  "signupComponent.signinToContinue": "Faça login para continuar",
+  "signupComponent.terms": "Por favor, leia e aceite os Termos de Uso e a Política de Privacidade",
   "notFoundComponent.navigate": "Ir para página inicial",
   "verifyUserComponent.title": "Verifique seu e-mail",
   "verifyUserComponent.description": "Enviamos um código de verificação para {{ email }}. Para verificar sua conta, insira o código de 6 dígitos.",
