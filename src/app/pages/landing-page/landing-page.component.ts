@@ -42,9 +42,9 @@ export class LandingPageComponent implements OnInit {
 
   private loadStatisticList() {
     this.statisticList = [
-      { label: "Monitor", description: "HTTP • HTTPS • Ping" },
+      { label: "Monitor", description: "HTTP • HTTPS • IP" },
       { label: "24/7", description: "Availability" },
-      { label: "1 min.", description: "Min Check Interval" },
+      { label: "5 min.", description: "Min Check Interval" },
       { label: "i18n", description: this.languageList.map(lang => lang.flag).join(" ") },
     ]
   }

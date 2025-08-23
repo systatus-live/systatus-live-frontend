@@ -72,16 +72,15 @@
     </div>
     <!-- Contact and copyright  -->
     <div class="flex flex-column align-items-center mt-6">
-      <div class="flex align-items-center">
-        <span class="mr-1 mb-2 font-medium">{{ 'all.developedBy' | translate }}</span>
-        <a href="https://artcode.dev" target="_blank">
+      <div class="my-2">{{ 'landingPageComponent.contact' | translate }}</div>
+      <small class="mt-3 flex align-items-center justify-content-center">
+        <a href="https://artcode.dev" target="_blank" class="mr-2 mt-1">
           <img src="/images/artcode-logo.png" style="width: 6rem;" alt="artcode-logo">
         </a>
-      </div>
-      <div class="my-2">{{ 'landingPageComponent.contact' | translate }}</div>
-      <small class="mt-3">
-        © {{ currentYear }} {{ 'all.copyright' | translate }} • 
-        <a routerLink="/agreements/terms-of-use">{{ 'all.termsOfUse' | translate }}</a> • 
+        <span>© {{ currentYear }}</span>
+        <span class="mx-2">•</span>
+        <a routerLink="/agreements/terms-of-use">{{ 'all.termsOfUse' | translate }}</a> 
+        <span class="mx-2">•</span>
         <a routerLink="/agreements/privacy-policy">{{ 'all.privacyPolicy' | translate }}</a>
       </small>
     </div>
