@@ -1,0 +1,13 @@
+@use "../../../app/theme.scss" as theme;
+
+.primary {
+  color: theme.$primary-color;
+}
+
+.secondary {
+  color: theme.$secondary-color;
+}
+
+.info {
+  color: theme.$info-color;
+}

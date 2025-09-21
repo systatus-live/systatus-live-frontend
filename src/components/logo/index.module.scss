@@ -1,0 +1,7 @@
+@use "../../app/theme.scss" as theme;
+
+.logo {
+  color: theme.$primary-color;
+  font-weight: 600;
+  font-size: 1.4rem;
+}
