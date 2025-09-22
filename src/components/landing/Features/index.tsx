@@ -75,7 +75,7 @@ export default function Features() {
     <div id="featureList" className="py-24 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          className="lg:text-center"
+          className="text-center"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -110,7 +110,7 @@ export default function Features() {
           <div className="grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
             {featureList.map((feature, index) => (
               <motion.div
-                key={feature.name}
+                key={index}
                 className="relative"
                 variants={item}
               >

@@ -13,7 +13,7 @@ const Navbar: React.FC = () => {
 
   const navItemList = [
     { name: "Início", href: "/" },
-    { name: "Funtionalidades", href: "#features" },
+    { name: "Funcionalidades", href: "#features" },
     { name: "Integrações", href: "#integrations" },
     { name: "Preços", href: "#pricing" },
     { name: "Suporte", href: "/contact" },

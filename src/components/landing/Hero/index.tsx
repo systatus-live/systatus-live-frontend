@@ -4,6 +4,7 @@ import { BarChart2Icon, BellIcon, Waypoints } from 'lucide-react'
 import { motion } from 'framer-motion'
 import styles from "./index.module.scss";
 import Button from '@/components/button';
+import Link from 'next/link';
 
 export default function Hero() {
   const cardList = [
@@ -53,7 +54,9 @@ export default function Hero() {
                 transition={{ delay: 0.6, duration: 0.5 }}
               >
                 <Button severity="secondary" className="mr-3">Comece agora</Button>
-                <Button severity="info">Saiba mais</Button>
+                <Button severity="info">
+                  <Link href="#features">Saiba mais</Link>
+                </Button>
               </motion.div>
             </div>
           </main>
