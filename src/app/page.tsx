@@ -2,6 +2,7 @@ import Features from "@/components/landing/Features";
 import Hero from "@/components/landing/Hero";
 import Integrations from "@/components/landing/Integrations";
 import Navbar from "@/components/landing/Navbar";
+import Pricing from "@/components/landing/Pricing";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       <Hero />
       <Features />
       <Integrations />
+      <Pricing />
     </div>
   );
 }

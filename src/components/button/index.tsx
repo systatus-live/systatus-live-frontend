@@ -1,7 +1,7 @@
 "use client"
 
 import { ButtonHTMLAttributes, ClassAttributes, JSX, useEffect, useState } from 'react';
-import styles from "./index.module.scss";
+import styles from "./styles.module.scss";
 
 export default function Button(props: JSX.IntrinsicAttributes & ClassAttributes<HTMLButtonElement> & ButtonHTMLAttributes<HTMLButtonElement> & { severity?: "success" | "secondary" | "info" }) {
   const [btnStyle, setBtnStyle] = useState("");

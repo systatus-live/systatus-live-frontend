@@ -6,7 +6,7 @@ import { AnimatePresence } from 'framer-motion';
 import { MenuIcon, XIcon } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import styles from "./index.module.scss";
+import styles from "./styles.module.scss";
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

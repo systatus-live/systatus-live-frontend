@@ -1,8 +1,8 @@
 "use client"
 
-import { BarChart2Icon, BellIcon, Waypoints } from 'lucide-react'
-import { motion } from 'framer-motion'
-import styles from "./index.module.scss";
+import { BarChart2Icon, BellIcon, Waypoints } from 'lucide-react';
+import { motion } from 'framer-motion';
+import styles from "./styles.module.scss";
 import Button from '@/components/button';
 import Link from 'next/link';
 
@@ -53,8 +53,8 @@ export default function Hero() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.5 }}
               >
-                <Button severity="secondary" className="mr-3">Comece agora</Button>
-                <Button severity="info">
+                <Button severity="secondary" className="mr-3 h-10">Comece agora</Button>
+                <Button severity="info" className="h-10">
                   <Link href="#features">Saiba mais</Link>
                 </Button>
               </motion.div>

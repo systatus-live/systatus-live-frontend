@@ -1,8 +1,8 @@
 "use client"
 
-import Button from '@/components/button'
-import { motion } from 'framer-motion'
-import { AlertTriangleIcon, BarChart2Icon, BellIcon, ClockIcon, GlobeIcon, MessageSquareIcon } from 'lucide-react'
+import Button from '@/components/button';
+import { motion } from 'framer-motion';
+import { AlertTriangleIcon, BarChart2Icon, BellIcon, ClockIcon, GlobeIcon, MessageSquareIcon } from 'lucide-react';
 
 export default function Features() {
   const featureList = [
@@ -141,7 +141,7 @@ export default function Features() {
           viewport={{ once: true }}
           transition={{ delay: 0.8, duration: 0.5 }}
         >
-          <Button severity="secondary">Comece a monitorar seus serviços</Button>
+          <Button severity="secondary" className="h-10">Comece a monitorar seus serviços</Button>
         </motion.div>
       </div>
     </div>
