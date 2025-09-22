@@ -73,7 +73,8 @@ export default function Pricing() {
             >
               {plan.mostPopular && (
                 <div className={styles["most-popular"]}>
-                  Mais popular
+                  {/* Mais popular */}
+                  Em Breve
                 </div>
               )}
               <div className="p-6">

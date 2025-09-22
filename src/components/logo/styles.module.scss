@@ -5,3 +5,8 @@
   font-weight: 600;
   font-size: 1.4rem;
 }
+
+.logo-white {
+  @extend .logo;
+  color: #fff;
+}
