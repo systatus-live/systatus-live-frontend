@@ -9,18 +9,33 @@ export default function Integrations() {
     {
       name: "Slack",
       logo: "logos/slack.svg",
-      description: "Receba alertas em tempo real nos seus canais do Slack",
-    },
-    {
-      name: "Discord",
-      logo: "logos/discord.svg",
-      description: "Receba notificações diretamente no seu servidor do Discord",
+      description: "Receba alertas instantâneos diretamente nos seus canais do Slack.",
     },
     {
       name: "Google Chat",
       logo: "logos/google-chat.svg",
-      description: "Mantenha-se atualizado com alertas nos seus espaços do Google Chat",
-    }
+      description: "Acompanhe a disponibilidade dos sistemas via mensagens no Google Chat.",
+    },
+    {
+      name: "E-mail",
+      logo: "logos/mail.svg",
+      description: "Receba notificações imediatas por e-mail assim que houver indisponibilidade.",
+    },
+    {
+      name: "WhatsApp",
+      logo: "logos/whatsapp.svg",
+      description: "Tenha alertas em tempo real no seu WhatsApp, onde quer que esteja.",
+    },
+    {
+      name: "Discord",
+      logo: "logos/discord.svg",
+      description: "Seja notificado em tempo real no seu servidor do Discord.",
+    },
+    {
+      name: "Telegram",
+      logo: "logos/telegram.svg",
+      description: "Receba alertas em tempo real diretamente no seu Telegram."
+    },
   ]
 
   return (

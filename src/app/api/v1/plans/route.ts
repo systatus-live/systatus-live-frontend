@@ -7,8 +7,10 @@ export async function GET() {
       data: [
         {
           name: "Grátis",
-          price: "R$ 0",
-          period: "/mês",
+          price: "Em breve",
+          period: "",
+          //price: "R$ 0",
+          //period: "/mês",
           description: "Não requer cartão de crédito",
           limits: "Até 5 monitores",
           cta: "Comece de graça",
@@ -16,9 +18,12 @@ export async function GET() {
           features: {
             "Até 5 monitores": true,
             "Intervalo de verificação de 5 min.": true,
-            "Integração com Slack": true,
-            "Integração com Discord": true,
-            "Integração com Google Chat": true,
+            "Notificações no Slack": true,
+            "Notificações no Google Chat": true,
+            "Notificações por e-mail": true,
+            "Notificações no WhatsApp": false,
+            "Notificações no Discord": true,
+            "Notificações no Telegram": true,
             "Mensagens personalizáveis": false,
             "Página de status pública": false
           }
@@ -34,9 +39,12 @@ export async function GET() {
           features: {
             "Até 50 monitores": true,
             "Intervalo de verificação de 1   min.": true,
-            "Integração com Slack": true,
-            "Integração com Discord": true,
-            "Integração com Google Chat": true,
+            "Notificações no Slack": true,
+            "Notificações no Google Chat": true,
+            "Notificações por e-mail": true,
+            "Notificações no WhatsApp": true,
+            "Notificações no Discord": true,
+            "Notificações no Telegram": true,
             "Mensagens personalizáveis": true,
             "Página de status pública": true
           }

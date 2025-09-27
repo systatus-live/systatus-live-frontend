@@ -1,8 +1,8 @@
 "use client";
 
-import Button from '@/components/button';
+import Button from '@/components/Button';
 import { motion } from 'framer-motion';
-import { ArrowUpIcon, BellIcon, GlobeIcon, Waypoints } from 'lucide-react';
+import { GlobeIcon, Waypoints } from 'lucide-react';
 import Link from 'next/link';
 import { Fragment, useEffect, useState } from 'react';
 import styles from "./styles.module.scss";
@@ -17,31 +17,40 @@ export default function Hero() {
       {
         name: "Slack",
         logo: "logos/slack.svg",
-        description: "Receba alertas em tempo real nos seus canais do Slack",
-      },
-      {
-        name: "Discord",
-        logo: "logos/discord.svg",
-        description: "Receba notificações diretamente no seu servidor do Discord",
       },
       {
         name: "Google Chat",
         logo: "logos/google-chat.svg",
-        description: "Mantenha-se atualizado com alertas nos seus espaços do Google Chat",
-      }
+      },
+      {
+        name: "E-mail",
+        logo: "logos/mail.svg",
+      },
+      {
+        name: "WhatsApp",
+        logo: "logos/whatsapp.svg",
+      },
+      {
+        name: "Discord",
+        logo: "logos/discord.svg",
+      },
+      {
+        name: "Telegram",
+        logo: "logos/telegram.svg",
+      },
     ])
 
     setCardList([
       {
         title: "website.com",
-        icon: Waypoints,
+        icon: GlobeIcon,
         color: "green",
         uptime: "Disponibilidade 92%",
         progress: "92%"
       },
       {
         title: "api.service.com",
-        icon: BellIcon,
+        icon: Waypoints,
         color: "red",
         uptime: "Incidente detectado",
         progress: "45%"

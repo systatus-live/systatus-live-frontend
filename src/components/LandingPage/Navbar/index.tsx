@@ -1,6 +1,6 @@
 "use client"
 
-import Button from '@/components/button';
+import Button from '@/components/Button';
 import Logo from '@/components/logo';
 import { AnimatePresence } from 'framer-motion';
 import { MenuIcon, XIcon } from 'lucide-react';

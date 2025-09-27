@@ -10,22 +10,22 @@ export default function Footer() {
     {
       title: "Produto",
       items: [
-        { name: "Funcionalidades", href: "#features" },
-        { name: "Integrações", href: "#integrations" },
-        { name: "Preços", href: "#pricing" },
+        { name: "Funcionalidades", href: "#features", target: "" },
+        { name: "Integrações", href: "#integrations", target: "" },
+        { name: "Preços", href: "#pricing", target: "" },
       ]
     },
     {
       title: "Suporte",
       items: [
-        { name: "Contato", href: "/contact" },
+        { name: "Contato", href: "/contact", target: "" },
       ]
     },
     {
       title: "Legal",
       items: [
-        { name: "Privacidade", href: "agreements/terms-of-use" },
-        { name: "Termos", href: "agreements/privacy-policy" },
+        { name: "Privacidade", href: "agreements/privacy-policy", target: "_blank" },
+        { name: "Termos de Uso", href: "agreements/terms-of-use", target: "_blank" },
       ]
     }
   ]
@@ -70,7 +70,7 @@ export default function Footer() {
                     <ul className="mt-4 space-y-4">
                       {nav.items.map((item, index) => (
                         <li key={index}>
-                          <Link href={item.href} className="text-base text-gray-300 hover:text-white transition-colors duration-200">
+                          <Link href={item.href} target={item.target} className="text-base text-gray-300 hover:text-white transition-colors duration-200">
                             {item.name}
                           </Link>
                         </li>

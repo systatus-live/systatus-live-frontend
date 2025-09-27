@@ -1,8 +1,9 @@
 "use client"
 
-import Button from '@/components/button';
+import Button from '@/components/Button';
 import { motion } from 'framer-motion';
 import { AlertTriangleIcon, BarChart2Icon, BellIcon, ClockIcon, GlobeIcon, MessageSquareIcon } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Features() {
   const featureList = [
@@ -14,7 +15,7 @@ export default function Features() {
     },
     {
       name: "Alertas Instantâneos",
-      description: "Receba notificações imediatas quando seus serviços ficarem indisponíveis por e-mail, Discord, Slack ou Google Chat.",
+      description: "Receba notificações imediatas quando seus serviços ficarem indisponíveis por e-mail, Slack, Google Chat, Discord e outros canais",
       icon: BellIcon,
       color: "bg-red-500",
     },
@@ -72,7 +73,7 @@ export default function Features() {
   }
 
   return (
-    <div id="featureList" className="py-24 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
+    <div id="features" className="py-24 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           className="text-center"
@@ -141,7 +142,11 @@ export default function Features() {
           viewport={{ once: true }}
           transition={{ delay: 0.8, duration: 0.5 }}
         >
-          <Button severity="secondary" className="h-10">Comece a monitorar seus serviços</Button>
+          <Button severity="secondary" className="h-10">
+            <Link href="/signup" className="flex items-center">
+              Comece a monitorar seus serviços
+            </Link>
+          </Button>
         </motion.div>
       </div>
     </div>

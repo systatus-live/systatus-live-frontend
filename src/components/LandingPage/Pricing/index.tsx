@@ -3,7 +3,7 @@
 import { CheckIcon, XIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import Button from '@/components/button';
+import Button from '@/components/Button';
 import styles from "./styles.module.scss";
 import { useEffect, useState } from 'react';
 import { SweetAlert } from '@/lib/sweetAlert';
@@ -73,8 +73,7 @@ export default function Pricing() {
             >
               {plan.mostPopular && (
                 <div className={styles["most-popular"]}>
-                  {/* Mais popular */}
-                  Em Breve
+                  Recomendado
                 </div>
               )}
               <div className="p-6">
