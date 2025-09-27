@@ -1,22 +1,4 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.scss";
-import { Analytics } from "@vercel/analytics/next"
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "Systatus Live",
-  description: "Notificações instantâneas quando seus sites, APIs ou servidores ficarem indisponíveis. Mantenha o controle da sua infraestrutura com monitoramento e alertas em tempo real.",
-};
+import "../styles/globals.scss";
 
 export default function RootLayout({
   children,
@@ -42,9 +24,8 @@ export default function RootLayout({
         <meta name="twitter:description" content="Notificações instantâneas quando seus sites, APIs ou servidores ficarem indisponíveis. Mantenha o controle da sua infraestrutura com monitoramento e alertas em tempo real." />
         <meta name="twitter:image" content="https://systatus.live/_next/image?url=%2Flogos%2Fsystatus-live.png&w=32&q=75" />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body>
         {children}
-        <Analytics />
       </body>
     </html>
   );
