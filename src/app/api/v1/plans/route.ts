@@ -54,7 +54,6 @@ export async function GET() {
       status: 200
     });
   } catch (error) {
-    console.log(error);
     return NextResponse.json({
       message: "Erro interno ao buscar planos. Tente novamente ou comunique o suporte."
     }, {

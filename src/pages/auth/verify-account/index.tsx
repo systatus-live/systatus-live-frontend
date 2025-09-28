@@ -9,6 +9,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styles from "./styles.module.scss";
 import OtpInput from 'react-otp-input';
+import AuthService from '@/services/AuthService';
+import { SweetAlert } from '@/lib/sweetAlert';
 
 interface IFormValues {
   code: string;
@@ -19,16 +21,20 @@ export default function VerifyAccount() {
   const { email } = router.query;
 
   const [isSubmitting, setSubmitting] = useState(false);
-  const { register, handleSubmit, reset } = useForm<IFormValues>();
+  const { handleSubmit } = useForm<IFormValues>();
   const [otp, setOtp] = useState("");
 
-  function onSubmit(data: IFormValues) {
-    // TODO API request
+  function onSubmit(_: IFormValues) {
     setSubmitting(true);
-    reset();
-    setSubmitting(false);
 
-    router.push("/auth/signin");
+    AuthService.checkCode(otp).then((response: any) => {
+      router.push("/auth/signin");
+      SweetAlert.success("", response.message);
+    }).catch((error) => {
+      SweetAlert.error("", error.message);
+    }).finally(() => {
+      setSubmitting(false);
+    })
   }
 
   return (

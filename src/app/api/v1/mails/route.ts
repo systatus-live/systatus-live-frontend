@@ -40,7 +40,6 @@ export async function POST(request: Request) {
       status: 200
     });
   } catch (error) {
-    console.log(error);
     return NextResponse.json({
       message: "Erro interno ao enviar a mensagem. Tente novamente ou comunique pelo e-mail no final da página."
     }, {

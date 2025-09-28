@@ -10,30 +10,45 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styles from "./styles.module.scss";
+import AuthService from '@/services/AuthService';
+import { SweetAlert } from '@/lib/sweetAlert';
 
 interface IFormValues {
   name: string;
   email: string;
   password: string;
   confirmPassword: string;
-  terms: boolean;
+  acceptTerms: boolean;
 }
 
 export default function SignUp() {
   const router = useRouter();
   const [isSubmitting, setSubmitting] = useState(false);
-  const { register, handleSubmit, reset } = useForm<IFormValues>();
+  const { register, handleSubmit } = useForm<IFormValues>();
 
-  function onSubmit(data: IFormValues) {
-    // TODO API request
+  function onSubmit(form: IFormValues) {
+    if (!form.acceptTerms) {
+      SweetAlert.info("", "Você deve aceitar os Termos de Uso e a Política de Privacidade para criar sua conta.");
+      return;
+    }
+
     setSubmitting(true);
-    reset();
-    setSubmitting(false);
 
-    router.push({
-      pathname: "/auth/verify-account",
-      query: { email: data.email }
-    });
+    AuthService.signUp({
+      name: form.name,
+      email: form.email,
+      password: form.password,
+      acceptTerms: form.acceptTerms
+    }).then((_) => {
+      router.push({
+        pathname: "/auth/verify-account",
+        query: { email: form.email }
+      });
+    }).catch((error) => {
+      SweetAlert.error("", error.message);
+    }).finally(() => {
+      setSubmitting(false);
+    })
   }
 
   return (
@@ -47,23 +62,23 @@ export default function SignUp() {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
             <div>
               <label className="block text-sm font-medium text-gray-700">Nome <span className="text-red-500">*</span></label>
-              <InputText type="text" placeholder="Nome completo" />
+              <InputText {...register("name", { required: true })} type="text" placeholder="Nome completo" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">E-mail <span className="text-red-500">*</span></label>
-              <InputText type="email" placeholder="seu@email.com" />
+              <InputText {...register("email", { required: true })} type="email" placeholder="seu@email.com" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">Senha <span className="text-red-500">*</span></label>
-              <InputPassword placeholder="********" />
+              <InputPassword {...register("password", { required: true })} placeholder="********" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">Confirmar Senha <span className="text-red-500">*</span></label>
-              <InputPassword placeholder="********" />
+              <InputPassword {...register("confirmPassword", { required: true })} placeholder="********" />
             </div>
             <div className="flex items-center">
-              <InputCheckBox />
-              <label htmlFor="terms" className="ml-2 block text-sm text-gray-900">
+              <InputCheckBox {...register("acceptTerms")} />
+              <label htmlFor="acceptTerms" className="ml-2 block text-sm text-gray-900">
                 Eu aceito os {' '}
                 <Link href="/agreements/terms-of-use" target="_blank" className="font-medium text-blue-600 hover:text-blue-500">Termos de Uso</Link>{' '}
                 e a{' '}
@@ -71,6 +86,7 @@ export default function SignUp() {
               </label>
             </div>
             <div className="my-4">
+              {isSubmitting}
               <Button severity="secondary" type="submit" className="w-full">Criar Conta</Button>
             </div>
             <p className="mt-2 text-center text-sm text-gray-600">

@@ -10,10 +10,14 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styles from "./styles.module.scss";
+import AuthService from '@/services/AuthService';
+import { SweetAlert } from '@/lib/sweetAlert';
+import { SignInTypeEnum } from '@/enums/SignInTypeEnum';
 
 interface IFormValues {
   email: string;
   password: string;
+  type: SignInTypeEnum
 }
 
 export default function SignIn() {
@@ -21,13 +25,20 @@ export default function SignIn() {
   const [isSubmitting, setSubmitting] = useState(false);
   const { register, handleSubmit, reset } = useForm<IFormValues>();
 
-  function onSubmit(data: IFormValues) {
-    // TODO API request
+  function onSubmit(form: IFormValues) {
     setSubmitting(true);
-    reset();
-    setSubmitting(false);
 
-    router.push("/auth/verify-account")
+    AuthService.signIn({
+      email: form.email,
+      password: form.password,
+      type: SignInTypeEnum.EMAIL_PASSWORD
+    }).then((_) => {
+      router.push("/panel");
+    }).catch((error) => {
+      SweetAlert.error("", error.message);
+    }).finally(() => {
+      setSubmitting(false);
+    })
   }
 
   return (
@@ -41,11 +52,11 @@ export default function SignIn() {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
             <div>
               <label className="block text-sm font-medium text-gray-700">E-mail <span className="text-red-500">*</span></label>
-              <InputText type="email" placeholder="seu@email.com" />
+              <InputText {...register("email", { required: true })} type="email" placeholder="seu@email.com" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">Senha <span className="text-red-500">*</span></label>
-              <InputPassword placeholder="********" />
+              <InputPassword {...register("password", { required: true })} placeholder="********" />
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center">
