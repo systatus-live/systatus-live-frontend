@@ -1,9 +1,10 @@
 import "../styles/globals.scss";
 import type { AppProps } from 'next/app'
-import type { Metadata } from "next";
+import type { Metadata, NextPage } from "next";
 import { Analytics } from "@vercel/analytics/next"
 import { Geist, Geist_Mono } from "next/font/google";
 import Head from "next/head";
+import { ReactElement, ReactNode } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,7 +21,17 @@ export const metadata: Metadata = {
   description: "Notificações instantâneas quando seus sites, APIs ou servidores ficarem indisponíveis. Mantenha o controle da sua infraestrutura com monitoramento e alertas em tempo real.",
 };
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode
+}
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout
+}
+
+export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page)
+
   return (
     <>
       <Head>
@@ -28,7 +39,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <div className={`${geistSans.variable} ${geistMono.variable}`}>
         <Analytics />
-        <Component {...pageProps} />
+        {getLayout(<Component {...pageProps} />)}
       </div>
     </>
   )

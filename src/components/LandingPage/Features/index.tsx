@@ -142,11 +142,9 @@ export default function Features() {
           viewport={{ once: true }}
           transition={{ delay: 0.8, duration: 0.5 }}
         >
-          <Button severity="secondary" className="h-10">
-            <Link href="/signup" className="flex items-center">
-              Comece a monitorar seus serviços
-            </Link>
-          </Button>
+          <Link href="/auth/signup">
+            <Button severity="secondary" className="h-10">Comece a monitorar seus serviços</Button>
+          </Link>
         </motion.div>
       </div>
     </div>

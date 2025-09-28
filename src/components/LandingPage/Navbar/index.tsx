@@ -35,8 +35,12 @@ const Navbar: React.FC = () => {
             </div>
           </div>
           <div className="hidden sm:flex sm:items-center ml-4">
-            <Button severity="info">Entrar</Button>
-            <Button severity="secondary" className="ml-4">Cadastrar</Button>
+            <Link href="/auth/signin">
+              <Button severity="info">Entrar</Button>
+            </Link>
+            <Link href="/auth/signup">
+              <Button severity="secondary" className="ml-4">Cadastrar</Button>
+            </Link>
           </div>
           <div className="-mr-2 flex items-center sm:hidden">
             <Button onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -59,7 +63,9 @@ const Navbar: React.FC = () => {
             <div className="pt-4 pb-3 border-t border-gray-200">
               <div className="flex items-center px-4 space-x-3">
                 <Button severity="info" className="w-full" onClick={() => setIsMenuOpen(false)}>Entrar</Button>
-                <Button severity="secondary" className="ml-2 w-full" onClick={() => setIsMenuOpen(false)}>Cadastrar</Button>
+                <Link href="/auth/signup">
+                  <Button severity="secondary" className="ml-2 w-full" onClick={() => setIsMenuOpen(false)}>Cadastrar</Button>
+                </Link>
               </div>
             </div>
           </div>

@@ -104,10 +104,12 @@ export default function Hero() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.5 }}
               >
-                <Button severity="secondary" className="mr-3 h-10">Comece agora</Button>
-                <Button severity="info" className="h-10">
-                  <Link href="#features">Saiba mais</Link>
-                </Button>
+                <Link href="/auth/signup">
+                  <Button severity="secondary" className="mr-3 h-10">Comece agora</Button>
+                </Link>
+                <Link href="#features">
+                  <Button severity="info" className="h-10">Saiba mais</Button>
+                </Link>
               </motion.div>
             </div>
           </main>

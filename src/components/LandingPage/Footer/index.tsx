@@ -10,9 +10,9 @@ export default function Footer() {
     {
       title: "Produto",
       items: [
-        { name: "Funcionalidades", href: "#features", target: "" },
-        { name: "Integrações", href: "#integrations", target: "" },
-        { name: "Preços", href: "#pricing", target: "" },
+        { name: "Funcionalidades", href: "/#features", target: "" },
+        { name: "Integrações", href: "/#integrations", target: "" },
+        { name: "Preços", href: "/#pricing", target: "" },
       ]
     },
     {
@@ -24,7 +24,7 @@ export default function Footer() {
     {
       title: "Legal",
       items: [
-        { name: "Privacidade", href: "agreements/privacy-policy", target: "_blank" },
+        { name: "Política de Privacidade", href: "agreements/privacy-policy", target: "_blank" },
         { name: "Termos de Uso", href: "agreements/terms-of-use", target: "_blank" },
       ]
     }

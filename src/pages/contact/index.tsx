@@ -1,4 +1,6 @@
 import Button from '@/components/Button';
+import InputText from '@/components/InputText';
+import InputTextArea from '@/components/InputTextArea';
 import Footer from '@/components/LandingPage/Footer';
 import Navbar from '@/components/LandingPage/Navbar';
 import { SweetAlert } from '@/lib/sweetAlert';
@@ -7,12 +9,19 @@ import { CheckIcon, MailIcon, MapPinIcon } from 'lucide-react';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+interface IFormValues {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
+
 export default function Contact() {
   const [isSubmitting, setSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const { register, handleSubmit, reset, formState: { errors }, } = useForm<any>()
+  const { register, handleSubmit, reset } = useForm<IFormValues>()
 
-  function onSubmit(data: SubmitHandler<any>) {
+  function onSubmit(data: IFormValues) {
     setSubmitting(true);
 
     fetch("/api/v1/mails", {
@@ -121,31 +130,31 @@ export default function Contact() {
                       <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
                         {/* Name */}
                         <div>
-                          <label className="block text-sm/6 font-medium text-gray-900">Nome <span className="text-red-700">*</span></label>
+                          <label className="block text-sm/6 font-medium text-gray-900">Nome <span className="text-red-500">*</span></label>
                           <div className="mt-2">
-                            <input {...register("name")} type="text" className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6" />
+                            <InputText {...register("name", { required: true })} type="text" />
                           </div>
                         </div>
                         {/* E-mail */}
                         <div>
-                          <label className="block text-sm/6 font-medium text-gray-900">E-mail <span className="text-red-700">*</span></label>
+                          <label className="block text-sm/6 font-medium text-gray-900">E-mail <span className="text-red-500">*</span></label>
                           <div className="mt-2">
-                            <input {...register("email")} type="email" className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6" />
+                            <InputText {...register("email", { required: true })} type="email" />
                           </div>
                         </div>
                       </div>
                       {/* Subject */}
                       <div>
-                        <label className="block text-sm/6 font-medium text-gray-900">Assunto <span className="text-red-700">*</span></label>
+                        <label className="block text-sm/6 font-medium text-gray-900">Assunto <span className="text-red-500">*</span></label>
                         <div className="mt-2">
-                          <input {...register("subject")} type="subject" className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6" />
+                          <InputText {...register("subject", { required: true })} type="subject" />
                         </div>
                       </div>
                       {/* Message */}
                       <div>
-                        <label className="block text-sm/6 font-medium text-gray-900">Mensagem <span className="text-red-700">*</span></label>
+                        <label className="block text-sm/6 font-medium text-gray-900">Mensagem <span className="text-red-500">*</span></label>
                         <div className="mt-2">
-                          <textarea {...register("message")} className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6" />
+                          <InputTextArea {...register("message", { required: true })} />
                         </div>
                       </div>
 
