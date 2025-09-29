@@ -24,6 +24,6 @@ export default function Button(props: JSX.IntrinsicAttributes & ClassAttributes<
   }, []);
 
   return (
-    <button {...props} className={`${btnStyle} cursor-pointer ${props.className ?? ""}`}>{props.children}</button>
+    <button {...props} className={`${btnStyle} ${props.disabled ? styles["btn-disabled"] : ""} cursor-pointer ${props.className ?? ""}`}>{props.children}</button>
   )
 }

@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styles from "./styles.module.scss";
+import Head from 'next/head';
 
 interface IFormValues {
   email: string;
@@ -28,35 +29,40 @@ export default function ForgotPassword() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 px-2 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <div className="sm:mx-auto sm:w-full sm:max-w-md">
-            <div className="flex justify-center">
-              <Logo />
+    <>
+      <Head>
+        <title>Redefinir Senha • Systatus.Live</title>
+      </Head>
+      <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 px-2 sm:px-6 lg:px-8">
+        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+          <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+            <div className="sm:mx-auto sm:w-full sm:max-w-md">
+              <div className="flex justify-center">
+                <Logo />
+              </div>
+              <h2 className={`my-6 text-center text-2xl  ${styles["title"]}`}>Esqueceu a Senha?</h2>
             </div>
-            <h2 className={`my-6 text-center text-2xl  ${styles["title"]}`}>Redefinir Senha</h2>
-          </div>
-          <p className="text-sm text-gray-700 mb-4">
-            Insira seu endereço de e-mail para receber um código para redefinir sua senha:
-          </p>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">E-mail <span className="text-red-500">*</span></label>
-              <InputText type="email" placeholder="seu@email.com" />
-            </div>
-            <div className="my-4">
-              <Button severity="secondary" type="submit" className="w-full">Enviar Código</Button>
-            </div>
-            <p className="mt-2 text-center text-sm text-gray-600">
-              Lembrou a senha?{' '}
-              <Link href="/auth/signin" className="font-medium text-blue-600 hover:text-blue-500">
-                Entrar na sua conta
-              </Link>
+            <p className="text-sm text-gray-700 mb-4">
+              Insira seu endereço de e-mail para receber um código para redefinir sua senha:
             </p>
-          </form>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">E-mail <span className="text-red-500">*</span></label>
+                <InputText type="email" placeholder="seu@email.com" />
+              </div>
+              <div className="my-4">
+                <Button severity="secondary" type="submit" className="w-full">Enviar Código</Button>
+              </div>
+              <p className="mt-2 text-center text-sm text-gray-600">
+                Lembrou a senha?{' '}
+                <Link href="/auth/signin" className="font-medium text-blue-600 hover:text-blue-500">
+                  Entrar na sua conta
+                </Link>
+              </p>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }

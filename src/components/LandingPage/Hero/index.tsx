@@ -163,6 +163,7 @@ export default function Hero() {
                 return (
                   <Fragment key={index}>
                     <motion.div
+                      title={integration.name}
                       className="absolute bg-white rounded-full p-2 shadow-lg z-10"
                       style={{ width: 48, height: 48, left: `calc(50% + ${x}px - 24px)`, top: `calc(50% + ${y}px - 24px)` }}
                       initial={{ opacity: 0, scale: 0 }}
