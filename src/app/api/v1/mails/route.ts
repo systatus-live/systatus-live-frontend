@@ -14,11 +14,16 @@ export async function POST(request: Request) {
     const { name, email, message }: Payload = await request.json();
 
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
+      host: process.env.SMTP_HOST,
+      port: +process.env.SMTP_PORT!,
+      secure: true,
       auth: {
-        user: process.env.EMAIL_FROM,
-        pass: process.env.EMAIL_FROM_PASSWORD
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASSWORD,
       },
+      tls: {
+        rejectUnauthorized: false
+      }
     });
 
     await transporter.sendMail({

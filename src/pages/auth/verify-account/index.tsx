@@ -19,7 +19,7 @@ interface IFormValues {
 
 export default function VerifyAccount() {
   const router = useRouter();
-  const { email } = router.query;
+  const { email, redirect } = router.query;
 
   const [isSubmitting, setSubmitting] = useState(false);
   const { handleSubmit } = useForm<IFormValues>();
@@ -29,7 +29,7 @@ export default function VerifyAccount() {
     setSubmitting(true);
 
     AuthService.checkCode(otp).then((response: any) => {
-      router.push("/auth/signin");
+      router.push(redirect ? redirect as string : "/auth/signin");
       SweetAlert.success("", response.message);
     }).catch((error) => {
       SweetAlert.error("", error.message);

@@ -63,4 +63,27 @@ export default class AuthService {
       })
     })
   }
+
+  static sendCode(email: string) {
+    return new Promise((resolve, reject) => {
+      fetch(`${process.env.NEXT_PUBLIC_API}/v1/auth/codes`, {
+        method: "POST",
+        body: JSON.stringify({
+          email: email
+        }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(async (response) => {
+        const json = await response.json();
+        if ([200, 201].includes(response.status)) {
+          resolve(json);
+        } else {
+          reject(json);
+        }
+      }).catch((error) => {
+        reject(error);
+      })
+    })
+  }
 }

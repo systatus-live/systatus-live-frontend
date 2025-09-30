@@ -33,11 +33,11 @@ export default function SignUp() {
 
   useEffect(() => {
     setDiscoveryList([
-      { key: "REFERRAL", value: "Indicação de amigo/colega" },
-      { key: "SOCIAL", value: "Redes sociais (Instagram, Facebook, LinkedIn, etc.)" },
-      { key: "AD", value: "Anúncio online (Google Ads, Facebook Ads, etc.)" },
-      { key: "SEARCH", value: "Pesquisa no Google ou outro motor de busca" },
-      { key: "OTHER", value: "Outros" }
+      { value: "REFERRAL", label: "Indicação de amigo/colega" },
+      { value: "SOCIAL", label: "Redes sociais (Instagram, Facebook, LinkedIn, etc.)" },
+      { value: "AD", label: "Anúncio online (Google Ads, Facebook Ads, etc.)" },
+      { value: "SEARCH", label: "Pesquisa no Google ou outro motor de busca" },
+      { value: "OTHER", label: "Outros" }
     ]);
   }, []);
 

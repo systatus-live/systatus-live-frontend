@@ -24,7 +24,7 @@ interface IFormValues {
 export default function SignIn() {
   const router = useRouter();
   const [isSubmitting, setSubmitting] = useState(false);
-  const { register, handleSubmit, reset } = useForm<IFormValues>();
+  const { register, handleSubmit } = useForm<IFormValues>();
 
   function onSubmit(form: IFormValues) {
     setSubmitting(true);
@@ -33,11 +33,30 @@ export default function SignIn() {
       email: form.email,
       password: form.password,
       type: SignInTypeEnum.EMAIL_PASSWORD
-    }).then((_) => {
-      router.push("/panel");
+    }).then((response: any) => {
+      setSubmitting(false);
+
+      if (response.data.verified) {
+        router.push("/panel");
+      } else {
+        setSubmitting(true);
+
+        AuthService.sendCode(form.email).then(() => {
+          router.push({
+            pathname: "/auth/verify-account",
+            query: { 
+              email: form.email,
+              redirect: "/panel"
+            }
+          });
+        }).catch((error) => {
+          SweetAlert.error("", error.message);
+        }).finally(() => {
+          setSubmitting(false);
+        })
+      }
     }).catch((error) => {
       SweetAlert.error("", error.message);
-    }).finally(() => {
       setSubmitting(false);
     })
   }

@@ -132,18 +132,18 @@ export default function Contact() {
                       </div>
                     ) : (
                       <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-                        <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+                        <div className="grid grid-cols-1 gap-y-3 gap-x-4 sm:grid-cols-2">
                           {/* Name */}
                           <div>
                             <label className="block text-sm/6 font-medium text-gray-900">Nome <span className="text-red-500">*</span></label>
-                            <div className="mt-2">
+                            <div>
                               <InputText {...register("name", { required: true })} type="text" />
                             </div>
                           </div>
                           {/* E-mail */}
                           <div>
                             <label className="block text-sm/6 font-medium text-gray-900">E-mail <span className="text-red-500">*</span></label>
-                            <div className="mt-2">
+                            <div>
                               <InputText {...register("email", { required: true })} type="email" />
                             </div>
                           </div>
@@ -151,14 +151,14 @@ export default function Contact() {
                         {/* Subject */}
                         <div>
                           <label className="block text-sm/6 font-medium text-gray-900">Assunto <span className="text-red-500">*</span></label>
-                          <div className="mt-2">
+                          <div>
                             <InputText {...register("subject", { required: true })} type="subject" />
                           </div>
                         </div>
                         {/* Message */}
                         <div>
                           <label className="block text-sm/6 font-medium text-gray-900">Mensagem <span className="text-red-500">*</span></label>
-                          <div className="mt-2">
+                          <div>
                             <InputTextArea {...register("message", { required: true })} />
                           </div>
                         </div>
