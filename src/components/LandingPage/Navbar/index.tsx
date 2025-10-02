@@ -62,9 +62,11 @@ const Navbar: React.FC = () => {
             </div>
             <div className="pt-4 pb-3 border-t border-gray-200">
               <div className="flex items-center px-4 space-x-3">
-                <Button severity="info" className="w-full" onClick={() => setIsMenuOpen(false)}>Entrar</Button>
+                <Link href="/auth/signin">
+                  <Button severity="info">Entrar</Button>
+                </Link>
                 <Link href="/auth/signup">
-                  <Button severity="secondary" className="ml-2 w-full" onClick={() => setIsMenuOpen(false)}>Cadastrar</Button>
+                  <Button severity="secondary">Cadastrar</Button>
                 </Link>
               </div>
             </div>
