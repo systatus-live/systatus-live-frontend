@@ -7,21 +7,16 @@ import Button from '@/components/Button';
 import styles from "./styles.module.scss";
 import { useEffect, useState } from 'react';
 import { SweetAlert } from '@/lib/sweetAlert';
+import HttpService from '@/services/HttpService';
 
 export default function Pricing() {
   const [planList, setPlanList] = useState<any[]>([]);
   
   function getPlanList() {
-
-    fetch("/api/v1/plans", {
-      method: "GET"
-    }).then(async (response) => {
-      const json = await response.json();
-      if (response.status == 200) {
-        setPlanList(json.data);
-      }
+    HttpService.get("/api/v1/plans", {}).then(response => {
+      setPlanList(response.data);
     }).catch((error) => {
-      SweetAlert.error("", "Não foi possível enviar sua mensagem, tente novamente ou entre em contato pelo e-mail no final da página.", 5000);
+      SweetAlert.error("", "Não foi possível carregar os planos. Tente novamente mais tarde.");
     })
   }
 

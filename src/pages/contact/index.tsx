@@ -4,6 +4,7 @@ import InputTextArea from '@/components/InputTextArea';
 import Footer from '@/components/LandingPage/Footer';
 import Navbar from '@/components/LandingPage/Navbar';
 import { SweetAlert } from '@/lib/sweetAlert';
+import HttpService from '@/services/HttpService';
 import { motion } from 'framer-motion';
 import { CheckIcon, MailIcon, MapPinIcon } from 'lucide-react';
 import Head from 'next/head';
@@ -25,25 +26,14 @@ export default function Contact() {
   function onSubmit(data: IFormValues) {
     setSubmitting(true);
 
-    fetch("/api/v1/mails", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    }).then(async (response) => {
-      const json = await response.json();
-      if (response.status == 200) {
-        setIsSubmitted(true);
-        reset();
-      } else {
-        SweetAlert.error("", json.message, 5000);
-      }
+    HttpService.post("/api/v1/mails", data, {}).then((response) => {
+      setIsSubmitted(true);
+      reset();
     }).catch((_) => {
       SweetAlert.error("", "Não foi possível enviar sua mensagem, tente novamente ou fale diretamente com systatus@artcode.dev.", 5000);
     }).finally(() => {
       setSubmitting(false);
-    })
+    });
   }
 
   return (

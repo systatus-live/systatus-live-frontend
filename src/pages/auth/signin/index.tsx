@@ -33,28 +33,9 @@ export default function SignIn() {
       email: form.email,
       password: form.password,
       type: SignInTypeEnum.EMAIL_PASSWORD
-    }).then((response: any) => {
+    }).then((_) => {
       setSubmitting(false);
-
-      if (response.data.verified) {
-        router.push("/panel");
-      } else {
-        setSubmitting(true);
-
-        AuthService.sendCode(form.email).then(() => {
-          router.push({
-            pathname: "/auth/verify-account",
-            query: { 
-              email: form.email,
-              redirect: "/panel"
-            }
-          });
-        }).catch((error) => {
-          SweetAlert.error("", error.message);
-        }).finally(() => {
-          setSubmitting(false);
-        })
-      }
+      router.push("/panel");
     }).catch((error) => {
       SweetAlert.error("", error.message);
       setSubmitting(false);

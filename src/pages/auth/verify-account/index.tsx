@@ -5,7 +5,7 @@ import InputText from '@/components/InputText';
 import Logo from '@/components/logo';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styles from "./styles.module.scss";
 import OtpInput from 'react-otp-input';
@@ -20,6 +20,7 @@ interface IFormValues {
 export default function VerifyAccount() {
   const router = useRouter();
   const { email, redirect } = router.query;
+  const [isClient, setIsClient] = useState(false);
 
   const [isSubmitting, setSubmitting] = useState(false);
   const { handleSubmit } = useForm<IFormValues>();
@@ -37,6 +38,10 @@ export default function VerifyAccount() {
       setSubmitting(false);
     })
   }
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   return (
     <>
@@ -57,14 +62,16 @@ export default function VerifyAccount() {
             </p>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
               <div>
-                <OtpInput
+                {isClient && (
+                  <OtpInput
                   value={otp}
                   onChange={setOtp}
                   numInputs={6}
                   renderSeparator={<span className="mx-1"></span>}
                   renderInput={(props) => <InputText {...props} />}
                   skipDefaultStyles={true}
-                />
+                  />
+                )}
               </div>
               <div className="my-4">
                 <Button severity="secondary" type="submit" className="w-full" disabled={isSubmitting}>Enviar Código</Button>
