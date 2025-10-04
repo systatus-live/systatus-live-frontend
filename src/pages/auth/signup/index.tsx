@@ -78,7 +78,7 @@ export default function SignUp() {
             <div className="flex justify-center">
               <Logo />
             </div>
-            <h2 className={`my-6 text-center text-2xl  ${styles["title"]}`}>Crie sua conta</h2>
+            <h2 className={`my-6 text-center text-2xl  ${styles["title"]}`}>Criar Conta</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
               <div>
                 <label className="block text-sm font-medium text-gray-700">Nome <span className="text-red-500">*</span></label>

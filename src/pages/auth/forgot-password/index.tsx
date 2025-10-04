@@ -4,28 +4,37 @@ import Button from '@/components/Button';
 import InputText from '@/components/InputText';
 import Logo from '@/components/logo';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styles from "./styles.module.scss";
 import Head from 'next/head';
+import { motion } from 'framer-motion';
+import { CheckIcon } from 'lucide-react';
+import AuthService from '@/services/AuthService';
+import { SweetAlert } from '@/lib/sweetAlert';
 
 interface IFormValues {
   email: string;
 }
 
 export default function ForgotPassword() {
-  const router = useRouter();
   const [isSubmitting, setSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const { register, handleSubmit, reset } = useForm<IFormValues>();
+  const [message, setMessage] = useState<string | null>(null);
 
-  function onSubmit(data: IFormValues) {
-    // TODO API request
+  function onSubmit(form: IFormValues) {
     setSubmitting(true);
-    reset();
-    setSubmitting(false);
 
-    router.push("/auth/verify-code")
+    AuthService.forgotPassword(form.email).then((response) => {
+      setIsSubmitted(true);
+      setMessage(response.message);
+      reset();
+    }).catch((error) => {
+      SweetAlert.error("", error.message);
+    }).finally(() => {
+      setSubmitting(false);
+    });
   }
 
   return (
@@ -43,23 +52,39 @@ export default function ForgotPassword() {
               <h2 className={`my-6 text-center text-2xl  ${styles["title"]}`}>Esqueceu a Senha?</h2>
             </div>
             <p className="text-sm text-gray-700 mb-4">
-              Insira seu endereço de e-mail para receber um código para redefinir sua senha:
+              Insira seu endereço de e-mail para receber um link para redefinir sua senha:
             </p>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">E-mail <span className="text-red-500">*</span></label>
-                <InputText type="email" placeholder="seu@email.com" />
+            {isSubmitted ? (
+              <div className="text-center py-16">
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100"
+                >
+                  <CheckIcon className="h-8 w-8 text-green-600" />
+                </motion.div>
+                <p className="text-sm text-gray-700 mt-4">
+                  {message}
+                </p>
               </div>
-              <div className="my-4">
-                <Button severity="secondary" type="submit" className="w-full">Enviar Código</Button>
-              </div>
-              <p className="mt-2 text-center text-sm text-gray-600">
-                Lembrou a senha?{' '}
-                <Link href="/auth/signin" className="font-medium text-blue-600 hover:text-blue-500">
-                  Entrar na sua conta
-                </Link>
-              </p>
-            </form>
+            ) : (
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">E-mail <span className="text-red-500">*</span></label>
+                  <InputText {...register("email", { required: true })} type="email" placeholder="seu@email.com" />
+                </div>
+                <div className="my-4">
+                  <Button disabled={isSubmitting} severity="secondary" type="submit" className="w-full">Enviar Código</Button>
+                </div>
+                <p className="mt-2 text-center text-sm text-gray-600">
+                  Lembrou a senha?{' '}
+                  <Link href="/auth/signin" className="font-medium text-blue-600 hover:text-blue-500">
+                    Entrar na sua conta
+                  </Link>
+                </p>
+              </form>
+            )}
           </div>
         </div>
       </div>

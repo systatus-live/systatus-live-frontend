@@ -20,4 +20,18 @@ export default class AuthService {
       email: email
     }, {});
   }
+
+  static forgotPassword(email: string) {
+    return HttpService.post(`${process.env.NEXT_PUBLIC_SYSTATUS_API_URL}/v1/auth/forgot-passwords`, {
+      email: email
+    }, {});
+  }
+
+  static resetPassword(password: string, token: string) {
+    return HttpService.patch(`${process.env.NEXT_PUBLIC_SYSTATUS_API_URL}/v1/auth/reset-passwords`, {
+      password: password
+    }, {
+      Authorization: `Bearer ${token}`
+    });
+  }
 }
