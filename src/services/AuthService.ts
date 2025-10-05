@@ -5,8 +5,12 @@ export default class AuthService {
     return HttpService.post(`${process.env.NEXT_PUBLIC_SYSTATUS_API_URL}/v1/auth/signup`, payload, {});
   }
 
-  static signIn(payload: any) {
-    return HttpService.post("/api/v1/auth/signin", payload, {});
+  static authCallback(payload: any) {
+    return HttpService.post("/api/v1/auth/callback", payload, {});
+  }
+
+  static signInEmailPassword(payload: any) {
+    return HttpService.post(`${process.env.SYSTATUS_API_URL}/v1/auth/signin`, payload, {});
   }
 
   static checkCode(code: string) {
@@ -32,6 +36,22 @@ export default class AuthService {
       password: password
     }, {
       Authorization: `Bearer ${token}`
+    });
+  }
+
+  static verifyToken(token: string) {
+    return HttpService.get(`${process.env.SYSTATUS_API_URL}/v1/auth/verify`, {
+      Authorization: `Bearer ${token}`,
+    });
+  }
+
+  static meCallback() {
+    return HttpService.get(`/api/v1/auth/me`, {});
+  }
+
+  static me(token: string) {
+    return HttpService.get(`${process.env.SYSTATUS_API_URL}/v1/auth/me`, {
+      Authorization: `Bearer ${token}`,
     });
   }
 }

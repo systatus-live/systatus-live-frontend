@@ -29,8 +29,7 @@ export default function PrivacyPolicy() {
 
         <ul className="list-disc list-inside">
           <li>
-            Visita nosso site em
-            <Link href="/">https://systatus.live</Link>, ou qualquer outro site nosso
+            Visita nosso site em <Link href="/">https://systatus.live</Link>, ou qualquer outro site nosso
             que tenha link para esta Política de Privacidade
           </li>
           <li>
@@ -98,8 +97,7 @@ export default function PrivacyPolicy() {
         </p>
 
         <p className="my-3">
-          Como exercer seus direitos? A maneira mais fácil de exercer seus direitos é acessando
-          <Link href="/agreements/terms-of-use">https://systatus.live/agreements/terms-of-use</Link>,
+          Como exercer seus direitos? A maneira mais fácil de exercer seus direitos é acessando <Link href="/agreements/terms-of-use">https://systatus.live/agreements/terms-of-use</Link>,
           ou entrando em contato conosco. Consideraremos e responderemos a todas as solicitações de acordo com a
           legislação de proteção de dados aplicável.
         </p>
@@ -426,8 +424,7 @@ export default function PrivacyPolicy() {
           De acordo com as leis aplicáveis do seu país, você pode ter o direito de solicitar acesso às informações pessoais
           que coletamos, detalhes sobre seu tratamento, correção de imprecisões ou exclusão dos seus dados.
           Também pode ter o direito de retirar seu consentimento. Esses direitos podem ser limitados em algumas situações por exigência legal.
-          Para solicitar revisão, atualização ou exclusão dos seus dados, acesse:
-          <Link href="/agreements/terms-of-use">https://systatus.live/agreements/terms-of-use</Link>.
+          Para solicitar revisão, atualização ou exclusão dos seus dados, acesse: <Link href="/agreements/terms-of-use">https://systatus.live/agreements/terms-of-use</Link>.
         </p>
       </div>
     </>

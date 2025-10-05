@@ -1,27 +1,32 @@
-import { NextResponse, NextRequest } from "next/server";
-import axios from "axios";
 import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from "next/server";
+import AuthService from "./services/AuthService";
 
 export async function middleware(request: NextRequest) {
-  try {
-    const response = await axios.get(`${process.env.SYSTATUS_API_URL}/v1/auth/verify`, {
-      headers: {
-        Authorization: `Bearer ${request.cookies.get("token")?.value}`,
-      },
-    })
+  console.log(`[MIDDLEWARE] - ${request.url}`);
+  const cookieStore = await cookies();
 
-    const data = response.data.data;
+  if (cookieStore.has("token")) {
+    try {
+      const { data } = await AuthService.verifyToken(cookieStore.get("token")?.value as string);
+  
+      if (!data.verified) {
+        await AuthService.sendCode(data.email);
+        return NextResponse.redirect(new URL(`/auth/verify-account?email=${data.email}&redirect=/panel`, request.url));
+      }
 
-    if (!data.verified) {
-      return NextResponse.redirect(new URL(`/auth/verify-account?email=${data.email}&redirect=/panel`, request.url));
+      if (request.nextUrl.pathname.startsWith("/auth/signin")) {
+        return NextResponse.redirect(new URL("/panel", request.url));
+      }
+    } catch (error: any) {
+      cookieStore.delete("token");
+      return NextResponse.redirect(new URL("/auth/signin", request.url));
     }
-  } catch (error: any) {
-    const cookieStore = await cookies();
-    cookieStore.delete("token");
-    return NextResponse.redirect(new URL("/", request.url))
+  } else if (request.nextUrl.pathname.startsWith("/panel")) {
+    return NextResponse.redirect(new URL("/auth/signin", request.url));
   }
 }
 
 export const config = {
-  matcher: "/panel/:path*",
+  matcher: ["/panel/:path*", "/auth/:path*"],
 }

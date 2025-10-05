@@ -4,7 +4,8 @@ import type { Metadata, NextPage } from "next";
 import { Analytics } from "@vercel/analytics/next"
 import { Geist, Geist_Mono } from "next/font/google";
 import Head from "next/head";
-import { ReactElement, ReactNode } from "react";
+import { createContext, ReactElement, ReactNode } from "react";
+import { GlobalProvider } from "@/providers/GlobalProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,7 +34,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page)
 
   return (
-    <>
+    <GlobalProvider>
       <Head>
         <title>Systatus.Live</title>
       </Head>
@@ -41,6 +42,6 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         <Analytics />
         {getLayout(<Component {...pageProps} />)}
       </div>
-    </>
+    </GlobalProvider>
   )
 }

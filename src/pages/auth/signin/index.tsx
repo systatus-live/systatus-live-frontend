@@ -5,15 +5,15 @@ import InputCheckBox from '@/components/InputCheckbox';
 import InputPassword from '@/components/InputPassword';
 import InputText from '@/components/InputText';
 import Logo from '@/components/logo';
+import { SignInTypeEnum } from '@/enums/SignInTypeEnum';
+import { SweetAlert } from '@/lib/sweetAlert';
+import Head from 'next/head';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styles from "./styles.module.scss";
 import AuthService from '@/services/AuthService';
-import { SweetAlert } from '@/lib/sweetAlert';
-import { SignInTypeEnum } from '@/enums/SignInTypeEnum';
-import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 interface IFormValues {
   email: string;
@@ -29,15 +29,15 @@ export default function SignIn() {
   function onSubmit(form: IFormValues) {
     setSubmitting(true);
 
-    AuthService.signIn({
+    AuthService.authCallback({
       email: form.email,
       password: form.password,
-      type: SignInTypeEnum.EMAIL_PASSWORD
+      type: SignInTypeEnum.EMAIL_PASSWORD,
     }).then((_) => {
-      setSubmitting(false);
       router.push("/panel");
     }).catch((error) => {
       SweetAlert.error("", error.message);
+    }).finally(() => {
       setSubmitting(false);
     })
   }
