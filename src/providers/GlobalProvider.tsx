@@ -17,10 +17,6 @@ const GlobalContext = createContext<{
 export function GlobalProvider({ children }: any) {
   const [user, setUser] = useState({});
 
-  useEffect(() => {
-    console.log("GlobalProvider.user => ", user)
-  }, [user])
-
   return (
     <GlobalContext.Provider value={{ user, setUser }}>
       {children}
