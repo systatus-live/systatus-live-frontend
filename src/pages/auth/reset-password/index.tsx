@@ -3,7 +3,7 @@
 import Button from '@/components/Button';
 import InputPassword from '@/components/InputPassword';
 import Logo from '@/components/logo';
-import { SweetAlert } from '@/lib/sweetAlert';
+import { Alert } from '@/lib/Alert';
 import AuthService from '@/services/AuthService';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -30,9 +30,9 @@ export default function ResetPassword() {
       router.push({
         pathname: "/auth/signin"
       });
-      SweetAlert.success("", response.message);
+      Alert.success("", response.message);
     }).catch((error) => {
-      SweetAlert.error("", error.message);
+      Alert.error("", error.message);
     }).finally(() => {
       setSubmitting(false);
     })

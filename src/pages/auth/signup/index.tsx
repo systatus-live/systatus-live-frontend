@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styles from "./styles.module.scss";
 import AuthService from '@/services/AuthService';
-import { SweetAlert } from '@/lib/sweetAlert';
+import { Alert } from '@/lib/Alert';
 import Head from 'next/head';
 import InputDropdown from '@/components/InputDropdown';
 import InputDropdownOption from '@/enums/InputDropdownOption';
@@ -43,7 +43,7 @@ export default function SignUp() {
 
   function onSubmit(form: IFormValues) {
     if (!form.acceptTerms) {
-      SweetAlert.info("", "Você deve aceitar os Termos de Uso e a Política de Privacidade para criar sua conta.");
+      Alert.info("", "Você deve aceitar os Termos de Uso e a Política de Privacidade para criar sua conta.");
       return;
     }
 
@@ -61,7 +61,7 @@ export default function SignUp() {
         query: { email: form.email }
       });
     }).catch((error) => {
-      SweetAlert.error("", error.message);
+      Alert.error("", error.message);
     }).finally(() => {
       setSubmitting(false);
     })

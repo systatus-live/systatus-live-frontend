@@ -5,7 +5,7 @@ export default class AuthService {
     return HttpService.post(`${process.env.NEXT_PUBLIC_SYSTATUS_API_URL}/v1/auth/signup`, payload, {});
   }
 
-  static authCallback(payload: any) {
+  static authLocal(payload: any) {
     return HttpService.post("/api/v1/auth/callback", payload, {});
   }
 
@@ -45,7 +45,7 @@ export default class AuthService {
     });
   }
 
-  static meCallback() {
+  static meLocal() {
     return HttpService.get(`/api/v1/auth/me`, {});
   }
 

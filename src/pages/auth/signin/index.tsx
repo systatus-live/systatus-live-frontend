@@ -6,7 +6,6 @@ import InputPassword from '@/components/InputPassword';
 import InputText from '@/components/InputText';
 import Logo from '@/components/logo';
 import { SignInTypeEnum } from '@/enums/SignInTypeEnum';
-import { SweetAlert } from '@/lib/sweetAlert';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -14,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import styles from "./styles.module.scss";
 import AuthService from '@/services/AuthService';
 import { useRouter } from 'next/router';
+import { Alert } from '@/lib/Alert';
 
 interface IFormValues {
   email: string;
@@ -29,14 +29,14 @@ export default function SignIn() {
   function onSubmit(form: IFormValues) {
     setSubmitting(true);
 
-    AuthService.authCallback({
+    AuthService.authLocal({
       email: form.email,
       password: form.password,
       type: SignInTypeEnum.EMAIL_PASSWORD,
     }).then((_) => {
       router.push("/panel");
     }).catch((error) => {
-      SweetAlert.error("", error.message);
+      Alert.error("", error.message);
     }).finally(() => {
       setSubmitting(false);
     })

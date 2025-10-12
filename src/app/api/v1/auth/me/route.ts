@@ -11,7 +11,10 @@ export async function GET() {
 
       const response = await AuthService.me(token);
 
-      return NextResponse.json(response.data, {
+      return NextResponse.json({
+        user: response.data,
+        token: token
+      }, {
         status: response.status
       });
     }

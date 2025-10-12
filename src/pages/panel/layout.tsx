@@ -24,18 +24,19 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
     },
   ];
 
-  const { user, setUser } = useGlobalProvider();
+  const { user, setUser, setToken } = useGlobalProvider();
 
   useEffect(() => {
-    AuthService.meCallback().then(response => {
-      setUser(response);
+    AuthService.meLocal().then((response: any) => {
+      setUser(response.user);
+      setToken(response.token);
     })
     return () => {}
   }, [])
   
   return (
-    <div className="flex flex-rows min-h-screen">
-      <div className="flex justify-between flex-col shadow-lg w-2xl lg:w-xs">
+    <div className="flex flex-rows h-screen">
+      <div className="flex justify-between flex-col shadow-lg w-xs lg:w-xs border-r border-gray-200">
         <div>
           <div className="p-4">
             <Logo />
@@ -51,16 +52,16 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
             ))}
           </div>
         </div>
-        <div className="w-full px-4 py-6 border-t-1 border-t-gray-300 flex items-center justify-between">
+        <div className="w-full px-4 py-6 border-t-1 border-t-gray-200 flex items-center justify-between">
           <div className="truncate mr-3">
-            <p>{user.name}</p>
+            <p className="text-sm">{user.name}</p>
           </div>
           <div>
-            <LogOut height={22} className="text-gray-500" />
+            <LogOut height={22} className="text-gray-500 cursor-pointer" />
           </div>
         </div>
       </div>
-      <div className="bg-gray-100 w-full p-6">
+      <div className="bg-gray-100 w-full h-screen p-6 overflow-y-auto">
         {children}
       </div>
     </div>

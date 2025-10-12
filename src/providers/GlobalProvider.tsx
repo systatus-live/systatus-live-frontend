@@ -7,18 +7,28 @@ type User = {
 }
 
 const GlobalContext = createContext<{
+  user: User,
   setUser: (user: User) => void
-  user: User
+  token: string | null,
+  setToken: (token: string | null) => void
 }>({
+  user: {},
   setUser: () => {},
-  user: {}
+  token: null,
+  setToken: () => {},
 });
 
 export function GlobalProvider({ children }: any) {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState<User>({});
+  const [token, setToken] = useState<string | null>(null);
 
   return (
-    <GlobalContext.Provider value={{ user, setUser }}>
+    <GlobalContext.Provider value={{ 
+      user, 
+      setUser,
+      token,
+      setToken
+    }}>
       {children}
     </GlobalContext.Provider>
   );

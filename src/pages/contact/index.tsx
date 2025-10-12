@@ -3,7 +3,7 @@ import InputText from '@/components/InputText';
 import InputTextArea from '@/components/InputTextArea';
 import Footer from '@/components/LandingPage/Footer';
 import Navbar from '@/components/LandingPage/Navbar';
-import { SweetAlert } from '@/lib/sweetAlert';
+import { Alert } from '@/lib/Alert';
 import HttpService from '@/services/HttpService';
 import { motion } from 'framer-motion';
 import { CheckIcon, MailIcon, MapPinIcon } from 'lucide-react';
@@ -30,7 +30,7 @@ export default function Contact() {
       setIsSubmitted(true);
       reset();
     }).catch((_) => {
-      SweetAlert.error("", "Não foi possível enviar sua mensagem, tente novamente ou fale diretamente com systatus@artcode.dev.", 5000);
+      Alert.error("", "Não foi possível enviar sua mensagem, tente novamente ou fale diretamente com systatus@artcode.dev.", 5000);
     }).finally(() => {
       setSubmitting(false);
     });

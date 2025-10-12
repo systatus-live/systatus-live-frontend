@@ -10,7 +10,7 @@ import { useForm } from 'react-hook-form';
 import styles from "./styles.module.scss";
 import OtpInput from 'react-otp-input';
 import AuthService from '@/services/AuthService';
-import { SweetAlert } from '@/lib/sweetAlert';
+import { Alert } from '@/lib/Alert';
 import Head from 'next/head';
 
 interface IFormValues {
@@ -31,9 +31,9 @@ export default function VerifyAccount() {
 
     AuthService.checkCode(otp).then((response: any) => {
       router.push(redirect ? redirect as string : "/auth/signin");
-      SweetAlert.success("", response.message);
+      Alert.success("", response.message);
     }).catch((error) => {
-      SweetAlert.error("", error.message);
+      Alert.error("", error.message);
     }).finally(() => {
       setSubmitting(false);
     })

@@ -11,7 +11,7 @@ import Head from 'next/head';
 import { motion } from 'framer-motion';
 import { CheckIcon } from 'lucide-react';
 import AuthService from '@/services/AuthService';
-import { SweetAlert } from '@/lib/sweetAlert';
+import { Alert } from '@/lib/Alert';
 
 interface IFormValues {
   email: string;
@@ -31,7 +31,7 @@ export default function ForgotPassword() {
       setMessage(response.message);
       reset();
     }).catch((error) => {
-      SweetAlert.error("", error.message);
+      Alert.error("", error.message);
     }).finally(() => {
       setSubmitting(false);
     });
