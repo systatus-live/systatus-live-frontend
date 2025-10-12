@@ -87,7 +87,7 @@ export default function EditIntegration(props: { integration: IFormValues, onClo
               <InputText {...register("name", { required: true })} placeholder="Ex.: Canal de DevOps" />
             </div>
             <div>
-              <label className="block text-sm font-medium">URL <span className="text-red-500">*</span></label>
+              <label className="block text-sm font-medium">URL Webhook <span className="text-red-500">*</span></label>
               <InputText {...register("url", { required: true })} placeholder="https://..." />
             </div>
             <div className="flex justify-end space-x-2 mt-3">
