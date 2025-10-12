@@ -1,4 +1,4 @@
-import Logo from "@/components/logo";
+import Logo from "@/components/Logo";
 import { useGlobalProvider } from "@/providers/GlobalProvider";
 import AuthService from "@/services/AuthService";
 import { BarChart2Icon, LogOut, MonitorIcon, Waypoints } from "lucide-react";

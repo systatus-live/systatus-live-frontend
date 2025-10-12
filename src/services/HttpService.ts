@@ -34,4 +34,16 @@ export default class HttpService {
       throw new Error(error.response?.data?.message);
     }
   }
+
+  static async delete(url: string, headers: any) {
+    try {
+      const response = await axios.delete(url, {
+        headers: headers
+      });
+      return response.data;
+    } catch (error: any) {
+      console.log(error)
+      throw new Error(error.response?.data?.message);
+    }
+  }
 }

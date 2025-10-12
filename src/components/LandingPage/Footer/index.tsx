@@ -1,6 +1,6 @@
 "use client"
 
-import Logo from '@/components/logo'
+import Logo from '@/components/Logo'
 import { motion } from 'framer-motion'
 import { ArrowUpIcon } from 'lucide-react'
 import Link from 'next/link'

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import styles from "./styles.module.scss";
-import Logo from "@/components/logo";
+import Logo from "@/components/Logo";
 import Head from "next/head";
 
 export default function PrivacyPolicy() {

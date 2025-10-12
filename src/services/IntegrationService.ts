@@ -6,4 +6,16 @@ export default class IntegrationService {
       Authorization: `Bearer ${token}`
     });
   }
+
+  static createIntegration(token: string, data: any) {
+    return HttpService.post(`${process.env.NEXT_PUBLIC_SYSTATUS_API_URL}/v1/integrations`, data, {
+      Authorization: `Bearer ${token}`
+    });
+  }
+
+   static deleteIntegrationList(token: string, id: string) {
+    return HttpService.delete(`${process.env.NEXT_PUBLIC_SYSTATUS_API_URL}/v1/integrations/${id}`, {
+      Authorization: `Bearer ${token}`
+    });
+  }
 }

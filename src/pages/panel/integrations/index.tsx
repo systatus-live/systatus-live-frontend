@@ -11,6 +11,7 @@ import { useEffect, useState, type ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import PanelLayout from '../layout';
 import styles from "./styles.module.scss";
+import NewIntegration from '@/components/integration/NewIntegration';
 
 interface IFormSearchValues {
   search: string;
@@ -33,12 +34,16 @@ const Integrations: NextPageWithLayout = () => {
 
   useEffect(() => {
     if (token) {
-      search(new URLSearchParams());
+      search(new URLSearchParams({ page: "0" }));
     }
   }, [token]);
 
   async function search(params: URLSearchParams) {
-    params.set("page", page.toString())
+    if (isSubmeting) return;
+
+    if (params.has("page")) {
+      setPage(parseInt(params.get("page") as string));
+    }
 
     setIsSubmeting(true);
 
@@ -61,12 +66,26 @@ const Integrations: NextPageWithLayout = () => {
   };
 
   async function onSubmitSearch(form: IFormSearchValues) {
-    setPage(0);
-    
-    const params = new URLSearchParams();
-    params.set("search", form.search);
+    await search(new URLSearchParams({ search: form.search, page: "0" }));
+  }
 
-    await search(params);
+  async function resetSearch() {
+    reset();
+    search(new URLSearchParams({ page: "0" }));
+  }
+
+  async function handleDelete(id: string) {
+    setIsSubmeting(true);
+
+    try {
+      const response = await IntegrationService.deleteIntegrationList(token as string, id);
+      Alert.success("", response.message);
+      resetSearch()
+    } catch (error: any) {
+      Alert.error("", error.message);
+    } finally {
+      setIsSubmeting(false);
+    }
   }
 
   return (
@@ -74,17 +93,17 @@ const Integrations: NextPageWithLayout = () => {
       <div className="flex items-center justify-between">
         <div className="flex flex-col">
           <h1 className="text-xl font-medium">Integrações</h1>
-          <p className="mt-1 text-sm text-gray-500">Cadastre integrações para receber notificações</p>
+          <p className="mt-1 text-sm text-gray-500">Integrações para receber notificações</p>
         </div>
         <div>
-          <Button severity="secondary">Cadastrar</Button>
+          <NewIntegration onClose={resetSearch} />
         </div>
       </div>
       <div className="bg-white shadow-lg border border-gray-200 rounded-sm mt-6 p-4" style={{ minHeight: "85vh" }}>
         <div className="grid grid-cols-1 gap-y-3">
           <form onSubmit={handleSubmit(onSubmitSearch)} className="flex items-center">
             <InputText {...register("search", { required: false })} style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }} placeholder="Pesquisar integrações" />
-            <Button severity="secondary" style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0, padding: "0.25rem" }} className="h-full">
+            <Button severity="secondary" style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0, padding: "0.25rem" }} className="h-full" disabled={isSubmeting}>
               <SearchIcon height={16} />
             </Button>
             <div className="border border-gray-300 text-gray-900 rounded-sm ml-2 font-medium text-sm h-full flex items-center justify-center min-w-10" title="Total de registros">
@@ -114,7 +133,7 @@ const Integrations: NextPageWithLayout = () => {
                   <Button title="Testar" severity="info" outlined={true} onClick={() => { }} style={{ padding: "0.25rem" }}>
                     <PlayIcon height={12} width={12} />
                   </Button>
-                  <Button title="Excluir" severity="danger" outlined={true} onClick={() => { }} style={{ padding: "0.25rem" }}>
+                  <Button title="Excluir" severity="danger" outlined={true} onClick={() => handleDelete(integration.id)} style={{ padding: "0.25rem" }}>
                     <TrashIcon height={12} width={12} />
                   </Button>
                 </div>

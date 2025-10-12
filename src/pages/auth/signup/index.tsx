@@ -4,7 +4,7 @@ import Button from '@/components/Button';
 import InputCheckBox from '@/components/InputCheckbox';
 import InputPassword from '@/components/InputPassword';
 import InputText from '@/components/InputText';
-import Logo from '@/components/logo';
+import Logo from '@/components/Logo';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';

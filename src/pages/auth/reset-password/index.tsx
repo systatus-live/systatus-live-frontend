@@ -2,7 +2,7 @@
 
 import Button from '@/components/Button';
 import InputPassword from '@/components/InputPassword';
-import Logo from '@/components/logo';
+import Logo from '@/components/Logo';
 import { Alert } from '@/lib/Alert';
 import AuthService from '@/services/AuthService';
 import Head from 'next/head';

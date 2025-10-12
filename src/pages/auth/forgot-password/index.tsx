@@ -2,7 +2,7 @@
 
 import Button from '@/components/Button';
 import InputText from '@/components/InputText';
-import Logo from '@/components/logo';
+import Logo from '@/components/Logo';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
