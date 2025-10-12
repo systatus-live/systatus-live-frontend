@@ -1,6 +1,7 @@
 import Button from '@/components/Button';
 import InputDropdown from '@/components/InputDropdown';
 import InputText from '@/components/InputText';
+import Loading from '@/components/Loading';
 import Modal from '@/components/Modal';
 import InputDropdownOption from '@/enums/InputDropdownOption';
 import { IntegrationTypeEnum, IntegrationTypeLabelEnum } from '@/enums/IntegrationTypeEnum';
@@ -56,6 +57,8 @@ export default function NewIntegration(props: { onClose?: Function; }) {
 
   return (
     <>
+      {isSubmitting && <Loading />}
+
       <Button severity="secondary" onClick={() => setShowModal(true)}>Nova Integração</Button>
 
       {showModal && (
@@ -74,8 +77,8 @@ export default function NewIntegration(props: { onClose?: Function; }) {
               <InputText {...register("url", { required: true })} placeholder="https://..." />
             </div>
             <div className="flex justify-end space-x-2 mt-3">
-              <Button severity="info" disabled={isSubmitting} onClick={() => close()} type="button">Cancelar</Button>
-              <Button severity="success" disabled={isSubmitting} type="submit">Salvar</Button>
+              <Button severity="info" onClick={() => close()} type="button">Cancelar</Button>
+              <Button severity="success" type="submit">Salvar</Button>
             </div>
           </form>
         </Modal>

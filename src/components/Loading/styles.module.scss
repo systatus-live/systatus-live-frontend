@@ -1,0 +1,6 @@
+.integration-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 1rem;
+}

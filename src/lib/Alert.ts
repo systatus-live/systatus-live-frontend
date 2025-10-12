@@ -42,4 +42,23 @@ export class Alert {
       showCloseButton: true
     })
   }
+
+  static confirm(title: string, text: string, onConfirm?: Function, onDeny?: Function) {
+    Swal.fire({
+      title: title,
+      text: text,
+      icon: "question",
+      showDenyButton: false,
+      showCancelButton: true,
+      cancelButtonText: "Cancelar",
+      confirmButtonText: "Confirmar",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        onConfirm && onConfirm();
+      } else if (result.isDenied) {
+        onDeny && onDeny();
+      }
+    });
+  }
 }

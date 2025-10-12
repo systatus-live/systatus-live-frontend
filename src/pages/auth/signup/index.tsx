@@ -15,6 +15,7 @@ import { Alert } from '@/lib/Alert';
 import Head from 'next/head';
 import InputDropdown from '@/components/InputDropdown';
 import InputDropdownOption from '@/enums/InputDropdownOption';
+import Loading from '@/components/Loading';
 
 interface IFormValues {
   name: string;
@@ -72,6 +73,9 @@ export default function SignUp() {
       <Head>
         <title>Cadastrar • Systatus.Live</title>
       </Head>
+
+      {isSubmitting && <Loading />}
+
       <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 px-2 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
@@ -111,7 +115,7 @@ export default function SignUp() {
               </div>
               <div className="my-4">
                 {isSubmitting}
-                <Button severity="secondary" type="submit" className="w-full" disabled={isSubmitting}>Criar Conta</Button>
+                <Button severity="secondary" type="submit" className="w-full">Criar Conta</Button>
               </div>
               <p className="mt-2 text-center text-sm text-gray-600">
                 Já possui uma conta?{' '}

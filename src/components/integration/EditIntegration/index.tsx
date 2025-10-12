@@ -1,6 +1,7 @@
 import Button from '@/components/Button';
 import InputDropdown from '@/components/InputDropdown';
 import InputText from '@/components/InputText';
+import Loading from '@/components/Loading';
 import Modal from '@/components/Modal';
 import InputDropdownOption from '@/enums/InputDropdownOption';
 import { IntegrationTypeEnum, IntegrationTypeLabelEnum } from '@/enums/IntegrationTypeEnum';
@@ -34,7 +35,10 @@ export default function EditIntegration(props: { integration: IFormValues, onClo
   const { token } = useGlobalProvider();
 
   useEffect(() => {
-    setIntegrationList(Object.keys(IntegrationTypeEnum).map(key => ({ value: key, label: IntegrationTypeLabelEnum[key as IntegrationTypeEnum] })));
+    setIntegrationList(Object.keys(IntegrationTypeEnum).map(key => ({
+      value: key,
+      label: IntegrationTypeLabelEnum[key as IntegrationTypeEnum]
+    })));
   }, []);
 
   function close() {
@@ -44,7 +48,7 @@ export default function EditIntegration(props: { integration: IFormValues, onClo
 
   async function onSubmit(form: IFormValues) {
     setSubmitting(true);
-
+    
     try {
       const response = await IntegrationService.updateIntegration(token as string, props.integration.id, {
         type: form.type,
@@ -65,6 +69,8 @@ export default function EditIntegration(props: { integration: IFormValues, onClo
 
   return (
     <>
+      {isSubmitting && <Loading />}
+
       <Button title="Editar" severity="secondary" outlined={true} onClick={() => setShowModal(true)} style={{ padding: "0.25rem" }}>
         <EditIcon height={12} width={12} />
       </Button>
@@ -74,7 +80,7 @@ export default function EditIntegration(props: { integration: IFormValues, onClo
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
             <div>
               <label className="block text-sm font-medium">Tipo <span className="text-red-500">*</span></label>
-              <InputDropdown options={integrationList} {...register("type")} />
+              <InputDropdown options={integrationList} {...register("type", { required: true })} />
             </div>
             <div>
               <label className="block text-sm font-medium">Nome <span className="text-red-500">*</span></label>
@@ -85,8 +91,8 @@ export default function EditIntegration(props: { integration: IFormValues, onClo
               <InputText {...register("url", { required: true })} placeholder="https://..." />
             </div>
             <div className="flex justify-end space-x-2 mt-3">
-              <Button severity="info" disabled={isSubmitting} onClick={() => close()} type="button">Cancelar</Button>
-              <Button severity="success" disabled={isSubmitting} type="submit">Salvar</Button>
+              <Button severity="info" onClick={() => close()} type="button">Cancelar</Button>
+              <Button severity="success" type="submit">Salvar</Button>
             </div>
           </form>
         </Modal>

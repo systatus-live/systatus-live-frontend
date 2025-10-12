@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styles from "./styles.module.scss";
+import Loading from '@/components/Loading';
 
 interface IFormValues {
   password: string;
@@ -43,6 +44,9 @@ export default function ResetPassword() {
       <Head>
         <title>Redefinir Senha • Systatus.Live</title>
       </Head>
+
+      {isSubmitting && <Loading />}
+
       <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 px-2 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
@@ -60,8 +64,7 @@ export default function ResetPassword() {
                 <InputPassword {...register("confirmPassword", { required: true })} placeholder="********" />
               </div>
               <div className="my-4">
-                {isSubmitting}
-                <Button severity="secondary" type="submit" className="w-full" disabled={isSubmitting}>Redefinir Senha</Button>
+                <Button severity="secondary" type="submit" className="w-full">Redefinir Senha</Button>
               </div>
               <p className="mt-2 text-center text-sm text-gray-600">
                 Cancelar redefinição de senha?{' '}
