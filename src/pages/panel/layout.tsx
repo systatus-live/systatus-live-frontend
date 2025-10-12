@@ -1,11 +1,16 @@
+import Loading from "@/components/Loading";
 import Logo from "@/components/Logo";
+import { Alert } from "@/lib/Alert";
 import { useGlobalProvider } from "@/providers/GlobalProvider";
 import AuthService from "@/services/AuthService";
 import { BarChart2Icon, LogOut, MonitorIcon, Waypoints } from "lucide-react";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 export default function PanelLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   const navList = [
     {
       icon: BarChart2Icon,
@@ -25,45 +30,63 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
   ];
 
   const { user, setUser, setToken } = useGlobalProvider();
+  const router = useRouter();
 
   useEffect(() => {
     AuthService.meLocal().then((response: any) => {
       setUser(response.user);
       setToken(response.token);
     })
-    return () => {}
+    return () => { }
   }, [])
-  
+
+  async function signOut() {
+    setIsSubmitting(true);
+
+    try {
+      await AuthService.signOutLocal();
+      router.push("/auth/signin");
+    } catch (error: any) {
+      Alert.error("", error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
   return (
-    <div className="flex flex-rows h-screen">
-      <div className="flex justify-between flex-col shadow-lg w-xs lg:w-xs border-r border-gray-200">
-        <div>
-          <div className="p-4">
-            <Logo />
-          </div>
+    <>
+      {isSubmitting && <Loading />}
+    
+      <div className="flex flex-rows h-screen">
+        <div className="flex justify-between flex-col shadow-lg w-xs lg:w-xs border-r border-gray-200">
           <div>
-            {navList.map((item, index) => (
-              <Link key={index} href={item.route}>
-                <div className="ml-1 pl-3 h-10 flex items-center font-light hover:text-blue-700 hover:font-light border-l-4 border-l-white hover:border-l-blue-700 hover:bg-blue-50">
-                  <item.icon className="mr-2" height={18} />
-                  <span>{item.label}</span>
-                </div>
-              </Link>
-            ))}
+            <div className="p-4">
+              <Logo />
+            </div>
+            <div>
+              {navList.map((item, index) => (
+                <Link key={index} href={item.route}>
+                  <div className="ml-1 pl-3 h-10 flex items-center font-light hover:text-blue-700 hover:font-light border-l-4 border-l-white hover:border-l-blue-700 hover:bg-blue-50">
+                    <item.icon className="mr-2" height={18} />
+                    <span>{item.label}</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+          <div className="w-full px-4 py-6 border-t-1 border-t-gray-200 flex items-center justify-between">
+            <div className="truncate mr-3">
+              <p className="text-sm">{user.name}</p>
+            </div>
+            <div>
+              <LogOut height={22} className="text-gray-500 cursor-pointer" onClick={() => signOut()} />
+            </div>
           </div>
         </div>
-        <div className="w-full px-4 py-6 border-t-1 border-t-gray-200 flex items-center justify-between">
-          <div className="truncate mr-3">
-            <p className="text-sm">{user.name}</p>
-          </div>
-          <div>
-            <LogOut height={22} className="text-gray-500 cursor-pointer" />
-          </div>
+        <div className="bg-gray-100 w-full h-screen p-6 overflow-y-auto">
+          {children}
         </div>
       </div>
-      <div className="bg-gray-100 w-full h-screen p-6 overflow-y-auto">
-        {children}
-      </div>
-    </div>
+    </>
   )
 }

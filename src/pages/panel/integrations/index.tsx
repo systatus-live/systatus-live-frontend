@@ -2,20 +2,19 @@ import Button from '@/components/Button';
 import InputText from '@/components/InputText';
 import EditIntegration from '@/components/integration/EditIntegration';
 import NewIntegration from '@/components/integration/NewIntegration';
+import Loading from '@/components/Loading';
 import { IntegrationTypeEnum, IntegrationTypeLabelEnum } from '@/enums/IntegrationTypeEnum';
 import { Alert } from '@/lib/Alert';
 import { NextPageWithLayout } from '@/pages/_app';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
 import IntegrationService from '@/services/IntegrationService';
 import { CopyIcon, PlayIcon, SearchIcon, TrashIcon } from 'lucide-react';
+import Head from 'next/head';
 import Image from 'next/image';
 import { useEffect, useState, type ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import PanelLayout from '../layout';
 import styles from "./styles.module.scss";
-import { BarLoader, PropagateLoader, SyncLoader } from 'react-spinners';
-import Modal from '@/components/Modal';
-import Loading from '@/components/Loading';
 
 interface IFormSearchValues {
   search: string;
@@ -109,6 +108,10 @@ const Integrations: NextPageWithLayout = () => {
 
   return (
     <>
+      <Head>
+        <title>Integrações • Systatus.Live</title>
+      </Head>
+
       {isSubmitting && <Loading />}
 
       <div className="flex items-center justify-between">

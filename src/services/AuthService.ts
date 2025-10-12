@@ -54,4 +54,8 @@ export default class AuthService {
       Authorization: `Bearer ${token}`,
     });
   }
+
+  static signOutLocal() {
+    return HttpService.post(`/api/v1/auth/signout`, {}, {});
+  }
 }
