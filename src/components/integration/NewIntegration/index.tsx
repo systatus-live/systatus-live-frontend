@@ -74,7 +74,7 @@ export default function NewIntegration(props: { onClose?: Function; }) {
               <InputText {...register("url", { required: true })} placeholder="https://..." />
             </div>
             <div className="flex justify-end space-x-2 mt-3">
-              <Button severity="info" onClick={() => close()} type="button">Cancelar</Button>
+              <Button severity="info" disabled={isSubmitting} onClick={() => close()} type="button">Cancelar</Button>
               <Button severity="success" disabled={isSubmitting} type="submit">Salvar</Button>
             </div>
           </form>

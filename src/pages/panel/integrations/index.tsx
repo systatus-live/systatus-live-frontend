@@ -1,17 +1,18 @@
 import Button from '@/components/Button';
 import InputText from '@/components/InputText';
+import EditIntegration from '@/components/integration/EditIntegration';
+import NewIntegration from '@/components/integration/NewIntegration';
 import { IntegrationTypeEnum, IntegrationTypeLabelEnum } from '@/enums/IntegrationTypeEnum';
 import { Alert } from '@/lib/Alert';
 import { NextPageWithLayout } from '@/pages/_app';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
 import IntegrationService from '@/services/IntegrationService';
-import { CopyIcon, EditIcon, PlayIcon, SearchIcon, TrashIcon } from 'lucide-react';
+import { CopyIcon, PlayIcon, SearchIcon, TrashIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState, type ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import PanelLayout from '../layout';
 import styles from "./styles.module.scss";
-import NewIntegration from '@/components/integration/NewIntegration';
 
 interface IFormSearchValues {
   search: string;
@@ -78,7 +79,21 @@ const Integrations: NextPageWithLayout = () => {
     setIsSubmeting(true);
 
     try {
-      const response = await IntegrationService.deleteIntegrationList(token as string, id);
+      const response = await IntegrationService.deleteIntegration(token as string, id);
+      Alert.success("", response.message);
+      resetSearch()
+    } catch (error: any) {
+      Alert.error("", error.message);
+    } finally {
+      setIsSubmeting(false);
+    }
+  }
+
+  async function handleValidate(id: string) {
+    setIsSubmeting(true);
+
+    try {
+      const response = await IntegrationService.validateIntegration(token as string, id);
       Alert.success("", response.message);
       resetSearch()
     } catch (error: any) {
@@ -127,13 +142,11 @@ const Integrations: NextPageWithLayout = () => {
                   </div>
                 </div>
                 <div className="flex gap-x-1 mt-2">
-                  <Button title="Editar" severity="secondary" outlined={true} onClick={() => { }} style={{ padding: "0.25rem" }}>
-                    <EditIcon height={12} width={12} />
-                  </Button>
-                  <Button title="Testar" severity="info" outlined={true} onClick={() => { }} style={{ padding: "0.25rem" }}>
+                  <EditIntegration integration={integration} onClose={resetSearch} />
+                  <Button title="Testar" severity="info" outlined={true} onClick={() => handleValidate(integration.id)} style={{ padding: "0.25rem" }} disabled={isSubmeting}>
                     <PlayIcon height={12} width={12} />
                   </Button>
-                  <Button title="Excluir" severity="danger" outlined={true} onClick={() => handleDelete(integration.id)} style={{ padding: "0.25rem" }}>
+                  <Button title="Excluir" severity="danger" outlined={true} onClick={() => handleDelete(integration.id)} style={{ padding: "0.25rem" }} disabled={isSubmeting}>
                     <TrashIcon height={12} width={12} />
                   </Button>
                 </div>
