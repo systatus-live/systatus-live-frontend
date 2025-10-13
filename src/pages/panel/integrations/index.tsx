@@ -3,7 +3,7 @@ import InputText from '@/components/InputText';
 import EditIntegration from '@/components/integration/EditIntegration';
 import NewIntegration from '@/components/integration/NewIntegration';
 import Loading from '@/components/Loading';
-import { IntegrationTypeEnum, IntegrationTypeLabelEnum } from '@/enums/IntegrationTypeEnum';
+import { IntegrationTypeEnum, IntegrationTypeLabelEnum } from '@/types/IntegrationTypeEnum';
 import { Alert } from '@/lib/Alert';
 import { NextPageWithLayout } from '@/pages/_app';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form';
 import PanelLayout from '../layout';
 import styles from "./styles.module.scss";
 
-interface IFormSearchValues {
+type IFormSearchValues = {
   search: string;
 }
 
@@ -151,11 +151,11 @@ const Integrations: NextPageWithLayout = () => {
                   </div>
                 </div>
                 <div className="flex gap-x-1 mt-2">
-                  <EditIntegration integration={integration} onClose={resetSearch} />
-                  <Button title="Testar" severity="info" outlined={true} onClick={() => handleValidate(integration.id)} style={{ padding: "0.25rem" }}>
+                  <Button title="Testar" onClick={() => handleValidate(integration.id)} style={{ padding: "0.25rem" }} outlined={true}>
                     <PlayIcon height={12} width={12} />
                   </Button>
-                  <Button title="Excluir" severity="danger" outlined={true} onClick={() => handleDelete(integration.id)} style={{ padding: "0.25rem" }}>
+                  <EditIntegration integration={integration} onClose={resetSearch} />
+                  <Button title="Excluir" severity="danger" onClick={() => handleDelete(integration.id)} style={{ padding: "0.25rem" }} outlined={true}>
                     <TrashIcon height={12} width={12} />
                   </Button>
                 </div>

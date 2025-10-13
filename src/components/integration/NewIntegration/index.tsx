@@ -1,17 +1,17 @@
 import Button from '@/components/Button';
-import InputDropdown from '@/components/InputDropdown';
+import InputDropdown2 from '@/components/InputDropdown2';
 import InputText from '@/components/InputText';
 import Loading from '@/components/Loading';
 import Modal from '@/components/Modal';
-import InputDropdownOption from '@/enums/InputDropdownOption';
-import { IntegrationTypeEnum, IntegrationTypeLabelEnum } from '@/enums/IntegrationTypeEnum';
 import { Alert } from '@/lib/Alert';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
 import IntegrationService from '@/services/IntegrationService';
+import InputDropdownOption from '@/types/InputDropdownOption';
+import { IntegrationTypeEnum, IntegrationTypeLabelEnum } from '@/types/IntegrationTypeEnum';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-interface IFormValues {
+type IFormValues = {
   type: IntegrationTypeEnum;
   name: string;
   url: string
@@ -22,11 +22,14 @@ export default function NewIntegration(props: { onClose?: Function; }) {
   const [integrationList, setIntegrationList] = useState<InputDropdownOption[]>([]);
   const [showModal, setShowModal] = useState(false);
 
-  const { register, handleSubmit, reset } = useForm<IFormValues>();
+  const { register, handleSubmit, reset, setValue } = useForm<IFormValues>();
   const { token } = useGlobalProvider();
 
   useEffect(() => {
-    setIntegrationList(Object.keys(IntegrationTypeEnum).map(key => ({ value: key, label: IntegrationTypeLabelEnum[key as IntegrationTypeEnum] })));
+    setIntegrationList(Object.keys(IntegrationTypeEnum).map(key => ({
+      value: key,
+      label: IntegrationTypeLabelEnum[key as IntegrationTypeEnum]
+    })));
   }, []);
 
   function close() {
@@ -66,7 +69,13 @@ export default function NewIntegration(props: { onClose?: Function; }) {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
             <div>
               <label className="block text-sm font-medium">Tipo <span className="text-red-500">*</span></label>
-              <InputDropdown options={integrationList} {...register("type")} />
+              <InputDropdown2
+                code="value"
+                label="label"
+                options={integrationList}
+                onSearch={(value) => console.log(value)}
+                onChange={(option) => setValue("type", option.value)}
+              />
             </div>
             <div>
               <label className="block text-sm font-medium">Nome <span className="text-red-500">*</span></label>
@@ -76,7 +85,7 @@ export default function NewIntegration(props: { onClose?: Function; }) {
               <label className="block text-sm font-medium">URL Webhook <span className="text-red-500">*</span></label>
               <InputText {...register("url", { required: true })} placeholder="https://..." />
             </div>
-            <div className="flex justify-end space-x-2 mt-3">
+            <div className="flex justify-end space-x-2 mt-5">
               <Button severity="info" onClick={() => close()} type="button">Cancelar</Button>
               <Button severity="success" type="submit">Salvar</Button>
             </div>

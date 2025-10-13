@@ -1,6 +1,6 @@
 "use client"
 
-import InputDropdownOption from '@/enums/InputDropdownOption';
+import InputDropdownOption from '@/types/InputDropdownOption';
 import { ClassAttributes, JSX, SelectHTMLAttributes } from 'react';
 
 export default function InputDropdown(props: JSX.IntrinsicAttributes & ClassAttributes<HTMLSelectElement> & SelectHTMLAttributes<HTMLSelectElement> & { options: InputDropdownOption[] }) {

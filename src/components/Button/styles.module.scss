@@ -10,6 +10,13 @@
   border-radius: 0.35rem;
 }
 
+.btn-default-outlined {
+  @extend .btn-default;
+  background: #fff;;
+  color: theme.$primary-color;
+  border: 1px solid theme.$secondary-color;
+}
+
 .btn-success {
   @extend .btn-default;
   background: theme.$success-color;
@@ -22,7 +29,7 @@
 
 .btn-secondary-outlined {
   @extend .btn-default;
-  background: white;
+  background: #fff;
   color: theme.$secondary-color;
   border: 1px solid theme.$secondary-color;
 }
@@ -35,7 +42,7 @@
 
 .btn-info-outlined {
   @extend .btn-default;
-  background: white;
+  background: #fff;
   color: rgb(88, 88, 88);
   border: 1px solid rgb(88, 88, 88);
 }
@@ -47,7 +54,7 @@
 
 .btn-danger-outlined {
   @extend .btn-default;
-  background: white;
+  background: #fff;
   color: theme.$danger-color;
   border: 1px solid theme.$danger-color;
 }

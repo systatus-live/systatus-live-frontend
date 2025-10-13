@@ -3,16 +3,17 @@ import InputDropdown from '@/components/InputDropdown';
 import InputText from '@/components/InputText';
 import Loading from '@/components/Loading';
 import Modal from '@/components/Modal';
-import InputDropdownOption from '@/enums/InputDropdownOption';
-import { IntegrationTypeEnum, IntegrationTypeLabelEnum } from '@/enums/IntegrationTypeEnum';
+import InputDropdownOption from '@/types/InputDropdownOption';
+import { IntegrationTypeEnum, IntegrationTypeLabelEnum } from '@/types/IntegrationTypeEnum';
 import { Alert } from '@/lib/Alert';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
 import IntegrationService from '@/services/IntegrationService';
-import { EditIcon } from 'lucide-react';
+import { Edit2Icon, EditIcon, PlayIcon, TrashIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import InputDropdown2 from '@/components/InputDropdown2';
 
-interface IFormValues {
+type IFormValues = {
   id: string,
   type: IntegrationTypeEnum;
   name: string;
@@ -20,11 +21,11 @@ interface IFormValues {
 }
 
 export default function EditIntegration(props: { integration: IFormValues, onClose?: Function; }) {
-  const [isSubmitting, setSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [integrationList, setIntegrationList] = useState<InputDropdownOption[]>([]);
   const [showModal, setShowModal] = useState(false);
 
-  const { register, handleSubmit, reset } = useForm<IFormValues>({
+  const { register, handleSubmit, reset, setValue, getValues } = useForm<IFormValues>({
     values: {
       id: props.integration.id,
       type: props.integration.type,
@@ -47,8 +48,8 @@ export default function EditIntegration(props: { integration: IFormValues, onClo
   }
 
   async function onSubmit(form: IFormValues) {
-    setSubmitting(true);
-    
+    setIsSubmitting(true);
+
     try {
       const response = await IntegrationService.updateIntegration(token as string, props.integration.id, {
         type: form.type,
@@ -63,16 +64,36 @@ export default function EditIntegration(props: { integration: IFormValues, onClo
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
-      setSubmitting(false);
+      setIsSubmitting(false);
     }
+  }
+
+  async function handleDelete(id: string) {
+    Alert.confirm("Excluir integração", "A integração será excluída permanentemente. Continuar?", async () => {
+      setIsSubmitting(true);
+
+      try {
+        const response = await IntegrationService.deleteIntegration(token as string, id);
+        Alert.success("", response.message);
+
+        close();
+        if (props.onClose) {
+          props.onClose();
+        }
+      } catch (error: any) {
+        Alert.error("", error.message);
+      } finally {
+        setIsSubmitting(false);
+      }
+    });
   }
 
   return (
     <>
       {isSubmitting && <Loading />}
 
-      <Button title="Editar" severity="secondary" outlined={true} onClick={() => setShowModal(true)} style={{ padding: "0.25rem" }}>
-        <EditIcon height={12} width={12} />
+      <Button title="Editar" severity="secondary" onClick={() => setShowModal(true)} style={{ padding: "0.25rem" }} outlined={true}>
+        <Edit2Icon height={12} width={12} />
       </Button>
 
       {showModal && (
@@ -80,7 +101,14 @@ export default function EditIntegration(props: { integration: IFormValues, onClo
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
             <div>
               <label className="block text-sm font-medium">Tipo <span className="text-red-500">*</span></label>
-              <InputDropdown options={integrationList} {...register("type", { required: true })} />
+              <InputDropdown2
+                code="value"
+                label="label"
+                options={integrationList}
+                onSearch={(value) => console.log(value)}
+                onChange={(option) => setValue("type", option.value)}
+                defaultValue={getValues("type")}
+              />
             </div>
             <div>
               <label className="block text-sm font-medium">Nome <span className="text-red-500">*</span></label>
@@ -90,8 +118,9 @@ export default function EditIntegration(props: { integration: IFormValues, onClo
               <label className="block text-sm font-medium">URL Webhook <span className="text-red-500">*</span></label>
               <InputText {...register("url", { required: true })} placeholder="https://..." />
             </div>
-            <div className="flex justify-end space-x-2 mt-3">
-              <Button severity="info" onClick={() => close()} type="button">Cancelar</Button>
+            <div className="flex justify-end space-x-2 mt-5">
+              <Button severity="info" onClick={() => close()} type="button" outlined={true}>Cancelar</Button>
+              <Button title="Excluir" severity="danger" onClick={() => handleDelete(props.integration.id)} type="button" outlined={true}>Excluir</Button>
               <Button severity="success" type="submit">Salvar</Button>
             </div>
           </form>

@@ -14,7 +14,7 @@ import { Alert } from '@/lib/Alert';
 import Head from 'next/head';
 import Loading from '@/components/Loading';
 
-interface IFormValues {
+type IFormValues =  {
   code: string;
 }
 

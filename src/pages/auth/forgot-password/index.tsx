@@ -14,7 +14,7 @@ import AuthService from '@/services/AuthService';
 import { Alert } from '@/lib/Alert';
 import Loading from '@/components/Loading';
 
-interface IFormValues {
+type IFormValues =  {
   email: string;
 }
 

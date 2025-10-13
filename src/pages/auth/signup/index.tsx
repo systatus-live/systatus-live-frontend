@@ -14,10 +14,10 @@ import AuthService from '@/services/AuthService';
 import { Alert } from '@/lib/Alert';
 import Head from 'next/head';
 import InputDropdown from '@/components/InputDropdown';
-import InputDropdownOption from '@/enums/InputDropdownOption';
+import InputDropdownOption from '@/types/InputDropdownOption';
 import Loading from '@/components/Loading';
 
-interface IFormValues {
+type IFormValues =  {
   name: string;
   email: string;
   password: string;

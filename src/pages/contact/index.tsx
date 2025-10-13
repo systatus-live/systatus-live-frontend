@@ -11,7 +11,7 @@ import Head from 'next/head';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-interface IFormValues {
+type IFormValues =  {
   name: string;
   email: string;
   subject: string;

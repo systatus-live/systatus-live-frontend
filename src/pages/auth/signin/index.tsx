@@ -5,7 +5,7 @@ import InputCheckBox from '@/components/InputCheckbox';
 import InputPassword from '@/components/InputPassword';
 import InputText from '@/components/InputText';
 import Logo from '@/components/Logo';
-import { SignInTypeEnum } from '@/enums/SignInTypeEnum';
+import { SignInTypeEnum } from '@/types/SignInTypeEnum';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -16,7 +16,7 @@ import { useRouter } from 'next/router';
 import { Alert } from '@/lib/Alert';
 import Loading from '@/components/Loading';
 
-interface IFormValues {
+type IFormValues =  {
   email: string;
   password: string;
   type: SignInTypeEnum
