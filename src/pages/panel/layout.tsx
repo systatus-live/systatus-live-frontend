@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 
 export default function PanelLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   const navList = [
     {
       icon: BarChart2Icon,
@@ -56,26 +56,26 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
   return (
     <>
       {isSubmitting && <Loading />}
-    
+
       <div className="flex flex-rows h-screen">
-        <div className="flex justify-between flex-col shadow-lg w-xs lg:w-xs border-r border-gray-200">
+        <div className="flex justify-between flex-col shadow-lg w-auto sm:w-xs border-r border-gray-200">
           <div>
             <div className="p-4">
-              <Logo />
+              <Logo iconOnly={true} />
             </div>
-            <div>
+            <div className="flex flex-col items-center sm:items-start w-full">
               {navList.map((item, index) => (
-                <Link key={index} href={item.route}>
-                  <div className="ml-1 pl-3 h-10 flex items-center font-light hover:text-blue-700 hover:font-light border-l-4 border-l-white hover:border-l-blue-700 hover:bg-blue-50">
+                <Link key={index} href={item.route} className="flex justify-center w-full">
+                  <div className="ml-1 pl-2 h-10 w-full flex items-center font-light hover:text-blue-700 hover:font-light border-l-4 border-l-white hover:border-l-blue-700 hover:bg-blue-50">
                     <item.icon className="mr-2" height={18} />
-                    <span>{item.label}</span>
+                    <span className="hidden sm:block">{item.label}</span>
                   </div>
                 </Link>
               ))}
             </div>
           </div>
           <div className="w-full px-4 py-6 border-t-1 border-t-gray-200 flex items-center justify-between">
-            <div className="truncate mr-3">
+            <div className="truncate mr-3 hidden md:block">
               <p className="text-sm">{user.name}</p>
             </div>
             <div>

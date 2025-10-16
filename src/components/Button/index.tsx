@@ -3,7 +3,7 @@
 import { ButtonHTMLAttributes, ClassAttributes, JSX, useEffect, useState } from 'react';
 import styles from "./styles.module.scss";
 
-export default function Button(props: JSX.IntrinsicAttributes & ClassAttributes<HTMLButtonElement> & ButtonHTMLAttributes<HTMLButtonElement> & { outlined?: boolean, severity?: "success" | "secondary" | "info" | "danger" }) {
+export default function Button(props: JSX.IntrinsicAttributes & ClassAttributes<HTMLButtonElement> & ButtonHTMLAttributes<HTMLButtonElement> & { outlined?: boolean, severity?: "success" | "primary" | "secondary" | "info" | "danger" }) {
   const [btnStyle, setBtnStyle] = useState("");
 
   const btnProps = {
@@ -15,6 +15,9 @@ export default function Button(props: JSX.IntrinsicAttributes & ClassAttributes<
     switch (btnProps.severity) {
       case "success":
         setBtnStyle(btnProps.outlined ? styles["btn-success-outlined"] : styles["btn-success"]);
+        break;
+      case "primary":
+        setBtnStyle(btnProps.outlined ? styles["btn-primary-outlined"] : styles["btn-primary"]);
         break;
       case "secondary":
         setBtnStyle(btnProps.outlined ? styles["btn-secondary-outlined"] : styles["btn-secondary"]);

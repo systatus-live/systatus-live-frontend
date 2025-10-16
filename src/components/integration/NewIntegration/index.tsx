@@ -1,36 +1,27 @@
 import Button from '@/components/Button';
-import InputDropdown2 from '@/components/InputDropdown2';
+import Finder from '@/components/Finder';
 import InputText from '@/components/InputText';
 import Loading from '@/components/Loading';
 import Modal from '@/components/Modal';
 import { Alert } from '@/lib/Alert';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
+import ChatPlatformService from '@/services/ChatPlatformService';
 import IntegrationService from '@/services/IntegrationService';
-import InputDropdownOption from '@/types/InputDropdownOption';
-import { IntegrationTypeEnum, IntegrationTypeLabelEnum } from '@/types/IntegrationTypeEnum';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 type IFormValues = {
-  type: IntegrationTypeEnum;
+  chatPlatformId: string;
   name: string;
   url: string
 }
 
 export default function NewIntegration(props: { onClose?: Function; }) {
   const [isSubmitting, setSubmitting] = useState(false);
-  const [integrationList, setIntegrationList] = useState<InputDropdownOption[]>([]);
   const [showModal, setShowModal] = useState(false);
 
   const { register, handleSubmit, reset, setValue } = useForm<IFormValues>();
   const { token } = useGlobalProvider();
-
-  useEffect(() => {
-    setIntegrationList(Object.keys(IntegrationTypeEnum).map(key => ({
-      value: key,
-      label: IntegrationTypeLabelEnum[key as IntegrationTypeEnum]
-    })));
-  }, []);
 
   function close() {
     reset();
@@ -42,7 +33,7 @@ export default function NewIntegration(props: { onClose?: Function; }) {
 
     try {
       const response = await IntegrationService.createIntegration(token as string, {
-        type: form.type,
+        chatPlatformId: form.chatPlatformId,
         name: form.name,
         url: form.url,
       })
@@ -58,6 +49,18 @@ export default function NewIntegration(props: { onClose?: Function; }) {
     }
   }
 
+  async function getChatPlatformList(params: URLSearchParams): Promise<[]> {
+    params.set("page", "0");
+
+    try {
+      const { data } = await ChatPlatformService.getChatPlatformList(token as string, params);
+      return data;
+    } catch (error: any) {
+      Alert.error("", error.message);
+      return [];
+    }
+  }
+
   return (
     <>
       {isSubmitting && <Loading />}
@@ -69,12 +72,12 @@ export default function NewIntegration(props: { onClose?: Function; }) {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
             <div>
               <label className="block text-sm font-medium">Tipo <span className="text-red-500">*</span></label>
-              <InputDropdown2
-                code="value"
-                label="label"
-                options={integrationList}
-                onSearch={(value) => console.log(value)}
-                onChange={(option) => setValue("type", option.value)}
+              <Finder
+                code="id"
+                label="description"
+                options={() => getChatPlatformList(new URLSearchParams())}
+                onSearch={(value) => getChatPlatformList(new URLSearchParams({ search: value }))}
+                onChange={(option) => setValue("chatPlatformId", option.id)}
               />
             </div>
             <div>

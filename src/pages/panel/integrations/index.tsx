@@ -3,7 +3,6 @@ import InputText from '@/components/InputText';
 import EditIntegration from '@/components/integration/EditIntegration';
 import NewIntegration from '@/components/integration/NewIntegration';
 import Loading from '@/components/Loading';
-import { IntegrationTypeEnum, IntegrationTypeLabelEnum } from '@/types/IntegrationTypeEnum';
 import { Alert } from '@/lib/Alert';
 import { NextPageWithLayout } from '@/pages/_app';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
@@ -28,12 +27,6 @@ const Integrations: NextPageWithLayout = () => {
 
   const { register, handleSubmit, reset } = useForm<IFormSearchValues>();
   const { token } = useGlobalProvider();
-
-  const integrationIcon = {
-    [IntegrationTypeEnum.DISCORD]: "/logos/discord.svg",
-    [IntegrationTypeEnum.GOOGLE_CHAT]: "/logos/google-chat.svg",
-    [IntegrationTypeEnum.SLACK]: "/logos/slack.svg"
-  }
 
   useEffect(() => {
     if (token) {
@@ -138,9 +131,9 @@ const Integrations: NextPageWithLayout = () => {
             <div key={integration.id} className={`border border-gray-200 rounded-sm p-3 ${styles["integration-grid"]}`}>
               <div className="rounded-full flex flex-col items-center justify-center text-center w-20">
                 <div style={{ position: "relative", height: "26px", width: "26px" }}>
-                  <Image src={integrationIcon[integration.type as IntegrationTypeEnum]} alt={integration.type} fill={true} style={{ objectFit: "contain" }} />
+                  <Image src={integration.chatPlatformIconUrl} alt="" fill={true} style={{ objectFit: "contain" }} />
                 </div>
-                <span className="text-xs mt-1">{IntegrationTypeLabelEnum[integration.type as IntegrationTypeEnum]}</span>
+                <span className="text-xs mt-1">{integration.chatPlatform}</span>
               </div>
               <div className="flex flex-col justify-center text-sm overflow-hidden">
                 <div>{integration.name}</div>
@@ -151,7 +144,7 @@ const Integrations: NextPageWithLayout = () => {
                   </div>
                 </div>
                 <div className="flex gap-x-1 mt-2">
-                  <Button title="Testar" onClick={() => handleValidate(integration.id)} style={{ padding: "0.25rem" }} outlined={true}>
+                  <Button title="Testar" severity="primary" onClick={() => handleValidate(integration.id)} style={{ padding: "0.25rem" }} outlined={true}>
                     <PlayIcon height={12} width={12} />
                   </Button>
                   <EditIntegration integration={integration} onClose={resetSearch} />

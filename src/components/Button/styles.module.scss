@@ -2,7 +2,6 @@
 
 .btn-default {
   background: theme.$primary-color;
-  border: none;
   color: #fff;
   font-weight: 500;
   font-size: 0.85rem;
@@ -20,6 +19,18 @@
 .btn-success {
   @extend .btn-default;
   background: theme.$success-color;
+}
+
+.btn-primary {
+  @extend .btn-default;
+  background: theme.$primary-color;
+}
+
+.btn-primary-outlined {
+  @extend .btn-default;
+  background: #fff;
+  color: theme.$primary-color;
+  border: 1px solid theme.$primary-color;
 }
 
 .btn-secondary {

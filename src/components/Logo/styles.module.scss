@@ -10,3 +10,9 @@
   @extend .logo;
   color: #fff;
 }
+
+@media (max-width: 640px) {
+  .hidden-text {
+    display: none;
+  }
+}

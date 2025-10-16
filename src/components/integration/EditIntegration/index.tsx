@@ -1,46 +1,36 @@
 import Button from '@/components/Button';
-import InputDropdown from '@/components/InputDropdown';
+import Finder from '@/components/Finder';
 import InputText from '@/components/InputText';
 import Loading from '@/components/Loading';
 import Modal from '@/components/Modal';
-import InputDropdownOption from '@/types/InputDropdownOption';
-import { IntegrationTypeEnum, IntegrationTypeLabelEnum } from '@/types/IntegrationTypeEnum';
 import { Alert } from '@/lib/Alert';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
+import ChatPlatformService from '@/services/ChatPlatformService';
 import IntegrationService from '@/services/IntegrationService';
-import { Edit2Icon, EditIcon, PlayIcon, TrashIcon } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Edit2Icon } from 'lucide-react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import InputDropdown2 from '@/components/InputDropdown2';
 
 type IFormValues = {
   id: string,
-  type: IntegrationTypeEnum;
+  chatPlatformId: string;
   name: string;
   url: string
 }
 
 export default function EditIntegration(props: { integration: IFormValues, onClose?: Function; }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [integrationList, setIntegrationList] = useState<InputDropdownOption[]>([]);
   const [showModal, setShowModal] = useState(false);
 
   const { register, handleSubmit, reset, setValue, getValues } = useForm<IFormValues>({
     values: {
       id: props.integration.id,
-      type: props.integration.type,
+      chatPlatformId: props.integration.chatPlatformId,
       name: props.integration.name,
       url: props.integration.url
     }
   });
   const { token } = useGlobalProvider();
-
-  useEffect(() => {
-    setIntegrationList(Object.keys(IntegrationTypeEnum).map(key => ({
-      value: key,
-      label: IntegrationTypeLabelEnum[key as IntegrationTypeEnum]
-    })));
-  }, []);
 
   function close() {
     reset();
@@ -52,7 +42,7 @@ export default function EditIntegration(props: { integration: IFormValues, onClo
 
     try {
       const response = await IntegrationService.updateIntegration(token as string, props.integration.id, {
-        type: form.type,
+        chatPlatformId: form.chatPlatformId,
         name: form.name,
         url: form.url,
       })
@@ -88,6 +78,18 @@ export default function EditIntegration(props: { integration: IFormValues, onClo
     });
   }
 
+  async function getChatPlatformList(params: URLSearchParams): Promise<[]> {
+    params.set("page", "0");
+
+    try {
+      const { data } = await ChatPlatformService.getChatPlatformList(token as string, params);
+      return data;
+    } catch (error: any) {
+      Alert.error("", error.message);
+      return [];
+    }
+  }
+
   return (
     <>
       {isSubmitting && <Loading />}
@@ -101,13 +103,13 @@ export default function EditIntegration(props: { integration: IFormValues, onClo
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
             <div>
               <label className="block text-sm font-medium">Tipo <span className="text-red-500">*</span></label>
-              <InputDropdown2
-                code="value"
-                label="label"
-                options={integrationList}
-                onSearch={(value) => console.log(value)}
-                onChange={(option) => setValue("type", option.value)}
-                defaultValue={getValues("type")}
+              <Finder
+                code="id"
+                label="description"
+                options={() => getChatPlatformList(new URLSearchParams())}
+                onSearch={(value) => getChatPlatformList(new URLSearchParams({ search: value }))}
+                onChange={(option) => setValue("chatPlatformId", option.id)}
+                defaultValue={getValues("chatPlatformId")}
               />
             </div>
             <div>
