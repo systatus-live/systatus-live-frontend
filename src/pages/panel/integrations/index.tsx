@@ -1,13 +1,13 @@
 import Button from '@/components/Button';
 import InputText from '@/components/InputText';
-import EditIntegration from '@/components/integration/EditIntegration';
-import NewIntegration from '@/components/integration/NewIntegration';
 import Loading from '@/components/Loading';
+import EditIntegration from '@/components/Panel/Integration/EditIntegration';
+import NewIntegration from '@/components/Panel/Integration/NewIntegration';
 import { Alert } from '@/lib/Alert';
 import { NextPageWithLayout } from '@/pages/_app';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
 import IntegrationService from '@/services/IntegrationService';
-import { CopyIcon, PlayIcon, SearchIcon, TrashIcon } from 'lucide-react';
+import { CopyIcon, SearchIcon } from 'lucide-react';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useEffect, useState, type ReactElement } from 'react';
@@ -85,20 +85,6 @@ const Integrations: NextPageWithLayout = () => {
     });
   }
 
-  async function handleValidate(id: string) {
-    setIsSubmitting(true);
-
-    try {
-      const response = await IntegrationService.validateIntegration(token as string, id);
-      Alert.success("", response.message);
-      resetSearch()
-    } catch (error: any) {
-      Alert.error("", error.message);
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
-
   return (
     <>
       <Head>
@@ -129,29 +115,18 @@ const Integrations: NextPageWithLayout = () => {
           </form>
           {integrationList.map((integration: any) => (
             <div key={integration.id} className={`border border-gray-200 rounded-sm p-3 ${styles["integration-grid"]}`}>
-              <div className="rounded-full flex flex-col items-center justify-center text-center w-20">
-                <div style={{ position: "relative", height: "26px", width: "26px" }}>
-                  <Image src={integration.chatPlatformIconUrl} alt="" fill={true} style={{ objectFit: "contain" }} />
-                </div>
-                <span className="text-xs mt-1">{integration.chatPlatform}</span>
-              </div>
-              <div className="flex flex-col justify-center text-sm overflow-hidden">
-                <div>{integration.name}</div>
-                <div className="flex text-gray-600 gap-x-2 items-center mt-1">
-                  <div className="text-gray-500 text-xs overflow-hidden whitespace-nowrap text-ellipsis">{integration.url}</div>
+              <div className="flex flex-col justify-center overflow-hidden">
+                <span style={{ fontSize: "0.95rem" }} >{integration.name}</span>
+                <div className="flex text-gray-600 gap-x-1 items-center mt-1">
+                  <Image src={integration.chatPlatformIconUrl} alt="" width={16} height={16} />
+                  <div className="text-gray-500 text-xs overflow-hidden whitespace-nowrap text-ellipsis">{integration.chatPlatform} - {integration.url}</div>
                   <div title="Copiar" className="cursor-pointer text-blue-700" onClick={() => handleCopyClick(integration.url)}>
                     <CopyIcon height={12} width={12} />
                   </div>
                 </div>
-                <div className="flex gap-x-1 mt-2">
-                  <Button title="Testar" severity="primary" onClick={() => handleValidate(integration.id)} style={{ padding: "0.25rem" }} outlined={true}>
-                    <PlayIcon height={12} width={12} />
-                  </Button>
-                  <EditIntegration integration={integration} onClose={resetSearch} />
-                  <Button title="Excluir" severity="danger" onClick={() => handleDelete(integration.id)} style={{ padding: "0.25rem" }} outlined={true}>
-                    <TrashIcon height={12} width={12} />
-                  </Button>
-                </div>
+              </div>
+              <div className="flex items-center justify-end">
+                <EditIntegration integration={integration} onClose={resetSearch} />
               </div>
             </div>
           ))}

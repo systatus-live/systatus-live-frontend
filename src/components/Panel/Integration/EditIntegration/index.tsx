@@ -7,7 +7,7 @@ import { Alert } from '@/lib/Alert';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
 import ChatPlatformService from '@/services/ChatPlatformService';
 import IntegrationService from '@/services/IntegrationService';
-import { Edit2Icon } from 'lucide-react';
+import { Edit2Icon, EyeIcon, PlayIcon, TrashIcon, XIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -90,12 +90,25 @@ export default function EditIntegration(props: { integration: IFormValues, onClo
     }
   }
 
+  async function handleValidate(id: string) {
+    setIsSubmitting(true);
+
+    try {
+      const response = await IntegrationService.validateIntegration(token as string, id);
+      Alert.success("", response.message);
+    } catch (error: any) {
+      Alert.error("", error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
   return (
     <>
       {isSubmitting && <Loading />}
 
       <Button title="Editar" severity="secondary" onClick={() => setShowModal(true)} style={{ padding: "0.25rem" }} outlined={true}>
-        <Edit2Icon height={12} width={12} />
+        <EyeIcon height={12} width={12} />
       </Button>
 
       {showModal && (
@@ -121,8 +134,15 @@ export default function EditIntegration(props: { integration: IFormValues, onClo
               <InputText {...register("url", { required: true })} placeholder="https://..." />
             </div>
             <div className="flex justify-end space-x-2 mt-5">
-              <Button severity="info" onClick={() => close()} type="button" outlined={true}>Cancelar</Button>
-              <Button title="Excluir" severity="danger" onClick={() => handleDelete(props.integration.id)} type="button" outlined={true}>Excluir</Button>
+              <Button title="Cancelar" severity="info" onClick={() => close()} type="button">
+                <XIcon height={14} width={14} />
+              </Button>
+              <Button title="Excluir" severity="danger" onClick={() => handleDelete(props.integration.id)} type="button">
+                <TrashIcon height={14} width={14} />
+              </Button>
+              <Button title="Testar" severity="primary" onClick={() => handleValidate(props.integration.id)} type="button">
+                <PlayIcon height={14} width={14} />
+              </Button>
               <Button severity="success" type="submit">Salvar</Button>
             </div>
           </form>

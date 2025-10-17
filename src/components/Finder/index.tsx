@@ -28,6 +28,10 @@ export default function Finder(props: JSX.IntrinsicAttributes & InputDropdownPro
         const findOption = response.find(option => option[props.code] == props.defaultValue);
         if (findOption) {
           setSelected(findOption);
+
+          if (props.onChange) {
+            props.onChange(findOption);
+          }
         }
       }
     })
