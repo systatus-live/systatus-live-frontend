@@ -6,6 +6,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Head from "next/head";
 import { ReactElement, ReactNode } from "react";
 import "../styles/globals.scss";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,8 +39,12 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       <Head>
         <title>Systatus.Live</title>
       </Head>
+
+      {/* Vercel */}
+      <Analytics />
+      <SpeedInsights />
+
       <div className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Analytics />
         {getLayout(<Component {...pageProps} />)}
       </div>
     </GlobalProvider>
