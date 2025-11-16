@@ -1,4 +1,5 @@
 import Loading from '@/components/Loading';
+import IntegrationForm from '@/components/Panel/Integration/IntegrationForm';
 import { Alert } from '@/lib/Alert';
 import { NextPageWithLayout } from '@/pages/_app';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
@@ -12,7 +13,6 @@ import { InputText } from 'primereact/inputtext';
 import { useEffect, useState, type ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import PanelLayout from '../layout';
-import IntegrationForm from '@/components/Panel/Integration/IntegrationForm';
 
 type IFormSearchValues = {
   search: string;
@@ -23,7 +23,6 @@ const Integrations: NextPageWithLayout = () => {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const { register, handleSubmit, reset } = useForm<IFormSearchValues>();
   const { token } = useGlobalProvider();
 
@@ -68,22 +67,6 @@ const Integrations: NextPageWithLayout = () => {
     search(new URLSearchParams({ page: "0" }));
   }
 
-  async function handleDelete(id: string) {
-    Alert.confirm("Excluir integração", "A integração será excluída permanentemente. Continuar?", async () => {
-      setIsSubmitting(true);
-
-      try {
-        const response = await IntegrationService.deleteIntegration(token as string, id);
-        Alert.success("", response.message);
-        resetSearch()
-      } catch (error: any) {
-        Alert.error("", error.message);
-      } finally {
-        setIsSubmitting(false);
-      }
-    });
-  }
-
   return (
     <>
       <Head>
@@ -121,18 +104,18 @@ const Integrations: NextPageWithLayout = () => {
               list.map((integration: any) => (
                 <div key={integration.id} className="py-2 border-t-1 border-gray-200">
                   <div className="flex flex-col justify-center">
-                    <span className="text-sm">{integration.name}</span>
+                    <span className="font-medium">{integration.name}</span>
                     <div className="flex items-center mt-1 gap-x-2">
                       <div title="Abrir">
                         <IntegrationForm integration={integration} onClose={resetSearch} />
                       </div>
                       <div title="Copiar URL">
-                        <CopyIcon height={14} width={14} className="cursor-pointe text-blue-700" onClick={() => handleCopyClick(integration.url)}  />
+                        <CopyIcon height={14} width={14} className="cursor-pointer text-blue-700" onClick={() => handleCopyClick(integration.url)}  />
                       </div>
-                      <span className="text-gray-500 text-xs"> • </span>
+                      <span className="text-gray-500 text-sm"> • </span>
                       <div className="flex gap-x-1 items-center overflow-hidden">
                         <Image src={integration.chatPlatformIconUrl} alt="" width={16} height={16} />
-                        <div className="text-gray-500 text-xs overflow-hidden whitespace-nowrap text-ellipsis">{integration.chatPlatform} • {integration.url}</div>
+                        <div className="text-gray-500 text-sm overflow-hidden whitespace-nowrap text-ellipsis">{integration.chatPlatform} • {integration.url}</div>
                       </div>
                     </div>
                   </div>
