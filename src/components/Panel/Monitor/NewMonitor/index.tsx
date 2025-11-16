@@ -1,14 +1,11 @@
-import Button from '@/components/Button';
-import Finder from '@/components/Finder';
 import InputCheckBox from '@/components/InputCheckbox';
-import InputText from '@/components/InputText';
 import Loading from '@/components/Loading';
-import Modal from '@/components/Modal';
 import { Alert } from '@/lib/Alert';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
 import MonitorService from '@/services/MonitorService';
 import { MonitorTypeEnum, MonitorTypeLabelEnum } from '@/types/MonitorTypeEnum';
 import removeAccents from '@/utils/removeAccents';
+import { InputText } from 'primereact/inputtext';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -73,40 +70,41 @@ export default function NewMonitor(props: { onClose?: Function; }) {
     <>
       {isSubmitting && <Loading />}
 
-      <Button severity="secondary" onClick={() => setShowModal(true)}>Novo Monitor</Button>
+      {/* <Button severity="secondary" onClick={() => setShowModal(true)}>Novo Monitor</Button> */}
 
       {showModal && (
-        <Modal title="Novo Monitor">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-            <div>
-              <label className="block text-sm font-medium">Tipo <span className="text-red-500">*</span></label>
-              <Finder
-                code="id"
-                label="description"
-                options={() => getMonitorTypeList("")}
-                onSearch={(value) => getMonitorTypeList(value)}
-                onChange={(option) => setValue("type", option.id)}
-                defaultValue={monitorTypeList[0].id}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Nome <span className="text-red-500">*</span></label>
-              <InputText {...register("name", { required: true })} placeholder="Ex.: API de pagamentos" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Endereço <span className="text-red-500">*</span></label>
-              <InputText {...register("address", { required: true })} placeholder="https://..." />
-            </div>
-            <div className="flex items-center space-x-1">
-              <InputCheckBox {...register("active", { required: true })} />
-              <label className="block text-sm font-medium">Ativo <span className="text-red-500">*</span></label>
-            </div>
-            <div className="flex justify-end space-x-2 mt-5">
-              <Button severity="info" onClick={() => close()} type="button">Cancelar</Button>
-              <Button severity="success" type="submit">Salvar</Button>
-            </div>
-          </form>
-        </Modal>
+        <div></div>
+        // <Modal title="Novo Monitor">
+        //   <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+        //     <div>
+        //       <label className="block text-sm font-medium">Tipo <span className="text-red-500">*</span></label>
+        //       {/* <Finder
+        //         code="id"
+        //         label="description"
+        //         options={() => getMonitorTypeList("")}
+        //         onSearch={(value) => getMonitorTypeList(value)}
+        //         onChange={(option) => setValue("type", option.id)}
+        //         defaultValue={monitorTypeList[0].id}
+        //       /> */}
+        //     </div>
+        //     <div>
+        //       <label className="block text-sm font-medium">Nome <span className="text-red-500">*</span></label>
+        //       <InputText {...register("name", { required: true })} placeholder="Ex.: API de pagamentos" />
+        //     </div>
+        //     <div>
+        //       <label className="block text-sm font-medium">Endereço <span className="text-red-500">*</span></label>
+        //       <InputText {...register("address", { required: true })} placeholder="https://..." />
+        //     </div>
+        //     <div className="flex items-center space-x-1">
+        //       <InputCheckBox {...register("active", { required: true })} />
+        //       <label className="block text-sm font-medium">Ativo <span className="text-red-500">*</span></label>
+        //     </div>
+        //     <div className="flex justify-end space-x-2 mt-5">
+        //       {/* <Button severity="info" onClick={() => close()} type="button">Cancelar</Button>
+        //       <Button severity="success" type="submit">Salvar</Button> */}
+        //     </div>
+        //   </form>
+        // </Modal>
       )}
     </>
   )

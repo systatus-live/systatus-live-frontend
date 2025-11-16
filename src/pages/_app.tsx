@@ -1,22 +1,16 @@
 import { GlobalProvider } from "@/providers/GlobalProvider";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata, NextPage } from "next";
 import type { AppProps } from 'next/app';
-import { Geist, Geist_Mono } from "next/font/google";
 import Head from "next/head";
 import { ReactElement, ReactNode } from "react";
 import "../styles/globals.scss";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+// import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
+// import "primereact/resources//themes/tailwind-light/theme.css";
+// import "primereact/resources/themes/fluent-light/theme.css";
+import "primereact/resources/themes/mira/theme.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Systatus Live",
@@ -44,7 +38,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       <Analytics />
       <SpeedInsights />
 
-      <div className={`${geistSans.variable} ${geistMono.variable}`}>
+      <div>
         {getLayout(<Component {...pageProps} />)}
       </div>
     </GlobalProvider>

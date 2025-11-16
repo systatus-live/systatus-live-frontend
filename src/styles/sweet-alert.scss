@@ -7,6 +7,8 @@
 .swal2-html-container {
   font-size: 0.8725rem !important;
   font-weight: 400;
+  z-index: 99999 !important;
+
 }
 
 .swal2-icon.swal2-question.swal2-icon-show {
@@ -31,4 +33,9 @@
   font-size: 0.85rem;
   padding: 0.35rem 1rem;
   border-radius: 0.35rem;
+}
+
+.swal2-container.swal2-bottom.swal2-backdrop-show,
+.swal2-container.swal2-center.swal2-backdrop-show {
+  z-index: 9999 !important
 }

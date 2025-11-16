@@ -1,15 +1,13 @@
-import Button from '@/components/Button';
-import Finder from '@/components/Finder';
 import InputCheckBox from '@/components/InputCheckbox';
-import InputText from '@/components/InputText';
 import Loading from '@/components/Loading';
-import Modal from '@/components/Modal';
 import { Alert } from '@/lib/Alert';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
 import MonitorService from '@/services/MonitorService';
 import { MonitorTypeEnum, MonitorTypeLabelEnum } from '@/types/MonitorTypeEnum';
 import removeAccents from '@/utils/removeAccents';
 import { Edit2Icon, EyeIcon, TrashIcon, XIcon } from 'lucide-react';
+import { Button } from 'primereact/button';
+import { InputText } from 'primereact/inputtext';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -95,47 +93,48 @@ export default function EditMonitor(props: { monitor: IFormValues, onClose?: Fun
     <>
       {isSubmitting && <Loading />}
 
-      <Button title="Editar" severity="secondary" onClick={() => setShowModal(true)} style={{ padding: "0.25rem" }} outlined={true}>
+      {/* <Button title="Editar" severity="secondary" onClick={() => setShowModal(true)} style={{ padding: "0.25rem" }} outlined={true}>
         <EyeIcon height={12} width={12} />
-      </Button>
+      </Button> */}
 
       {showModal && (
-        <Modal title="Editar Monitor">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-            <div>
-              <label className="block text-sm font-medium">Tipo <span className="text-red-500">*</span></label>
-              <Finder
-                code="id"
-                label="description"
-                options={() => getMonitorTypeList("")}
-                onSearch={(value) => getMonitorTypeList(value)}
-                onChange={(option) => setValue("type", option.id)}
-                defaultValue={getValues("type")}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Nome <span className="text-red-500">*</span></label>
-              <InputText {...register("name", { required: true })} placeholder="Ex.: API de pagamentos" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Endereço <span className="text-red-500">*</span></label>
-              <InputText {...register("address", { required: true })} placeholder="https://..." />
-            </div>
-            <div className="flex items-center space-x-1">
-              <InputCheckBox {...register("active", { required: true })} />
-              <label className="block text-sm font-medium">Ativo <span className="text-red-500">*</span></label>
-            </div>
-            <div className="flex justify-end space-x-2 mt-5">
-              <Button title="Cancelar" severity="info" onClick={() => close()} type="button">
-                <XIcon height={14} width={14} />
-              </Button>
-              <Button title="Excluir" severity="danger" onClick={() => handleDelete(props.monitor.id)} type="button">
-                <TrashIcon height={14} width={14} />
-              </Button>
-              <Button severity="success" type="submit">Salvar</Button>
-            </div>
-          </form>
-        </Modal>
+        <div></div>
+        // <Modal title="Editar Monitor">
+        //   <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+        //     <div>
+        //       <label className="block text-sm font-medium">Tipo <span className="text-red-500">*</span></label>
+        //       {/* <Finder
+        //         code="id"
+        //         label="description"
+        //         options={() => getMonitorTypeList("")}
+        //         onSearch={(value) => getMonitorTypeList(value)}
+        //         onChange={(option) => setValue("type", option.id)}
+        //         defaultValue={getValues("type")}
+        //       /> */}
+        //     </div>
+        //     <div>
+        //       <label className="block text-sm font-medium">Nome <span className="text-red-500">*</span></label>
+        //       <InputText {...register("name", { required: true })} placeholder="Ex.: API de pagamentos" />
+        //     </div>
+        //     <div>
+        //       <label className="block text-sm font-medium">Endereço <span className="text-red-500">*</span></label>
+        //       <InputText {...register("address", { required: true })} placeholder="https://..." />
+        //     </div>
+        //     <div className="flex items-center space-x-1">
+        //       <InputCheckBox {...register("active", { required: true })} />
+        //       <label className="block text-sm font-medium">Ativo <span className="text-red-500">*</span></label>
+        //     </div>
+        //     <div className="flex justify-end space-x-2 mt-5">
+        //       <Button title="Cancelar" severity="info" onClick={() => close()} type="button">
+        //         <XIcon height={14} width={14} />
+        //       </Button>
+        //       <Button title="Excluir" severity="danger" onClick={() => handleDelete(props.monitor.id)} type="button">
+        //         <TrashIcon height={14} width={14} />
+        //       </Button>
+        //       <Button severity="success" type="submit">Salvar</Button>
+        //     </div>
+        //   </form>
+        // </Modal>
       )}
     </>
   )

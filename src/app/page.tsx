@@ -4,16 +4,17 @@ import Features from "@/components/LandingPage/Features";
 import Integrations from "@/components/LandingPage/Integrations";
 import Pricing from "@/components/LandingPage/Pricing";
 import Footer from "@/components/LandingPage/Footer";
+import { PrimeReactProvider } from 'primereact/api';
 
 export default function Home() {
   return (
-    <div>
+    <PrimeReactProvider>
       <Navbar />
       <Hero />
       <Features />
       <Integrations />
       <Pricing />
       <Footer />
-    </div>
+    </PrimeReactProvider>
   );
 }

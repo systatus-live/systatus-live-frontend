@@ -1,5 +1,3 @@
-import Button from '@/components/Button';
-import InputText from '@/components/InputText';
 import Loading from '@/components/Loading';
 import { Alert } from '@/lib/Alert';
 import { NextPageWithLayout } from '@/pages/_app';
@@ -15,6 +13,8 @@ import NewMonitor from '@/components/Panel/Monitor/NewMonitor';
 import { MonitorTypeEnum, MonitorTypeLabelEnum } from '@/types/MonitorTypeEnum';
 import EditMonitor from '@/components/Panel/Monitor/EditMonitor';
 import Image from 'next/image';
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
 
 type IFormSearchValues = {
   search: string;
@@ -90,10 +90,12 @@ const Monitors: NextPageWithLayout = () => {
       <div className="bg-white shadow-lg border border-gray-200 rounded-sm mt-6 p-4" style={{ minHeight: "85vh" }}>
         <div className="grid grid-cols-1 gap-y-3">
           <form onSubmit={handleSubmit(onSubmitSearch)} className="flex items-center">
-            <InputText {...register("search", { required: false })} style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }} placeholder="Pesquisar monitores" />
-            <Button severity="secondary" style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0, padding: "0.25rem" }} className="h-full">
-              <SearchIcon height={16} />
-            </Button>
+            <div className="p-inputgroup flex-1">
+              <InputText {...register("search", { required: false })} placeholder="Pesquisar monitores" />
+              <Button severity="secondary">
+                <SearchIcon height={16} />
+              </Button>
+            </div>
             <div className="border border-gray-300 text-gray-900 rounded-sm ml-2 font-medium text-sm h-full flex items-center justify-center min-w-10" title="Total de registros">
               {total}
             </div>
@@ -101,7 +103,7 @@ const Monitors: NextPageWithLayout = () => {
           {monitorList.map((monitor: any) => (
             <div key={monitor.id} className={`border border-gray-200 rounded-sm p-3 ${styles["monitor-grid"]}`}>
               <div className="flex flex-col justify-center text-sm overflow-hidden">
-                <span style={{ fontSize: "0.95rem" }}>{monitor.name}</span>
+                <span>{monitor.name}</span>
                 <div className="flex text-gray-600 gap-x-1 items-center mt-1">
                   <Image src={`https://www.google.com/s2/favicons?domain=${monitor.address}`} alt="" width={16} height={16} />
                   <div className="text-gray-500 text-xs overflow-hidden whitespace-nowrap text-ellipsis">{MonitorTypeLabelEnum[monitor.type as MonitorTypeEnum]} - {monitor.address}</div>

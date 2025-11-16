@@ -1,12 +1,12 @@
 "use client"
 
-import Button from '@/components/Button';
 import Logo from '@/components/Logo';
 import { AnimatePresence } from 'framer-motion';
 import { MenuIcon, XIcon } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import styles from "./styles.module.scss";
+import { Button } from 'primereact/button';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,12 +34,12 @@ const Navbar: React.FC = () => {
               ))}
             </div>
           </div>
-          <div className="hidden sm:flex sm:items-center ml-4">
+          <div className="hidden sm:flex sm:items-center ml-4 space-x-3">
             <Link href="/auth/signin">
-              <Button severity="info">Entrar</Button>
+              <Button outlined>Entrar</Button>
             </Link>
             <Link href="/auth/signup">
-              <Button severity="secondary" className="ml-4">Cadastrar</Button>
+              <Button>Cadastrar</Button>
             </Link>
           </div>
           <div className="-mr-2 flex items-center sm:hidden">
@@ -55,7 +55,7 @@ const Navbar: React.FC = () => {
           <div className="sm:hidden bg-white">
             <div className="pt-2 pb-3 space-y-1">
               {navItemList.map((item, index) => (
-                <Link href={item.href} className={styles["nav-item-mobile"]} onClick={() => setIsMenuOpen(false)}>
+                <Link key={index} href={item.href} className={styles["nav-item-mobile"]} onClick={() => setIsMenuOpen(false)}>
                   {item.name}
                 </Link>
               ))}
@@ -63,10 +63,10 @@ const Navbar: React.FC = () => {
             <div className="pt-4 pb-3 border-t border-gray-200">
               <div className="flex items-center px-4 space-x-3">
                 <Link href="/auth/signin">
-                  <Button severity="info">Entrar</Button>
+                  <Button outlined>Entrar</Button>
                 </Link>
                 <Link href="/auth/signup">
-                  <Button severity="secondary">Cadastrar</Button>
+                  <Button>Cadastrar</Button>
                 </Link>
               </div>
             </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import Button from '@/components/Button';
+import { Button } from 'primereact/button';
 import { motion } from 'framer-motion';
 import { GlobeIcon, Waypoints } from 'lucide-react';
 import Link from 'next/link';
@@ -99,16 +99,16 @@ export default function Hero() {
                 Mantenha o controle da sua infraestrutura com monitoramento e alertas em tempo real.
               </motion.p>
               <motion.div
-                className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start"
+                className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start space-x-3"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.5 }}
               >
                 <Link href="/auth/signup">
-                  <Button severity="secondary" className="mr-3 h-10">Comece agora</Button>
+                  <Button>Comece agora</Button>
                 </Link>
                 <Link href="#features">
-                  <Button severity="info" className="h-10">Saiba mais</Button>
+                  <Button outlined>Saiba mais</Button>
                 </Link>
               </motion.div>
             </div>

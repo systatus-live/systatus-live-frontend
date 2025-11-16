@@ -1,7 +1,6 @@
 "use client";
 
-import Button from '@/components/Button';
-import InputText from '@/components/InputText';
+import { Button } from 'primereact/button';
 import Logo from '@/components/Logo';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -13,6 +12,7 @@ import AuthService from '@/services/AuthService';
 import { Alert } from '@/lib/Alert';
 import Head from 'next/head';
 import Loading from '@/components/Loading';
+import { InputText } from 'primereact/inputtext';
 
 type IFormValues =  {
   code: string;
@@ -72,13 +72,13 @@ export default function VerifyAccount() {
                   onChange={setOtp}
                   numInputs={6}
                   renderSeparator={<span className="mx-1"></span>}
-                  renderInput={(props) => <InputText {...props} />}
+                  renderInput={(props) => <InputText {...props as any} />}
                   skipDefaultStyles={true}
                   />
                 )}
               </div>
               <div className="my-4">
-                <Button severity="secondary" type="submit" className="w-full">Enviar Código</Button>
+                <Button type="submit" className="w-full">Enviar Código</Button>
               </div>
               <p className="mt-2 text-center text-sm text-gray-600">
                 Lembrou a senha?{' '}

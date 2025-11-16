@@ -1,4 +1,5 @@
 import "../styles/globals.scss";
+import "primereact/resources/themes/mira/theme.css";
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (

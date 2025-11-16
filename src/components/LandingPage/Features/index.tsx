@@ -1,6 +1,6 @@
 "use client"
 
-import Button from '@/components/Button';
+import { Button } from 'primereact/button';
 import { motion } from 'framer-motion';
 import { AlertTriangleIcon, BarChart2Icon, BellIcon, ClockIcon, GlobeIcon, MessageSquareIcon } from 'lucide-react';
 import Link from 'next/link';
@@ -143,7 +143,7 @@ export default function Features() {
           transition={{ delay: 0.8, duration: 0.5 }}
         >
           <Link href="/auth/signup">
-            <Button severity="secondary" className="h-10">Comece a monitorar seus serviços</Button>
+            <Button>Comece a monitorar seus serviços</Button>
           </Link>
         </motion.div>
       </div>

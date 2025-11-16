@@ -1,9 +1,7 @@
 "use client";
 
-import Button from '@/components/Button';
+import { Button } from 'primereact/button';
 import InputCheckBox from '@/components/InputCheckbox';
-import InputPassword from '@/components/InputPassword';
-import InputText from '@/components/InputText';
 import Logo from '@/components/Logo';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -13,11 +11,11 @@ import styles from "./styles.module.scss";
 import AuthService from '@/services/AuthService';
 import { Alert } from '@/lib/Alert';
 import Head from 'next/head';
-import InputDropdown from '@/components/InputDropdown';
-import InputDropdownOption from '@/types/InputDropdownOption';
 import Loading from '@/components/Loading';
+import { InputText } from 'primereact/inputtext';
+import { Dropdown } from 'primereact/dropdown';
 
-type IFormValues =  {
+type IFormValues = {
   name: string;
   email: string;
   password: string;
@@ -29,16 +27,17 @@ type IFormValues =  {
 export default function SignUp() {
   const router = useRouter();
   const [isSubmitting, setSubmitting] = useState(false);
-  const { register, handleSubmit } = useForm<IFormValues>();
-  const [discoveryList, setDiscoveryList] = useState<InputDropdownOption[]>([]);
+  const { register, handleSubmit, setValue, getValues } = useForm<IFormValues>();
+  const [discoveryList, setDiscoveryList] = useState<{ id: string, description: string }[]>([]);
+  const [discovery, setDiscovery] = useState(null);
 
   useEffect(() => {
     setDiscoveryList([
-      { value: "REFERRAL", label: "Indicação de amigo/colega" },
-      { value: "SOCIAL", label: "Redes sociais (Instagram, Facebook, LinkedIn, etc.)" },
-      { value: "AD", label: "Anúncio online (Google Ads, Facebook Ads, etc.)" },
-      { value: "SEARCH", label: "Pesquisa no Google ou outro motor de busca" },
-      { value: "OTHER", label: "Outros" }
+      { id: "REFERRAL", description: "Indicação de amigo/colega" },
+      { id: "SOCIAL", description: "Redes sociais (Instagram, Facebook, LinkedIn, etc.)" },
+      { id: "AD", description: "Anúncio online (Google Ads, Facebook Ads, etc.)" },
+      { id: "SEARCH", description: "Pesquisa no Google ou outro motor de busca" },
+      { id: "OTHER", description: "Outros" }
     ]);
   }, []);
 
@@ -85,28 +84,40 @@ export default function SignUp() {
             <h2 className={`my-6 text-center text-2xl  ${styles["title"]}`}>Criar Conta</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Nome <span className="text-red-500">*</span></label>
-                <InputText {...register("name", { required: true })} type="text" placeholder="Nome completo" />
+                <label className="block text-sm">Nome <span className="text-red-500">*</span></label>
+                <InputText {...register("name", { required: true })} type="text" placeholder="Nome completo" className="p-inputtext-sm" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">E-mail <span className="text-red-500">*</span></label>
-                <InputText {...register("email", { required: true })} type="email" placeholder="seu@email.com" />
+                <label className="block text-sm">E-mail <span className="text-red-500">*</span></label>
+                <InputText {...register("email", { required: true })} type="email" placeholder="seu@email.com" className="p-inputtext-sm" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Senha <span className="text-red-500">*</span></label>
-                <InputPassword {...register("password", { required: true })} placeholder="********" />
+                <label className="block text-sm">Senha <span className="text-red-500">*</span></label>
+                <InputText {...register("password", { required: true })} placeholder="********" className="p-inputtext-sm" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Confirmar Senha <span className="text-red-500">*</span></label>
-                <InputPassword {...register("confirmPassword", { required: true })} placeholder="********" />
+                <label className="block text-sm">Confirmar Senha <span className="text-red-500">*</span></label>
+                <InputText {...register("confirmPassword", { required: true })} placeholder="********" className="p-inputtext-sm" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Onde você conheceu o Systatus.Live?</label>
-                <InputDropdown options={discoveryList} {...register("discovery")} />
+                <label className="block text-sm">Onde você conheceu o Systatus.Live?</label>
+                <Dropdown
+                  {...register("discovery", { required: true })}
+                  options={discoveryList}
+                  checkmark={true}
+                  showClear={true}
+                  optionValue="id"
+                  optionLabel="description"
+                  onChange={(e) => {
+                    setDiscovery(e.value);
+                    setValue("discovery", e.value);
+                  }}
+                  value={discovery}
+                />
               </div>
               <div className="flex items-center">
                 <InputCheckBox {...register("acceptTerms")} />
-                <label htmlFor="acceptTerms" className="ml-2 block text-sm text-gray-900">
+                <label htmlFor="acceptTerms" className="ml-2 block text-sm">
                   Eu aceito os {' '}
                   <Link href="/agreements/terms-of-use" target="_blank" className="font-medium text-blue-600 hover:text-blue-500">Termos de Uso</Link>{' '}
                   e a{' '}
@@ -115,9 +126,9 @@ export default function SignUp() {
               </div>
               <div className="my-4">
                 {isSubmitting}
-                <Button severity="secondary" type="submit" className="w-full">Criar Conta</Button>
+                <Button type="submit" className="w-full">Criar Conta</Button>
               </div>
-              <p className="mt-2 text-center text-sm text-gray-600">
+              <p className="mt-2 text-center text-sm">
                 Já possui uma conta?{' '}
                 <Link href="/auth/signin" className="font-medium text-blue-600 hover:text-blue-500">
                   Entrar

@@ -3,7 +3,7 @@
 import { CheckIcon, XIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import Button from '@/components/Button';
+import { Button } from 'primereact/button';
 import styles from "./styles.module.scss";
 import { useEffect, useState } from 'react';
 import HttpService from '@/services/HttpService';
@@ -94,10 +94,8 @@ export default function Pricing() {
                   </p>
                 </div>
                 <div className="mt-6">
-                  <Button severity={plan.mostPopular ? "secondary" : "info"} className="w-50 h-10">
-                    <Link href="/register" className="w-full text-center">
-                      {plan.cta}
-                    </Link>
+                  <Button>
+                    {plan.cta}
                   </Button>
                 </div>
               </div>

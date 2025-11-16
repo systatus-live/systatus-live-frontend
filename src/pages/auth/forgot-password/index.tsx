@@ -1,7 +1,6 @@
 "use client";
 
-import Button from '@/components/Button';
-import InputText from '@/components/InputText';
+import { Button } from 'primereact/button';
 import Logo from '@/components/Logo';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -13,6 +12,7 @@ import { CheckIcon } from 'lucide-react';
 import AuthService from '@/services/AuthService';
 import { Alert } from '@/lib/Alert';
 import Loading from '@/components/Loading';
+import { InputText } from 'primereact/inputtext';
 
 type IFormValues =  {
   email: string;
@@ -55,7 +55,7 @@ export default function ForgotPassword() {
               </div>
               <h2 className={`my-6 text-center text-2xl  ${styles["title"]}`}>Esqueceu a Senha?</h2>
             </div>
-            <p className="text-sm text-gray-700 mb-4">
+            <p className="text-sm mb-4">
               Insira seu endereço de e-mail para receber um link para redefinir sua senha:
             </p>
             {isSubmitted ? (
@@ -68,20 +68,20 @@ export default function ForgotPassword() {
                 >
                   <CheckIcon className="h-8 w-8 text-green-600" />
                 </motion.div>
-                <p className="text-sm text-gray-700 mt-4">
+                <p className="text-sm mt-4">
                   {message}
                 </p>
               </div>
             ) : (
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">E-mail <span className="text-red-500">*</span></label>
-                  <InputText {...register("email", { required: true })} type="email" placeholder="seu@email.com" />
+                  <label className="block text-sm">E-mail <span className="text-red-500">*</span></label>
+                  <InputText {...register("email", { required: true })} type="email" placeholder="seu@email.com" className="p-inputtext-sm" />
                 </div>
                 <div className="my-4">
-                  <Button severity="secondary" type="submit" className="w-full">Enviar Código</Button>
+                  <Button type="submit" className="w-full">Enviar Código</Button>
                 </div>
-                <p className="mt-2 text-center text-sm text-gray-600">
+                <p className="mt-2 text-center text-sm">
                   Lembrou a senha?{' '}
                   <Link href="/auth/signin" className="font-medium text-blue-600 hover:text-blue-500">
                     Entrar na sua conta

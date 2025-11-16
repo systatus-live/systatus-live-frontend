@@ -1,6 +1,3 @@
-import Button from '@/components/Button';
-import InputText from '@/components/InputText';
-import InputTextArea from '@/components/InputTextArea';
 import Footer from '@/components/LandingPage/Footer';
 import Navbar from '@/components/LandingPage/Navbar';
 import { Alert } from '@/lib/Alert';
@@ -8,10 +5,13 @@ import HttpService from '@/services/HttpService';
 import { motion } from 'framer-motion';
 import { CheckIcon, MailIcon, MapPinIcon } from 'lucide-react';
 import Head from 'next/head';
+import { Button } from 'primereact/button';
 import { useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import { InputText } from 'primereact/inputtext';
+import { InputTextarea } from 'primereact/inputtextarea';
 
-type IFormValues =  {
+type IFormValues = {
   name: string;
   email: string;
   subject: string;
@@ -113,10 +113,10 @@ export default function Contact() {
                         <h2 className="mt-6 text-2xl font-semibold text-gray-900">
                           Recebemos sua mensagem!
                         </h2>
-                        <p className="mt-2 text-gray-500">
+                        <p className="my-2 text-gray-500">
                           Retornaremos o mais breve possível.
                         </p>
-                        <Button severity="secondary" onClick={() => setIsSubmitted(false)} className="mt-2">
+                        <Button onClick={() => setIsSubmitted(false)}>
                           Enviar outra mensagem
                         </Button>
                       </div>
@@ -124,36 +124,28 @@ export default function Contact() {
                       <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
                         <div className="grid grid-cols-1 gap-y-3 gap-x-4 sm:grid-cols-2">
                           {/* Name */}
-                          <div>
-                            <label className="block text-sm/6 font-medium text-gray-900">Nome <span className="text-red-500">*</span></label>
-                            <div>
-                              <InputText {...register("name", { required: true })} type="text" />
-                            </div>
+                          <div className="w-full">
+                            <label className="block text-sm">Nome <span className="text-red-500">*</span></label>
+                            <InputText {...register("name", { required: true })} type="text" className="p-inputtext-sm" />
                           </div>
                           {/* E-mail */}
                           <div>
-                            <label className="block text-sm/6 font-medium text-gray-900">E-mail <span className="text-red-500">*</span></label>
-                            <div>
-                              <InputText {...register("email", { required: true })} type="email" />
-                            </div>
+                            <label className="block text-sm">E-mail <span className="text-red-500">*</span></label>
+                            <InputText {...register("email", { required: true })} type="email" className="p-inputtext-sm" />
                           </div>
                         </div>
                         {/* Subject */}
                         <div>
-                          <label className="block text-sm/6 font-medium text-gray-900">Assunto <span className="text-red-500">*</span></label>
-                          <div>
-                            <InputText {...register("subject", { required: true })} type="subject" />
-                          </div>
+                          <label className="block text-sm">Assunto <span className="text-red-500">*</span></label>
+                          <InputText {...register("subject", { required: true })} type="subject" className="p-inputtext-sm" />
                         </div>
                         {/* Message */}
                         <div>
-                          <label className="block text-sm/6 font-medium text-gray-900">Mensagem <span className="text-red-500">*</span></label>
-                          <div>
-                            <InputTextArea {...register("message", { required: true })} />
-                          </div>
+                          <label className="block text-sm">Mensagem <span className="text-red-500">*</span></label>
+                          <InputTextarea {...register("message", { required: true })} rows={5} className="p-inputtext-sm" />
                         </div>
                         <div className="flex justify-end">
-                          <Button type="submit" disabled={isSubmitting} severity="secondary">{isSubmitting ? "Enviando.." : "Enviar Mensagem"}</Button>
+                          <Button type="submit" disabled={isSubmitting} className="w-full">{isSubmitting ? "Enviando.." : "Enviar Mensagem"}</Button>
                         </div>
                       </form>
                     )}

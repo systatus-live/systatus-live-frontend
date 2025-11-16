@@ -1,7 +1,6 @@
 "use client";
 
-import Button from '@/components/Button';
-import InputPassword from '@/components/InputPassword';
+import { Button } from 'primereact/button';
 import Logo from '@/components/Logo';
 import { Alert } from '@/lib/Alert';
 import AuthService from '@/services/AuthService';
@@ -12,6 +11,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styles from "./styles.module.scss";
 import Loading from '@/components/Loading';
+import { InputText } from 'primereact/inputtext';
 
 type IFormValues =  {
   password: string;
@@ -56,17 +56,17 @@ export default function ResetPassword() {
             <h2 className={`my-6 text-center text-2xl  ${styles["title"]}`}>Redefinir Senha</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Senha <span className="text-red-500">*</span></label>
-                <InputPassword {...register("password", { required: true })} placeholder="********" />
+                <label className="block text-sm">Senha <span className="text-red-500">*</span></label>
+                <InputText {...register("password", { required: true })} placeholder="********" className="p-inputtext-sm"/>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Confirmar Senha <span className="text-red-500">*</span></label>
-                <InputPassword {...register("confirmPassword", { required: true })} placeholder="********" />
+                <label className="block text-sm">Confirmar Senha <span className="text-red-500">*</span></label>
+                <InputText {...register("confirmPassword", { required: true })} placeholder="********" className="p-inputtext-sm"/>
               </div>
               <div className="my-4">
-                <Button severity="secondary" type="submit" className="w-full">Redefinir Senha</Button>
+                <Button type="submit" className="w-full">Redefinir Senha</Button>
               </div>
-              <p className="mt-2 text-center text-sm text-gray-600">
+              <p className="mt-2 text-center text-sm">
                 Cancelar redefinição de senha?{' '}
                 <Link href="/auth/signin" className="font-medium text-blue-600 hover:text-blue-500">
                   Entrar

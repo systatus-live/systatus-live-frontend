@@ -1,8 +1,4 @@
-import Button from '@/components/Button';
-import InputText from '@/components/InputText';
 import Loading from '@/components/Loading';
-import EditIntegration from '@/components/Panel/Integration/EditIntegration';
-import NewIntegration from '@/components/Panel/Integration/NewIntegration';
 import { Alert } from '@/lib/Alert';
 import { NextPageWithLayout } from '@/pages/_app';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
@@ -10,10 +6,13 @@ import IntegrationService from '@/services/IntegrationService';
 import { CopyIcon, SearchIcon } from 'lucide-react';
 import Head from 'next/head';
 import Image from 'next/image';
+import { Button } from 'primereact/button';
+import { DataView } from 'primereact/dataview';
+import { InputText } from 'primereact/inputtext';
 import { useEffect, useState, type ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import PanelLayout from '../layout';
-import styles from "./styles.module.scss";
+import IntegrationForm from '@/components/Panel/Integration/IntegrationForm';
 
 type IFormSearchValues = {
   search: string;
@@ -99,37 +98,50 @@ const Integrations: NextPageWithLayout = () => {
           <p className="mt-1 text-sm text-gray-500">Integrações para receber notificações</p>
         </div>
         <div>
-          <NewIntegration onClose={resetSearch} />
+          <IntegrationForm integration={null} onClose={resetSearch} />
         </div>
       </div>
-      <div className="bg-white shadow-lg border border-gray-200 rounded-sm mt-6 p-4" style={{ minHeight: "85vh" }}>
+      <div className="mt-6">
         <div className="grid grid-cols-1 gap-y-3">
           <form onSubmit={handleSubmit(onSubmitSearch)} className="flex items-center">
-            <InputText {...register("search", { required: false })} style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }} placeholder="Pesquisar integrações" />
-            <Button severity="secondary" style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0, padding: "0.25rem" }} className="h-full">
-              <SearchIcon height={16} />
-            </Button>
+            <div className="p-inputgroup flex-1">
+              <InputText {...register("search", { required: false })} placeholder="Pesquisar integrações" className="p-inputtext-sm" />
+              <Button severity="secondary">
+                <SearchIcon height={16} />
+              </Button>
+            </div>
             <div className="border border-gray-300 text-gray-900 rounded-sm ml-2 font-medium text-sm h-full flex items-center justify-center min-w-10" title="Total de registros">
               {total}
             </div>
           </form>
-          {integrationList.map((integration: any) => (
-            <div key={integration.id} className={`border border-gray-200 rounded-sm p-3 ${styles["integration-grid"]}`}>
-              <div className="flex flex-col justify-center overflow-hidden">
-                <span style={{ fontSize: "0.95rem" }} >{integration.name}</span>
-                <div className="flex text-gray-600 gap-x-1 items-center mt-1">
-                  <Image src={integration.chatPlatformIconUrl} alt="" width={16} height={16} />
-                  <div className="text-gray-500 text-xs overflow-hidden whitespace-nowrap text-ellipsis">{integration.chatPlatform} - {integration.url}</div>
-                  <div title="Copiar" className="cursor-pointer text-blue-700" onClick={() => handleCopyClick(integration.url)}>
-                    <CopyIcon height={12} width={12} />
+
+          <DataView 
+            value={integrationList} 
+            listTemplate={(list: any, index) => (
+              list.map((integration: any) => (
+                <div key={integration.id} className="py-2 border-t-1 border-gray-200">
+                  <div className="flex flex-col justify-center">
+                    <span className="text-sm">{integration.name}</span>
+                    <div className="flex items-center mt-1 gap-x-2">
+                      <div title="Abrir">
+                        <IntegrationForm integration={integration} onClose={resetSearch} />
+                      </div>
+                      <div title="Copiar URL">
+                        <CopyIcon height={14} width={14} className="cursor-pointe text-blue-700" onClick={() => handleCopyClick(integration.url)}  />
+                      </div>
+                      <span className="text-gray-500 text-xs"> • </span>
+                      <div className="flex gap-x-1 items-center overflow-hidden">
+                        <Image src={integration.chatPlatformIconUrl} alt="" width={16} height={16} />
+                        <div className="text-gray-500 text-xs overflow-hidden whitespace-nowrap text-ellipsis">{integration.chatPlatform} • {integration.url}</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="flex items-center justify-end">
-                <EditIntegration integration={integration} onClose={resetSearch} />
-              </div>
-            </div>
-          ))}
+              ))
+            )} 
+            paginator 
+            rows={50}
+          />
         </div>
       </div>
     </>

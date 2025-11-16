@@ -1,6 +1,7 @@
 @use "tailwindcss";
 @use "./theme.scss" as theme;
 @use "./sweet-alert.scss";
+@use "./primeng.scss";
 
 :root {
   font-size: 16px;

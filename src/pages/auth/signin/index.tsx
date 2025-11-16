@@ -1,9 +1,7 @@
 "use client";
 
-import Button from '@/components/Button';
+import { Button } from 'primereact/button';
 import InputCheckBox from '@/components/InputCheckbox';
-import InputPassword from '@/components/InputPassword';
-import InputText from '@/components/InputText';
 import Logo from '@/components/Logo';
 import { SignInTypeEnum } from '@/types/SignInTypeEnum';
 import Head from 'next/head';
@@ -15,6 +13,7 @@ import AuthService from '@/services/AuthService';
 import { useRouter } from 'next/router';
 import { Alert } from '@/lib/Alert';
 import Loading from '@/components/Loading';
+import { InputText } from 'primereact/inputtext';
 
 type IFormValues =  {
   email: string;
@@ -60,17 +59,17 @@ export default function SignIn() {
             <h2 className={`my-6 text-center text-2xl  ${styles["title"]}`}>Entrar</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700">E-mail <span className="text-red-500">*</span></label>
-                <InputText {...register("email", { required: true })} type="email" placeholder="seu@email.com" />
+                <label className="block text-sm">E-mail <span className="text-red-500">*</span></label>
+                <InputText {...register("email", { required: true })} type="email" placeholder="seu@email.com"  className="p-inputtext-sm" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Senha <span className="text-red-500">*</span></label>
-                <InputPassword {...register("password", { required: true })} placeholder="********" />
+                <label className="block text-sm">Senha <span className="text-red-500">*</span></label>
+                <InputText {...register("password", { required: true })} placeholder="********" type="password"  className="p-inputtext-sm" />
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <InputCheckBox />
-                  <label className="ml-2 block text-sm text-gray-900">
+                  <label className="ml-2 block text-sm ">
                     Manter conectado
                   </label>
                 </div>
@@ -79,9 +78,9 @@ export default function SignIn() {
                 </Link>
               </div>
               <div className="my-4">
-                <Button severity="secondary" type="submit" className="w-full">Entrar</Button>
+                <Button type="submit" className="w-full">Entrar</Button>
               </div>
-              <p className="mt-2 text-center text-sm text-gray-600">
+              <p className="mt-2 text-center text-sm">
                 Não possui uma conta?{' '}
                 <Link href="/auth/signup" className="font-medium text-blue-600 hover:text-blue-500">
                   Crie uma gratuitamente

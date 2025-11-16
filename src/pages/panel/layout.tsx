@@ -58,15 +58,15 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
       {isSubmitting && <Loading />}
 
       <div className="flex flex-rows h-screen">
-        <div className="flex justify-between flex-col shadow-lg w-auto sm:w-xs border-r border-gray-200">
+        <div className="flex justify-between flex-col shadow-lg w-auto sm:w-xs border-r border-gray-200" style={{ background: "#113455" }}>
           <div>
             <div className="p-4">
-              <Logo iconOnly={true} />
+              <Logo inverted={true} iconOnly={true} />
             </div>
             <div className="flex flex-col items-center sm:items-start w-full">
               {navList.map((item, index) => (
                 <Link key={index} href={item.route} className="flex justify-center w-full">
-                  <div className="ml-1 pl-2 h-10 w-full flex items-center font-light hover:text-blue-700 hover:font-light border-l-4 border-l-white hover:border-l-blue-700 hover:bg-blue-50">
+                  <div className="pl-2 h-10 w-full flex items-center font-light text-gray-300 hover:text-gray-700 hover:font-light border-l-4 border-l-transparent hover:border-l-gray-700 hover:bg-gray-50">
                     <item.icon className="mr-2" height={18} />
                     <span className="hidden sm:block">{item.label}</span>
                   </div>
@@ -76,14 +76,14 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
           </div>
           <div className="w-full px-4 py-6 border-t-1 border-t-gray-200 flex items-center justify-between">
             <div className="truncate mr-3 hidden md:block">
-              <p className="text-sm">{user.name}</p>
+              <p className="text-sm text-gray-300">{user.name}</p>
             </div>
             <div>
-              <LogOut height={22} className="text-gray-500 cursor-pointer" onClick={() => signOut()} />
+              <LogOut height={22} className="text-gray-300 cursor-pointer" onClick={() => signOut()} />
             </div>
           </div>
         </div>
-        <div className="bg-gray-100 w-full h-screen p-6 overflow-y-auto">
+        <div className="w-full h-screen p-6 overflow-y-auto">
           {children}
         </div>
       </div>
