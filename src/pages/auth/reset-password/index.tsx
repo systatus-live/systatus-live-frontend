@@ -8,10 +8,11 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import styles from "./styles.module.scss";
 import Loading from '@/components/Loading';
 import { InputText } from 'primereact/inputtext';
+import { Password } from 'primereact/password';
 
 type IFormValues =  {
   password: string;
@@ -22,7 +23,7 @@ export default function ResetPassword() {
   const router = useRouter();
   const { token } = router.query;
   const [isSubmitting, setSubmitting] = useState(false);
-  const { register, handleSubmit } = useForm<IFormValues>();
+  const { control, handleSubmit } = useForm<IFormValues>();
 
   function onSubmit(form: IFormValues) {
     setSubmitting(true);
@@ -57,11 +58,15 @@ export default function ResetPassword() {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
               <div>
                 <label className="block text-sm">Senha <span className="text-red-500">*</span></label>
-                <InputText {...register("password", { required: true })} placeholder="********" className="p-inputtext-sm"/>
+                <Controller name="password" control={control} rules={{ required: true }} render={({ field }) => (
+                  <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
+                )} />
               </div>
               <div>
                 <label className="block text-sm">Confirmar Senha <span className="text-red-500">*</span></label>
-                <InputText {...register("confirmPassword", { required: true })} placeholder="********" className="p-inputtext-sm"/>
+                <Controller name="confirmPassword" control={control} rules={{ required: true }} render={({ field }) => (
+                  <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
+                )} />
               </div>
               <div className="my-4">
                 <Button type="submit" className="w-full">Redefinir Senha</Button>

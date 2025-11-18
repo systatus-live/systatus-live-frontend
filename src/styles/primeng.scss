@@ -1,6 +1,8 @@
 .p-button {
   font-size: 0.85rem !important;
-  display: initial !important 
+  display: initial !important;
+  padding: 0.35rem !important;
+  height: 2rem !important;
 }
 
 .p-inputtext,
@@ -11,12 +13,12 @@
   box-shadow: none !important;
 }
 
-.p-button {
-  padding: 0.25rem 0.5rem !important
-}
-
 .p-button,
 .p-inputtext,
 .p-password {
   line-height: 1rem !important;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+  font-size: 0.85rem !important;
 }

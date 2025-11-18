@@ -6,7 +6,7 @@ import Logo from '@/components/Logo';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import styles from "./styles.module.scss";
 import AuthService from '@/services/AuthService';
 import { Alert } from '@/lib/Alert';
@@ -14,6 +14,7 @@ import Head from 'next/head';
 import Loading from '@/components/Loading';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
+import { Password } from 'primereact/password';
 
 type IFormValues = {
   name: string;
@@ -27,7 +28,7 @@ type IFormValues = {
 export default function SignUp() {
   const router = useRouter();
   const [isSubmitting, setSubmitting] = useState(false);
-  const { register, handleSubmit, setValue, getValues } = useForm<IFormValues>();
+  const { control, register, handleSubmit, setValue, getValues } = useForm<IFormValues>();
   const [discoveryList, setDiscoveryList] = useState<{ id: string, description: string }[]>([]);
   const [discovery, setDiscovery] = useState(null);
 
@@ -93,16 +94,20 @@ export default function SignUp() {
               </div>
               <div>
                 <label className="block text-sm">Senha <span className="text-red-500">*</span></label>
-                <InputText {...register("password", { required: true })} placeholder="********" className="p-inputtext-sm" />
+                <Controller name="password" control={control} rules={{ required: true }} render={({ field }) => (
+                  <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
+                )} />
               </div>
               <div>
                 <label className="block text-sm">Confirmar Senha <span className="text-red-500">*</span></label>
-                <InputText {...register("confirmPassword", { required: true })} placeholder="********" className="p-inputtext-sm" />
+                <Controller name="confirmPassword" control={control} rules={{ required: true }} render={({ field }) => (
+                  <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
+                )} />
               </div>
               <div>
                 <label className="block text-sm">Onde você conheceu o Systatus.Live?</label>
                 <Dropdown
-                  {...register("discovery", { required: true })}
+                  {...register("discovery")}
                   options={discoveryList}
                   checkmark={true}
                   showClear={true}

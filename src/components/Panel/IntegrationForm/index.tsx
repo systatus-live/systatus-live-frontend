@@ -130,7 +130,7 @@ export default function IntegrationForm(props: { integration: IFormValues | null
       {isSubmitting && <Loading />}
 
       {props.integration ? (
-        <EditIcon height={16} width={16} onClick={() => setIsOpen(true)} className="cursor-pointer text-green-700" />
+        <EditIcon height={16} width={16} onClick={() => setIsOpen(true)} className="cursor-pointer text-gray-700" />
       ) : (
         <Button label="Nova Integração" onClick={() => setIsOpen(true)} />
       )}
@@ -143,7 +143,11 @@ export default function IntegrationForm(props: { integration: IFormValues | null
           if (!isOpen) return;
           reset();
           setIsOpen(false);
-        }}>
+        }}
+        draggable={false}
+        closeOnEscape={true}
+        dismissableMask={false}
+      >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
           <div>
             <label className="block text-sm font-medium">Plataforma <span className="text-red-500">*</span></label>
@@ -169,7 +173,6 @@ export default function IntegrationForm(props: { integration: IFormValues | null
                   </div>
               )}
               className="p-inputtext-sm"
-              draggable={false}
             />
           </div>
           <div>

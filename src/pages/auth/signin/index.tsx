@@ -7,13 +7,14 @@ import { SignInTypeEnum } from '@/types/SignInTypeEnum';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import styles from "./styles.module.scss";
 import AuthService from '@/services/AuthService';
 import { useRouter } from 'next/router';
 import { Alert } from '@/lib/Alert';
 import Loading from '@/components/Loading';
 import { InputText } from 'primereact/inputtext';
+import { Password } from 'primereact/password';
 
 type IFormValues =  {
   email: string;
@@ -24,7 +25,7 @@ type IFormValues =  {
 export default function SignIn() {
   const router = useRouter();
   const [isSubmitting, setSubmitting] = useState(false);
-  const { register, handleSubmit } = useForm<IFormValues>();
+  const { control, register, handleSubmit } = useForm<IFormValues>();
 
   function onSubmit(form: IFormValues) {
     setSubmitting(true);
@@ -64,12 +65,14 @@ export default function SignIn() {
               </div>
               <div>
                 <label className="block text-sm">Senha <span className="text-red-500">*</span></label>
-                <InputText {...register("password", { required: true })} placeholder="********" type="password"  className="p-inputtext-sm" />
+                <Controller name="password" control={control} rules={{ required: true }} render={({ field }) => (
+                  <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
+                )} />
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <InputCheckBox />
-                  <label className="ml-2 block text-sm ">
+                  <label className="ml-2 block text-sm text-gray-700">
                     Manter conectado
                   </label>
                 </div>
@@ -81,7 +84,7 @@ export default function SignIn() {
                 <Button type="submit" className="w-full">Entrar</Button>
               </div>
               <p className="mt-2 text-center text-sm">
-                Não possui uma conta?{' '}
+                <span className="text-gray-700">Não possui uma conta?{' '}</span>
                 <Link href="/auth/signup" className="font-medium text-blue-600 hover:text-blue-500">
                   Crie uma gratuitamente
                 </Link>
