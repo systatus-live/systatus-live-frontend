@@ -54,7 +54,7 @@ const Integrations: NextPageWithLayout = () => {
   async function handleCopyClick(text: string) {
     try {
       await navigator.clipboard.writeText(text);
-      Alert.success("", "URL copiada");
+      Alert.success("", "Copiado para área de transferência");
     } catch (err) { }
   };
 
@@ -100,10 +100,10 @@ const Integrations: NextPageWithLayout = () => {
             value={integrationList} 
             listTemplate={(list: any, index) => (
               list.map((integration: any) => (
-                <div className="grid grid-cols-2 gap-y-2 border-b-1 border-gray-200 py-3 px-4">
+                <div key={integration.id} className="grid grid-cols-2 gap-y-2 border-b-1 border-gray-200 py-3 px-4">
                   <div key={integration.id} className="flex items-center gap-x-3 items-center">
                     <div className="bg-gray-100 p-1 rounded-lg">
-                      <Image src={integration.chatPlatformIconUrl} alt="" width={28} height={28} />
+                      <Image src={integration.chatPlatformIconUrl} alt="" width={16} height={16} />
                     </div>
                     <div className="flex flex-col justify-center w-full overflow-hidden">
                       <span className="font-medium text-sm">{integration.name}</span>
@@ -117,7 +117,9 @@ const Integrations: NextPageWithLayout = () => {
                       <IntegrationForm integration={integration} onClose={resetSearch} />
                     </div>
                     <div title="Copiar URL">
-                      <CopyIcon height={14} width={14} className="cursor-pointer text-gray-700" onClick={() => handleCopyClick(integration.url)}  />
+                      <Button tooltip="Copiar" tooltipOptions={{ position: "left" }} text severity="info" onClick={() => handleCopyClick(integration.url)} type="button">
+                        <CopyIcon height={14} width={14} />
+                      </Button>
                     </div>
                   </div>
                 </div>

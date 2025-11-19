@@ -1,8 +1,9 @@
 .p-button {
   font-size: 0.85rem !important;
   display: initial !important;
-  padding: 0.35rem !important;
-  height: 2rem !important;
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+  box-shadow: none !important;
 }
 
 .p-inputtext,
@@ -20,5 +21,15 @@
 }
 
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
-  font-size: 0.85rem !important;
+  font-size: 0.875rem !important;
+}
+
+.p-dialog .p-dialog-header .p-dialog-header-icon {
+  box-shadow: none !important;
+}
+
+@media (min-width: 1024px) {
+  .p-inputtext {
+    font-size: 0.875rem !important;
+  }
 }

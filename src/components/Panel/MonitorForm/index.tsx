@@ -4,8 +4,7 @@ import { Alert } from '@/lib/Alert';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
 import MonitorService from '@/services/MonitorService';
 import { MonitorTypeEnum, MonitorTypeLabelEnum } from '@/types/MonitorTypeEnum';
-import removeAccents from '@/utils/removeAccents';
-import { EditIcon, TrashIcon } from 'lucide-react';
+import { CheckIcon, EditIcon, TrashIcon } from 'lucide-react';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
@@ -108,9 +107,11 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
       {isSubmitting && <Loading />}
 
       {props.monitor ? (
-        <EditIcon height={16} width={16} onClick={() => setIsOpen(true)} className="cursor-pointer text-gray-700" />
+        <Button tooltip="Abrir" tooltipOptions={{ position: "left" }} text severity="info" onClick={() => setIsOpen(true)} type="button">
+          <EditIcon height={14} width={14} />
+        </Button>
       ) : (
-        <Button label="Novo Monitor" onClick={() => setIsOpen(true)} />
+        <Button label="Novo monitor" onClick={() => setIsOpen(true)} />
       )}
 
       <Dialog
@@ -159,14 +160,16 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
             {props.monitor && (
               <>
                 <div>
-                  <Button title="Excluir" severity="danger" onClick={() => handleDelete(props.monitor!.id!)} type="button">
+                  <Button tooltip="Excluir" text severity="danger" onClick={() => handleDelete(props.monitor!.id!)} type="button">
                     <TrashIcon height={14} width={14} />
                   </Button>
                 </div>
               </>
             )}
             <div>
-              <Button severity="success" type="submit">Confirmar</Button>
+              <Button tooltip="Confirmar" text severity="success" type="submit">
+                <CheckIcon height={14} width={14} />
+              </Button>
             </div>
           </div>
         </form>

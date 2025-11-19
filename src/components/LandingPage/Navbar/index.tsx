@@ -36,7 +36,7 @@ const Navbar: React.FC = () => {
           </div>
           <div className="hidden sm:flex sm:items-center ml-4 space-x-3">
             <Link href="/auth/signin">
-              <Button outlined>Entrar</Button>
+              <Button text>Entrar</Button>
             </Link>
             <Link href="/auth/signup">
               <Button>Cadastrar</Button>
@@ -63,7 +63,7 @@ const Navbar: React.FC = () => {
             <div className="pt-4 pb-3 border-t border-gray-200">
               <div className="flex items-center px-4 space-x-3">
                 <Link href="/auth/signin">
-                  <Button outlined>Entrar</Button>
+                  <Button text>Entrar</Button>
                 </Link>
                 <Link href="/auth/signup">
                   <Button>Cadastrar</Button>

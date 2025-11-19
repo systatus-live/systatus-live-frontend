@@ -6,10 +6,10 @@ import type { AppProps } from 'next/app';
 import Head from "next/head";
 import { ReactElement, ReactNode } from "react";
 import "../styles/globals.scss";
-// import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
+import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
 // import "primereact/resources//themes/tailwind-light/theme.css";
 // import "primereact/resources/themes/fluent-light/theme.css";
-import "primereact/resources/themes/mira/theme.css";
+// import "primereact/resources/themes/mira/theme.css";
 
 
 export const metadata: Metadata = {

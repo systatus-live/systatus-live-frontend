@@ -55,7 +55,7 @@ const Monitors: NextPageWithLayout = () => {
   async function handleCopyClick(text: string) {
     try {
       await navigator.clipboard.writeText(text);
-      Alert.success("", "Endereço copiado");
+      Alert.success("", "Copiado para área de transferência");
     } catch (err) { }
   };
 
@@ -67,69 +67,6 @@ const Monitors: NextPageWithLayout = () => {
     reset();
     search(new URLSearchParams({ page: "0" }));
   }
-
-  // return (
-  //   <>
-  //     <Head>
-  //       <title>Monitores • Systatus.Live</title>
-  //     </Head>
-
-  //     {isSubmitting && <Loading />}
-
-  //     <div className="flex items-center justify-between">
-  //       <div className="flex flex-col">
-  //         <h1 className="text-xl font-medium">Monitores</h1>
-  //         <p className="mt-1 text-sm text-gray-500">Monitores de disponibilidade e status</p>
-  //       </div>
-  //       <div>
-  //         <MonitorForm monitor={null} onClose={resetSearch} />
-  //       </div>
-  //     </div>
-  //     <div className="mt-6">
-  //       <div className="grid grid-cols-1 gap-y-3">
-  //         <form onSubmit={handleSubmit(onSubmitSearch)} className="flex items-center">
-  //           <div className="p-inputgroup flex-1">
-  //             <InputText {...register("search", { required: false })} placeholder="Pesquisar monitores" className="p-inputtext-sm" />
-  //             <Button severity="secondary">
-  //               <SearchIcon height={16} />
-  //             </Button>
-  //           </div>
-  //           <div className="border border-gray-300 text-gray-900 rounded-sm ml-2 font-medium text-sm h-full flex items-center justify-center min-w-10" title="Total de registros">
-  //             {total}
-  //           </div>
-  //         </form>
-
-  //         <DataView 
-  //           value={monitorList} 
-  //           listTemplate={(list: any, index) => (
-  //             list.map((monitor: any) => (
-  //               <div key={monitor.id} className="py-2 border-t-1 border-gray-200">
-  //                 <div className="flex flex-col justify-center">
-  //                   <span className="font-medium">{monitor.name}</span>
-  //                   <div className="flex items-center mt-1 gap-x-2">
-  //                     <div title="Abrir">
-  //                       <MonitorForm monitor={monitor} onClose={resetSearch} />
-  //                     </div>
-  //                     <div title="Copiar endereço">
-  //                       <CopyIcon height={14} width={14} className="cursor-pointer text-blue-700" onClick={() => handleCopyClick(monitor.address)}  />
-  //                     </div>
-  //                     <span className="text-gray-500 text-sm"> • </span>
-  //                     <div className="flex gap-x-1 items-center overflow-hidden">
-  //                       <Image src={`https://www.google.com/s2/favicons?domain=${monitor.address}`} alt="&#8203;" width={16} height={16} className="rounded" />
-  //                       <div className="text-gray-500 text-sm overflow-hidden whitespace-nowrap text-ellipsis">{MonitorTypeLabelEnum[monitor.type as MonitorTypeEnum]} • {monitor.address}</div>
-  //                     </div>
-  //                   </div>
-  //                 </div>
-  //               </div>
-  //             ))
-  //           )} 
-  //           paginator 
-  //           rows={50}
-  //         />
-  //       </div>
-  //     </div>
-  //   </>
-  // )
 
   return (
     <>
@@ -164,10 +101,10 @@ const Monitors: NextPageWithLayout = () => {
             value={monitorList} 
             listTemplate={(list: any, index) => (
               list.map((monitor: any) => (
-                <div className="grid grid-cols-2 gap-y-2 border-b-1 border-gray-200 py-3 px-4">
+                <div key={monitor.id} className="grid grid-cols-2 gap-y-2 border-b-1 border-gray-200 py-3 px-4">
                   <div key={monitor.id} className="flex items-center gap-x-3 items-center">
                     <div className="bg-gray-100 p-1 rounded-lg">
-                      <Image src={`https://www.google.com/s2/favicons?domain=${monitor.address}`} alt="" width={28} height={28} />
+                      <Image src={`https://www.google.com/s2/favicons?domain=${monitor.address}`} alt="" width={16} height={16} />
                     </div>
                     <div className="flex flex-col justify-center w-full overflow-hidden">
                       <span className="font-medium text-sm">{monitor.name}</span>
@@ -181,7 +118,9 @@ const Monitors: NextPageWithLayout = () => {
                       <MonitorForm monitor={monitor} onClose={resetSearch} />
                     </div>
                     <div title="Copiar URL">
-                      <CopyIcon height={14} width={14} className="cursor-pointer text-gray-700" onClick={() => handleCopyClick(monitor.address)}  />
+                       <Button tooltip="Copiar" tooltipOptions={{ position: "left" }} text severity="info" onClick={() => handleCopyClick(monitor.address)} type="button">
+                        <CopyIcon height={14} width={14} />
+                      </Button>
                     </div>
                   </div>
                 </div>

@@ -3,7 +3,7 @@ import { Alert } from '@/lib/Alert';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
 import ChatPlatformService from '@/services/ChatPlatformService';
 import IntegrationService from '@/services/IntegrationService';
-import { EditIcon, PlayIcon, TrashIcon } from 'lucide-react';
+import { CheckIcon, CircleCheckIcon, EditIcon, PlayIcon, TrashIcon } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
@@ -130,7 +130,9 @@ export default function IntegrationForm(props: { integration: IFormValues | null
       {isSubmitting && <Loading />}
 
       {props.integration ? (
-        <EditIcon height={16} width={16} onClick={() => setIsOpen(true)} className="cursor-pointer text-gray-700" />
+        <Button tooltip="Abrir" tooltipOptions={{ position: "left" }} text severity="info" onClick={() => setIsOpen(true)} type="button">
+          <EditIcon height={14} width={14} />
+        </Button>
       ) : (
         <Button label="Nova Integração" onClick={() => setIsOpen(true)} />
       )}
@@ -187,19 +189,21 @@ export default function IntegrationForm(props: { integration: IFormValues | null
             {props.integration && (
               <>
                 <div>
-                  <Button title="Excluir" severity="danger" onClick={() => handleDelete(props.integration!.id!)} type="button">
+                  <Button tooltip="Excluir" text severity="danger" onClick={() => handleDelete(props.integration!.id!)} type="button">
                     <TrashIcon height={14} width={14} />
                   </Button>
                 </div>
                 <div>
-                  <Button title="Testar" onClick={() => handleValidate(props.integration!.id!)} type="button">
+                  <Button tooltip="Testar" text severity="info" onClick={() => handleValidate(props.integration!.id!)} type="button">
                     <PlayIcon height={14} width={14} />
                   </Button>
                 </div>
               </>
             )}
             <div>
-              <Button severity="success" type="submit">Confirmar</Button>
+              <Button tooltip="Confirmar" text severity="success" type="submit">
+                <CheckIcon height={14} width={14} />
+              </Button>
             </div>
           </div>
         </form>

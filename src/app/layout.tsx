@@ -1,5 +1,5 @@
 import "../styles/globals.scss";
-import "primereact/resources/themes/mira/theme.css";
+import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (

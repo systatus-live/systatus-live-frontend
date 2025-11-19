@@ -108,7 +108,7 @@ export default function Hero() {
                   <Button>Comece agora</Button>
                 </Link>
                 <Link href="#features">
-                  <Button outlined>Saiba mais</Button>
+                  <Button text>Saiba mais</Button>
                 </Link>
               </motion.div>
             </div>
