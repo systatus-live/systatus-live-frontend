@@ -102,8 +102,8 @@ const Integrations: NextPageWithLayout = () => {
               list.map((integration: any) => (
                 <div key={integration.id} className="grid grid-cols-2 gap-y-2 border-b-1 border-gray-200 py-3 px-4">
                   <div key={integration.id} className="flex items-center gap-x-3 items-center">
-                    <div className="bg-gray-100 p-1 rounded-lg">
-                      <Image src={integration.chatPlatformIconUrl} alt="" width={16} height={16} />
+                    <div style={{ position: "relative", width: 16, height: 16 }}>
+                      <Image src={integration.chatPlatformIconUrl} alt="" fill />
                     </div>
                     <div className="flex flex-col justify-center w-full overflow-hidden">
                       <span className="font-medium text-sm">{integration.name}</span>

@@ -10,7 +10,7 @@ import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { MultiSelect } from 'primereact/multiselect';
 import IntegrationService from '@/services/IntegrationService';
 import Image from 'next/image';
@@ -31,7 +31,7 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
   const [isOpen, setIsOpen] = useState(false);
   const monitorTypeList = Object.keys(MonitorTypeEnum).map(t => ({ id: t, description: MonitorTypeLabelEnum[t as MonitorTypeEnum] }));
 
-  const { register, handleSubmit, reset, setValue, watch } = useForm<IFormValues>(props.monitor ? {
+  const { register, handleSubmit, reset, setValue, watch, control } = useForm<IFormValues>(props.monitor ? {
     values: {
       id: props.monitor.id,
       name: props.monitor.name,
@@ -155,24 +155,28 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
           <div>
-            <label className="block text-sm">Tipo <span className="text-red-500">*</span></label>
-            <Dropdown
-              value={watch("type")}
-              onChange={(option) => setValue("type", option.value)}
-              options={monitorTypeList}
-              optionLabel="description"
-              optionValue="id"
-              filter={true}
-              itemTemplate={(option) => (
-                <span>{option.description}</span>
-              )}
-              valueTemplate={(option) => (option == null ? <div>&#8203;</div> : <span>{option.description}</span>)}
-              className="p-inputtext-sm"
-            />
-          </div>
-          <div>
             <label className="block text-sm">Nome <span className="text-red-500">*</span></label>
             <InputText {...register("name", { required: true })} placeholder="Ex.: API de pagamentos" className="p-inputtext-sm" />
+          </div>
+          <div>
+            <label className="block text-sm">Tipo <span className="text-red-500">*</span></label>
+            <Controller name="type" control={control} rules={{ required: true }} render={({ field }) => (
+              <Dropdown
+                {...field}
+                inputRef={field.ref}
+                value={watch("type")}
+                onChange={(option) => setValue("type", option.value)}
+                options={monitorTypeList}
+                optionValue="id"
+                optionLabel="description"
+                filter={true}
+                itemTemplate={(option) => (
+                  <span>{option.description}</span>
+                )}
+                valueTemplate={(option) => (option == null ? <div>&#8203;</div> : <span>{option.description}</span>)}
+                className="p-inputtext-sm"
+              />
+            )} />
           </div>
           <div>
             <label className="block text-sm">Endereço <span className="text-red-500">*</span></label>
@@ -180,21 +184,25 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
           </div>
           <div>
             <label className="block text-sm">Integração <span className="text-red-500">*</span></label>
-            <MultiSelect
-              value={watch("integrationList")}
-              onChange={(option) => setValue("integrationList", option.value)}
-              options={integrationList}
-              optionLabel="name"
-              optionValue="id"
-              filter={true}
-              itemTemplate={(option) => (
-                <div className="flex items-center gap-x-1 w-full overflow-hidden pt-1">
-                  <Image src={option.chatPlatformIconUrl} alt="" width={16} height={16} />
-                  <span className="font-medium text-sm">{option.name}</span>
-                </div>
-              )}
-              className="p-inputtext-sm w-full"
-            />
+            <Controller name="integrationList" control={control} rules={{ required: true }} render={({ field }) => (
+              <MultiSelect
+                {...field}
+                inputRef={field.ref}
+                value={watch("integrationList")}
+                onChange={(option) => setValue("integrationList", option.value)}
+                options={integrationList}
+                optionLabel="name"
+                optionValue="id"
+                filter={true}
+                itemTemplate={(option) => (
+                  <div className="flex items-center gap-x-1 w-full overflow-hidden pt-1">
+                    <Image src={option.chatPlatformIconUrl} alt="" width={16} height={16} />
+                    <span className="font-medium text-sm">{option.name}</span>
+                  </div>
+                )}
+                className="p-inputtext-sm w-full"
+              />
+            )} />
           </div>
           <div className="flex items-center space-x-1">
             <InputCheckBox {...register("active", { required: true })} />

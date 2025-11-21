@@ -69,6 +69,17 @@ const Monitors: NextPageWithLayout = () => {
     search(new URLSearchParams({ page: "0" }));
   }
 
+  function getHistoricalClass(item: any) {
+    if (item.percentOnline + item.percentOffline == 0) {
+      return styles["bg-empty"];
+    } else if (item.percentOnline == 100) {
+      return styles["bg-success"];
+    } else if (item.percentOnline > 50) {
+      return styles["bg-partial"];
+    }
+    return styles["bg-danger"];
+  }
+
   return (
     <>
       <Head>
@@ -105,12 +116,19 @@ const Monitors: NextPageWithLayout = () => {
                 <div className="border-b-1 border-gray-200 py-3 px-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2">
                     <div key={monitor.id} className="flex items-center gap-x-3 items-center">
-                      <div className="bg-gray-100 p-1 rounded-lg">
-                        <Image src={`https://www.google.com/s2/favicons?domain=${monitor.address}`} alt="" width={16} height={16} />
+                      <div style={{ position: "relative", width: 16, height: 16 }}>
+                        <Image src={`https://www.google.com/s2/favicons?domain=${monitor.address}`} alt="" fill />
                       </div>
                       <div className="flex flex-col justify-center w-full overflow-hidden">
                         <div className="flex items-center gap-x-1">
-                          <div className={`${monitor.status == 'ONLINE' ? styles["bg-success"] : styles["bg-danger"]} text-white text-xs rounded-lg px-2`}>{monitor.status}</div>
+                          {monitor.lastStatus == null ?
+                            <div className={`${styles["bg-empty"]} text-white text-xs rounded-lg px-2`} style={{ zoom: 0 }}>
+                              Aguardando monitoramento
+                            </div> :
+                            <div className={`${monitor.lastStatus.startsWith("2") ? styles["bg-success"] : styles["bg-danger"]} text-white text-xs rounded-lg px-2`}>
+                              {monitor.lastStatus.startsWith("2") ? "Online" : "Offline"}
+                            </div>
+                          }
                           <span className="font-medium text-sm">{monitor.name}</span>
                         </div>
                         <div className="text-gray-500 text-xs overflow-hidden whitespace-nowrap text-ellipsis">{MonitorTypeLabelEnum[monitor.type as MonitorTypeEnum]} • {monitor.address}</div>
@@ -131,7 +149,7 @@ const Monitors: NextPageWithLayout = () => {
                   </div>
                   <div className="flex justify-between items-center mt-0 sm:mt-2">
                     <span className="text-gray-500 text-xs">
-                      69% online nos últimos 30 dias:
+                      {monitor.percentOnline}% online nos últimos 30 dias monitorados:
                     </span>
                     <div className="flex items-center gap-x-1">
                       <span className="text-gray-500 text-xs">Integrações:</span>
@@ -141,16 +159,9 @@ const Monitors: NextPageWithLayout = () => {
                     </div>
                   </div>
                   <div className="flex gap-x-1 mt-1">
-                    {Array.from(Array(30).keys()).map(i => {
-                      if (i == 0) {
-                        return <div style={{ width: "6px", height: "20px" }} className="bg-gray-300 rounded-lg" title="20 Nov.: Sem monitoramento"></div>
-                      } else if (i <= 10) {
-                        return <div style={{ width: "6px", height: "20px" }} className={`${styles["bg-danger"]} rounded-lg`}  title="20 Nov.: Indisponibilidade crítica (42% online)"></div>
-                      } else if (i <= 20) {
-                        return <div style={{ width: "6px", height: "20px" }} className={`${styles["bg-medium"]} rounded-lg`} title="20 Nov.: Indisponibilidade crítica (89% online)"></div>
-                      }
-                      return <div style={{ width: "6px", height: "20px" }} className={`${styles["bg-success"]} rounded-lg`} title="20 Nov.: 100% disponível"></div>
-                    })}
+                    {monitor.historical.map((item: any) => (
+                      <div style={{ width: "6px", height: "20px" }} className={`${getHistoricalClass(item)} ${styles["zoom"]} rounded-lg`} title={item.note}></div>
+                    ))}
                   </div>
                 </div>
               ))

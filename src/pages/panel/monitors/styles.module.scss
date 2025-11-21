@@ -7,17 +7,22 @@
   }
 }
 
+.bg-empty {
+  background: lightgray;
+  letter-spacing: 1;
+}
+
 .bg-success {
-  @extend .zoom;
   background: theme.$success-color;
+  letter-spacing: 1;
 }
 
 .bg-danger {
-  @extend .zoom;
   background: theme.$danger-color;
+  letter-spacing: 1;
 }
 
-.bg-medium {
-  @extend .zoom;
+.bg-partial {
   background: theme.$orange-color;
+  letter-spacing: 1;
 }

@@ -10,7 +10,7 @@ import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 type IFormValues = {
   id?: string,
@@ -24,7 +24,7 @@ export default function IntegrationForm(props: { integration: IFormValues | null
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [chatPlatformList, setChatPlatformList] = useState([]);
-  const { register, handleSubmit, reset, setValue, watch } = useForm<IFormValues>(props.integration ? {
+  const { register, handleSubmit, reset, setValue, watch, control } = useForm<IFormValues>(props.integration ? {
     values: {
       id: props.integration.id,
       chatPlatformId: props.integration.chatPlatformId,
@@ -152,34 +152,38 @@ export default function IntegrationForm(props: { integration: IFormValues | null
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
           <div>
+            <label className="block text-sm font-medium">Nome <span className="text-red-500">*</span></label>
+            <InputText {...register("name", { required: true })} placeholder="Ex.: Canal de DevOps" className="p-inputtext-sm" />
+          </div>
+          <div>
             <label className="block text-sm font-medium">Plataforma <span className="text-red-500">*</span></label>
-            <Dropdown
-              value={watch("chatPlatformId")}
-              onChange={(option) => setValue("chatPlatformId", option.value)}
-              options={chatPlatformList}
-              optionLabel="description"
-              optionValue="id"
-              filter={true}
-              itemTemplate={(option) => (
-                <div className="flex items-center gap-x-1">
-                  <Image src={option.iconUrl} alt="" width={16} height={16} />
-                  <span>{option.description}</span>
-                </div>
-              )}
-              valueTemplate={(option) => (
-                option == null ?
-                  <div>&#8203;</div> :
+            <Controller name="chatPlatformId" control={control} rules={{ required: true }} render={({ field }) => (
+              <Dropdown
+                {...field}
+                inputRef={field.ref}
+                value={watch("chatPlatformId")}
+                onChange={(option) => setValue("chatPlatformId", option.value)}
+                options={chatPlatformList}
+                optionLabel="description"
+                optionValue="id"
+                filter={true}
+                itemTemplate={(option) => (
                   <div className="flex items-center gap-x-1">
                     <Image src={option.iconUrl} alt="" width={16} height={16} />
                     <span>{option.description}</span>
                   </div>
-              )}
-              className="p-inputtext-sm"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">Nome <span className="text-red-500">*</span></label>
-            <InputText {...register("name", { required: true })} placeholder="Ex.: Canal de DevOps" className="p-inputtext-sm" />
+                )}
+                valueTemplate={(option) => (
+                  option == null ?
+                    <div>&#8203;</div> :
+                    <div className="flex items-center gap-x-1">
+                      <Image src={option.iconUrl} alt="" width={16} height={16} />
+                      <span>{option.description}</span>
+                    </div>
+                )}
+                className="p-inputtext-sm"
+              />
+            )} />
           </div>
           <div>
             <label className="block text-sm font-medium">URL Webhook <span className="text-red-500">*</span></label>
