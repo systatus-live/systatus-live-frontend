@@ -9,8 +9,11 @@ import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { MultiSelect } from 'primereact/multiselect';
+import IntegrationService from '@/services/IntegrationService';
+import Image from 'next/image';
 
 type IFormValues = {
   id: string,
@@ -18,10 +21,13 @@ type IFormValues = {
   type: string;
   address: string;
   active: boolean;
+  integrationList: any[]
 }
 
 export default function MonitorForm(props: { monitor: IFormValues | null, onClose?: Function; }) {
+  const { token } = useGlobalProvider();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [integrationList, setIntegrationList] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const monitorTypeList = Object.keys(MonitorTypeEnum).map(t => ({ id: t, description: MonitorTypeLabelEnum[t as MonitorTypeEnum] }));
 
@@ -31,7 +37,8 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
       name: props.monitor.name,
       type: props.monitor.type,
       address: props.monitor.address,
-      active: props.monitor.active
+      active: props.monitor.active,
+      integrationList: (props.monitor.integrationList || []).map(integration => integration.id)
     }
   } : {
     values: {
@@ -39,10 +46,16 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
       name: "",
       type: "",
       address: "",
-      active: true
+      active: true,
+      integrationList: []
     }
   });
-  const { token } = useGlobalProvider();
+
+  useEffect(() => {
+    if (token) {
+      getIntegrationList(new URLSearchParams());
+    }
+  }, [token]);
 
   function close() {
     reset();
@@ -54,21 +67,18 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
 
     try {
       let response = null;
+      const payload = {
+        name: form.name,
+        type: form.type,
+        address: form.address,
+        active: form.active,
+        integrationList: form.integrationList
+      }
 
       if (props.monitor) {
-        response = await MonitorService.updateMonitor(token as string, props.monitor.id, {
-          name: form.name,
-          type: form.type,
-          address: form.address,
-          active: form.active
-        })
+        response = await MonitorService.updateMonitor(token as string, props.monitor.id, payload);
       } else {
-        response = await MonitorService.createMonitor(token as string, {
-          name: form.name,
-          type: form.type,
-          address: form.address,
-          active: form.active
-        })
+        response = await MonitorService.createMonitor(token as string, payload);
       }
       Alert.success("", response.message);
       close();
@@ -102,12 +112,28 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
     });
   }
 
+  async function getIntegrationList(params: URLSearchParams) {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
+    params.set("page", "0");
+
+    try {
+      const { data, total } = await IntegrationService.getIntegrationList(token as string, params);
+      setIntegrationList(data);
+    } catch (error: any) {
+      Alert.error("", error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
   return (
     <>
       {isSubmitting && <Loading />}
 
       {props.monitor ? (
-        <Button tooltip="Abrir" tooltipOptions={{ position: "left" }} text severity="info" onClick={() => setIsOpen(true)} type="button">
+        <Button title="Abrir" text severity="info" onClick={() => setIsOpen(true)} type="button">
           <EditIcon height={14} width={14} />
         </Button>
       ) : (
@@ -140,17 +166,35 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
               itemTemplate={(option) => (
                 <span>{option.description}</span>
               )}
-              valueTemplate={(option) => (option == null ? <div>&#8203;</div> : <span>{option.description}</span> )}
+              valueTemplate={(option) => (option == null ? <div>&#8203;</div> : <span>{option.description}</span>)}
               className="p-inputtext-sm"
             />
           </div>
           <div>
             <label className="block text-sm">Nome <span className="text-red-500">*</span></label>
-            <InputText {...register("name", { required: true })} placeholder="Ex.: API de pagamentos" />
+            <InputText {...register("name", { required: true })} placeholder="Ex.: API de pagamentos" className="p-inputtext-sm" />
           </div>
           <div>
             <label className="block text-sm">Endereço <span className="text-red-500">*</span></label>
-            <InputText {...register("address", { required: true })} placeholder="https://..." />
+            <InputText {...register("address", { required: true })} placeholder="https://..." className="p-inputtext-sm" />
+          </div>
+          <div>
+            <label className="block text-sm">Integração <span className="text-red-500">*</span></label>
+            <MultiSelect
+              value={watch("integrationList")}
+              onChange={(option) => setValue("integrationList", option.value)}
+              options={integrationList}
+              optionLabel="name"
+              optionValue="id"
+              filter={true}
+              itemTemplate={(option) => (
+                <div className="flex items-center gap-x-1 w-full overflow-hidden pt-1">
+                  <Image src={option.chatPlatformIconUrl} alt="" width={16} height={16} />
+                  <span className="font-medium text-sm">{option.name}</span>
+                </div>
+              )}
+              className="p-inputtext-sm w-full"
+            />
           </div>
           <div className="flex items-center space-x-1">
             <InputCheckBox {...register("active", { required: true })} />
@@ -160,16 +204,12 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
             {props.monitor && (
               <>
                 <div>
-                  <Button tooltip="Excluir" text severity="danger" onClick={() => handleDelete(props.monitor!.id!)} type="button">
-                    <TrashIcon height={14} width={14} />
-                  </Button>
+                  <Button label="Excluir" text severity="danger" onClick={() => handleDelete(props.monitor!.id!)} type="button" />
                 </div>
               </>
             )}
             <div>
-              <Button tooltip="Confirmar" text severity="success" type="submit">
-                <CheckIcon height={14} width={14} />
-              </Button>
+              <Button label="Confirmar" text severity="success" type="submit" />
             </div>
           </div>
         </form>

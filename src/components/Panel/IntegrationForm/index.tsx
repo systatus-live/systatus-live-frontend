@@ -130,7 +130,7 @@ export default function IntegrationForm(props: { integration: IFormValues | null
       {isSubmitting && <Loading />}
 
       {props.integration ? (
-        <Button tooltip="Abrir" tooltipOptions={{ position: "left" }} text severity="info" onClick={() => setIsOpen(true)} type="button">
+        <Button title="Abrir" text severity="info" onClick={() => setIsOpen(true)} type="button">
           <EditIcon height={14} width={14} />
         </Button>
       ) : (
@@ -189,21 +189,15 @@ export default function IntegrationForm(props: { integration: IFormValues | null
             {props.integration && (
               <>
                 <div>
-                  <Button tooltip="Excluir" text severity="danger" onClick={() => handleDelete(props.integration!.id!)} type="button">
-                    <TrashIcon height={14} width={14} />
-                  </Button>
+                  <Button label="Excluir" text severity="danger" onClick={() => handleDelete(props.integration!.id!)} type="button" />
                 </div>
                 <div>
-                  <Button tooltip="Testar" text severity="info" onClick={() => handleValidate(props.integration!.id!)} type="button">
-                    <PlayIcon height={14} width={14} />
-                  </Button>
+                  <Button label="Testar" text severity="info" onClick={() => handleValidate(props.integration!.id!)} type="button" />
                 </div>
               </>
             )}
             <div>
-              <Button tooltip="Confirmar" text severity="success" type="submit">
-                <CheckIcon height={14} width={14} />
-              </Button>
+              <Button label="Confirmar" text severity="success" type="submit" />
             </div>
           </div>
         </form>

@@ -64,6 +64,8 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
     const navItem = list.find(item => item.route == window.location.pathname);
     if (navItem) {
       navItem.active = true;
+    } else {
+      list[0].active = true;
     }
 
     setNavList(list);

@@ -4,7 +4,7 @@ import { Alert } from '@/lib/Alert';
 import { NextPageWithLayout } from '@/pages/_app';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
 import IntegrationService from '@/services/IntegrationService';
-import { CopyIcon, EllipsisVerticalIcon, MenuIcon, SearchIcon } from 'lucide-react';
+import { CopyIcon, SearchIcon } from 'lucide-react';
 import Head from 'next/head';
 import Image from 'next/image';
 import { Button } from 'primereact/button';
@@ -117,7 +117,7 @@ const Integrations: NextPageWithLayout = () => {
                       <IntegrationForm integration={integration} onClose={resetSearch} />
                     </div>
                     <div title="Copiar URL">
-                      <Button tooltip="Copiar" tooltipOptions={{ position: "left" }} text severity="info" onClick={() => handleCopyClick(integration.url)} type="button">
+                      <Button title="Copiar" text severity="info" onClick={() => handleCopyClick(integration.url)} type="button">
                         <CopyIcon height={14} width={14} />
                       </Button>
                     </div>

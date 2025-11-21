@@ -1,0 +1,23 @@
+@use "../../../styles/theme.scss" as theme;
+
+.zoom {
+  &:hover {
+    transform: scale(1.4);
+    transition: transform 0.1s ease-in-out;
+  }
+}
+
+.bg-success {
+  @extend .zoom;
+  background: theme.$success-color;
+}
+
+.bg-danger {
+  @extend .zoom;
+  background: theme.$danger-color;
+}
+
+.bg-medium {
+  @extend .zoom;
+  background: theme.$orange-color;
+}

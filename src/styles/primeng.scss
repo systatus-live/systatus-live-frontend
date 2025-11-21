@@ -1,3 +1,5 @@
+@use "./theme.scss" as theme;
+
 .p-button {
   font-size: 0.85rem !important;
   display: initial !important;
@@ -9,27 +11,34 @@
 .p-inputtext,
 .p-password,
 .p-icon-field.p-icon-field-right,
-.p-dropdown {
+.p-dropdown,
+.p-multiselect {
   width: 100% !important;
   box-shadow: none !important;
+  color: theme.$black-color !important;
 }
 
 .p-button,
 .p-inputtext,
-.p-password {
+.p-password,
+.p-multiselect {
   line-height: 1rem !important;
 }
 
-.p-dropdown-panel .p-dropdown-items .p-dropdown-item {
-  font-size: 0.875rem !important;
-}
-
-.p-dialog .p-dialog-header .p-dialog-header-icon {
+.p-dialog .p-dialog-header .p-dialog-header-icon,
+.p-multiselect {
   box-shadow: none !important;
 }
 
+.p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight {
+  color: initial !important;
+  background: initial !important;
+}
+
 @media (min-width: 1024px) {
-  .p-inputtext {
+  .p-inputtext,
+  .p-dropdown-panel .p-dropdown-items .p-dropdown-item,
+  .p-multiselect {
     font-size: 0.875rem !important;
   }
 }
