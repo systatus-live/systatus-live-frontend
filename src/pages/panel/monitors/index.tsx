@@ -125,9 +125,7 @@ const Monitors: NextPageWithLayout = () => {
                             <div className={`${styles["bg-empty"]} text-white text-xs rounded-lg px-2`} style={{ zoom: 0 }}>
                               Aguardando monitoramento
                             </div> :
-                            <div className={`${monitor.lastStatus.startsWith("2") ? styles["bg-success"] : styles["bg-danger"]} text-white text-xs rounded-lg px-2`}>
-                              {monitor.lastStatus.startsWith("2") ? "Online" : "Offline"}
-                            </div>
+                            <div className={`${monitor.lastStatus.startsWith("2") ? styles["bg-success"] : styles["bg-danger"]} rounded-full`} style={{ width: "12px", height: "12px" }}></div>
                           }
                           <span className="font-medium text-sm">{monitor.name}</span>
                         </div>
@@ -149,13 +147,17 @@ const Monitors: NextPageWithLayout = () => {
                   </div>
                   <div className="flex justify-between items-center mt-0 sm:mt-2">
                     <span className="text-gray-500 text-xs">
-                      {monitor.percentOnline}% online nos últimos 30 dias monitorados:
+                      {monitor.percentOnline}% disponível nos últimos 30 dias:
                     </span>
                     <div className="flex items-center gap-x-1">
                       <span className="text-gray-500 text-xs">Integrações:</span>
-                      {monitor.integrationList.map((integration: any) => (
-                        <Image src={integration.chatPlatformIconUrl} alt="" width={14} height={14} title={integration.chatPlatform} />
-                      ))}
+                      {monitor.integrationList ? (
+                        monitor.integrationList.map((integration: any) => (
+                          <Image src={integration.chatPlatformIconUrl} alt="" width={14} height={14} title={integration.chatPlatform} />
+                        ))
+                      ) :
+                        <span className="text-gray-500 text-xs">Nenhuma</span>
+                      }
                     </div>
                   </div>
                   <div className="flex gap-x-1 mt-1">
