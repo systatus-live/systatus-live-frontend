@@ -1,19 +1,19 @@
-import InputCheckBox from '@/components/InputCheckbox';
 import Loading from '@/components/Loading';
 import { Alert } from '@/lib/Alert';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
+import IntegrationService from '@/services/IntegrationService';
 import MonitorService from '@/services/MonitorService';
 import { MonitorTypeEnum, MonitorTypeLabelEnum } from '@/types/MonitorTypeEnum';
-import { CheckIcon, EditIcon, TrashIcon } from 'lucide-react';
+import { EditIcon } from 'lucide-react';
+import Image from 'next/image';
 import { Button } from 'primereact/button';
+import { Checkbox } from 'primereact/checkbox';
 import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
+import { MultiSelect } from 'primereact/multiselect';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { MultiSelect } from 'primereact/multiselect';
-import IntegrationService from '@/services/IntegrationService';
-import Image from 'next/image';
 
 type IFormValues = {
   id: string,
@@ -143,7 +143,6 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
       <Dialog
         header={props.monitor ? "Editar Monitor" : "Novo Monitor"}
         visible={isOpen}
-        style={{ width: "30rem" }}
         onHide={() => {
           if (!isOpen) return;
           reset();
@@ -205,7 +204,9 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
             )} />
           </div>
           <div className="flex items-center space-x-1">
-            <InputCheckBox {...register("active", { required: true })} />
+             <Controller name="active" control={control} render={({ field }) => (
+              <Checkbox inputId={field.name} checked={field.value} onChange={(e) => field.onChange(e.checked)} />
+            )} />
             <label className="block text-sm">Ativo</label>
           </div>
           <div className="flex justify-end space-x-2 mt-5">

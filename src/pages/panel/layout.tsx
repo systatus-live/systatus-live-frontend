@@ -104,7 +104,7 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
           </div>
           <div className="w-full px-4 py-6 border-t-1 border-t-gray-500 flex items-center justify-between">
             <div className="truncate mr-3 hidden md:block">
-              <p className="text-sm text-gray-300">{user.name}</p>
+              <p className="text-sm text-gray-300 overflow-hidden whitespace-nowrap text-ellipsis">{user.name}</p>
             </div>
             <div>
               <LogOut height={22} className="text-gray-300 cursor-pointer" onClick={() => signOut()} />

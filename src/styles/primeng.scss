@@ -25,6 +25,10 @@
   line-height: 1rem !important;
 }
 
+.p-dialog {
+  width: 30rem !important;
+}
+
 .p-dialog .p-dialog-header .p-dialog-header-icon,
 .p-multiselect {
   box-shadow: none !important;
@@ -40,5 +44,11 @@
   .p-dropdown-panel .p-dropdown-items .p-dropdown-item,
   .p-multiselect {
     font-size: 0.875rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .p-dialog {
+    width: 96% !important;
   }
 }

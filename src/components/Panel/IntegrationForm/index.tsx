@@ -140,7 +140,6 @@ export default function IntegrationForm(props: { integration: IFormValues | null
       <Dialog
         header={props.integration ? "Editar Integração" : "Nova Integração"}
         visible={isOpen}
-        style={{ width: "30rem" }}
         onHide={() => {
           if (!isOpen) return;
           reset();

@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from 'primereact/button';
-import InputCheckBox from '@/components/InputCheckbox';
 import Logo from '@/components/Logo';
 import { SignInTypeEnum } from '@/types/SignInTypeEnum';
 import Head from 'next/head';
@@ -15,11 +14,13 @@ import { Alert } from '@/lib/Alert';
 import Loading from '@/components/Loading';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
+import { Checkbox } from 'primereact/checkbox';
 
-type IFormValues =  {
+type IFormValues = {
   email: string;
   password: string;
-  type: SignInTypeEnum
+  type: SignInTypeEnum,
+  keepConected: boolean
 }
 
 export default function SignIn() {
@@ -34,6 +35,7 @@ export default function SignIn() {
       email: form.email,
       password: form.password,
       type: SignInTypeEnum.EMAIL_PASSWORD,
+      keepConected: form.keepConected
     }).then((_) => {
       router.push("/panel");
     }).catch((error) => {
@@ -61,7 +63,7 @@ export default function SignIn() {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
               <div>
                 <label className="block text-sm">E-mail <span className="text-red-500">*</span></label>
-                <InputText {...register("email", { required: true })} type="email" placeholder="seu@email.com"  className="p-inputtext-sm" />
+                <InputText {...register("email", { required: true })} type="email" placeholder="seu@email.com" className="p-inputtext-sm" />
               </div>
               <div>
                 <label className="block text-sm">Senha <span className="text-red-500">*</span></label>
@@ -71,7 +73,9 @@ export default function SignIn() {
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <InputCheckBox />
+                  <Controller name="keepConected" control={control} render={({ field }) => (
+                    <Checkbox inputId={field.name} checked={field.value} onChange={(e) => field.onChange(e.checked)} />
+                  )} />
                   <label className="ml-2 block text-sm text-gray-700">
                     Manter conectado
                   </label>

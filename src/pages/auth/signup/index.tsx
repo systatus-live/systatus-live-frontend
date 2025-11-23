@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from 'primereact/button';
-import InputCheckBox from '@/components/InputCheckbox';
 import Logo from '@/components/Logo';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -15,6 +14,7 @@ import Loading from '@/components/Loading';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import { Password } from 'primereact/password';
+import { Checkbox } from 'primereact/checkbox';
 
 type IFormValues = {
   name: string;
@@ -43,11 +43,6 @@ export default function SignUp() {
   }, []);
 
   function onSubmit(form: IFormValues) {
-    if (!form.acceptTerms) {
-      Alert.info("", "Você deve aceitar os Termos de Uso e a Política de Privacidade para criar sua conta.");
-      return;
-    }
-
     setSubmitting(true);
 
     AuthService.signUp({
@@ -121,7 +116,9 @@ export default function SignUp() {
                 />
               </div>
               <div className="flex items-center">
-                <InputCheckBox {...register("acceptTerms")} />
+                <Controller name="acceptTerms" rules={{ required: true }} control={control} render={({ field }) => (
+                  <Checkbox inputId={field.name} checked={field.value} onChange={(e) => field.onChange(e.checked)} />
+                )} />
                 <label htmlFor="acceptTerms" className="ml-2 block text-sm">
                   Eu aceito os {' '}
                   <Link href="/agreements/terms-of-use" target="_blank" className="font-medium text-blue-600 hover:text-blue-500">Termos de Uso</Link>{' '}

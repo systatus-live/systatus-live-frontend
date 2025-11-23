@@ -13,16 +13,21 @@ export async function POST(request: Request) {
     const accessToken = response.data.access_token;
     const decodedToken = jwtDecode(accessToken);
 
-    const cookieStore = await cookies();
-    cookieStore.set({
+    const cookieData: any = {
       name: "token",
       value: accessToken,
       httpOnly: true,
       path: "/",
-      secure: process.env.ENV === "PROD",
-      expires: new Date(decodedToken.exp! * 1000), // "exp" is in seconds, convert to milliseconds
-      maxAge: decodedToken.exp! - decodedToken.iat! // maxAge in seconds
-    })
+      secure: process.env.ENV === "PROD"
+    }
+
+    if (json.keepConected) {
+      cookieData["expires"] = new Date(decodedToken.exp! * 1000); // "exp" is in seconds, convert to milliseconds
+      cookieData["maxAge"] = decodedToken.exp! - decodedToken.iat!; // maxAge in seconds
+    }
+
+    const cookieStore = await cookies();
+    cookieStore.set(cookieData);
 
     return NextResponse.json(response.data, {
       status: response.status
