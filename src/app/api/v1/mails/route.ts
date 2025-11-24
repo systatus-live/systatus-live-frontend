@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     const { name, email, message }: Payload = await request.json();
 
     await axios.post(`${process.env.RESEND_API_URL}/emails`, {
-      from: "Systatus.Live <no-reply@systatus.live>",
+      from: "Systatus.Live <system@systatus.live>",
       to: process.env.CONTACT_EMAIL,
       subject: "[Nova Mensagem]",
       html: `

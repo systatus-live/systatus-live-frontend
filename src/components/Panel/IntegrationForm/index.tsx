@@ -3,7 +3,7 @@ import { Alert } from '@/lib/Alert';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
 import ChatPlatformService from '@/services/ChatPlatformService';
 import IntegrationService from '@/services/IntegrationService';
-import { CheckIcon, CircleCheckIcon, EditIcon, PlayIcon, TrashIcon } from 'lucide-react';
+import { EditIcon } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
@@ -16,7 +16,7 @@ type IFormValues = {
   id?: string,
   chatPlatformId: string;
   name: string;
-  url: string
+  address: string
 }
 
 export default function IntegrationForm(props: { integration: IFormValues | null, onClose?: Function; }) {
@@ -29,7 +29,7 @@ export default function IntegrationForm(props: { integration: IFormValues | null
       id: props.integration.id,
       chatPlatformId: props.integration.chatPlatformId,
       name: props.integration.name,
-      url: props.integration.url
+      address: props.integration.address
     }
   } : {});
 
@@ -46,6 +46,10 @@ export default function IntegrationForm(props: { integration: IFormValues | null
   function close() {
     reset();
     setIsOpen(false);
+
+    if (props.onClose) {
+      props.onClose();
+    }
   }
 
   async function onSubmit(form: IFormValues) {
@@ -58,21 +62,19 @@ export default function IntegrationForm(props: { integration: IFormValues | null
         response = await IntegrationService.updateIntegration(token as string, props.integration.id!, {
           chatPlatformId: form.chatPlatformId,
           name: form.name,
-          url: form.url,
+          address: form.address,
         })
       } else {
         response = await IntegrationService.createIntegration(token as string, {
           chatPlatformId: form.chatPlatformId,
           name: form.name,
-          url: form.url,
+          address: form.address,
         })
       }
 
       Alert.success("", response.message);
+
       close();
-      if (props.onClose) {
-        props.onClose();
-      }
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
@@ -87,11 +89,7 @@ export default function IntegrationForm(props: { integration: IFormValues | null
       try {
         const response = await IntegrationService.deleteIntegration(token as string, id);
         Alert.success("", response.message);
-
         close();
-        if (props.onClose) {
-          props.onClose();
-        }
       } catch (error: any) {
         Alert.error("", error.message);
       } finally {
@@ -109,19 +107,6 @@ export default function IntegrationForm(props: { integration: IFormValues | null
     } catch (error: any) {
       Alert.error("", error.message);
       return [];
-    }
-  }
-
-  async function handleValidate(id: string) {
-    setIsSubmitting(true);
-
-    try {
-      const response = await IntegrationService.validateIntegration(token as string, id);
-      Alert.success("", response.message);
-    } catch (error: any) {
-      Alert.error("", error.message);
-    } finally {
-      setIsSubmitting(false);
     }
   }
 
@@ -185,17 +170,14 @@ export default function IntegrationForm(props: { integration: IFormValues | null
             )} />
           </div>
           <div>
-            <label className="block text-sm font-medium">URL Webhook <span className="text-red-500">*</span></label>
-            <InputText {...register("url", { required: true })} placeholder="https://..." className="p-inputtext-sm" />
+            <label className="block text-sm font-medium">Endereço <span className="text-red-500">*</span></label>
+            <InputText {...register("address", { required: true })} className="p-inputtext-sm" />
           </div>
           <div className="flex justify-end space-x-2 mt-5">
             {props.integration && (
               <>
                 <div>
                   <Button label="Excluir" text severity="danger" onClick={() => handleDelete(props.integration!.id!)} type="button" />
-                </div>
-                <div>
-                  <Button label="Testar" text severity="info" onClick={() => handleValidate(props.integration!.id!)} type="button" />
                 </div>
               </>
             )}

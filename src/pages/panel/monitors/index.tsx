@@ -1,10 +1,11 @@
 import Loading from '@/components/Loading';
+import MonitorForm from '@/components/Panel/MonitorForm';
 import { Alert } from '@/lib/Alert';
 import { NextPageWithLayout } from '@/pages/_app';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
 import MonitorService from '@/services/MonitorService';
 import { MonitorTypeEnum, MonitorTypeLabelEnum } from '@/types/MonitorTypeEnum';
-import { CopyIcon, Monitor, SearchIcon } from 'lucide-react';
+import { CopyIcon, SearchIcon } from 'lucide-react';
 import Head from 'next/head';
 import Image from 'next/image';
 import { Button } from 'primereact/button';
@@ -13,7 +14,6 @@ import { InputText } from 'primereact/inputtext';
 import { useEffect, useState, type ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import PanelLayout from '../layout';
-import MonitorForm from '@/components/Panel/MonitorForm';
 import styles from "./styles.module.scss";
 
 type IFormSearchValues = {

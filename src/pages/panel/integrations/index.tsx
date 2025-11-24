@@ -4,7 +4,7 @@ import { Alert } from '@/lib/Alert';
 import { NextPageWithLayout } from '@/pages/_app';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
 import IntegrationService from '@/services/IntegrationService';
-import { CopyIcon, SearchIcon } from 'lucide-react';
+import { CopyIcon, Play, SearchIcon } from 'lucide-react';
 import Head from 'next/head';
 import Image from 'next/image';
 import { Button } from 'primereact/button';
@@ -67,6 +67,19 @@ const Integrations: NextPageWithLayout = () => {
     search(new URLSearchParams({ page: "0" }));
   }
 
+  async function handleValidate(id: string) {
+    setIsSubmitting(true);
+
+    try {
+      const response = await IntegrationService.validateIntegration(token as string, id);
+      Alert.success("", response.message);
+    } catch (error: any) {
+      Alert.error("", error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
   return (
     <>
       <Head>
@@ -96,8 +109,8 @@ const Integrations: NextPageWithLayout = () => {
 
       <div className="px-6">
         <div className="grid grid-cols-1 gap-y-3 shadow border-t-1 border-gray-200 rounded-lg p-1 bg-white">
-          <DataView 
-            value={integrationList} 
+          <DataView
+            value={integrationList}
             listTemplate={(list: any, index) => (
               list.map((integration: any) => (
                 <div key={integration.id} className="grid grid-cols-2 gap-y-2 border-b-1 border-gray-200 py-3 px-4">
@@ -108,7 +121,7 @@ const Integrations: NextPageWithLayout = () => {
                     <div className="flex flex-col justify-center w-full overflow-hidden">
                       <span className="font-medium text-sm">{integration.name}</span>
                       <div className="flex items-center gap-x-2">
-                        <div className="text-gray-500 text-xs overflow-hidden whitespace-nowrap text-ellipsis">{integration.chatPlatform} • {integration.url}</div>
+                        <div className="text-gray-500 text-xs overflow-hidden whitespace-nowrap text-ellipsis">{integration.chatPlatform} • {integration.address}</div>
                       </div>
                     </div>
                   </div>
@@ -116,16 +129,21 @@ const Integrations: NextPageWithLayout = () => {
                     <div title="Abrir">
                       <IntegrationForm integration={integration} onClose={resetSearch} />
                     </div>
+                    <div title="Testar">
+                      <Button text severity="info" onClick={() => handleValidate(integration.id)} type="button">
+                        <Play height={14} width={14} />
+                      </Button>
+                    </div>
                     <div title="Copiar URL">
-                      <Button title="Copiar" text severity="info" onClick={() => handleCopyClick(integration.url)} type="button">
+                      <Button title="Copiar" text severity="info" onClick={() => handleCopyClick(integration.address)} type="button">
                         <CopyIcon height={14} width={14} />
                       </Button>
                     </div>
                   </div>
                 </div>
               ))
-            )} 
-            paginator 
+            )}
+            paginator
             rows={50}
           />
         </div>

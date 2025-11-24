@@ -44,7 +44,7 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
     values: {
       id: "",
       name: "",
-      type: "",
+      type: MonitorTypeEnum.HTTP,
       address: "",
       active: true,
       integrationList: []
@@ -60,6 +60,10 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
   function close() {
     reset();
     setIsOpen(false);
+
+    if (props.onClose) {
+      props.onClose();
+    }
   }
 
   async function onSubmit(form: IFormValues) {
@@ -82,9 +86,6 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
       }
       Alert.success("", response.message);
       close();
-      if (props.onClose) {
-        props.onClose();
-      }
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
@@ -99,11 +100,7 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
       try {
         const response = await MonitorService.deleteMonitor(token as string, id);
         Alert.success("", response.message);
-
         close();
-        if (props.onClose) {
-          props.onClose();
-        }
       } catch (error: any) {
         Alert.error("", error.message);
       } finally {
@@ -174,6 +171,7 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
                 )}
                 valueTemplate={(option) => (option == null ? <div>&#8203;</div> : <span>{option.description}</span>)}
                 className="p-inputtext-sm"
+                disabled={true}
               />
             )} />
           </div>
@@ -204,7 +202,7 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
             )} />
           </div>
           <div className="flex items-center space-x-1">
-             <Controller name="active" control={control} render={({ field }) => (
+            <Controller name="active" control={control} render={({ field }) => (
               <Checkbox inputId={field.name} checked={field.value} onChange={(e) => field.onChange(e.checked)} />
             )} />
             <label className="block text-sm">Ativo</label>
