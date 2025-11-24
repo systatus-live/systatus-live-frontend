@@ -182,7 +182,7 @@ export default function IntegrationForm(props: { integration: IFormValues | null
               </>
             )}
             <div>
-              <Button label="Confirmar" text severity="success" type="submit" />
+              <Button label="Salvar" text severity="success" type="submit" />
             </div>
           </div>
         </form>

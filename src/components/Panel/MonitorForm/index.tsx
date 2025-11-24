@@ -216,7 +216,7 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
               </>
             )}
             <div>
-              <Button label="Confirmar" text severity="success" type="submit" />
+              <Button label="Salvar" text severity="success" type="submit" />
             </div>
           </div>
         </form>

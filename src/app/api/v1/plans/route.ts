@@ -7,10 +7,8 @@ export async function GET() {
       data: [
         {
           name: "Grátis",
-          price: "Em breve",
-          period: "",
-          //price: "R$ 0",
-          //period: "/mês",
+          price: "R$ 0,00",
+          period: "/mês",
           description: "Não requer cartão de crédito",
           limits: "Até 5 monitores",
           cta: "Comece de graça",
@@ -31,10 +29,11 @@ export async function GET() {
         {
           name: "Pro",
           price: "Em breve",
-          period: "",
+          period: "/mês",
           description: "Perfeito para expandir seu monitoramento",
           limits: "Até 50 monitores",
-          cta: "Adquirir agora",
+          // cta: "Adquirir agora",
+          cta: "Em breve",
           mostPopular: true,
           features: {
             "Até 50 monitores": true,

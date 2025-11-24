@@ -86,7 +86,7 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
         <div className="flex justify-between flex-col shadow-lg w-auto sm:w-xs border-r border-gray-200 bg-slate-800">
           <div>
             <div className="p-4 border-b-1 border-b-gray-500 mb-6">
-              <Logo inverted={true} iconOnly={true} />
+              <Logo inverted={true} />
             </div>
             <div className="flex flex-col items-center sm:items-start w-full">
               {navList.map((item, index) => (
