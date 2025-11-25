@@ -5,7 +5,7 @@ import { NextPageWithLayout } from '@/pages/_app';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
 import MonitorService from '@/services/MonitorService';
 import { MonitorTypeEnum, MonitorTypeLabelEnum } from '@/types/MonitorTypeEnum';
-import { CopyIcon, SearchIcon } from 'lucide-react';
+import { Clock, CopyIcon, SearchIcon } from 'lucide-react';
 import Head from 'next/head';
 import Image from 'next/image';
 import { Button } from 'primereact/button';
@@ -15,6 +15,8 @@ import { useEffect, useState, type ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import PanelLayout from '../layout';
 import styles from "./styles.module.scss";
+import formatDate from '@/utils/formatDate';
+import momentTz from "moment-timezone";
 
 type IFormSearchValues = {
   search: string;
@@ -120,15 +122,7 @@ const Monitors: NextPageWithLayout = () => {
                         <Image src={`https://www.google.com/s2/favicons?domain=${monitor.address}`} alt="" fill />
                       </div>
                       <div className="flex flex-col justify-center w-full overflow-hidden">
-                        <div className="flex items-center gap-x-1">
-                          {monitor.lastStatus == null ?
-                            <div className={`${styles["bg-empty"]} text-white text-xs rounded-lg px-2`} style={{ zoom: 0 }}>
-                              Aguardando monitoramento
-                            </div> :
-                            <div className={`${monitor.lastStatus.startsWith("2") ? styles["bg-success"] : styles["bg-danger"]} rounded-full`} style={{ width: "12px", height: "12px" }}></div>
-                          }
-                          <span className="font-medium text-sm">{monitor.name}</span>
-                        </div>
+                        <span className="font-medium text-sm">{monitor.name}</span>
                         <div className="text-gray-500 text-xs overflow-hidden whitespace-nowrap text-ellipsis">{MonitorTypeLabelEnum[monitor.type as MonitorTypeEnum]} • {monitor.address}</div>
                       </div>
                     </div>
@@ -146,11 +140,38 @@ const Monitors: NextPageWithLayout = () => {
                     </div>
                   </div>
                   <div className="flex justify-between items-center mt-0 sm:mt-2">
-                    <span className="text-gray-500 text-xs">
-                      {monitor.percentOnline}% disponível nos últimos 30 dias:
-                    </span>
+                    <div className="text-gray-500 text-xs flex items-center">
+                      {monitor.lastStatus == null ?
+                        <div className="flex items-center gap-x-1">
+                          <div className={`${styles["bg-empty"]} rounded-full`} style={{ width: "12px", height: "12px" }}></div>
+                          <span>Pendente</span>
+                        </div> :
+                        <div>
+                          {monitor.active ?
+                            (
+                              monitor.lastStatus.startsWith("2") ?
+                                <div className="flex items-center gap-x-1">
+                                  <div className={`${styles["bg-success"]} rounded-full`} style={{ width: "12px", height: "12px" }}></div>
+                                  <span>{formatDate(monitor.lastDate, "DD/MM HH:mm")}</span>
+                                </div> :
+                                <div className="flex items-center gap-x-1">
+                                  <div className={`${styles["bg-danger"]} rounded-full`} style={{ width: "12px", height: "12px" }}></div>
+                                  <span>{formatDate(monitor.lastDate, "DD/MM HH:mm")}</span>
+                                </div>
+                            ) :
+                            (
+                              <div className="flex items-center gap-x-1">
+                                <div className={`${styles["bg-empty"]} rounded-full`} style={{ width: "12px", height: "12px" }}></div>
+                                <span>{formatDate(monitor.lastDate, "DD/MM HH:mm")}</span>
+                              </div>
+                            )
+                          }
+                        </div>
+                      }
+                      <span className="ml-1">• {monitor.percentOnline}% disponível nos últimos 30 dias:</span>
+                    </div>
                     <div className="flex items-center gap-x-1">
-                      <span className="text-gray-500 text-xs">Integrações:</span>
+                      <span className="text-gray-500 text-xs">Integração:</span>
                       {monitor.integrationList ? (
                         monitor.integrationList.map((integration: any) => (
                           <Image src={integration.chatPlatformIconUrl} alt="" width={14} height={14} title={integration.chatPlatform} />
