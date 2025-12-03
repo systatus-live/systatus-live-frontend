@@ -113,9 +113,9 @@ const Monitors: NextPageWithLayout = () => {
         <div className="grid grid-cols-1 gap-y-3 shadow border-t-1 border-gray-200 rounded-lg p-1 bg-white">
           <DataView
             value={monitorList}
-            listTemplate={(list: any, index) => (
-              list.map((monitor: any) => (
-                <div className="border-b-1 border-gray-200 py-3 px-4">
+            listTemplate={(list: any) => (
+              list.map((monitor: any, index: number) => (
+                <div key={monitor.id} className={`${index != (list.length - 1) ? "border-b-1 border-b-gray-200" : ""} py-3 px-4`}>
                   <div className="grid grid-cols-1 sm:grid-cols-2">
                     <div key={monitor.id} className="flex items-center gap-x-3 items-center">
                       <div style={{ position: "relative", width: 16, height: 16 }}>
@@ -151,17 +151,17 @@ const Monitors: NextPageWithLayout = () => {
                             (
                               monitor.lastStatus.startsWith("2") ?
                                 <div className="flex items-center gap-x-1">
-                                  <div className={`${styles["bg-success"]} rounded-full`} style={{ width: "12px", height: "12px" }}></div>
+                                  <div className={`${styles["bg-success"]} rounded-full`} style={{ width: "12px", height: "12px" }} title="Disponível"></div>
                                   <span>{formatDate(monitor.lastDate, "DD/MM HH:mm")}</span>
                                 </div> :
                                 <div className="flex items-center gap-x-1">
-                                  <div className={`${styles["bg-danger"]} rounded-full`} style={{ width: "12px", height: "12px" }}></div>
+                                  <div className={`${styles["bg-danger"]} rounded-full`} style={{ width: "12px", height: "12px" }} title="Indisponível"></div>
                                   <span>{formatDate(monitor.lastDate, "DD/MM HH:mm")}</span>
                                 </div>
                             ) :
                             (
                               <div className="flex items-center gap-x-1">
-                                <div className={`${styles["bg-empty"]} rounded-full`} style={{ width: "12px", height: "12px" }}></div>
+                                <div className={`${styles["bg-empty"]} rounded-full`} style={{ width: "12px", height: "12px" }} title="Inativo"></div>
                                 <span>{formatDate(monitor.lastDate, "DD/MM HH:mm")}</span>
                               </div>
                             )
@@ -171,7 +171,7 @@ const Monitors: NextPageWithLayout = () => {
                       <span className="ml-1">• {monitor.percentOnline}% disponível nos últimos 30 dias:</span>
                     </div>
                     <div className="flex items-center gap-x-1">
-                      <span className="text-gray-500 text-xs">Integração:</span>
+                      <span className="text-gray-500 text-xs">Integrações:</span>
                       {monitor.integrationList ? (
                         monitor.integrationList.map((integration: any) => (
                           <Image src={integration.chatPlatformIconUrl} alt="" width={14} height={14} title={integration.chatPlatform} />

@@ -111,9 +111,9 @@ const Integrations: NextPageWithLayout = () => {
         <div className="grid grid-cols-1 gap-y-3 shadow border-t-1 border-gray-200 rounded-lg p-1 bg-white">
           <DataView
             value={integrationList}
-            listTemplate={(list: any, index) => (
-              list.map((integration: any) => (
-                <div key={integration.id} className="grid grid-cols-2 gap-y-2 border-b-1 border-gray-200 py-3 px-4">
+            listTemplate={(list: any) => (
+              list.map((integration: any, index: number) => (
+                <div key={integration.id} className={`grid grid-cols-2 gap-y-2 ${index != (list.length - 1) ? "border-b-1 border-gray-200" : ""} py-3 px-4`}>
                   <div key={integration.id} className="flex items-center gap-x-3 items-center">
                     <div style={{ position: "relative", width: 16, height: 16 }}>
                       <Image src={integration.chatPlatformIconUrl} alt="" fill />
