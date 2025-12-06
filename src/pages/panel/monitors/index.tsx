@@ -90,7 +90,7 @@ const Monitors: NextPageWithLayout = () => {
 
       {isSubmitting && <Loading />}
 
-      <div className="flex items-center justify-between px-6 py-4 bg-white shadow">
+      <div className="flex items-center justify-between px-6 py-4 bg-white">
         <div className="flex flex-col">
           <h1 className="text-xl font-medium">Monitores</h1>
           <p className="mt-1 text-sm text-gray-500">Monitores de disponibilidade e status</p>
@@ -110,14 +110,15 @@ const Monitors: NextPageWithLayout = () => {
       </form>
 
       <div className="px-6">
-        <div className="grid grid-cols-1 gap-y-3 shadow border-t-1 border-gray-200 rounded-lg p-1 bg-white">
+        <div className="grid grid-cols-1 gap-y-3 border-1 border-gray-200 rounded-lg p-1 bg-white">
           <DataView
             value={monitorList}
             listTemplate={(list: any) => (
               list.map((monitor: any, index: number) => (
                 <div key={monitor.id} className={`${index != (list.length - 1) ? "border-b-1 border-b-gray-200" : ""} py-3 px-4`}>
-                  <div className="grid grid-cols-1 sm:grid-cols-2">
-                    <div key={monitor.id} className="flex items-center gap-x-3 items-center">
+                  <div key={monitor.id} className="grid grid-cols-1 lg:grid-cols-5 gap-y-3 gap-x-3 items-center">
+                    {/* Column 1 */}
+                    <div className="flex items-center gap-x-2">
                       <div style={{ position: "relative", width: 16, height: 16 }}>
                         <Image src={`https://www.google.com/s2/favicons?domain=${monitor.address}`} alt="" fill />
                       </div>
@@ -126,21 +127,8 @@ const Monitors: NextPageWithLayout = () => {
                         <div className="text-gray-500 text-xs overflow-hidden whitespace-nowrap text-ellipsis">{MonitorTypeLabelEnum[monitor.type as MonitorTypeEnum]} • {monitor.address}</div>
                       </div>
                     </div>
-                    <div className="flex flex-col items-start sm:items-end justify-center">
-                      <div className="flex items-center">
-                        <div title="Abrir">
-                          <MonitorForm monitor={monitor} onClose={resetSearch} />
-                        </div>
-                        <div title="Copiar URL">
-                          <Button title="Copiar" text severity="info" onClick={() => handleCopyClick(monitor.address)} type="button">
-                            <CopyIcon height={14} width={14} />
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center mt-0 sm:mt-2">
-                    <div className="text-gray-500 text-xs flex items-center">
+                    {/* Column 2 */}
+                    <div className="text-gray-500 text-xs flex justify-start lg:justify-center">
                       {monitor.lastStatus == null ?
                         <div className="flex items-center gap-x-1">
                           <div className={`${styles["bg-empty"]} rounded-full`} style={{ width: "12px", height: "12px" }}></div>
@@ -155,7 +143,7 @@ const Monitors: NextPageWithLayout = () => {
                                   <span>{formatDate(monitor.lastDate, "DD/MM HH:mm")}</span>
                                 </div> :
                                 <div className="flex items-center gap-x-1">
-                                  <div className={`${styles["bg-danger"]} rounded-full`} style={{ width: "12px", height: "12px" }} title="Indisponível"></div>
+                                  <div className={`${styles["dot-blink"]} ${styles["bg-danger"]} rounded-full`} style={{ width: "12px", height: "12px" }} title="Indisponível"></div>
                                   <span>{formatDate(monitor.lastDate, "DD/MM HH:mm")}</span>
                                 </div>
                             ) :
@@ -168,23 +156,34 @@ const Monitors: NextPageWithLayout = () => {
                           }
                         </div>
                       }
-                      <span className="ml-1">• {monitor.percentOnline}% disponível nos últimos 30 dias:</span>
                     </div>
+                    {/* Column 3 */}
                     <div className="flex items-center gap-x-1">
-                      <span className="text-gray-500 text-xs">Integrações:</span>
+                      {monitor.historical.map((item: any) => (
+                        <div style={{ width: "6px", height: "20px" }} className={`${getHistoricalClass(item)} ${styles["zoom"]} rounded-lg`} title={item.note}></div>
+                      ))}
+                    </div>
+                    {/* Column 4 */}
+                    <div className="flex justify-start lg:justify-center items-center gap-x-1">
                       {monitor.integrationList ? (
                         monitor.integrationList.map((integration: any) => (
                           <Image src={integration.chatPlatformIconUrl} alt="" width={14} height={14} title={integration.chatPlatform} />
                         ))
                       ) :
-                        <span className="text-gray-500 text-xs">Nenhuma</span>
+                        <span className="text-gray-500 text-xs">Sem Integração</span>
                       }
                     </div>
-                  </div>
-                  <div className="flex gap-x-1 mt-1">
-                    {monitor.historical.map((item: any) => (
-                      <div style={{ width: "6px", height: "20px" }} className={`${getHistoricalClass(item)} ${styles["zoom"]} rounded-lg`} title={item.note}></div>
-                    ))}
+                    {/* Column 5 */}
+                    <div className="flex justify-start lg:justify-end">
+                      <div title="Abrir">
+                        <MonitorForm monitor={monitor} onClose={resetSearch} />
+                      </div>
+                      <div title="Copiar URL">
+                        <Button title="Copiar" text severity="info" onClick={() => handleCopyClick(monitor.address)} type="button">
+                          <CopyIcon height={14} width={14} />
+                        </Button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))
