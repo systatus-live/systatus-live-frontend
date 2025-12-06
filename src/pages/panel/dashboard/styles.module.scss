@@ -1,0 +1,24 @@
+@use "../../../styles/theme.scss" as theme;
+
+.total-count {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.total-icon-default {
+  background: lightgray;
+  color: #fff;
+  padding: 0.25rem;
+}
+
+.total-icon-success {
+  background: theme.$success-color;
+  color: #fff;
+  padding: 0.25rem;
+}
+
+.total-icon-danger {
+  background: theme.$danger-color;
+  color: #fff;
+  padding: 0.25rem;
+}

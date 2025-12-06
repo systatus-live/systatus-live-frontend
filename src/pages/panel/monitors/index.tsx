@@ -5,7 +5,8 @@ import { NextPageWithLayout } from '@/pages/_app';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
 import MonitorService from '@/services/MonitorService';
 import { MonitorTypeEnum, MonitorTypeLabelEnum } from '@/types/MonitorTypeEnum';
-import { Clock, CopyIcon, SearchIcon } from 'lucide-react';
+import formatDate from '@/utils/formatDate';
+import { CopyIcon, SearchIcon } from 'lucide-react';
 import Head from 'next/head';
 import Image from 'next/image';
 import { Button } from 'primereact/button';
@@ -15,8 +16,6 @@ import { useEffect, useState, type ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import PanelLayout from '../layout';
 import styles from "./styles.module.scss";
-import formatDate from '@/utils/formatDate';
-import momentTz from "moment-timezone";
 
 type IFormSearchValues = {
   search: string;
@@ -93,7 +92,7 @@ const Monitors: NextPageWithLayout = () => {
       <div className="flex items-center justify-between px-6 py-4 bg-white">
         <div className="flex flex-col">
           <h1 className="text-xl font-medium">Monitores</h1>
-          <p className="mt-1 text-sm text-gray-500">Monitores de disponibilidade e status</p>
+          <p className="mt-1 text-sm text-gray-500">Monitores de disponibilidade</p>
         </div>
         <div>
           <MonitorForm monitor={null} onClose={resetSearch} />

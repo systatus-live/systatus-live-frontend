@@ -3,7 +3,7 @@ import Logo from "@/components/Logo";
 import { Alert } from "@/lib/Alert";
 import { useGlobalProvider } from "@/providers/GlobalProvider";
 import AuthService from "@/services/AuthService";
-import { BarChart2Icon, CircleDotIcon, LogOut, MonitorIcon, Waypoints } from "lucide-react";
+import { BarChart2Icon, CastIcon, CircleDotIcon, LogOut, MonitorIcon, RadarIcon, Waypoints } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -48,7 +48,7 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
         active: false
       },
       {
-        icon: MonitorIcon,
+        icon: RadarIcon,
         label: "Monitores",
         route: "/panel/monitors",
         active: false
