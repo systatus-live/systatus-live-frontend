@@ -75,7 +75,7 @@ const Monitors: NextPageWithLayout = () => {
       return styles["bg-empty"];
     } else if (item.percentOnline == 100) {
       return styles["bg-success"];
-    } else if (item.percentOnline > 50) {
+    } else if (item.percentOnline >= 50) {
       return styles["bg-partial"];
     }
     return styles["bg-danger"];

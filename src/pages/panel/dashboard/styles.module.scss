@@ -22,3 +22,22 @@
   color: #fff;
   padding: 0.25rem;
 }
+
+.bg-danger {
+  background: theme.$danger-color;
+  letter-spacing: 1;
+}
+
+.dot-blink {
+  animation: blinker 1s linear infinite;
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  border-radius: 100%;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0.4;
+  }
+}

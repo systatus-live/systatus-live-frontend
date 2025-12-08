@@ -28,7 +28,7 @@ type IFormValues = {
 export default function SignUp() {
   const router = useRouter();
   const [isSubmitting, setSubmitting] = useState(false);
-  const { control, register, handleSubmit, setValue, getValues } = useForm<IFormValues>();
+  const { control, register, handleSubmit, setValue, watch } = useForm<IFormValues>();
   const [discoveryList, setDiscoveryList] = useState<{ id: string, description: string }[]>([]);
   const [discovery, setDiscovery] = useState(null);
 
@@ -112,7 +112,7 @@ export default function SignUp() {
                     setDiscovery(e.value);
                     setValue("discovery", e.value);
                   }}
-                  value={discovery}
+                  value={watch("discovery")}
                 />
               </div>
               <div className="flex items-center">
