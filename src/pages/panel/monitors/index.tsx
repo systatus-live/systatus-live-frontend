@@ -119,10 +119,12 @@ const Monitors: NextPageWithLayout = () => {
                     {/* Column 1 */}
                     <div className="flex items-center gap-x-2">
                       <div>
-                        {(monitor.active && monitor.lastStatus) &&
-                          monitor.lastStatus?.startsWith("2") ?
-                          <ArrowBigUpDashIcon size={18} className={`${styles["font-success"]}`} /> : 
-                          <ArrowBigDownDashIcon size={18} className={`${styles["blink"]} ${styles["font-danger"]}`} />
+                        {(monitor.active == true && monitor.lastStatus != null) &&
+                          (
+                            monitor.lastStatus?.startsWith("2") ?
+                            <ArrowBigUpDashIcon size={18} className={`${styles["font-success"]}`} /> :
+                            <ArrowBigDownDashIcon size={18} className={`${styles["blink"]} ${styles["font-danger"]}`} />
+                          )
                         }
                       </div>
                       <div className="flex flex-col justify-center w-full overflow-hidden">
