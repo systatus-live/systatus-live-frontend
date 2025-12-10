@@ -1,7 +1,7 @@
 export enum MonitorTypeEnum {
-  HTTP = "HTTP",
+  GET = "GET",
 }
 
 export enum MonitorTypeLabelEnum {
-  HTTP = "GET HTTP/HTTPS",
+  GET = "GET",
 }

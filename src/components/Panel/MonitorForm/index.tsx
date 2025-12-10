@@ -44,7 +44,7 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
     values: {
       id: "",
       name: "",
-      type: MonitorTypeEnum.HTTP,
+      type: MonitorTypeEnum.GET,
       address: "",
       active: true,
       integrationList: []

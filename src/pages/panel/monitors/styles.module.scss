@@ -17,8 +17,18 @@
   letter-spacing: 1;
 }
 
+.font-success {
+  color: theme.$success-color;
+  letter-spacing: 1;
+}
+
 .bg-danger {
   background: theme.$danger-color;
+  letter-spacing: 1;
+}
+
+.font-danger {
+  color: theme.$danger-color;
   letter-spacing: 1;
 }
 
@@ -27,16 +37,14 @@
   letter-spacing: 1;
 }
 
-.dot-blink {
+.blink {
   animation: blinker 1s linear infinite;
-  width: 10px;
-  height: 10px;
   display: inline-block;
   border-radius: 100%;
 }
 
 @keyframes blinker {
   50% {
-    opacity: 0.4;
+    opacity: 0.5;
   }
 }

@@ -6,9 +6,8 @@ import { useGlobalProvider } from '@/providers/GlobalProvider';
 import MonitorService from '@/services/MonitorService';
 import { MonitorTypeEnum, MonitorTypeLabelEnum } from '@/types/MonitorTypeEnum';
 import formatDate from '@/utils/formatDate';
-import { CopyIcon, SearchIcon } from 'lucide-react';
+import { ArrowBigDownDashIcon, ArrowBigUpDashIcon, CopyIcon, SearchIcon, TimerIcon } from 'lucide-react';
 import Head from 'next/head';
-import Image from 'next/image';
 import { Button } from 'primereact/button';
 import { DataView } from 'primereact/dataview';
 import { InputText } from 'primereact/inputtext';
@@ -16,6 +15,7 @@ import { useEffect, useState, type ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import PanelLayout from '../layout';
 import styles from "./styles.module.scss";
+import { getHttpStatusKey, HttpStatusCodeLabel } from '@/types/HttpStatusCode';
 
 type IFormSearchValues = {
   search: string;
@@ -118,8 +118,12 @@ const Monitors: NextPageWithLayout = () => {
                   <div key={monitor.id} className="grid grid-cols-1 lg:grid-cols-5 gap-y-3 gap-x-3 items-center">
                     {/* Column 1 */}
                     <div className="flex items-center gap-x-2">
-                      <div style={{ position: "relative", width: 16, height: 16 }}>
-                        <Image src={`https://www.google.com/s2/favicons?domain=${monitor.address}`} alt="" fill />
+                      <div>
+                        {(monitor.active && monitor.lastStatus) &&
+                          monitor.lastStatus?.startsWith("2") ?
+                          <ArrowBigUpDashIcon size={18} className={`${styles["font-success"]}`} /> : 
+                          <ArrowBigDownDashIcon size={18} className={`${styles["blink"]} ${styles["font-danger"]}`} />
+                        }
                       </div>
                       <div className="flex flex-col justify-center w-full overflow-hidden">
                         <span className="font-medium text-sm">{monitor.name}</span>
@@ -127,50 +131,43 @@ const Monitors: NextPageWithLayout = () => {
                       </div>
                     </div>
                     {/* Column 2 */}
-                    <div className="text-gray-500 text-xs flex justify-start lg:justify-center">
-                      {monitor.lastStatus == null ?
-                        <div className="flex items-center gap-x-1">
-                          <div className={`${styles["bg-empty"]} rounded-full`} style={{ width: "12px", height: "12px" }}></div>
-                          <span>Pendente</span>
-                        </div> :
-                        <div>
-                          {monitor.active ?
-                            (
-                              monitor.lastStatus.startsWith("2") ?
-                                <div className="flex items-center gap-x-1">
-                                  <div className={`${styles["bg-success"]} rounded-full`} style={{ width: "12px", height: "12px" }} title="Disponível"></div>
-                                  <span>{formatDate(monitor.lastDate, "DD/MM HH:mm")}</span>
-                                </div> :
-                                <div className="flex items-center gap-x-1">
-                                  <div className={`${styles["dot-blink"]} ${styles["bg-danger"]} rounded-full`} style={{ width: "12px", height: "12px" }} title="Indisponível"></div>
-                                  <span>{formatDate(monitor.lastDate, "DD/MM HH:mm")}</span>
-                                </div>
-                            ) :
-                            (
-                              <div className="flex items-center gap-x-1">
-                                <div className={`${styles["bg-empty"]} rounded-full`} style={{ width: "12px", height: "12px" }} title="Inativo"></div>
-                                <span>{formatDate(monitor.lastDate, "DD/MM HH:mm")}</span>
-                              </div>
-                            )
-                          }
-                        </div>
+                    <div className="text-xs text-gray-500 flex justify-start lg:justify-center">
+                      {monitor.lastStatus == null ? (
+                        <span>Pendente</span>
+                      ) : (
+                        monitor.active ? (
+                          <div className="flex flex-col">
+                            <div className="flex items-center gap-x-1">
+                              <span>{monitor.lastStatus?.startsWith("2") ? "Uptime" : "Downtime"}</span>
+                              <span>{monitor.lastIncident}</span>
+                            </div>
+                            {!monitor.lastStatus?.startsWith("2") && <div>{HttpStatusCodeLabel[getHttpStatusKey(monitor.lastStatus) as keyof typeof HttpStatusCodeLabel]} ({monitor.lastStatus})</div>}
+                          </div>
+                        ) : (
+                          <span></span>
+                        )
+                      )
                       }
                     </div>
                     {/* Column 3 */}
-                    <div className="flex items-center gap-x-1">
-                      {monitor.historical.map((item: any) => (
-                        <div style={{ width: "6px", height: "20px" }} className={`${getHistoricalClass(item)} ${styles["zoom"]} rounded-lg`} title={item.note}></div>
-                      ))}
+                    <div className="flex gap-x-1">
+                      <div className="flex gap-x-1">
+                        {monitor.historical.map((item: any) => (
+                          <div style={{ width: "6px", height: "20px" }} className={`${getHistoricalClass(item)} ${styles["zoom"]} rounded-lg`} title={item.note}></div>
+                        ))}
+                      </div>
+                      <small className="text-gray-500">
+                        {monitor.percentOnline}%
+                      </small>
                     </div>
                     {/* Column 4 */}
-                    <div className="flex justify-start lg:justify-center items-center gap-x-1">
-                      {monitor.integrationList ? (
-                        monitor.integrationList.map((integration: any) => (
-                          <Image src={integration.chatPlatformIconUrl} alt="" width={14} height={14} title={integration.chatPlatform} />
-                        ))
-                      ) :
-                        <span className="text-gray-500 text-xs">Sem Integração</span>
-                      }
+                    <div className="flex justify-start lg:justify-end items-center gap-x-1 text-gray-500 text-xs">
+                      {monitor.lastStatus && (
+                        <>
+                          <TimerIcon size={16} />
+                          {monitor.lastDate && <p>{formatDate(monitor.lastDate, "DD/MM HH:mm")}</p>}
+                        </>
+                      )}
                     </div>
                     {/* Column 5 */}
                     <div className="flex justify-start lg:justify-end">

@@ -23,15 +23,13 @@
   padding: 0.25rem;
 }
 
-.bg-danger {
-  background: theme.$danger-color;
+.font-danger {
+  color: theme.$danger-color;
   letter-spacing: 1;
 }
 
-.dot-blink {
+.blink {
   animation: blinker 1s linear infinite;
-  width: 10px;
-  height: 10px;
   display: inline-block;
   border-radius: 100%;
 }

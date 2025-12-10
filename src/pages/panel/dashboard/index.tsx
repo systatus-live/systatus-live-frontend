@@ -1,17 +1,17 @@
 import Loading from '@/components/Loading';
+import { Alert } from '@/lib/Alert';
 import { NextPageWithLayout } from '@/pages/_app';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
-import { ArrowDownCircle, RadarIcon, WaypointsIcon } from 'lucide-react';
+import StatisticService from '@/services/StatisticService';
+import { getHttpStatusKey, HttpStatusCodeLabel } from '@/types/HttpStatusCode';
+import formatDate from '@/utils/formatDate';
+import { ArrowBigDownDashIcon, RadarIcon, WaypointsIcon } from 'lucide-react';
 import Head from 'next/head';
+import Image from 'next/image';
+import { DataView } from 'primereact/dataview';
 import { useEffect, useState, type ReactElement } from 'react';
 import PanelLayout from '../layout';
 import styles from "./styles.module.scss";
-import Image from 'next/image';
-import StatisticService from '@/services/StatisticService';
-import { Alert } from '@/lib/Alert';
-import { DataView } from 'primereact/dataview';
-import formatDate from '@/utils/formatDate';
-import { getHttpStatusKey, HttpStatusCode, HttpStatusCodeLabel } from '@/types/HttpStatusCode';
 
 const Dashboard: NextPageWithLayout = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -75,7 +75,7 @@ const Dashboard: NextPageWithLayout = () => {
                   <p className={styles["total-count"]}>{statistic.currentIncidentList.length}</p>
                 </div>
                 <div className={`${styles["total-icon-danger"]} rounded-lg`}>
-                  <ArrowDownCircle />
+                  <ArrowBigDownDashIcon />
                 </div>
               </div>
             </div>
@@ -105,9 +105,9 @@ const Dashboard: NextPageWithLayout = () => {
                     list.map((monitor: any, index: number) => (
                       <div key={index} className={`${index != (list.length - 1) ? "border-b-1 border-b-gray-200" : ""}`}>
                         <div className="flex items-center gap-x-2 text-sm py-2">
-                          <div className={`${styles["dot-blink"]} ${styles["bg-danger"]} rounded-full`} style={{ width: "12px", height: "12px" }} title="Indisponível"></div>
+                          <ArrowBigDownDashIcon size={18} className={`${styles["blink"]} ${styles["font-danger"]}`} />
                           <div className="flex flex-col">
-                            <span>{monitor.name} ({monitor.address}) ficou indisponível. Status: {HttpStatusCodeLabel[getHttpStatusKey(monitor.status) as keyof typeof HttpStatusCodeLabel]} ({monitor.status}).</span>
+                            <span>{monitor.name} ({monitor.address}) - {HttpStatusCodeLabel[getHttpStatusKey(monitor.status) as keyof typeof HttpStatusCodeLabel]} ({monitor.status})</span>
                             <small>{formatDate(monitor.createdAt, "DD/MM/YYYY HH:mm")}</small>
                           </div>
                         </div>
@@ -134,7 +134,7 @@ const Dashboard: NextPageWithLayout = () => {
                     list.map((incident: any, index: number) => (
                       <div key={index} className={`${index != (list.length - 1) ? "border-b-1 border-b-gray-200" : ""}`}>
                         <div className="flex flex-col text-sm font-medium py-2">
-                          <span>{incident.name} ({incident.address}) ficou indisponível. Status: {HttpStatusCodeLabel[getHttpStatusKey(incident.status) as keyof typeof HttpStatusCodeLabel]} ({incident.status}).</span>
+                          <span>{incident.name} ({incident.address}) - {HttpStatusCodeLabel[getHttpStatusKey(incident.status) as keyof typeof HttpStatusCodeLabel]} ({incident.status})</span>
                           <small>{formatDate(incident.createdAt, "DD/MM/YYYY HH:mm")}</small>
                         </div>
                       </div>
