@@ -6,7 +6,7 @@ import { useGlobalProvider } from '@/providers/GlobalProvider';
 import MonitorService from '@/services/MonitorService';
 import { MonitorTypeEnum, MonitorTypeLabelEnum } from '@/types/MonitorTypeEnum';
 import formatDate from '@/utils/formatDate';
-import { ArrowBigDownDashIcon, ArrowBigUpDashIcon, CopyIcon, SearchIcon, TimerIcon } from 'lucide-react';
+import { ArrowBigDownDashIcon, ArrowBigUpDashIcon, ClockFadingIcon, CopyIcon, PauseIcon, SearchIcon, TimerIcon } from 'lucide-react';
 import Head from 'next/head';
 import { Button } from 'primereact/button';
 import { DataView } from 'primereact/dataview';
@@ -81,6 +81,18 @@ const Monitors: NextPageWithLayout = () => {
     return styles["bg-danger"];
   }
 
+  function getMonitorStatusIcon(monitor: any) {
+    if (monitor.active == false) {
+      return <span title="Inativo/Pausado"><PauseIcon size={18} className={`${styles["font-empty"]}`} /></span>
+    }
+
+    if (monitor.lastStatus == null) {
+      return <span title="Pendente"><ClockFadingIcon size={18} className={`${styles["font-empty"]}`} /></span>
+    }
+
+    return monitor.lastStatus?.startsWith("2") ? <span title="Disponível"><ArrowBigUpDashIcon size={18} className={`${styles["font-success"]}`} /></span> : <span title="Indisponível"><ArrowBigDownDashIcon size={18} className={`${styles["blink"]} ${styles["font-danger"]}`} /> </span>
+  }
+
   return (
     <>
       <Head>
@@ -119,13 +131,7 @@ const Monitors: NextPageWithLayout = () => {
                     {/* Column 1 */}
                     <div className="flex items-center gap-x-2">
                       <div>
-                        {(monitor.active == true && monitor.lastStatus != null) &&
-                          (
-                            monitor.lastStatus?.startsWith("2") ?
-                            <ArrowBigUpDashIcon size={18} className={`${styles["font-success"]}`} /> :
-                            <ArrowBigDownDashIcon size={18} className={`${styles["blink"]} ${styles["font-danger"]}`} />
-                          )
-                        }
+                        {getMonitorStatusIcon(monitor)}
                       </div>
                       <div className="flex flex-col justify-center w-full overflow-hidden">
                         <span className="font-medium text-sm">{monitor.name}</span>
