@@ -11,7 +11,7 @@ import { Alert } from '@/lib/Alert';
 
 export default function Pricing() {
   const [planList, setPlanList] = useState<any[]>([]);
-  
+
   function getPlanList() {
     HttpService.get("/api/v1/plans", {}).then(response => {
       setPlanList(response.data);
@@ -94,9 +94,9 @@ export default function Pricing() {
                   </p>
                 </div>
                 <div className="mt-6">
-                  <Button>
-                    {plan.cta}
-                  </Button>
+                  <Link href={plan.ctaLink}>
+                    <Button>{plan.cta}</Button>
+                  </Link>
                 </div>
               </div>
               <div className="py-6 px-6 bg-gray-50 space-y-6 sm:p-10">

@@ -12,6 +12,7 @@ export async function GET() {
           description: "Não requer cartão de crédito",
           limits: "Até 5 monitores",
           cta: "Comece de graça",
+          ctaLink: "/auth/signin",
           mostPopular: false,
           features: {
             "Até 5 monitores": true,
@@ -34,6 +35,7 @@ export async function GET() {
           limits: "Até 50 monitores",
           // cta: "Adquirir agora",
           cta: "Em breve",
+          ctaLink: "#",
           mostPopular: true,
           features: {
             "Até 50 monitores": true,
