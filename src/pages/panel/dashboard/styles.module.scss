@@ -6,20 +6,17 @@
 }
 
 .total-icon-default {
-  background: lightgray;
-  color: #fff;
+  color: lightgray;
   padding: 0.25rem;
 }
 
 .total-icon-success {
-  background: theme.$success-color;
-  color: #fff;
+  color: theme.$success-color;
   padding: 0.25rem;
 }
 
 .total-icon-danger {
-  background: theme.$danger-color;
-  color: #fff;
+  color: theme.$danger-color;
   padding: 0.25rem;
 }
 
