@@ -1,5 +1,11 @@
 @use "../../../styles/theme.scss" as theme;
 
+.statistic-grid {
+  display: grid;
+  grid-template-columns: 25rem 1fr;
+  gap: 1rem
+}
+
 .total-count {
   font-size: 2rem;
   font-weight: 700;
@@ -34,5 +40,11 @@
 @keyframes blinker {
   50% {
     opacity: 0.4;
+  }
+}
+
+@media (max-width: 1366px) {
+  .statistic-grid {
+    grid-template-columns: 1fr;
   }
 }

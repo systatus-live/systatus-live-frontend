@@ -103,7 +103,7 @@ const Monitors: NextPageWithLayout = () => {
 
       <div className="flex items-center justify-between px-6 py-4 bg-white">
         <div className="flex flex-col">
-          <h1 className="text-xl font-medium">Monitores</h1>
+          <h1 className="text-xl font-bold">Monitores</h1>
           <p className="mt-1 text-sm text-gray-500">Monitores de disponibilidade</p>
         </div>
         <div>
