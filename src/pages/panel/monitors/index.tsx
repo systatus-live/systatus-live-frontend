@@ -16,6 +16,7 @@ import { useForm } from 'react-hook-form';
 import PanelLayout from '../layout';
 import styles from "./styles.module.scss";
 import { getHttpStatusKey, HttpStatusCodeLabel } from '@/types/HttpStatusCode';
+import { Skeleton } from 'primereact/skeleton';
 
 type IFormSearchValues = {
   search: string;
@@ -24,9 +25,9 @@ type IFormSearchValues = {
 const Monitors: NextPageWithLayout = () => {
   const { token } = useGlobalProvider();
   const [monitorList, setMonitorList] = useState([]);
-  const [total, setTotal] = useState(0);
   const [page, setPage] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [firstLoading, setFirstLoading] = useState(true);
   const { register, handleSubmit, reset } = useForm<IFormSearchValues>();
 
   useEffect(() => {
@@ -45,8 +46,8 @@ const Monitors: NextPageWithLayout = () => {
 
     try {
       const { data, total } = await MonitorService.getMonitorList(token as string, params);
-      setTotal(total);
       setMonitorList(data);
+      setFirstLoading(false);
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
@@ -121,81 +122,86 @@ const Monitors: NextPageWithLayout = () => {
       </form>
 
       <div className="px-6">
-        <div className="grid grid-cols-1 gap-y-3 border-1 border-gray-200 rounded-lg p-1 bg-white">
-          <DataView
-            value={monitorList}
-            listTemplate={(list: any) => (
-              list.map((monitor: any, index: number) => (
-                <div key={monitor.id} className={`${index != (list.length - 1) ? "border-b-1 border-b-gray-200" : ""} py-3 px-4`}>
-                  <div key={monitor.id} className="grid grid-cols-1 lg:grid-cols-5 gap-y-3 gap-x-3 items-center">
-                    {/* Column 1 */}
-                    <div className="flex items-center gap-x-2">
-                      <div>
-                        {getMonitorStatusIcon(monitor)}
+        {firstLoading ? (
+          <Skeleton width="100%" height="10vh"></Skeleton>
+        ) : (
+          <div className="grid grid-cols-1 gap-y-3 border-1 border-gray-200 rounded-lg p-1 bg-white">
+            <DataView
+              value={monitorList}
+              emptyMessage="&#8203;"
+              listTemplate={(list: any) => (
+                list.map((monitor: any, index: number) => (
+                  <div key={monitor.id} className={`${index != (list.length - 1) ? "border-b-1 border-b-gray-200" : ""} py-3 px-4`}>
+                    <div key={monitor.id} className="grid grid-cols-1 lg:grid-cols-5 gap-y-3 gap-x-3 items-center">
+                      {/* Column 1 */}
+                      <div className="flex items-center gap-x-2">
+                        <div>
+                          {getMonitorStatusIcon(monitor)}
+                        </div>
+                        <div className="flex flex-col justify-center w-full overflow-hidden">
+                          <span className="font-medium text-sm">{monitor.name}</span>
+                          <div className="text-gray-500 text-xs overflow-hidden whitespace-nowrap text-ellipsis">{MonitorTypeLabelEnum[monitor.type as MonitorTypeEnum]} • {monitor.address}</div>
+                        </div>
                       </div>
-                      <div className="flex flex-col justify-center w-full overflow-hidden">
-                        <span className="font-medium text-sm">{monitor.name}</span>
-                        <div className="text-gray-500 text-xs overflow-hidden whitespace-nowrap text-ellipsis">{MonitorTypeLabelEnum[monitor.type as MonitorTypeEnum]} • {monitor.address}</div>
-                      </div>
-                    </div>
-                    {/* Column 2 */}
-                    <div className="text-xs text-gray-500 flex justify-start lg:justify-center">
-                      {monitor.lastStatus == null ? (
-                        <span>Pendente</span>
-                      ) : (
-                        monitor.active ? (
-                          <div className="flex flex-col">
-                            <div className="flex items-center gap-x-1">
-                              <span>{monitor.lastStatus?.startsWith("2") ? "Uptime" : "Downtime"}</span>
-                              <span>{monitor.lastIncident}</span>
-                            </div>
-                            {!monitor.lastStatus?.startsWith("2") && <div>{HttpStatusCodeLabel[getHttpStatusKey(monitor.lastStatus) as keyof typeof HttpStatusCodeLabel]} ({monitor.lastStatus})</div>}
-                          </div>
+                      {/* Column 2 */}
+                      <div className="text-xs text-gray-500 flex justify-start lg:justify-center">
+                        {monitor.lastStatus == null ? (
+                          <span>Pendente</span>
                         ) : (
-                          <span></span>
+                          monitor.active ? (
+                            <div className="flex flex-col">
+                              <div className="flex items-center gap-x-1">
+                                <span>{monitor.lastStatus?.startsWith("2") ? "Uptime" : "Downtime"}</span>
+                                <span>{monitor.lastIncident}</span>
+                              </div>
+                              {!monitor.lastStatus?.startsWith("2") && <div>{HttpStatusCodeLabel[getHttpStatusKey(monitor.lastStatus) as keyof typeof HttpStatusCodeLabel]} ({monitor.lastStatus})</div>}
+                            </div>
+                          ) : (
+                            <span></span>
+                          )
                         )
-                      )
-                      }
-                    </div>
-                    {/* Column 3 */}
-                    <div className="flex gap-x-1">
+                        }
+                      </div>
+                      {/* Column 3 */}
                       <div className="flex gap-x-1">
-                        {monitor.historical.map((item: any) => (
-                          <div style={{ width: "6px", height: "20px" }} className={`${getHistoricalClass(item)} ${styles["zoom"]} rounded-lg`} title={item.note}></div>
-                        ))}
+                        <div className="flex gap-x-1">
+                          {monitor.historical.map((item: any) => (
+                            <div style={{ width: "6px", height: "20px" }} className={`${getHistoricalClass(item)} ${styles["zoom"]} rounded-lg`} title={item.note}></div>
+                          ))}
+                        </div>
+                        <small className="text-gray-500">
+                          {monitor.percentOnline}%
+                        </small>
                       </div>
-                      <small className="text-gray-500">
-                        {monitor.percentOnline}%
-                      </small>
-                    </div>
-                    {/* Column 4 */}
-                    <div className="flex justify-start lg:justify-end items-center gap-x-1 text-gray-500 text-xs">
-                      {monitor.lastStatus && (
-                        <>
-                          <TimerIcon size={16} />
-                          {monitor.lastDate && <p>{formatDate(monitor.lastDate, "DD/MM HH:mm")}</p>}
-                        </>
-                      )}
-                    </div>
-                    {/* Column 5 */}
-                    <div className="flex justify-start lg:justify-end">
-                      <div title="Abrir">
-                        <MonitorForm monitor={monitor} onClose={resetSearch} />
+                      {/* Column 4 */}
+                      <div className="flex justify-start lg:justify-end items-center gap-x-1 text-gray-500 text-xs">
+                        {monitor.lastStatus && (
+                          <>
+                            <TimerIcon size={16} />
+                            {monitor.lastDate && <p>{formatDate(monitor.lastDate, "DD/MM HH:mm")}</p>}
+                          </>
+                        )}
                       </div>
-                      <div title="Copiar URL">
-                        <Button title="Copiar" text severity="info" onClick={() => handleCopyClick(monitor.address)} type="button">
-                          <CopyIcon height={14} width={14} />
-                        </Button>
+                      {/* Column 5 */}
+                      <div className="flex justify-start lg:justify-end">
+                        <div title="Abrir">
+                          <MonitorForm monitor={monitor} onClose={resetSearch} />
+                        </div>
+                        <div title="Copiar URL">
+                          <Button title="Copiar" text severity="info" onClick={() => handleCopyClick(monitor.address)} type="button">
+                            <CopyIcon height={14} width={14} />
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))
-            )}
-            paginator
-            rows={50}
-          />
-        </div>
+                ))
+              )}
+              paginator
+              rows={50}
+            />
+          </div>
+        )}
       </div>
     </>
   )

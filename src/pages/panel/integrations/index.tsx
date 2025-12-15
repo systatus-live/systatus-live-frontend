@@ -13,6 +13,7 @@ import { InputText } from 'primereact/inputtext';
 import { useEffect, useState, type ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import PanelLayout from '../layout';
+import { Skeleton } from 'primereact/skeleton';
 
 type IFormSearchValues = {
   search: string;
@@ -20,9 +21,9 @@ type IFormSearchValues = {
 
 const Integrations: NextPageWithLayout = () => {
   const [integrationList, setIntegrationList] = useState([]);
-  const [total, setTotal] = useState(0);
   const [page, setPage] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [firstLoading, setFirstLoading] = useState(true);
   const { register, handleSubmit, reset } = useForm<IFormSearchValues>();
   const { token } = useGlobalProvider();
 
@@ -42,8 +43,8 @@ const Integrations: NextPageWithLayout = () => {
 
     try {
       const { data, total } = await IntegrationService.getIntegrationList(token as string, params);
-      setTotal(total);
       setIntegrationList(data);
+      setFirstLoading(false);
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
@@ -108,45 +109,50 @@ const Integrations: NextPageWithLayout = () => {
       </form>
 
       <div className="px-6">
-        <div className="grid grid-cols-1 gap-y-3 border-1 border-gray-200 rounded-lg p-1 bg-white">
-          <DataView
-            value={integrationList}
-            listTemplate={(list: any) => (
-              list.map((integration: any, index: number) => (
-                <div key={integration.id} className={`grid grid-cols-2 gap-y-2 ${index != (list.length - 1) ? "border-b-1 border-gray-200" : ""} py-3 px-4`}>
-                  <div key={integration.id} className="flex items-center gap-x-3 items-center">
-                    <div style={{ position: "relative", width: 16, height: 16 }}>
-                      <Image src={integration.chatPlatformIconUrl} alt="" fill />
+        {firstLoading ? (
+          <Skeleton width="100%" height="10vh"></Skeleton>
+        ) : (
+          <div className="grid grid-cols-1 gap-y-3 border-1 border-gray-200 rounded-lg p-1 bg-white">
+            <DataView
+              value={integrationList}
+              emptyMessage="&#8203;"
+              listTemplate={(list: any) => (
+                list.map((integration: any, index: number) => (
+                  <div key={integration.id} className={`grid grid-cols-2 gap-y-2 ${index != (list.length - 1) ? "border-b-1 border-gray-200" : ""} py-3 px-4`}>
+                    <div key={integration.id} className="flex items-center gap-x-3 items-center">
+                      <div style={{ position: "relative", width: 16, height: 16 }}>
+                        <Image src={integration.chatPlatformIconUrl} alt="" fill />
+                      </div>
+                      <div className="flex flex-col justify-center w-full overflow-hidden">
+                        <span className="font-medium text-sm">{integration.name}</span>
+                        <div className="flex items-center gap-x-2">
+                          <div className="text-gray-500 text-xs overflow-hidden whitespace-nowrap text-ellipsis">{integration.chatPlatform} • {integration.address}</div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex flex-col justify-center w-full overflow-hidden">
-                      <span className="font-medium text-sm">{integration.name}</span>
-                      <div className="flex items-center gap-x-2">
-                        <div className="text-gray-500 text-xs overflow-hidden whitespace-nowrap text-ellipsis">{integration.chatPlatform} • {integration.address}</div>
+                    <div className="flex items-center justify-end gap-x-4">
+                      <div title="Abrir">
+                        <IntegrationForm integration={integration} onClose={resetSearch} />
+                      </div>
+                      <div title="Testar">
+                        <Button text severity="info" onClick={() => handleValidate(integration.id)} type="button">
+                          <Play height={14} width={14} />
+                        </Button>
+                      </div>
+                      <div title="Copiar URL">
+                        <Button title="Copiar" text severity="info" onClick={() => handleCopyClick(integration.address)} type="button">
+                          <CopyIcon height={14} width={14} />
+                        </Button>
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center justify-end gap-x-4">
-                    <div title="Abrir">
-                      <IntegrationForm integration={integration} onClose={resetSearch} />
-                    </div>
-                    <div title="Testar">
-                      <Button text severity="info" onClick={() => handleValidate(integration.id)} type="button">
-                        <Play height={14} width={14} />
-                      </Button>
-                    </div>
-                    <div title="Copiar URL">
-                      <Button title="Copiar" text severity="info" onClick={() => handleCopyClick(integration.address)} type="button">
-                        <CopyIcon height={14} width={14} />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              ))
-            )}
-            paginator
-            rows={50}
-          />
-        </div>
+                ))
+              )}
+              paginator
+              rows={50}
+            />
+          </div>
+        )}
       </div>
     </>
   )
