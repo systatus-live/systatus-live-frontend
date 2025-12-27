@@ -105,7 +105,7 @@ const Monitors: NextPageWithLayout = () => {
       <div className="flex items-center justify-between px-6 py-4 bg-white">
         <div className="flex flex-col">
           <h1 className="text-xl font-bold">Monitores</h1>
-          <p className="mt-1 text-sm text-gray-500">Monitores de disponibilidade</p>
+          <p className="mt-1 text-sm text-gray-500">Monitore sites, APIs e servidores com verificações globais frequentes para identificar problemas rapidamente.</p>
         </div>
         <div>
           <MonitorForm monitor={null} onClose={resetSearch} />
@@ -131,9 +131,8 @@ const Monitors: NextPageWithLayout = () => {
               emptyMessage="&#8203;"
               listTemplate={(list: any) => (
                 list.map((monitor: any, index: number) => (
-                  <div key={monitor.id} className={`${index != (list.length - 1) ? "border-b-1 border-b-gray-200" : ""} py-3 px-4`}>
-                    <div key={monitor.id} className="grid grid-cols-1 lg:grid-cols-5 gap-y-3 gap-x-3 items-center">
-                      {/* Column 1 */}
+                  <div key={monitor.id} className={`${index != (list.length - 1) ? "border-b-1 border-b-gray-200" : ""} py-2 px-3`}>
+                    <div className="grid grid-cols-1 lg:grid-cols-4 gap-y-3 gap-x-3 items-center">
                       <div className="flex items-center gap-x-2">
                         <div>
                           {getMonitorStatusIcon(monitor)}
@@ -143,18 +142,17 @@ const Monitors: NextPageWithLayout = () => {
                           <div className="text-gray-500 text-xs overflow-hidden whitespace-nowrap text-ellipsis">{MonitorTypeLabelEnum[monitor.type as MonitorTypeEnum]} • {monitor.address}</div>
                         </div>
                       </div>
-                      {/* Column 2 */}
                       <div className="text-xs text-gray-500 flex justify-start lg:justify-center">
                         {monitor.lastStatus == null ? (
                           <span>Pendente</span>
                         ) : (
                           monitor.active ? (
-                            <div className="flex flex-col">
+                            <div className="flex flex-col items-start lg:items-center">
                               <div className="flex items-center gap-x-1">
                                 <span>{monitor.lastStatus?.startsWith("2") ? "Uptime" : "Downtime"}</span>
                                 <span>{monitor.lastIncident}</span>
                               </div>
-                              {!monitor.lastStatus?.startsWith("2") && <div>{HttpStatusCodeLabel[getHttpStatusKey(monitor.lastStatus) as keyof typeof HttpStatusCodeLabel]} ({monitor.lastStatus})</div>}
+                              {!monitor.lastStatus?.startsWith("2") && <div>{HttpStatusCodeLabel[getHttpStatusKey(monitor.lastStatus) as keyof typeof HttpStatusCodeLabel]}</div>}
                             </div>
                           ) : (
                             <span></span>
@@ -162,7 +160,6 @@ const Monitors: NextPageWithLayout = () => {
                         )
                         }
                       </div>
-                      {/* Column 3 */}
                       <div className="flex gap-x-1">
                         <div className="flex gap-x-1">
                           {monitor.historical.map((item: any) => (
@@ -173,16 +170,6 @@ const Monitors: NextPageWithLayout = () => {
                           {monitor.percentOnline}%
                         </small>
                       </div>
-                      {/* Column 4 */}
-                      <div className="flex justify-start lg:justify-end items-center gap-x-1 text-gray-500 text-xs">
-                        {monitor.lastStatus && (
-                          <>
-                            <TimerIcon size={16} />
-                            {monitor.lastDate && <p>{formatDate(monitor.lastDate, "DD/MM HH:mm")}</p>}
-                          </>
-                        )}
-                      </div>
-                      {/* Column 5 */}
                       <div className="flex justify-start lg:justify-end">
                         <div title="Abrir">
                           <MonitorForm monitor={monitor} onClose={resetSearch} />

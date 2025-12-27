@@ -92,7 +92,7 @@ const Integrations: NextPageWithLayout = () => {
       <div className="flex items-center justify-between px-6 py-4 bg-white">
         <div className="flex flex-col">
           <h1 className="text-xl font-bold">Integrações</h1>
-          <p className="mt-1 text-sm text-gray-500">Integrações para receber notificações</p>
+          <p className="mt-1 text-sm text-gray-500">Receba notificações imediatas quando seus serviços ficarem indisponíveis por e-mail, Slack, Google Chat, Discord e outros canais.</p>
         </div>
         <div>
           <IntegrationForm integration={null} onClose={resetSearch} />
@@ -112,13 +112,13 @@ const Integrations: NextPageWithLayout = () => {
         {firstLoading ? (
           <Skeleton width="100%" height="10vh"></Skeleton>
         ) : (
-          <div className="grid grid-cols-1 gap-y-3 border-1 border-gray-200 rounded-lg p-1 bg-white">
+          <div className="grid grid-cols-1 gap-y-3 border-1 border-gray-200 rounded-lg p-1 bg-white h-30">
             <DataView
               value={integrationList}
               emptyMessage="&#8203;"
               listTemplate={(list: any) => (
                 list.map((integration: any, index: number) => (
-                  <div key={integration.id} className={`grid grid-cols-2 gap-y-2 ${index != (list.length - 1) ? "border-b-1 border-gray-200" : ""} py-3 px-4`}>
+                  <div key={integration.id} className={`grid grid-cols-1 lg:grid-cols-2 gap-y-2 ${index != (list.length - 1) ? "border-b-1 border-gray-200" : ""} py-2 px-3`}>
                     <div key={integration.id} className="flex items-center gap-x-3 items-center">
                       <div style={{ position: "relative", width: 16, height: 16 }}>
                         <Image src={integration.chatPlatformIconUrl} alt="" fill />
@@ -130,7 +130,7 @@ const Integrations: NextPageWithLayout = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center justify-end gap-x-4">
+                    <div className="flex justify-start lg:justify-end gap-x-4">
                       <div title="Abrir">
                         <IntegrationForm integration={integration} onClose={resetSearch} />
                       </div>

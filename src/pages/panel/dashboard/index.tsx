@@ -8,7 +8,7 @@ import StatisticService from '@/services/StatisticService';
 import { getHttpStatusKey, HttpStatusCodeLabel } from '@/types/HttpStatusCode';
 import formatDate from '@/utils/formatDate';
 import ReactECharts from 'echarts-for-react';
-import { ArrowBigDownDashIcon } from 'lucide-react';
+import { ArrowBigDownDashIcon, SirenIcon } from 'lucide-react';
 import Head from 'next/head';
 import { DataView } from 'primereact/dataview';
 import { useEffect, useState, type ReactElement } from 'react';
@@ -83,12 +83,12 @@ const Dashboard: NextPageWithLayout = () => {
                               <div key={index} className={`py-2 ${index != (list.length - 1) ? "border-b-1 border-b-gray-200" : ""}`}>
                                 <div className="flex items-center gap-x-2 text-sm">
                                   <div>
-                                    <ArrowBigDownDashIcon size={18} className={`${styles["blink"]} ${styles["font-danger"]}`} />
+                                    <SirenIcon size={18} className={`${styles["blink"]} ${styles["font-danger"]}`} />
                                   </div>
                                   <div className="flex flex-col overflow-hidden">
                                     <span className="font-medium overflow-hidden whitespace-nowrap text-ellipsis">{incident.name} ({incident.address})</span>
-                                    <small>Desde {formatDate(incident.createdAt, "DD/MM/YYYY HH:mm")} ({incident.duration})</small>
-                                    <small>Último status: {HttpStatusCodeLabel[getHttpStatusKey(incident.lastStatus) as keyof typeof HttpStatusCodeLabel]} ({incident.lastStatus})</small>
+                                    <small>Desde: {formatDate(incident.createdAt, "DD/MM/YYYY HH:mm")} ({incident.duration})</small>
+                                    <small>Status: {HttpStatusCodeLabel[getHttpStatusKey(incident.lastStatus) as keyof typeof HttpStatusCodeLabel]}</small>
                                   </div>
                                 </div>
                               </div>

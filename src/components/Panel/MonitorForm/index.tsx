@@ -171,13 +171,12 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
                 )}
                 valueTemplate={(option) => (option == null ? <div>&#8203;</div> : <span>{option.description}</span>)}
                 className="p-inputtext-sm"
-                disabled={true}
               />
             )} />
           </div>
           <div>
-            <label className="block text-sm">Endereço <span className="text-red-500">*</span></label>
-            <InputText {...register("address", { required: true })} placeholder="https://..." className="p-inputtext-sm" />
+            <label className="block text-sm">Endereço (IP ou domínio) <span className="text-red-500">*</span></label>
+            <InputText {...register("address", { required: true })} className="p-inputtext-sm" />
           </div>
           <div>
             <label className="block text-sm">Integração <span className="text-red-500">*</span></label>
