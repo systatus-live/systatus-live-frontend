@@ -8,6 +8,7 @@ import styles from "./styles.module.scss";
 import { useEffect, useState } from 'react';
 import HttpService from '@/services/HttpService';
 import { Alert } from '@/lib/Alert';
+import Image from 'next/image';
 
 export default function Pricing() {
   const [planList, setPlanList] = useState<any[]>([]);
@@ -53,7 +54,7 @@ export default function Pricing() {
             com diferentes níveis de serviço.
           </p>
         </motion.div>
-        <div className="mt-16 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-x-8">
+        <div className="mt-16 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-x-8">
           {planList.map((plan, index) => (
             <motion.div
               key={index}
@@ -66,32 +67,22 @@ export default function Pricing() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 + 0.3, duration: 0.5 }}
             >
-              {plan.mostPopular && (
-                <div className={styles["most-popular"]}>
-                  Recomendado
-                </div>
-              )}
               <div className="p-6">
                 <div>
-                  <h3 className="text-2xl font-semibold text-gray-900">
-                    {plan.name}
+                  <h3 className="flex justify-between items-center text-2xl font-semibold text-gray-900">
+                    <div className="flex items-center space-x-2">
+                      <Image src={plan.image} alt={plan.name} height={32} width={32} />
+                      <div>{plan.name}</div>
+                    </div>
+                    <div>{plan.mostPopular ? <span className={styles["most-popular"]}>🌟 Mais Popular 🌟</span> : <></>}</div>
                   </h3>
                   <div className="mt-4 flex items-baseline">
-                    <span className="text-4xl font-extrabold tracking-tight text-gray-900">
-                      {plan.price}
-                    </span>
+                    <span className="text-4xl font-extrabold tracking-tight text-gray-900">{plan.price}</span>
                     {plan.period && (
-                      <span className="text-xl font-medium text-gray-500 ml-1">
-                        {plan.period}
-                      </span>
+                      <span className="text-xl font-medium text-gray-500 ml-1">{plan.period}</span>
                     )}
                   </div>
-                  <p className="mt-2 text-base text-gray-500">
-                    {plan.description}
-                  </p>
-                  <p className="mt-1 text-sm font-medium text-gray-500">
-                    {plan.limits}
-                  </p>
+                  <p className="mt-2 text-base text-gray-500" style={{ minHeight: "3rem" }}>{plan.description}</p>
                 </div>
                 <div className="mt-6">
                   <Link href={plan.ctaLink}>
@@ -99,7 +90,7 @@ export default function Pricing() {
                   </Link>
                 </div>
               </div>
-              <div className="py-6 px-6 bg-gray-50 space-y-6 sm:p-10">
+              <div className="py-6 px-6 bg-gray-50 space-y-6 sm:pb-10 sm:pt-6">
                 <h3 className="text-xs font-semibold text-gray-900 tracking-wide uppercase">
                   Veja o que está incluso:
                 </h3>

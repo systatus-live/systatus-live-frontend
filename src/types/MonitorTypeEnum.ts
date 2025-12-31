@@ -5,5 +5,5 @@ export enum MonitorTypeEnum {
 
 export enum MonitorTypeLabelEnum {
   GET = "GET",
-  PING = "Ping"
+  PING = "Ping",
 }

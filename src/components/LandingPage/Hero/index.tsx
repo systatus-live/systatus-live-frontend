@@ -34,10 +34,6 @@ export default function Hero() {
         name: "Discord",
         logo: "logos/discord.svg",
       },
-      {
-        name: "Telegram",
-        logo: "logos/telegram.svg",
-      },
     ])
 
     setCardList([

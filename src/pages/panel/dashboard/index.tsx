@@ -81,14 +81,16 @@ const Dashboard: NextPageWithLayout = () => {
                           listTemplate={(list: any) => (
                             list.map((incident: any, index: number) => (
                               <div key={index} className={`py-2 ${index != (list.length - 1) ? "border-b-1 border-b-gray-200" : ""}`}>
-                                <div className="flex items-center gap-x-2 text-sm">
-                                  <div>
-                                    <SirenIcon size={18} className={`${styles["blink"]} ${styles["font-danger"]}`} />
-                                  </div>
-                                  <div className="flex flex-col overflow-hidden">
-                                    <span className="font-medium overflow-hidden whitespace-nowrap text-ellipsis">{incident.name} ({incident.address})</span>
-                                    <small>Desde: {formatDate(incident.createdAt, "DD/MM/YYYY HH:mm")} ({incident.duration})</small>
-                                    <small>Status: {HttpStatusCodeLabel[getHttpStatusKey(incident.lastStatus) as keyof typeof HttpStatusCodeLabel]}</small>
+                                <div className="grid grid-cols-1">
+                                  <div className="flex items-center gap-x-2 text-sm">
+                                    <div>
+                                      <SirenIcon size={18} className={`${styles["blink"]} ${styles["font-danger"]}`} />
+                                    </div>
+                                    <div className="flex flex-col overflow-hidden">
+                                      <span className="font-medium overflow-hidden whitespace-nowrap text-ellipsis">{incident.name} ({incident.address})</span>
+                                      <small>Desde: {formatDate(incident.createdAt, "DD/MM/YYYY HH:mm")} ({incident.duration})</small>
+                                      <small>Status: {HttpStatusCodeLabel[getHttpStatusKey(incident.lastStatus) as keyof typeof HttpStatusCodeLabel]}</small>
+                                    </div>
                                   </div>
                                 </div>
                               </div>

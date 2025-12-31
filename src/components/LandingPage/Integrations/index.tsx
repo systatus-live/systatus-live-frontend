@@ -31,11 +31,6 @@ export default function Integrations() {
       logo: "logos/discord.svg",
       description: "Seja notificado em tempo real no seu servidor do Discord.",
     },
-    {
-      name: "Telegram",
-      logo: "logos/telegram.svg",
-      description: "Receba alertas em tempo real diretamente no seu Telegram."
-    },
   ]
 
   return (
