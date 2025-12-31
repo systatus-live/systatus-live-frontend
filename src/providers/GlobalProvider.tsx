@@ -7,8 +7,8 @@ type User = {
 }
 
 const GlobalContext = createContext<{
-  user: User,
-  setUser: (user: User) => void
+  user: User | null,
+  setUser: (user: User | null) => void
   token: string | null,
   setToken: (token: string | null) => void
 }>({
@@ -19,7 +19,7 @@ const GlobalContext = createContext<{
 });
 
 export function GlobalProvider({ children }: any) {
-  const [user, setUser] = useState<User>({});
+  const [user, setUser] = useState<User | null>({});
   const [token, setToken] = useState<string | null>(null);
 
   return (
