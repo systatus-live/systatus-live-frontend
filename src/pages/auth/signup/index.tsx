@@ -30,7 +30,6 @@ export default function SignUp() {
   const [isSubmitting, setSubmitting] = useState(false);
   const { control, register, handleSubmit, setValue, watch } = useForm<IFormValues>();
   const [discoveryList, setDiscoveryList] = useState<{ id: string, description: string }[]>([]);
-  const [discovery, setDiscovery] = useState(null);
 
   useEffect(() => {
     setDiscoveryList([
@@ -101,19 +100,23 @@ export default function SignUp() {
               </div>
               <div>
                 <label className="block text-sm">Onde você conheceu o Systatus.Live?</label>
-                <Dropdown
-                  {...register("discovery")}
-                  options={discoveryList}
-                  checkmark={true}
-                  showClear={true}
-                  optionValue="id"
-                  optionLabel="description"
-                  onChange={(e) => {
-                    setDiscovery(e.value);
-                    setValue("discovery", e.value);
-                  }}
-                  value={watch("discovery")}
-                />
+                <Controller name="discovery" control={control} rules={{ required: false }} render={({ field }) => (
+                  <Dropdown
+                    {...field}
+                    inputRef={field.ref}
+                    value={watch("discovery")}
+                    onChange={(option) => setValue("discovery", option.value)}
+                    options={discoveryList}
+                    optionValue="id"
+                    optionLabel="description"
+                    filter={true}
+                    itemTemplate={(option) => (
+                      <span>{option.description}</span>
+                    )}
+                    valueTemplate={(option) => (option == null ? <div>&#8203;</div> : <span>{option.description}</span>)}
+                    className="p-inputtext-sm"
+                  />
+                )} />
               </div>
               <div className="flex items-center">
                 <Controller name="acceptTerms" rules={{ required: true }} control={control} render={({ field }) => (

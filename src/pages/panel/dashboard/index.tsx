@@ -8,19 +8,18 @@ import StatisticService from '@/services/StatisticService';
 import { getHttpStatusKey, HttpStatusCodeLabel } from '@/types/HttpStatusCode';
 import formatDate from '@/utils/formatDate';
 import ReactECharts from 'echarts-for-react';
-import { ArrowBigDownDashIcon, SirenIcon } from 'lucide-react';
+import { SirenIcon } from 'lucide-react';
 import Head from 'next/head';
+import Image from 'next/image';
 import { DataView } from 'primereact/dataview';
+import { Skeleton } from 'primereact/skeleton';
 import { useEffect, useState, type ReactElement } from 'react';
 import PanelLayout from '../layout';
 import styles from "./styles.module.scss";
-import Image from 'next/image';
-import { Skeleton } from 'primereact/skeleton';
 
 const Dashboard: NextPageWithLayout = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statistic, setStatistic] = useState<any>();
-  const [firstLoading, setFirstLoading] = useState(true);
   const { token } = useGlobalProvider();
 
   useEffect(() => {
@@ -36,7 +35,6 @@ const Dashboard: NextPageWithLayout = () => {
     try {
       const response = await StatisticService.getPanelStatistics(token as string, params);
       setStatistic(response);
-      setFirstLoading(false);
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
@@ -60,15 +58,17 @@ const Dashboard: NextPageWithLayout = () => {
       </div>
 
       <div className="px-5 py-6">
-        <div className={styles["statistic-grid"]}>
-          {firstLoading ? (
-            <>
+        {statistic == null ? (
+          <>
+            <div className={styles["statistic-grid"]}>
               <Skeleton width="100%" height="25vh"></Skeleton>
               <Skeleton width="100%" height="25vh"></Skeleton>
-            </>
-          ) : (
-            statistic &&
-            <>
+              <Skeleton width="100%" height="25vh"></Skeleton>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className={styles["statistic-grid"]}>
               {/* Active incidents */}
               <div className="border-1 border-gray-200 rounded-lg p-3 bg-white">
                 <div>
@@ -150,9 +150,17 @@ const Dashboard: NextPageWithLayout = () => {
                   ]
                 }} style={{ width: "100%", height: "25vh" }} />
               </div>
-            </>
-          )}
-        </div>
+              <div className={styles["total-grid"]}>
+                {statistic.total.map((row: any) => (
+                  <div key={row.label} className="border-1 border-gray-200 bg-white rounded-lg p-3">
+                    <h1>{row.value}</h1>
+                    <p>{row.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </>
   )

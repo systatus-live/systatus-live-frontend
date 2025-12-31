@@ -1,29 +1,37 @@
 @use "../../../styles/theme.scss" as theme;
 
+.total-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 1rem;
+  
+  div {
+    color: theme.$primary-color;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  p {
+    font-weight: 500;
+  }
+
+  h1 {
+    font-weight: 700;
+    font-size: 2rem;
+  }
+}
+
 .statistic-grid {
   display: grid;
-  grid-template-columns: 25rem 1fr;
+  grid-template-columns: 25rem 1fr 10rem;
   gap: 1rem
 }
 
 .total-count {
   font-size: 2rem;
   font-weight: 700;
-}
-
-.total-icon-default {
-  color: lightgray;
-  padding: 0.25rem;
-}
-
-.total-icon-success {
-  color: theme.$success-color;
-  padding: 0.25rem;
-}
-
-.total-icon-danger {
-  color: theme.$danger-color;
-  padding: 0.25rem;
 }
 
 .font-danger {
