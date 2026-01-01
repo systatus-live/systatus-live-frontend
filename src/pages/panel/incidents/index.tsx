@@ -30,28 +30,42 @@ const Incidents: NextPageWithLayout = () => {
   const { register, handleSubmit, reset } = useForm<IFormSearchValues>();
 
   const tableColumnList = [
-    { 
-      title: "", 
+    {
+      title: "Monitor",
       template: (incident: any) => (
         <div className="flex items-center gap-x-2 text-sm">
           <div>
             {getIncidentStatusIcon(incident)}
           </div>
-          <div className="flex flex-col">
-            <span className="font-medium">{incident.name} ({incident.address})</span>
-            {incident.endedAt ?
-              <>
-                <small>Iniciado: {formatDate(incident.createdAt, "DD/MM/YYYY HH:mm")}</small>
-                <small>Status: Resolvido {formatDate(incident.endedAt, "DD/MM/YYYY HH:mm")} ({incident.duration})</small>
-              </> :
-              <>
-                <small>Desde: {formatDate(incident.createdAt, "DD/MM/YYYY HH:mm")} ({incident.duration})</small>
-                <small>Status: {HttpStatusCodeLabel[getHttpStatusKey(incident.lastStatus) as keyof typeof HttpStatusCodeLabel]} </small>
-              </>
-            }
+          <div className="flex flex-col justify-center">
+            <span className="font-medium text-sm">{incident.name}</span>
+            <div className="text-gray-500 text-xs">{incident.address}</div>
           </div>
         </div>
-      ) 
+      ),
+      width: "30%"
+    },
+    {
+      title: "Incidente",
+      template: (incident: any) => (
+        <small>{HttpStatusCodeLabel[getHttpStatusKey(incident.lastError) as keyof typeof HttpStatusCodeLabel]} </small>
+      ),
+      width: "20%"
+    },
+    {
+      title: "Status",
+      template: (incident: any) => (
+        incident.endedAt ?
+          <div className="flex flex-col">
+            <small>Resolvido</small>
+            <small>Período: {formatDate(incident.createdAt, "DD/MM/YYYY HH:mm")} até {formatDate(incident.endedAt, "DD/MM/YYYY HH:mm")} ({incident.duration})</small>
+          </div> :
+          <div className="flex flex-col">
+            <small>Não Resolvido</small>
+            <small>Desde: {formatDate(incident.createdAt, "DD/MM/YYYY HH:mm")} ({incident.duration})</small>
+          </div>
+      ),
+      width: "50%"
     }
   ]
 
@@ -85,7 +99,7 @@ const Incidents: NextPageWithLayout = () => {
   }
 
   function getIncidentStatusIcon(incident: any) {
-    return incident.lastStatus?.startsWith("2") ? <span title="Resolvido"><CheckIcon size={16} className={`${styles["font-success"]}`} /></span> : <span title="Não Resolvido"><SirenIcon size={18} className={`${styles["blink"]} ${styles["font-danger"]}`} /> </span>
+    return incident.endedAt ? <span title="Resolvido"><CheckIcon size={16} className={`${styles["font-success"]}`} /></span> : <span title="Não Resolvido"><SirenIcon size={18} className={`${styles["blink"]} ${styles["font-danger"]}`} /> </span>
   }
 
   return (
@@ -109,14 +123,14 @@ const Incidents: NextPageWithLayout = () => {
           <Skeleton width="100%" height="10vh"></Skeleton>
         ) : (
           <div>
-            <DataTable 
+            <DataTable
               dataKey="id"
-              value={incidentList} 
-              size="small" 
-              showGridlines={false} 
-              stripedRows={false} 
+              value={incidentList}
+              size="small"
+              showGridlines={false}
+              stripedRows={false}
               header={
-                <form onSubmit={handleSubmit(onSubmitSearch)} className="grid grid-cols-1 lg:grid-cols-3 ">
+                <form onSubmit={handleSubmit(onSubmitSearch)} className="grid grid-cols-1 lg:grid-cols-3">
                   <div className="p-inputgroup flex-1">
                     <InputText {...register("search", { required: false })} placeholder="Pesquisar incidentes" className="p-inputtext-sm" />
                     <Button severity="secondary">
@@ -124,9 +138,12 @@ const Incidents: NextPageWithLayout = () => {
                     </Button>
                   </div>
                 </form>
-              }>
+              }
+              scrollable={true}
+              scrollHeight="80vh"
+            >
               {tableColumnList.map((col, i) => (
-                  <Column header={col.title} body={col.template} />
+                <Column header={col.title} body={col.template} style={{ width: col.width }} />
               ))}
             </DataTable>
           </div>

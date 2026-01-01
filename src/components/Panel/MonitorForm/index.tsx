@@ -130,11 +130,11 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
       {isSubmitting && <Loading />}
 
       {props.monitor ? (
-        <Button title="Abrir" text severity="info" onClick={() => setIsOpen(true)} type="button">
+        <Button title="Abrir" text onClick={() => setIsOpen(true)} type="button">
           <EditIcon height={14} width={14} />
         </Button>
       ) : (
-        <Button label="Novo monitor" onClick={() => setIsOpen(true)} />
+        <Button label="Novo Monitor" onClick={() => setIsOpen(true)} />
       )}
 
       <Dialog

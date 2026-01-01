@@ -44,7 +44,8 @@ const Integrations: NextPageWithLayout = () => {
             </div>
           </div>
         </div>
-      )
+      ),
+      width: "100%"
     },
     {
       title: "Ações",
@@ -54,17 +55,18 @@ const Integrations: NextPageWithLayout = () => {
             <IntegrationForm integration={integration} onClose={resetSearch} />
           </div>
           <div title="Testar">
-            <Button text severity="info" onClick={() => handleValidate(integration.id)} type="button">
+            <Button text onClick={() => handleValidate(integration.id)} type="button">
               <Play height={14} width={14} />
             </Button>
           </div>
           <div title="Copiar URL">
-            <Button title="Copiar" text severity="info" onClick={() => handleCopyClick(integration.address)} type="button">
+            <Button title="Copiar" text onClick={() => handleCopyClick(integration.address)} type="button">
               <CopyIcon height={14} width={14} />
             </Button>
           </div>
         </div>
-      )
+      ),
+      width: "auto"
     }
   ]
 
@@ -152,7 +154,7 @@ const Integrations: NextPageWithLayout = () => {
               showGridlines={false}
               stripedRows={false}
               header={
-                <form onSubmit={handleSubmit(onSubmitSearch)} className="grid grid-cols-1 lg:grid-cols-3 ">
+                <form onSubmit={handleSubmit(onSubmitSearch)} className="grid grid-cols-1 lg:grid-cols-3">
                   <div className="p-inputgroup flex-1">
                     <InputText {...register("search", { required: false })} placeholder="Pesquisar integrações" className="p-inputtext-sm" />
                     <Button severity="secondary">
@@ -160,49 +162,14 @@ const Integrations: NextPageWithLayout = () => {
                     </Button>
                   </div>
                 </form>
-              }>
+              }
+              scrollable={true}
+              scrollHeight="80vh"
+            >
               {tableColumnList.map((col, index) => (
-                <Column key={index} header={col.title} body={col.template} />
+                <Column key={index} header={col.title} body={col.template} style={{ width: col.width }} />
               ))}
             </DataTable>
-            {/* <DataView
-              value={integrationList}
-              emptyMessage="&#8203;"
-              listTemplate={(list: any) => (
-                list.map((integration: any, index: number) => (
-                  <div key={integration.id} className={`grid grid-cols-1 lg:grid-cols-2 gap-y-2 ${index != (list.length - 1) ? "border-b-1 border-gray-200" : ""} py-2 px-3`}>
-                    <div key={integration.id} className="flex items-center gap-x-3 items-center">
-                      <div style={{ position: "relative", width: 16, height: 16 }}>
-                        <Image src={integration.chatPlatformIconUrl} alt="" fill />
-                      </div>
-                      <div className="flex flex-col justify-center w-full overflow-hidden">
-                        <span className="font-medium text-sm">{integration.name}</span>
-                        <div className="flex items-center gap-x-2">
-                          <div className="text-gray-500 text-xs overflow-hidden whitespace-nowrap text-ellipsis">{integration.chatPlatform} • {integration.address}</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex justify-start lg:justify-end gap-x-4">
-                      <div title="Abrir">
-                        <IntegrationForm integration={integration} onClose={resetSearch} />
-                      </div>
-                      <div title="Testar">
-                        <Button text severity="info" onClick={() => handleValidate(integration.id)} type="button">
-                          <Play height={14} width={14} />
-                        </Button>
-                      </div>
-                      <div title="Copiar URL">
-                        <Button title="Copiar" text severity="info" onClick={() => handleCopyClick(integration.address)} type="button">
-                          <CopyIcon height={14} width={14} />
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                ))
-              )}
-              paginator
-              rows={50}
-            /> */}
           </div>
         )}
       </div>

@@ -8,6 +8,11 @@
   box-shadow: none !important;
 }
 
+.p-button:not(.p-button-secondary):not(.p-button-success):not(.p-button-danger):not(.p-button-warning):not(.p-button-help):not(.p-button-info):not(.p-button-text) {
+  background: theme.$secondary-color !important;
+  border: theme.$secondary-color !important;
+}
+
 .p-inputtext,
 .p-password,
 .p-icon-field.p-icon-field-right,
@@ -46,6 +51,12 @@
 
 .p-column-title {
   font-size: 0.85rem !important;
+}
+
+/* Corrige um bug de conflito PrimeReact x Tailwild onde criava um gap entre o header da tabela e as linhas */
+.p-datatable table {
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
 @media (min-width: 1024px) {

@@ -50,15 +50,15 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
         active: false
       },
       {
-        icon: SirenIcon,
-        label: "Incidentes",
-        route: "/panel/incidents",
-        active: false
-      },
-      {
         icon: RadarIcon,
         label: "Monitores",
         route: "/panel/monitors",
+        active: false
+      },
+      {
+        icon: SirenIcon,
+        label: "Incidentes",
+        route: "/panel/incidents",
         active: false
       },
       {

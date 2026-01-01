@@ -115,7 +115,7 @@ export default function IntegrationForm(props: { integration: IFormValues | null
       {isSubmitting && <Loading />}
 
       {props.integration ? (
-        <Button title="Abrir" text severity="info" onClick={() => setIsOpen(true)} type="button">
+        <Button title="Abrir" text onClick={() => setIsOpen(true)} type="button">
           <EditIcon height={14} width={14} />
         </Button>
       ) : (

@@ -43,7 +43,8 @@ const Monitors: NextPageWithLayout = () => {
             <div className="text-gray-500 text-xs overflow-hidden whitespace-nowrap text-ellipsis">{MonitorTypeLabelEnum[monitor.type as MonitorTypeEnum]} • {monitor.address}</div>
           </div>
         </div>
-      )
+      ),
+      width: "30%"
     },
     {
       title: "Status",
@@ -53,9 +54,9 @@ const Monitors: NextPageWithLayout = () => {
             <span>Pendente</span>
           ) : (
             monitor.active ? (
-              <div className="flex flex-col">
-                <div className="flex items-center gap-x-1">
-                  <span>{monitor.lastStatus?.startsWith("2") ? "Uptime" : "Downtime"}</span>
+              <div>
+                <div>
+                  <span className="mr-1">{monitor.lastStatus?.startsWith("2") ? "Uptime" : "Downtime"}</span>
                   <span>{monitor.lastIncident}</span>
                 </div>
                 {!monitor.lastStatus?.startsWith("2") && <div>{HttpStatusCodeLabel[getHttpStatusKey(monitor.lastStatus) as keyof typeof HttpStatusCodeLabel]}</div>}
@@ -65,7 +66,8 @@ const Monitors: NextPageWithLayout = () => {
             )
           )}
         </div>
-      )
+      ),
+      width: "20%"
     },
     {
       title: "Histórico (30 dias)",
@@ -80,7 +82,8 @@ const Monitors: NextPageWithLayout = () => {
             {monitor.percentOnline}%
           </small>
         </div>
-      )
+      ),
+      width: "50%"
     },
     {
       title: "Ações",
@@ -90,12 +93,13 @@ const Monitors: NextPageWithLayout = () => {
             <MonitorForm monitor={monitor} onClose={resetSearch} />
           </div>
           <div title="Copiar URL">
-            <Button title="Copiar" text severity="info" onClick={() => handleCopyClick(monitor.address)} type="button">
+            <Button title="Copiar" text onClick={() => handleCopyClick(monitor.address)} type="button">
               <CopyIcon height={14} width={14} />
             </Button>
           </div>
         </div>
-      )
+      ),
+      width: "auto"
     }
   ]
 
@@ -201,9 +205,12 @@ const Monitors: NextPageWithLayout = () => {
                     </Button>
                   </div>
                 </form>
-              }>
+              }
+              scrollable={true}
+              scrollHeight="80vh"
+            >
               {tableColumnList.map((col, i) => (
-                <Column key={i} header={col.title} body={col.template} />
+                <Column key={i} header={col.title} body={col.template} style={{ width: col.width }} />
               ))}
             </DataTable>
           </div>
