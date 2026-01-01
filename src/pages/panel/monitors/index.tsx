@@ -4,19 +4,19 @@ import { Alert } from '@/lib/Alert';
 import { NextPageWithLayout } from '@/pages/_app';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
 import MonitorService from '@/services/MonitorService';
+import { getHttpStatusKey, HttpStatusCodeLabel } from '@/types/HttpStatusCode';
 import { MonitorTypeEnum, MonitorTypeLabelEnum } from '@/types/MonitorTypeEnum';
-import formatDate from '@/utils/formatDate';
-import { ArrowBigDownDashIcon, ArrowBigUpDashIcon, ClockFadingIcon, CopyIcon, PauseIcon, SearchIcon, TimerIcon } from 'lucide-react';
+import { ArrowBigDownDashIcon, ArrowBigUpDashIcon, ClockFadingIcon, CopyIcon, PauseIcon, SearchIcon } from 'lucide-react';
 import Head from 'next/head';
 import { Button } from 'primereact/button';
-import { DataView } from 'primereact/dataview';
+import { Column } from 'primereact/column';
+import { DataTable } from 'primereact/datatable';
 import { InputText } from 'primereact/inputtext';
+import { Skeleton } from 'primereact/skeleton';
 import { useEffect, useState, type ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import PanelLayout from '../layout';
 import styles from "./styles.module.scss";
-import { getHttpStatusKey, HttpStatusCodeLabel } from '@/types/HttpStatusCode';
-import { Skeleton } from 'primereact/skeleton';
 
 type IFormSearchValues = {
   search: string;
@@ -29,6 +29,75 @@ const Monitors: NextPageWithLayout = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [firstLoading, setFirstLoading] = useState(true);
   const { register, handleSubmit, reset } = useForm<IFormSearchValues>();
+
+  const tableColumnList = [
+    {
+      title: "Monitor",
+      template: (monitor: any) => (
+        <div className="flex items-center gap-x-2">
+          <div>
+            {getMonitorStatusIcon(monitor)}
+          </div>
+          <div className="flex flex-col justify-center w-full overflow-hidden">
+            <span className="font-medium text-sm">{monitor.name}</span>
+            <div className="text-gray-500 text-xs overflow-hidden whitespace-nowrap text-ellipsis">{MonitorTypeLabelEnum[monitor.type as MonitorTypeEnum]} • {monitor.address}</div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Status",
+      template: (monitor: any) => (
+        <div className="text-xs">
+          {monitor.lastStatus == null ? (
+            <span>Pendente</span>
+          ) : (
+            monitor.active ? (
+              <div className="flex flex-col">
+                <div className="flex items-center gap-x-1">
+                  <span>{monitor.lastStatus?.startsWith("2") ? "Uptime" : "Downtime"}</span>
+                  <span>{monitor.lastIncident}</span>
+                </div>
+                {!monitor.lastStatus?.startsWith("2") && <div>{HttpStatusCodeLabel[getHttpStatusKey(monitor.lastStatus) as keyof typeof HttpStatusCodeLabel]}</div>}
+              </div>
+            ) : (
+              <span></span>
+            )
+          )}
+        </div>
+      )
+    },
+    {
+      title: "Histórico (30 dias)",
+      template: (monitor: any) => (
+        <div className="flex gap-x-1">
+          <div className="flex gap-x-1">
+            {monitor.historical.map((item: any, index: number) => (
+              <div key={index} style={{ width: "6px", height: "20px" }} className={`${getHistoricalClass(item)} ${styles["zoom"]} rounded-lg`} title={item.note}></div>
+            ))}
+          </div>
+          <small className="text-gray-500">
+            {monitor.percentOnline}%
+          </small>
+        </div>
+      )
+    },
+    {
+      title: "Ações",
+      template: (monitor: any) => (
+        <div className="flex">
+          <div title="Abrir">
+            <MonitorForm monitor={monitor} onClose={resetSearch} />
+          </div>
+          <div title="Copiar URL">
+            <Button title="Copiar" text severity="info" onClick={() => handleCopyClick(monitor.address)} type="button">
+              <CopyIcon height={14} width={14} />
+            </Button>
+          </div>
+        </div>
+      )
+    }
+  ]
 
   useEffect(() => {
     if (token) {
@@ -112,81 +181,31 @@ const Monitors: NextPageWithLayout = () => {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmitSearch)} className="grid grid-cols-1 lg:grid-cols-3 px-6 py-6">
-        <div className="p-inputgroup flex-1">
-          <InputText {...register("search", { required: false })} placeholder="Pesquisar monitores" className="p-inputtext-sm" />
-          <Button severity="secondary">
-            <SearchIcon height={16} />
-          </Button>
-        </div>
-      </form>
-
       <div className="px-6">
         {firstLoading ? (
           <Skeleton width="100%" height="10vh"></Skeleton>
         ) : (
-          <div className="grid grid-cols-1 gap-y-3 border-1 border-gray-200 rounded-lg p-1 bg-white">
-            <DataView
+          <div>
+            <DataTable
+              dataKey="id"
               value={monitorList}
-              emptyMessage="&#8203;"
-              listTemplate={(list: any) => (
-                list.map((monitor: any, index: number) => (
-                  <div key={monitor.id} className={`${index != (list.length - 1) ? "border-b-1 border-b-gray-200" : ""} py-2 px-3`}>
-                    <div className="grid grid-cols-1 lg:grid-cols-4 gap-y-3 gap-x-3 items-center">
-                      <div className="flex items-center gap-x-2">
-                        <div>
-                          {getMonitorStatusIcon(monitor)}
-                        </div>
-                        <div className="flex flex-col justify-center w-full overflow-hidden">
-                          <span className="font-medium text-sm">{monitor.name}</span>
-                          <div className="text-gray-500 text-xs overflow-hidden whitespace-nowrap text-ellipsis">{MonitorTypeLabelEnum[monitor.type as MonitorTypeEnum]} • {monitor.address}</div>
-                        </div>
-                      </div>
-                      <div className="text-xs text-gray-500 flex justify-start lg:justify-center">
-                        {monitor.lastStatus == null ? (
-                          <span>Pendente</span>
-                        ) : (
-                          monitor.active ? (
-                            <div className="flex flex-col items-start lg:items-center">
-                              <div className="flex items-center gap-x-1">
-                                <span>{monitor.lastStatus?.startsWith("2") ? "Uptime" : "Downtime"}</span>
-                                <span>{monitor.lastIncident}</span>
-                              </div>
-                              {!monitor.lastStatus?.startsWith("2") && <div>{HttpStatusCodeLabel[getHttpStatusKey(monitor.lastStatus) as keyof typeof HttpStatusCodeLabel]}</div>}
-                            </div>
-                          ) : (
-                            <span></span>
-                          )
-                        )
-                        }
-                      </div>
-                      <div className="flex gap-x-1">
-                        <div className="flex gap-x-1">
-                          {monitor.historical.map((item: any) => (
-                            <div style={{ width: "6px", height: "20px" }} className={`${getHistoricalClass(item)} ${styles["zoom"]} rounded-lg`} title={item.note}></div>
-                          ))}
-                        </div>
-                        <small className="text-gray-500">
-                          {monitor.percentOnline}%
-                        </small>
-                      </div>
-                      <div className="flex justify-start lg:justify-end">
-                        <div title="Abrir">
-                          <MonitorForm monitor={monitor} onClose={resetSearch} />
-                        </div>
-                        <div title="Copiar URL">
-                          <Button title="Copiar" text severity="info" onClick={() => handleCopyClick(monitor.address)} type="button">
-                            <CopyIcon height={14} width={14} />
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
+              size="small"
+              showGridlines={false}
+              stripedRows={false}
+              header={
+                <form onSubmit={handleSubmit(onSubmitSearch)} className="grid grid-cols-1 lg:grid-cols-3 ">
+                  <div className="p-inputgroup flex-1">
+                    <InputText {...register("search", { required: false })} placeholder="Pesquisar monitores" className="p-inputtext-sm" />
+                    <Button severity="secondary">
+                      <SearchIcon height={16} />
+                    </Button>
                   </div>
-                ))
-              )}
-              paginator
-              rows={50}
-            />
+                </form>
+              }>
+              {tableColumnList.map((col, i) => (
+                <Column key={i} header={col.title} body={col.template} />
+              ))}
+            </DataTable>
           </div>
         )}
       </div>

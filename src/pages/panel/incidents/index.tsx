@@ -8,7 +8,8 @@ import formatDate from '@/utils/formatDate';
 import { CheckIcon, SearchIcon, SirenIcon } from 'lucide-react';
 import Head from 'next/head';
 import { Button } from 'primereact/button';
-import { DataView } from 'primereact/dataview';
+import { Column } from 'primereact/column';
+import { DataTable } from 'primereact/datatable';
 import { InputText } from 'primereact/inputtext';
 import { Skeleton } from 'primereact/skeleton';
 import { useEffect, useState, type ReactElement } from 'react';
@@ -27,6 +28,32 @@ const Incidents: NextPageWithLayout = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [firstLoading, setFirstLoading] = useState(true);
   const { register, handleSubmit, reset } = useForm<IFormSearchValues>();
+
+  const tableColumnList = [
+    { 
+      title: "", 
+      template: (incident: any) => (
+        <div className="flex items-center gap-x-2 text-sm">
+          <div>
+            {getIncidentStatusIcon(incident)}
+          </div>
+          <div className="flex flex-col">
+            <span className="font-medium">{incident.name} ({incident.address})</span>
+            {incident.endedAt ?
+              <>
+                <small>Iniciado: {formatDate(incident.createdAt, "DD/MM/YYYY HH:mm")}</small>
+                <small>Status: Resolvido {formatDate(incident.endedAt, "DD/MM/YYYY HH:mm")} ({incident.duration})</small>
+              </> :
+              <>
+                <small>Desde: {formatDate(incident.createdAt, "DD/MM/YYYY HH:mm")} ({incident.duration})</small>
+                <small>Status: {HttpStatusCodeLabel[getHttpStatusKey(incident.lastStatus) as keyof typeof HttpStatusCodeLabel]} </small>
+              </>
+            }
+          </div>
+        </div>
+      ) 
+    }
+  ]
 
   useEffect(() => {
     if (token) {
@@ -57,11 +84,6 @@ const Incidents: NextPageWithLayout = () => {
     await search(new URLSearchParams({ search: form.search, page: "0" }));
   }
 
-  async function resetSearch() {
-    reset();
-    search(new URLSearchParams({ page: "0" }));
-  }
-
   function getIncidentStatusIcon(incident: any) {
     return incident.lastStatus?.startsWith("2") ? <span title="Resolvido"><CheckIcon size={16} className={`${styles["font-success"]}`} /></span> : <span title="Não Resolvido"><SirenIcon size={18} className={`${styles["blink"]} ${styles["font-danger"]}`} /> </span>
   }
@@ -79,55 +101,34 @@ const Incidents: NextPageWithLayout = () => {
           <h1 className="text-xl font-bold">Incidentes</h1>
           <p className="mt-1 text-sm text-gray-500">Acompanhe o histórico de incidentes dos seus serviços para identificar padrões de problemas.</p>
         </div>
-        <div>
-          
-        </div>
+        <div></div>
       </div>
-
-      <form onSubmit={handleSubmit(onSubmitSearch)} className="grid grid-cols-1 lg:grid-cols-3 px-6 py-6">
-        <div className="p-inputgroup flex-1">
-          <InputText {...register("search", { required: false })} placeholder="Pesquisar incidentes" className="p-inputtext-sm" />
-          <Button severity="secondary">
-            <SearchIcon height={16} />
-          </Button>
-        </div>
-      </form>
 
       <div className="px-6">
         {firstLoading ? (
           <Skeleton width="100%" height="10vh"></Skeleton>
         ) : (
-          <div className="grid grid-cols-1 gap-y-3 border-1 border-gray-200 rounded-lg p-1 bg-white">
-            <DataView
-              value={incidentList}
-              emptyMessage="&#8203;"
-              listTemplate={(list: any) => (
-                list.map((incident: any, index: number) => (
-                  <div key={incident.id} className={`${index != (list.length - 1) ? "border-b-1 border-b-gray-200" : ""} py-2 px-3`}>
-                    <div className="flex items-center gap-x-2 text-sm">
-                      <div>
-                        {getIncidentStatusIcon(incident)}
-                      </div>
-                      <div className="flex flex-col overflow-hidden">
-                        <span className="font-medium overflow-hidden whitespace-nowrap text-ellipsis">{incident.name} ({incident.address})</span>
-                        {incident.endedAt ?
-                          <>
-                            <small>Iniciado: {formatDate(incident.createdAt, "DD/MM/YYYY HH:mm")}</small>
-                            <small>Status: Resolvido {formatDate(incident.endedAt, "DD/MM/YYYY HH:mm")} ({incident.duration})</small>
-                          </> :
-                          <>
-                            <small>Desde: {formatDate(incident.createdAt, "DD/MM/YYYY HH:mm")} ({incident.duration})</small>
-                            <small>Status: {HttpStatusCodeLabel[getHttpStatusKey(incident.lastStatus) as keyof typeof HttpStatusCodeLabel]} </small>
-                          </>
-                        }
-                      </div>
-                    </div>
+          <div>
+            <DataTable 
+              dataKey="id"
+              value={incidentList} 
+              size="small" 
+              showGridlines={false} 
+              stripedRows={false} 
+              header={
+                <form onSubmit={handleSubmit(onSubmitSearch)} className="grid grid-cols-1 lg:grid-cols-3 ">
+                  <div className="p-inputgroup flex-1">
+                    <InputText {...register("search", { required: false })} placeholder="Pesquisar incidentes" className="p-inputtext-sm" />
+                    <Button severity="secondary">
+                      <SearchIcon height={16} />
+                    </Button>
                   </div>
-                ))
-              )}
-              paginator
-              rows={50}
-            />
+                </form>
+              }>
+              {tableColumnList.map((col, i) => (
+                  <Column header={col.title} body={col.template} />
+              ))}
+            </DataTable>
           </div>
         )}
       </div>
