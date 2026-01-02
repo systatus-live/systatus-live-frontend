@@ -1,3 +1,5 @@
+"use client";
+
 import Loading from '@/components/Loading';
 import WebhookTutorial from '@/components/WebhookTutorial';
 import { Alert } from '@/lib/Alert';
@@ -28,6 +30,8 @@ export default function IntegrationForm(props: { integration: IFormValues | null
   const [isOpen, setIsOpen] = useState(false);
   const [chatPlatformList, setChatPlatformList] = useState([]);
   const [isOpenWebhookTutorial, setIsOpenWebhookTutorial] = useState(false);
+  const [windowWidth, setWindowWidth] = useState<any>();
+
   const { register, handleSubmit, reset, setValue, watch, control, getValues } = useForm<IFormValues>(props.integration ? {
     values: {
       id: props.integration.id,
@@ -40,6 +44,14 @@ export default function IntegrationForm(props: { integration: IFormValues | null
   useEffect(() => {
     if (isOpen) {
       getChatPlatformList(new URLSearchParams());
+
+      // Responsividade do Sidebar
+      setWindowWidth(window.innerWidth);
+      const handleResize = () => {
+        setWindowWidth(window.innerWidth)
+      };
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
     }
   }, [isOpen]);
 
@@ -144,7 +156,7 @@ export default function IntegrationForm(props: { integration: IFormValues | null
         visible={isOpenWebhookTutorial}
         onHide={() => setIsOpenWebhookTutorial(false)}
         position="right"
-        style={{ width: "50vw" }}
+        style={{ width: windowWidth >= 1366 ? "40vw" : windowWidth >= 1024 ? "50vw" : "100%" }}
       >
         <WebhookTutorial />
       </Sidebar>
