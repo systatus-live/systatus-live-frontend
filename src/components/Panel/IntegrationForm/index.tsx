@@ -1,14 +1,17 @@
 import Loading from '@/components/Loading';
+import WebhookTutorial from '@/components/WebhookTutorial';
 import { Alert } from '@/lib/Alert';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
 import ChatPlatformService from '@/services/ChatPlatformService';
 import IntegrationService from '@/services/IntegrationService';
+import { ChatPlatformEnum } from '@/types/ChatPlatformEnum';
 import { EditIcon } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
+import { Sidebar } from 'primereact/sidebar';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
@@ -24,7 +27,8 @@ export default function IntegrationForm(props: { integration: IFormValues | null
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [chatPlatformList, setChatPlatformList] = useState([]);
-  const { register, handleSubmit, reset, setValue, watch, control } = useForm<IFormValues>(props.integration ? {
+  const [isOpenWebhookTutorial, setIsOpenWebhookTutorial] = useState(false);
+  const { register, handleSubmit, reset, setValue, watch, control, getValues } = useForm<IFormValues>(props.integration ? {
     values: {
       id: props.integration.id,
       chatPlatformId: props.integration.chatPlatformId,
@@ -35,10 +39,6 @@ export default function IntegrationForm(props: { integration: IFormValues | null
 
   useEffect(() => {
     if (isOpen) {
-      register("chatPlatformId", {
-        required: true
-      });
-
       getChatPlatformList(new URLSearchParams());
     }
   }, [isOpen]);
@@ -110,6 +110,23 @@ export default function IntegrationForm(props: { integration: IFormValues | null
     }
   }
 
+  function getAddressLabel(id: string) {
+    const platform: any = chatPlatformList.find((row: any) => row.id == id);
+
+    if (!platform) {
+      return "URL Webhook";
+    }
+
+    switch (platform.name) {
+      case ChatPlatformEnum.EMAIL:
+        return "E-mail";
+      case ChatPlatformEnum.WHATSAPP:
+        return "Telefone";
+      default:
+        return "URL Webhook"
+    }
+  }
+
   return (
     <>
       {isSubmitting && <Loading />}
@@ -122,6 +139,16 @@ export default function IntegrationForm(props: { integration: IFormValues | null
         <Button label="Nova Integração" onClick={() => setIsOpen(true)} />
       )}
 
+      <Sidebar
+        header={<b className="text-xl">Como obter a URL do Webhook</b>}
+        visible={isOpenWebhookTutorial}
+        onHide={() => setIsOpenWebhookTutorial(false)}
+        position="right"
+        style={{ width: "50vw" }}
+      >
+        <WebhookTutorial />
+      </Sidebar>
+
       <Dialog
         header={props.integration ? "Editar Integração" : "Nova Integração"}
         visible={isOpen}
@@ -133,6 +160,7 @@ export default function IntegrationForm(props: { integration: IFormValues | null
         draggable={false}
         closeOnEscape={true}
         dismissableMask={false}
+        style={{ width: "30rem" }}
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
           <div>
@@ -170,8 +198,13 @@ export default function IntegrationForm(props: { integration: IFormValues | null
             )} />
           </div>
           <div>
-            <label className="block text-sm font-medium">Endereço <span className="text-red-500">*</span></label>
+            <label className="block text-sm font-medium">{getAddressLabel(watch("chatPlatformId"))} <span className="text-red-500">*</span></label>
             <InputText {...register("address", { required: true })} className="p-inputtext-sm" />
+            {watch("chatPlatformId") != null && chatPlatformList.length && (
+              [ChatPlatformEnum.SLACK, ChatPlatformEnum.GOOGLE_CHAT, ChatPlatformEnum.DISCORD].includes((chatPlatformList.find((row: any) => row.id == getValues("chatPlatformId"))! as any).name) && (
+                <small className="font-medium text-blue-600 hover:text-blue-500 cursor-pointer" onClick={() => setIsOpenWebhookTutorial(true)}>Como obter a URL do Webhook?</small>
+              )
+            )}
           </div>
           <div className="flex justify-end space-x-2 mt-5">
             {props.integration && (

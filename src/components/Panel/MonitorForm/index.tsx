@@ -148,6 +148,7 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
         draggable={false}
         closeOnEscape={true}
         dismissableMask={false}
+        style={{ width: "30rem" }}
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
           <div>
@@ -175,8 +176,9 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
             )} />
           </div>
           <div>
-            <label className="block text-sm">Endereço (IP ou domínio) <span className="text-red-500">*</span></label>
+            <label className="block text-sm">IP ou domínio <span className="text-red-500">*</span></label>
             <InputText {...register("address", { required: true })} className="p-inputtext-sm" />
+            <small>Timeout: 10 segundos</small>
           </div>
           <div>
             <label className="block text-sm">Integração <span className="text-red-500">*</span></label>

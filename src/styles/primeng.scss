@@ -30,10 +30,6 @@
   line-height: 1rem !important;
 }
 
-.p-dialog {
-  width: 30rem !important;
-}
-
 .p-dialog .p-dialog-header .p-dialog-header-icon,
 .p-multiselect {
   box-shadow: none !important;
@@ -57,6 +53,12 @@
 .p-datatable table {
   border-collapse: separate;
   border-spacing: 0;
+}
+
+.p-tabview .p-tabview-nav,
+.p-tabview .p-tabview-nav li .p-tabview-nav-link {
+  border-bottom: none !important;
+  font-size: 1rem !important;
 }
 
 @media (min-width: 1024px) {
