@@ -134,7 +134,7 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
           <EditIcon height={14} width={14} />
         </Button>
       ) : (
-        <Button label="Novo Monitor" onClick={() => setIsOpen(true)} />
+        <Button label="Adicionar" onClick={() => setIsOpen(true)} />
       )}
 
       <Dialog

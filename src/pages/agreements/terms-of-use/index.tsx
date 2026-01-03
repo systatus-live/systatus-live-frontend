@@ -18,7 +18,7 @@ export default function TermsOfUse() {
         
         <h1>TERMOS DE USO</h1>
 
-        <p className="my-3">Última atualização: 10 de maio de 2025</p>
+        <p className="my-3">Última atualização: 03 de janeiro de 2026</p>
 
         <h3 className="my-3">ACEITAÇÃO DOS NOSSOS TERMOS LEGAIS</h3>
 
@@ -166,12 +166,12 @@ export default function TermsOfUse() {
 
         <h4 className="my-3">Teste Gratuito</h4>
         <p className="my-3">
-          Oferecemos um teste gratuito de 30 dias para novos usuários registrados nos Serviços. Durante esse período, a conta não será cobrada e a assinatura será suspensa até que seja feita a atualização para uma versão paga após o término do teste gratuito.
+          Oferecemos um teste gratuito para os usuários registrados nos Serviços. Durante esse plano, a conta não será cobrada e a assinatura poderá ser atualizada pelo usuário para uma versão paga a qualquer momento.
         </p>
 
         <h4 className="my-3">Cancelamento</h4>
         <p className="my-3">
-          Todas as compras são não reembolsáveis. Você pode cancelar sua assinatura a qualquer momento acessando sua conta. O cancelamento terá efeito ao final do período já pago. Se tiver dúvidas ou estiver insatisfeito com os Serviços, envie um e-mail para {supportMail}.
+          Todas as compras não são reembolsáveis. Você pode cancelar sua assinatura a qualquer momento acessando sua conta. O cancelamento terá efeito ao final do período já pago. Se tiver dúvidas ou estiver insatisfeito com os Serviços, envie um e-mail para {supportMail}.
         </p>
 
         <h4 className="my-3">Alterações de Preço</h4>

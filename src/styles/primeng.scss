@@ -30,6 +30,7 @@
   line-height: 1rem !important;
 }
 
+// Dialog
 .p-dialog .p-dialog-header .p-dialog-header-icon,
 .p-multiselect {
   box-shadow: none !important;
@@ -45,20 +46,30 @@
   background: initial !important;
 }
 
-.p-column-title {
-  font-size: 0.85rem !important;
-}
+// DataTable
 
-/* Corrige um bug de conflito PrimeReact x Tailwild onde criava um gap entre o header da tabela e as linhas */
+// Corrige um bug de conflito PrimeReact x Tailwild onde criava um gap entre o header da tabela e as linhas
 .p-datatable table {
   border-collapse: separate;
   border-spacing: 0;
 }
 
+.p-column-title {
+  font-size: 0.85rem !important;
+}
+
+// TabView
+.p-tabview-panels {
+  padding: 1rem 0 !important;
+}
+
+.p-tabview-title {
+  font-size: 0.85rem !important;
+}
+
 .p-tabview .p-tabview-nav,
 .p-tabview .p-tabview-nav li .p-tabview-nav-link {
   border-bottom: none !important;
-  font-size: 1rem !important;
 }
 
 // Paginator
@@ -80,6 +91,7 @@
 }
 
 @media (min-width: 1024px) {
+
   .p-inputtext,
   .p-dropdown-panel .p-dropdown-items .p-dropdown-item,
   .p-multiselect {

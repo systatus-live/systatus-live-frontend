@@ -156,7 +156,7 @@ export default function IntegrationForm(props: { integration: IFormValues | null
           <EditIcon height={14} width={14} />
         </Button>
       ) : (
-        <Button label="Nova Integração" onClick={() => setIsOpen(true)} />
+        <Button label="Adicionar" onClick={() => setIsOpen(true)} />
       )}
 
       <Sidebar
