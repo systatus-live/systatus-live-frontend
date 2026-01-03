@@ -59,13 +59,13 @@ const Monitors: NextPageWithLayout = () => {
             <span>Pendente</span>
           ) : (
             monitor.active ? (
-              <div>
-                <div>
-                  <span className="mr-1">{monitor.lastStatus?.startsWith("2") ? "Uptime" : "Downtime"}</span>
-                  <span>{monitor.lastIncident}</span>
-                </div>
-                {!monitor.lastStatus?.startsWith("2") && <div>{HttpStatusCodeLabel[getHttpStatusKey(monitor.lastStatus) as keyof typeof HttpStatusCodeLabel]}</div>}
-              </div>
+              monitor.lastStatus?.startsWith("2") ? 
+              (
+                <span>Ok ({monitor.lastIncident})</span>
+              ) : 
+              (
+                <span>{HttpStatusCodeLabel[getHttpStatusKey(monitor.lastStatus) as keyof typeof HttpStatusCodeLabel]} ({monitor.lastIncident})</span>
+              )
             ) : (
               <span></span>
             )
@@ -193,10 +193,7 @@ const Monitors: NextPageWithLayout = () => {
       {isSubmitting && <Loading />}
 
       <div className="flex items-center justify-between px-6 py-4 bg-white">
-        <div className="flex flex-col">
-          <h1 className="text-xl font-bold">Monitores</h1>
-          <p className="mt-1 text-sm text-gray-500">Monitore sites, APIs e servidores com verificações globais frequentes para identificar problemas rapidamente.</p>
-        </div>
+        <h1 className="text-xl font-bold">Monitores</h1>
         <div>
           <MonitorForm monitor={null} onClose={resetSearch} />
         </div>
@@ -216,7 +213,7 @@ const Monitors: NextPageWithLayout = () => {
               header={
                 <form onSubmit={handleSubmit(onSubmitSearch)} className="grid grid-cols-1 lg:grid-cols-3 ">
                   <div className="p-inputgroup flex-1">
-                    <InputText {...register("search", { required: false })} placeholder="Pesquisar monitores" className="p-inputtext-sm" />
+                    <InputText {...register("search", { required: false })} placeholder="Pesquisar por nome ou endereço" className="p-inputtext-sm" />
                     <Button severity="secondary">
                       <SearchIcon height={16} />
                     </Button>

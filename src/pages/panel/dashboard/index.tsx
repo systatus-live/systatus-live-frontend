@@ -51,10 +51,7 @@ const Dashboard: NextPageWithLayout = () => {
       {isSubmitting && <Loading />}
 
       <div className="flex items-center justify-between px-6 py-4 bg-white">
-        <div className="flex flex-col">
-          <h1 className="text-xl font-semibold">Dashboard</h1>
-          <p className="mt-1 text-sm text-gray-500">Estatísticas da sua conta</p>
-        </div>
+        <h1 className="text-xl font-semibold">Dashboard</h1>
       </div>
 
       <div className="px-5 py-6">

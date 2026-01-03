@@ -150,10 +150,7 @@ const Integrations: NextPageWithLayout = () => {
       {isSubmitting && <Loading />}
 
       <div className="flex items-center justify-between px-6 py-4 bg-white">
-        <div className="flex flex-col">
-          <h1 className="text-xl font-bold">Integrações</h1>
-          <p className="mt-1 text-sm text-gray-500">Receba notificações imediatas quando seus serviços ficarem indisponíveis por e-mail, Slack, Google Chat, Discord e outros canais.</p>
-        </div>
+        <h1 className="text-xl font-bold">Integrações</h1>
         <div>
           <IntegrationForm integration={null} onClose={resetSearch} />
         </div>
@@ -173,7 +170,7 @@ const Integrations: NextPageWithLayout = () => {
               header={
                 <form onSubmit={handleSubmit(onSubmitSearch)} className="grid grid-cols-1 lg:grid-cols-3">
                   <div className="p-inputgroup flex-1">
-                    <InputText {...register("search", { required: false })} placeholder="Pesquisar integrações" className="p-inputtext-sm" />
+                    <InputText {...register("search", { required: false })} placeholder="Pesquisar por nome ou endereço" className="p-inputtext-sm" />
                     <Button severity="secondary">
                       <SearchIcon height={16} />
                     </Button>

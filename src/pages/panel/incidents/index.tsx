@@ -5,7 +5,7 @@ import { useGlobalProvider } from '@/providers/GlobalProvider';
 import IncidentService from '@/services/IncidentService';
 import { getHttpStatusKey, HttpStatusCodeLabel } from '@/types/HttpStatusCode';
 import formatDate from '@/utils/formatDate';
-import { CheckIcon, SearchIcon, SirenIcon } from 'lucide-react';
+import { BadgeCheckIcon, CheckIcon, SearchIcon, SirenIcon } from 'lucide-react';
 import Head from 'next/head';
 import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
@@ -36,19 +36,34 @@ const Incidents: NextPageWithLayout = () => {
 
   const tableColumnList = [
     {
+      title: "Status",
+      template: (incident: any) => {
+        if (incident.endedAt) {
+          return (
+            <div className={`flex items-center space-x-1`}>
+              <BadgeCheckIcon size={16} className={styles["font-success"]} />
+              <small>Resolvido</small>
+            </div>
+          )
+        }
+        return (
+          <div className={`flex items-center space-x-1`}>
+            <SirenIcon size={18} className={`${styles["font-danger"]} ${styles["blink"]}`} />
+            <small>Não Resolvido</small>
+          </div>
+        )
+      },
+      width: "15%"
+    },
+    {
       title: "Monitor",
       template: (incident: any) => (
-        <div className="flex items-center gap-x-2 text-sm">
-          <div>
-            {getIncidentStatusIcon(incident)}
-          </div>
-          <div className="flex flex-col justify-center">
-            <span className="font-medium text-sm">{incident.name}</span>
-            <div className="text-gray-500 text-xs">{incident.address}</div>
-          </div>
+        <div className="flex flex-col justify-center">
+          <span className="font-medium text-sm">{incident.name}</span>
+          <div className="text-gray-500 text-xs">{incident.address}</div>
         </div>
       ),
-      width: "30%"
+      width: "25%"
     },
     {
       title: "Incidente",
@@ -58,20 +73,20 @@ const Incidents: NextPageWithLayout = () => {
       width: "20%"
     },
     {
-      title: "Status",
+      title: "Iniciado",
+      template: (incident: any) => <small>{formatDate(incident.createdAt, "DD/MM/YYYY HH:mm")}</small>,
+      width: "15%"
+    },
+    {
+      title: "Resolvido",
       template: (incident: any) => (
-        incident.endedAt ? <small>Resolvido</small> : <small>Não Resolvido</small>
-      ),
-      width: "10%"
+        incident.endedAt ? <small>{formatDate(incident.endedAt, "DD/MM/YYYY HH:mm")}</small> : <small></small>),
+      width: "15%"
     },
     {
       title: "Duração",
-      template: (incident: any) => (
-        incident.endedAt ?
-          <small>{formatDate(incident.createdAt, "DD/MM/YYYY HH:mm")} até {formatDate(incident.endedAt, "DD/MM/YYYY HH:mm")} ({incident.duration})</small> :
-          <small>Desde {formatDate(incident.createdAt, "DD/MM/YYYY HH:mm")} ({incident.duration})</small>
-      ),
-      width: "30%"
+      template: (incident: any) => <small>{incident.duration}</small>,
+      width: "10%"
     }
   ]
 
@@ -107,10 +122,6 @@ const Incidents: NextPageWithLayout = () => {
     await search(new URLSearchParams({ search: form.search, page: "0" }));
   }
 
-  function getIncidentStatusIcon(incident: any) {
-    return incident.endedAt ? <span title="Resolvido"><CheckIcon size={16} className={`${styles["font-success"]}`} /></span> : <span title="Não Resolvido"><SirenIcon size={18} className={`${styles["blink"]} ${styles["font-danger"]}`} /> </span>
-  }
-
   function onPageChange(event: any) {
     setPagination({
       first: event.first,
@@ -129,10 +140,7 @@ const Incidents: NextPageWithLayout = () => {
       {isSubmitting && <Loading />}
 
       <div className="flex items-center justify-between px-6 py-4 bg-white">
-        <div className="flex flex-col">
-          <h1 className="text-xl font-bold">Incidentes</h1>
-          <p className="mt-1 text-sm text-gray-500">Acompanhe o histórico de incidentes dos seus serviços para identificar padrões de problemas.</p>
-        </div>
+        <h1 className="text-xl font-bold">Incidentes</h1>
         <div></div>
       </div>
 
@@ -150,7 +158,7 @@ const Incidents: NextPageWithLayout = () => {
               header={
                 <form onSubmit={handleSubmit(onSubmitSearch)} className="grid grid-cols-1 lg:grid-cols-3">
                   <div className="p-inputgroup flex-1">
-                    <InputText {...register("search", { required: false })} placeholder="Pesquisar incidentes" className="p-inputtext-sm" />
+                    <InputText {...register("search", { required: false })} placeholder="Pesquisar por nome ou endereço" className="p-inputtext-sm" />
                     <Button severity="secondary">
                       <SearchIcon height={16} />
                     </Button>
