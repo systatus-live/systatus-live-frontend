@@ -16,6 +16,7 @@ import { useEffect, useState, type ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import PanelLayout from '../layout';
 import styles from "./styles.module.scss";
+import { Paginator } from 'primereact/paginator';
 
 type IFormSearchValues = {
   search: string;
@@ -24,10 +25,14 @@ type IFormSearchValues = {
 const Incidents: NextPageWithLayout = () => {
   const { token } = useGlobalProvider();
   const [incidentList, setIncidentList] = useState([]);
-  const [page, setPage] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [firstLoading, setFirstLoading] = useState(true);
-  const { register, handleSubmit, reset } = useForm<IFormSearchValues>();
+  const { register, handleSubmit } = useForm<IFormSearchValues>();
+  const [pagination, setPagination] = useState({
+    first: 0,
+    rows: 0,
+    total: 0
+  });
 
   const tableColumnList = [
     {
@@ -55,17 +60,18 @@ const Incidents: NextPageWithLayout = () => {
     {
       title: "Status",
       template: (incident: any) => (
-        incident.endedAt ?
-          <div className="flex flex-col">
-            <small>Resolvido</small>
-            <small>Período: {formatDate(incident.createdAt, "DD/MM/YYYY HH:mm")} até {formatDate(incident.endedAt, "DD/MM/YYYY HH:mm")} ({incident.duration})</small>
-          </div> :
-          <div className="flex flex-col">
-            <small>Não Resolvido</small>
-            <small>Desde: {formatDate(incident.createdAt, "DD/MM/YYYY HH:mm")} ({incident.duration})</small>
-          </div>
+        incident.endedAt ? <small>Resolvido</small> : <small>Não Resolvido</small>
       ),
-      width: "50%"
+      width: "10%"
+    },
+    {
+      title: "Duração",
+      template: (incident: any) => (
+        incident.endedAt ?
+          <small>{formatDate(incident.createdAt, "DD/MM/YYYY HH:mm")} até {formatDate(incident.endedAt, "DD/MM/YYYY HH:mm")} ({incident.duration})</small> :
+          <small>Desde {formatDate(incident.createdAt, "DD/MM/YYYY HH:mm")} ({incident.duration})</small>
+      ),
+      width: "30%"
     }
   ]
 
@@ -79,14 +85,17 @@ const Incidents: NextPageWithLayout = () => {
     if (isSubmitting) return;
     setIsSubmitting(true);
 
-    if (params.has("page")) {
-      setPage(parseInt(params.get("page") as string));
-    }
-
     try {
-      const { data, total } = await IncidentService.getIncidentList(token as string, params);
-      setIncidentList(data);
+      const response = await IncidentService.getIncidentList(token as string, params);
+
+      setIncidentList(response.data);
       setFirstLoading(false);
+
+      setPagination(prev => ({
+        ...prev,
+        rows: response.pagination.rows,
+        total: response.pagination.total
+      }));
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
@@ -100,6 +109,15 @@ const Incidents: NextPageWithLayout = () => {
 
   function getIncidentStatusIcon(incident: any) {
     return incident.endedAt ? <span title="Resolvido"><CheckIcon size={16} className={`${styles["font-success"]}`} /></span> : <span title="Não Resolvido"><SirenIcon size={18} className={`${styles["blink"]} ${styles["font-danger"]}`} /> </span>
+  }
+
+  function onPageChange(event: any) {
+    setPagination({
+      first: event.first,
+      rows: event.rows,
+      total: pagination.total
+    });
+    search(new URLSearchParams({ page: event.page.toString() }));
   }
 
   return (
@@ -146,6 +164,16 @@ const Incidents: NextPageWithLayout = () => {
                 <Column header={col.title} body={col.template} style={{ width: col.width }} />
               ))}
             </DataTable>
+            <div className="flex items-center justify-center">
+              <Paginator
+                first={pagination.first}
+                rows={pagination.rows}
+                totalRecords={pagination.total}
+                onPageChange={onPageChange}
+                template={{ layout: "FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink" }}
+              />
+              <small>{pagination.total} incidentes</small>
+            </div>
           </div>
         )}
       </div>

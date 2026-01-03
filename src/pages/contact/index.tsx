@@ -7,9 +7,10 @@ import { CheckIcon, MailIcon, MapPinIcon } from 'lucide-react';
 import Head from 'next/head';
 import { Button } from 'primereact/button';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
+import { Dropdown } from 'primereact/dropdown';
 
 type IFormValues = {
   name: string;
@@ -21,7 +22,14 @@ type IFormValues = {
 export default function Contact() {
   const [isSubmitting, setSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const { register, handleSubmit, reset } = useForm<IFormValues>()
+  const { register, handleSubmit, reset, control, watch, setValue } = useForm<IFormValues>()
+  const subjectList = [
+    { description: "Conta e acesso" },
+    { description: "Sugestões, bugs e melhorias" },
+    { description: "Planos e cobrança" },
+    { description: "Encerramento de conta" },
+    { description: "Outros assuntos" },
+  ]
 
   function onSubmit(data: IFormValues) {
     setSubmitting(true);
@@ -137,7 +145,28 @@ export default function Contact() {
                         {/* Subject */}
                         <div>
                           <label className="block text-sm">Assunto <span className="text-red-500">*</span></label>
-                          <InputText {...register("subject", { required: true })} type="subject" className="p-inputtext-sm" />
+                          {/* <InputText {...register("subject", { required: true })} type="subject" className="p-inputtext-sm" /> */}
+                          <Controller name="subject" control={control} rules={{ required: true }} render={({ field }) => (
+                            <Dropdown
+                              {...field}
+                              inputRef={field.ref}
+                              value={watch("subject")}
+                              onChange={(option) => setValue("subject", option.value)}
+                              options={subjectList}
+                              optionLabel="description"
+                              optionValue="description"
+                              filter={true}
+                              itemTemplate={(option) => (
+                                <span>{option.description}</span>
+                              )}
+                              valueTemplate={(option) => (
+                                option == null ?
+                                  <div>&#8203;</div> :
+                                  <span>{option.description}</span>
+                              )}
+                              className="p-inputtext-sm"
+                            />
+                          )} />
                         </div>
                         {/* Message */}
                         <div>

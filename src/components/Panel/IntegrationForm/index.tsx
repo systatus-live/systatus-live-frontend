@@ -6,7 +6,7 @@ import { Alert } from '@/lib/Alert';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
 import ChatPlatformService from '@/services/ChatPlatformService';
 import IntegrationService from '@/services/IntegrationService';
-import { ChatPlatformEnum } from '@/types/ChatPlatformEnum';
+import { ChatPlatformEnum, ChatPlatformTypeEnum } from '@/types/ChatPlatformEnum';
 import { EditIcon } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from 'primereact/button';
@@ -139,6 +139,14 @@ export default function IntegrationForm(props: { integration: IFormValues | null
     }
   }
 
+  function getWebhookLabel() {
+    const platform: any = chatPlatformList.find((row: any) => row.id == getValues("chatPlatformId"));
+    if (platform && platform.type == ChatPlatformTypeEnum.WEBHOOK) {
+      return <small className="font-medium text-blue-600 hover:text-blue-500 cursor-pointer" onClick={() => setIsOpenWebhookTutorial(true)}>Como obter a URL do Webhook?</small>
+    }
+    return <></>
+  }
+
   return (
     <>
       {isSubmitting && <Loading />}
@@ -212,11 +220,7 @@ export default function IntegrationForm(props: { integration: IFormValues | null
           <div>
             <label className="block text-sm font-medium">{getAddressLabel(watch("chatPlatformId"))} <span className="text-red-500">*</span></label>
             <InputText {...register("address", { required: true })} className="p-inputtext-sm" />
-            {watch("chatPlatformId") != null && chatPlatformList.length && (
-              [ChatPlatformEnum.SLACK, ChatPlatformEnum.GOOGLE_CHAT, ChatPlatformEnum.DISCORD].includes((chatPlatformList.find((row: any) => row.id == getValues("chatPlatformId"))! as any).name) && (
-                <small className="font-medium text-blue-600 hover:text-blue-500 cursor-pointer" onClick={() => setIsOpenWebhookTutorial(true)}>Como obter a URL do Webhook?</small>
-              )
-            )}
+            {watch("chatPlatformId") && getWebhookLabel()}
           </div>
           <div className="flex justify-end space-x-2 mt-5">
             {props.integration && (

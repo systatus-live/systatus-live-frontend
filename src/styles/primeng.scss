@@ -61,6 +61,24 @@
   font-size: 1rem !important;
 }
 
+// Paginator
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: theme.$primary-color !important;
+  border-color: theme.$primary-color !important;
+  color: #fff !important;
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page,
+.p-paginator .p-paginator-first,
+.p-paginator .p-paginator-prev,
+.p-paginator .p-paginator-next,
+.p-paginator .p-paginator-last {
+  min-width: 1.5rem !important;
+  height: 1.5rem !important;
+  font-size: 0.85rem !important;
+  color: theme.$primary-color !important;
+}
+
 @media (min-width: 1024px) {
   .p-inputtext,
   .p-dropdown-panel .p-dropdown-items .p-dropdown-item,

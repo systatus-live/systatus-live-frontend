@@ -8,14 +8,14 @@ import { CopyIcon, Play, SearchIcon } from 'lucide-react';
 import Head from 'next/head';
 import Image from 'next/image';
 import { Button } from 'primereact/button';
-import { DataView } from 'primereact/dataview';
+import { Column } from 'primereact/column';
+import { DataTable } from 'primereact/datatable';
 import { InputText } from 'primereact/inputtext';
+import { Skeleton } from 'primereact/skeleton';
 import { useEffect, useState, type ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import PanelLayout from '../layout';
-import { Skeleton } from 'primereact/skeleton';
-import { Column } from 'primereact/column';
-import { DataTable } from 'primereact/datatable';
+import { Paginator } from 'primereact/paginator';
 
 type IFormSearchValues = {
   search: string;
@@ -23,11 +23,15 @@ type IFormSearchValues = {
 
 const Integrations: NextPageWithLayout = () => {
   const [integrationList, setIntegrationList] = useState([]);
-  const [page, setPage] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [firstLoading, setFirstLoading] = useState(true);
   const { register, handleSubmit, reset } = useForm<IFormSearchValues>();
   const { token } = useGlobalProvider();
+  const [pagination, setPagination] = useState({
+    first: 0,
+    rows: 0,
+    total: 0
+  });
 
   const tableColumnList = [
     {
@@ -76,18 +80,22 @@ const Integrations: NextPageWithLayout = () => {
     }
   }, [token]);
 
+
   async function search(params: URLSearchParams) {
     if (isSubmitting) return;
     setIsSubmitting(true);
 
-    if (params.has("page")) {
-      setPage(parseInt(params.get("page") as string));
-    }
-
     try {
-      const { data, total } = await IntegrationService.getIntegrationList(token as string, params);
-      setIntegrationList(data);
+      const response = await IntegrationService.getIntegrationList(token as string, params);
+
+      setIntegrationList(response.data);
       setFirstLoading(false);
+
+      setPagination(prev => ({
+        ...prev,
+        rows: response.pagination.rows,
+        total: response.pagination.total
+      }));
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
@@ -122,6 +130,15 @@ const Integrations: NextPageWithLayout = () => {
     } finally {
       setIsSubmitting(false);
     }
+  }
+
+  function onPageChange(event: any) {
+    setPagination({
+      first: event.first,
+      rows: event.rows,
+      total: pagination.total
+    });
+    search(new URLSearchParams({ page: event.page.toString() }));
   }
 
   return (
@@ -170,6 +187,16 @@ const Integrations: NextPageWithLayout = () => {
                 <Column key={index} header={col.title} body={col.template} style={{ width: col.width }} />
               ))}
             </DataTable>
+            <div className="flex items-center justify-center">
+              <Paginator
+                first={pagination.first}
+                rows={pagination.rows}
+                totalRecords={pagination.total}
+                onPageChange={onPageChange}
+                template={{ layout: "FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink" }}
+              />
+              <small>{pagination.total} integrações</small>
+            </div>
           </div>
         )}
       </div>

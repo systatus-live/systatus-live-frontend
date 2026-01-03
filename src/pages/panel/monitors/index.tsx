@@ -17,6 +17,7 @@ import { useEffect, useState, type ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import PanelLayout from '../layout';
 import styles from "./styles.module.scss";
+import { Paginator } from 'primereact/paginator';
 
 type IFormSearchValues = {
   search: string;
@@ -25,10 +26,14 @@ type IFormSearchValues = {
 const Monitors: NextPageWithLayout = () => {
   const { token } = useGlobalProvider();
   const [monitorList, setMonitorList] = useState([]);
-  const [page, setPage] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [firstLoading, setFirstLoading] = useState(true);
   const { register, handleSubmit, reset } = useForm<IFormSearchValues>();
+  const [pagination, setPagination] = useState({
+    first: 0,
+    rows: 0,
+    total: 0
+  });
 
   const tableColumnList = [
     {
@@ -113,14 +118,17 @@ const Monitors: NextPageWithLayout = () => {
     if (isSubmitting) return;
     setIsSubmitting(true);
 
-    if (params.has("page")) {
-      setPage(parseInt(params.get("page") as string));
-    }
-
     try {
-      const { data, total } = await MonitorService.getMonitorList(token as string, params);
-      setMonitorList(data);
+      const response = await MonitorService.getMonitorList(token as string, params);
+
+      setMonitorList(response.data);
       setFirstLoading(false);
+
+      setPagination(prev => ({
+        ...prev,
+        rows: response.pagination.rows,
+        total: response.pagination.total
+      }));
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
@@ -165,6 +173,15 @@ const Monitors: NextPageWithLayout = () => {
     }
 
     return monitor.lastStatus?.startsWith("2") ? <span title="Disponível"><ArrowBigUpDashIcon size={18} className={`${styles["font-success"]}`} /></span> : <span title="Indisponível"><ArrowBigDownDashIcon size={18} className={`${styles["blink"]} ${styles["font-danger"]}`} /> </span>
+  }
+
+  function onPageChange(event: any) {
+    setPagination({
+      first: event.first,
+      rows: event.rows,
+      total: pagination.total
+    });
+    search(new URLSearchParams({ page: event.page.toString() }));
   }
 
   return (
@@ -213,6 +230,16 @@ const Monitors: NextPageWithLayout = () => {
                 <Column key={i} header={col.title} body={col.template} style={{ width: col.width }} />
               ))}
             </DataTable>
+            <div className="flex items-center justify-center">
+              <Paginator
+                first={pagination.first}
+                rows={pagination.rows}
+                totalRecords={pagination.total}
+                onPageChange={onPageChange}
+                template={{ layout: "FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink" }}
+              />
+              <small>{pagination.total} monitores</small>
+            </div>
           </div>
         )}
       </div>
