@@ -1,25 +1,16 @@
-import { NextPageWithLayout } from '@/pages/_app';
-import type { ReactElement } from 'react';
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import PanelLayout from './layout';
+import { GetServerSideProps } from "next";
 
-const Panel: NextPageWithLayout = () => {
-  const router = useRouter();
-  
-  useEffect(() => {
-    router.push("/panel/dashboard");
-  }, []);
-  
-  return <></>
-}
+export const getServerSideProps: GetServerSideProps = async () => {
+  return {
+    redirect: {
+      destination: "/panel/dashboard",
+      permanent: false,
+    },
+  };
+};
 
-Panel.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <PanelLayout>
-      {page}
-    </PanelLayout>
-  )
-}
+const Panel = () => {
+  return null;
+};
 
 export default Panel;

@@ -3,7 +3,7 @@ import Logo from "@/components/Logo";
 import { Alert } from "@/lib/Alert";
 import { useGlobalProvider } from "@/providers/GlobalProvider";
 import AuthService from "@/services/AuthService";
-import { BarChart2Icon, CircleDotIcon, HelpCircleIcon, LogOut, RadarIcon, SirenIcon, Waypoints } from "lucide-react";
+import { BarChart2Icon, CircleDotIcon, HelpCircleIcon, LogOut, RadarIcon, SirenIcon, UserIcon, Waypoints } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -68,6 +68,12 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
         active: false
       },
       {
+        icon: UserIcon,
+        label: "Conta",
+        route: "/panel/account",
+        active: false
+      },
+      {
         icon: HelpCircleIcon,
         label: "Ajuda",
         route: "/panel/help",
@@ -88,7 +94,9 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
   function updateActiveNavItem(index: number) {
     const list = [...navList];
     list.forEach(item => item.active = false);
-    list[index].active = true;
+    if (list[index]) {
+      list[index].active = true;
+    }
     setNavList(list);
   }
 
@@ -119,7 +127,8 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
           <div className="w-full px-4 py-6 border-t-1 border-t-gray-500 flex items-center justify-between">
             <div className="truncate mr-3 hidden md:block">
               <Link href="/panel/account/" className="text-gray-300 font-medium overflow-hidden whitespace-nowrap text-ellipsis" onClick={() => updateActiveNavItem(navList.findIndex(nav => nav.route == "/panel/account"))}>
-                {user?.name}
+                <span>{user?.name}</span><br/>
+                <small>{user?.email}</small>
               </Link>
             </div>
             <div>

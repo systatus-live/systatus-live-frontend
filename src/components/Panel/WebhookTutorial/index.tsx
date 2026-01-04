@@ -15,7 +15,9 @@ export default function WebhookTutorial() {
             <b>Slack</b>
           </div>
         }>
-          <SlackWebhookTutorial />
+          <div className="mt-3">
+            <SlackWebhookTutorial />
+          </div>
         </TabPanel>
         <TabPanel header={
           <div className="flex items-center space-x-2">
@@ -23,7 +25,7 @@ export default function WebhookTutorial() {
             <b>Google Chat</b>
           </div>
         }>
-          <div>
+          <div className="mt-3">
             <GoogleChatWebhookTutorial />
           </div>
         </TabPanel>
@@ -33,7 +35,7 @@ export default function WebhookTutorial() {
             <b>Discord</b>
           </div>
         }>
-          <div>
+          <div className="mt-3">
             <DiscordWebhookTutorial />
           </div>
         </TabPanel>

@@ -1,9 +1,10 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 
 type User = {
   id?: string,
   email?: string,
-  name?: string
+  name?: string,
+  createdAt?: string
 }
 
 const GlobalContext = createContext<{

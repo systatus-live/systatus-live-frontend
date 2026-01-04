@@ -1,7 +1,7 @@
 "use client";
 
 import Loading from '@/components/Loading';
-import WebhookTutorial from '@/components/WebhookTutorial';
+import WebhookTutorial from '@/components/Panel/WebhookTutorial';
 import { Alert } from '@/lib/Alert';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
 import ChatPlatformService from '@/services/ChatPlatformService';
