@@ -79,27 +79,27 @@ export default function SignUp() {
             <h2 className={`my-6 text-center text-2xl  ${styles["title"]}`}>Criar Conta</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
               <div>
-                <label className="block text-sm">Nome <span className="text-red-500">*</span></label>
+                <label className="block">Nome <span className="text-red-500">*</span></label>
                 <InputText {...register("name", { required: true })} type="text" placeholder="Nome completo" className="p-inputtext-sm" />
               </div>
               <div>
-                <label className="block text-sm">E-mail <span className="text-red-500">*</span></label>
+                <label className="block">E-mail <span className="text-red-500">*</span></label>
                 <InputText {...register("email", { required: true })} type="email" placeholder="seu@email.com" className="p-inputtext-sm" />
               </div>
               <div>
-                <label className="block text-sm">Senha <span className="text-red-500">*</span></label>
+                <label className="block">Senha <span className="text-red-500">*</span></label>
                 <Controller name="password" control={control} rules={{ required: true }} render={({ field }) => (
                   <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
                 )} />
               </div>
               <div>
-                <label className="block text-sm">Confirmar Senha <span className="text-red-500">*</span></label>
+                <label className="block">Confirmar Senha <span className="text-red-500">*</span></label>
                 <Controller name="confirmPassword" control={control} rules={{ required: true }} render={({ field }) => (
                   <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
                 )} />
               </div>
               <div>
-                <label className="block text-sm">Onde você conheceu o Systatus.Live?</label>
+                <label className="block">Onde você conheceu o Systatus.Live?</label>
                 <Controller name="discovery" control={control} rules={{ required: false }} render={({ field }) => (
                   <Dropdown
                     {...field}
@@ -122,7 +122,7 @@ export default function SignUp() {
                 <Controller name="acceptTerms" rules={{ required: true }} control={control} render={({ field }) => (
                   <Checkbox inputId={field.name} checked={field.value} onChange={(e) => field.onChange(e.checked)} />
                 )} />
-                <label htmlFor="acceptTerms" className="ml-2 block text-sm">
+                <label htmlFor="acceptTerms" className="ml-2 block">
                   Eu aceito os {' '}
                   <Link href="/agreements/terms-of-use" target="_blank" className="font-medium text-blue-600 hover:text-blue-500">Termos de Uso</Link>{' '}
                   e a{' '}

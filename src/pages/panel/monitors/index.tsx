@@ -44,8 +44,8 @@ const Monitors: NextPageWithLayout = () => {
             {getMonitorStatusIcon(monitor)}
           </div>
           <div className="flex flex-col justify-center w-full overflow-hidden">
-            <span className="font-medium text-sm">{monitor.name}</span>
-            <div className="text-gray-500 text-xs overflow-hidden whitespace-nowrap text-ellipsis">{MonitorTypeLabelEnum[monitor.type as MonitorTypeEnum]} • {monitor.address}</div>
+            <span className="font-medium">{monitor.name}</span>
+            <div className="text-gray-500 text-sm overflow-hidden whitespace-nowrap text-ellipsis">{MonitorTypeLabelEnum[monitor.type as MonitorTypeEnum]} • {monitor.address}</div>
           </div>
         </div>
       ),
@@ -54,7 +54,7 @@ const Monitors: NextPageWithLayout = () => {
     {
       title: "Status",
       template: (monitor: any) => (
-        <div className="text-xs">
+        <div className="text-sm">
           {monitor.lastStatus == null ? (
             <span>Pendente</span>
           ) : (
@@ -77,7 +77,7 @@ const Monitors: NextPageWithLayout = () => {
     {
       title: "Histórico (30 dias)",
       template: (monitor: any) => (
-        <div className="flex gap-x-1">
+        <div className="flex items-center gap-x-1">
           <div className="flex gap-x-1">
             {monitor.historical.map((item: any, index: number) => (
               <div key={index} style={{ width: "6px", height: "20px" }} className={`${getHistoricalClass(item)} ${styles["zoom"]} rounded-lg`} title={item.note}></div>

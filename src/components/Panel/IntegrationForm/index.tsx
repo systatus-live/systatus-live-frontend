@@ -184,11 +184,11 @@ export default function IntegrationForm(props: { integration: IFormValues | null
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
           <div>
-            <label className="block text-sm font-medium">Nome <span className="text-red-500">*</span></label>
+            <label className="block font-medium">Nome <span className="text-red-500">*</span></label>
             <InputText {...register("name", { required: true })} placeholder="Ex.: Canal de DevOps" className="p-inputtext-sm" />
           </div>
           <div>
-            <label className="block text-sm font-medium">Plataforma <span className="text-red-500">*</span></label>
+            <label className="block font-medium">Plataforma <span className="text-red-500">*</span></label>
             <Controller name="chatPlatformId" control={control} rules={{ required: true }} render={({ field }) => (
               <Dropdown
                 {...field}

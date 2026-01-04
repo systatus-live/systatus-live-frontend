@@ -62,11 +62,11 @@ export default function SignIn() {
             <h2 className={`my-6 text-center text-2xl  ${styles["title"]}`}>Entrar</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
               <div>
-                <label className="block text-sm">E-mail <span className="text-red-500">*</span></label>
+                <label className="block">E-mail <span className="text-red-500">*</span></label>
                 <InputText {...register("email", { required: true })} type="email" placeholder="seu@email.com" className="p-inputtext-sm" />
               </div>
               <div>
-                <label className="block text-sm">Senha <span className="text-red-500">*</span></label>
+                <label className="block">Senha <span className="text-red-500">*</span></label>
                 <Controller name="password" control={control} rules={{ required: true }} render={({ field }) => (
                   <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
                 )} />
@@ -76,7 +76,7 @@ export default function SignIn() {
                   <Controller name="keepConected" control={control} render={({ field }) => (
                     <Checkbox inputId={field.name} checked={field.value} onChange={(e) => field.onChange(e.checked)} />
                   )} />
-                  <label className="ml-2 block text-sm text-gray-700">
+                  <label className="ml-2 block text-gray-700">
                     Manter conectado
                   </label>
                 </div>

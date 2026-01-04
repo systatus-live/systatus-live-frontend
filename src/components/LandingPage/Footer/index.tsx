@@ -16,7 +16,7 @@ export default function Footer() {
       ]
     },
     {
-      title: "Suporte",
+      title: "Contato",
       items: [
         { name: "Contato", href: "/contact", target: "" },
       ]

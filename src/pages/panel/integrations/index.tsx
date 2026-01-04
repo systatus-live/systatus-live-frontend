@@ -42,9 +42,9 @@ const Integrations: NextPageWithLayout = () => {
             <Image src={integration.chatPlatformIconUrl} alt="" fill />
           </div>
           <div className="flex flex-col justify-center w-full overflow-hidden">
-            <span className="font-medium text-sm">{integration.name}</span>
+            <span className="font-medium">{integration.name}</span>
             <div className="flex items-center gap-x-2">
-              <div className="text-gray-500 text-xs overflow-hidden whitespace-nowrap text-ellipsis">{integration.chatPlatform} • {integration.address}</div>
+              <div className="text-gray-500 text-sm overflow-hidden whitespace-nowrap text-ellipsis">{integration.chatPlatform} • {integration.address}</div>
             </div>
           </div>
         </div>

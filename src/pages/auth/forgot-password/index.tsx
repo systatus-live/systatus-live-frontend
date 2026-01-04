@@ -75,7 +75,7 @@ export default function ForgotPassword() {
             ) : (
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
                 <div>
-                  <label className="block text-sm">E-mail <span className="text-red-500">*</span></label>
+                  <label className="block">E-mail <span className="text-red-500">*</span></label>
                   <InputText {...register("email", { required: true })} type="email" placeholder="seu@email.com" className="p-inputtext-sm" />
                 </div>
                 <div className="my-4">

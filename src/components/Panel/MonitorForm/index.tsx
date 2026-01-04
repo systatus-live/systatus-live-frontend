@@ -152,11 +152,11 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
           <div>
-            <label className="block text-sm">Nome <span className="text-red-500">*</span></label>
+            <label className="block">Nome <span className="text-red-500">*</span></label>
             <InputText {...register("name", { required: true })} placeholder="Ex.: API de pagamentos" className="p-inputtext-sm" />
           </div>
           <div>
-            <label className="block text-sm">Tipo <span className="text-red-500">*</span></label>
+            <label className="block">Tipo <span className="text-red-500">*</span></label>
             <Controller name="type" control={control} rules={{ required: true }} render={({ field }) => (
               <Dropdown
                 {...field}
@@ -176,12 +176,12 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
             )} />
           </div>
           <div>
-            <label className="block text-sm">IP ou domínio <span className="text-red-500">*</span></label>
+            <label className="block">IP ou domínio <span className="text-red-500">*</span></label>
             <InputText {...register("address", { required: true })} className="p-inputtext-sm" />
             <small>Timeout: 10 segundos</small>
           </div>
           <div>
-            <label className="block text-sm">Integração <span className="text-red-500">*</span></label>
+            <label className="block">Integração <span className="text-red-500">*</span></label>
             <Controller name="integrationList" control={control} rules={{ required: true }} render={({ field }) => (
               <MultiSelect
                 {...field}
@@ -206,7 +206,7 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
             <Controller name="active" control={control} render={({ field }) => (
               <Checkbox inputId={field.name} checked={field.value} onChange={(e) => field.onChange(e.checked)} />
             )} />
-            <label className="block text-sm">Ativo</label>
+            <label className="block">Ativo</label>
           </div>
           <div className="flex justify-end space-x-2 mt-5">
             {props.monitor && (

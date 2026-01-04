@@ -3,7 +3,7 @@ import Logo from "@/components/Logo";
 import { Alert } from "@/lib/Alert";
 import { useGlobalProvider } from "@/providers/GlobalProvider";
 import AuthService from "@/services/AuthService";
-import { BarChart2Icon, CastIcon, CircleDotIcon, LogOut, MonitorIcon, RadarIcon, SirenIcon, Waypoints } from "lucide-react";
+import { BarChart2Icon, CircleDotIcon, HelpCircleIcon, LogOut, RadarIcon, SirenIcon, Waypoints } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -67,6 +67,12 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
         route: "/panel/integrations",
         active: false
       },
+      {
+        icon: HelpCircleIcon,
+        label: "Ajuda",
+        route: "/panel/help",
+        active: false
+      }
     ]
 
     const navItem = list.find(item => item.route == window.location.pathname);
@@ -91,9 +97,9 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
       {isSubmitting && <Loading />}
 
       <div className="flex flex-rows h-screen">
-        <div className="flex justify-between flex-col shadow-lg w-auto sm:w-xs border-r border-gray-200 bg-slate-800">
+        <div className="flex justify-between flex-col shadow-lg sm:w-sm border-r border-gray-200 bg-slate-800">
           <div>
-            <div className="p-4 border-b-1 border-b-gray-500 mb-6">
+            <div className="py-5 px-4 border-b-1 border-b-gray-500 mb-6">
               <Logo inverted={true} />
             </div>
             <div className="flex flex-col items-center sm:items-start w-full">
@@ -101,7 +107,7 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
                 <Link key={index} href={item.route} className="flex justify-center w-full px-2 mb-1" onClick={() => updateActiveNavItem(index)}>
                   <div className={`px-4 h-10 w-full flex items-center text-slate-300 rounded-lg transition-colors text-white ${item.active ? "bg-slate-700" : "hover:bg-slate-700"}`}>
                     <item.icon height={20} />
-                    <div className="flex items-center justify-between w-full hidden sm:flex text-sm ml-3">
+                    <div className="flex items-center justify-between w-full hidden sm:flex ml-3">
                       <span>{item.label}</span>
                       {item.active && <CircleDotIcon size={10} />}
                     </div>
@@ -112,7 +118,9 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
           </div>
           <div className="w-full px-4 py-6 border-t-1 border-t-gray-500 flex items-center justify-between">
             <div className="truncate mr-3 hidden md:block">
-              <p className="text-sm text-gray-300 overflow-hidden whitespace-nowrap text-ellipsis">{user?.name}</p>
+              <Link href="/panel/account/" className="text-gray-300 font-medium overflow-hidden whitespace-nowrap text-ellipsis" onClick={() => updateActiveNavItem(navList.findIndex(nav => nav.route == "/panel/account"))}>
+                {user?.name}
+              </Link>
             </div>
             <div>
               <LogOut height={22} className="text-gray-300 cursor-pointer" onClick={() => signOut()} />

@@ -42,14 +42,14 @@ const Incidents: NextPageWithLayout = () => {
           return (
             <div className={`flex items-center space-x-1`}>
               <BadgeCheckIcon size={16} className={styles["font-success"]} />
-              <small>Resolvido</small>
+              <span className="text-sm">Resolvido</span>
             </div>
           )
         }
         return (
           <div className={`flex items-center space-x-1`}>
             <SirenIcon size={18} className={`${styles["font-danger"]} ${styles["blink"]}`} />
-            <small>Não Resolvido</small>
+            <span className="text-sm">Não Resolvido</span>
           </div>
         )
       },
@@ -59,8 +59,8 @@ const Incidents: NextPageWithLayout = () => {
       title: "Monitor",
       template: (incident: any) => (
         <div className="flex flex-col justify-center">
-          <span className="font-medium text-sm">{incident.name}</span>
-          <div className="text-gray-500 text-xs">{incident.address}</div>
+          <span className="font-medium">{incident.name}</span>
+          <div className="text-gray-500 text-sm">{incident.address}</div>
         </div>
       ),
       width: "25%"
@@ -68,24 +68,24 @@ const Incidents: NextPageWithLayout = () => {
     {
       title: "Incidente",
       template: (incident: any) => (
-        <small>{HttpStatusCodeLabel[getHttpStatusKey(incident.lastError) as keyof typeof HttpStatusCodeLabel]} </small>
+        <span className="text-sm">{HttpStatusCodeLabel[getHttpStatusKey(incident.lastError) as keyof typeof HttpStatusCodeLabel]} </span>
       ),
       width: "20%"
     },
     {
       title: "Iniciado",
-      template: (incident: any) => <small>{formatDate(incident.createdAt, "DD/MM/YYYY HH:mm")}</small>,
+      template: (incident: any) => <span className="text-sm">{formatDate(incident.createdAt, "DD/MM/YYYY HH:mm")}</span>,
       width: "15%"
     },
     {
       title: "Resolvido",
       template: (incident: any) => (
-        incident.endedAt ? <small>{formatDate(incident.endedAt, "DD/MM/YYYY HH:mm")}</small> : <small></small>),
+        incident.endedAt ? <span className="text-sm">{formatDate(incident.endedAt, "DD/MM/YYYY HH:mm")}</span> : <span className="text-sm"></span>),
       width: "15%"
     },
     {
       title: "Duração",
-      template: (incident: any) => <small>{incident.duration}</small>,
+      template: (incident: any) => <span className="text-sm">{incident.duration}</span>,
       width: "10%"
     }
   ]

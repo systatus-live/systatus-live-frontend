@@ -34,7 +34,7 @@ export async function GET() {
           period: "",
           description: "Perfeito para expandir a cobertura de monitoramento.",
           cta: "Em breve",
-          ctaLink: "#",
+          ctaLink: "#pricing",
           mostPopular: false,
           features: {
             "🆙 50 monitores": true,
@@ -57,7 +57,7 @@ export async function GET() {
           period: "",
           description: "Mais monitoramento, mensagens personalizadas e alertas no WhatsApp.",
           cta: "Em breve",
-          ctaLink: "#",
+          ctaLink: "#pricing",
           mostPopular: false,
           features: {
             "🆙 100 monitores": true,

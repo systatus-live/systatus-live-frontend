@@ -61,38 +61,29 @@ export default function Pricing() {
               className={`
                 relative flex flex-col rounded-2xl shadow-xl overflow-hidden
                 ${plan.mostPopular ? 'border-2 border-blue-500' : 'border border-gray-200'}
+                p-6 
               `}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 + 0.3, duration: 0.5 }}
             >
-              <div className="p-6">
+              <div className="">
                 <div>
-                  <h3 className="flex justify-between items-center text-2xl font-semibold text-gray-900">
-                    <div className="flex items-center space-x-2">
-                      <Image src={plan.image} alt={plan.name} height={32} width={32} />
-                      <div>{plan.name}</div>
-                    </div>
-                    <div>{plan.mostPopular ? <span className={styles["most-popular"]}>🌟 Mais Popular 🌟</span> : <></>}</div>
-                  </h3>
-                  <div className="mt-4 flex items-baseline">
-                    <span className="text-4xl font-extrabold tracking-tight text-gray-900">{plan.price}</span>
-                    {plan.period && (
-                      <span className="text-xl font-medium text-gray-500 ml-1">{plan.period}</span>
-                    )}
+                  <div className="flex justify-center">{plan.mostPopular ? <span className={styles["most-popular"]}>🌟 Mais Popular 🌟</span> : <></>}</div>
+                  <div className="flex flex-col items-center">
+                    <Image src={plan.image} alt={plan.name} height={58} width={58} />
+                    <h1 className="text-1xl font-semibold text-gray-900 mt-2">Plano {plan.name}</h1>
                   </div>
-                  <p className="mt-2 text-base text-gray-500" style={{ minHeight: "3rem" }}>{plan.description}</p>
-                </div>
-                <div className="mt-6">
-                  <Link href={plan.ctaLink}>
-                    <Button>{plan.cta}</Button>
-                  </Link>
+                  <div className="flex justify-center items-baseline mt-2">
+                    <span className="text-4xl font-extrabold tracking-tight text-gray-900">{plan.price}</span>
+                    {plan.period && <span className="text-xl font-medium text-gray-500 ml-1">{plan.period}</span>}
+                  </div>
                 </div>
               </div>
-              <div className="py-6 px-6 bg-gray-50 space-y-6 sm:pb-10 sm:pt-6">
-                <h3 className="text-xs font-semibold text-gray-900 tracking-wide uppercase">
-                  Veja o que está incluso:
+              <div className="bg-gray-50">
+                <h3 className="text-center text-gray-500 my-6">
+                  {plan.description}
                 </h3>
                 <ul className="space-y-4">
                   {Object.entries(plan.features).map(([key, included], index) => (
@@ -104,6 +95,11 @@ export default function Pricing() {
                     </li>
                   ))}
                 </ul>
+                <div className="mt-6 p-fluid">
+                  <Link href={plan.ctaLink}>
+                    <Button>{plan.cta}</Button>
+                  </Link>
+                </div>
               </div>
             </motion.div>
           ))}
