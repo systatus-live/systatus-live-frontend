@@ -2,6 +2,7 @@ import Loading from '@/components/Loading';
 import { Alert } from '@/lib/Alert';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
 import IntegrationService from '@/services/IntegrationService';
+import IntervalService from '@/services/IntervalService';
 import MonitorService from '@/services/MonitorService';
 import { MonitorTypeEnum, MonitorTypeLabelEnum } from '@/types/MonitorTypeEnum';
 import { EditIcon } from 'lucide-react';
@@ -21,13 +22,15 @@ type IFormValues = {
   type: string;
   address: string;
   active: boolean;
-  integrationList: any[]
+  integrationList: any[],
+  intervalId: string;
 }
 
 export default function MonitorForm(props: { monitor: IFormValues | null, onClose?: Function; }) {
   const { token } = useGlobalProvider();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [integrationList, setIntegrationList] = useState([]);
+  const [intervalList, setIntervalList] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const monitorTypeList = Object.keys(MonitorTypeEnum).map(t => ({ id: t, description: MonitorTypeLabelEnum[t as MonitorTypeEnum] }));
 
@@ -38,7 +41,8 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
       type: props.monitor.type,
       address: props.monitor.address,
       active: props.monitor.active,
-      integrationList: (props.monitor.integrationList || []).map(integration => integration.id)
+      integrationList: (props.monitor.integrationList || []).map(integration => integration.id),
+      intervalId: props.monitor.intervalId,
     }
   } : {
     values: {
@@ -47,15 +51,16 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
       type: MonitorTypeEnum.GET,
       address: "",
       active: true,
-      integrationList: []
+      integrationList: [],
+      intervalId: ""
     }
   });
 
   useEffect(() => {
-    if (token) {
-      getIntegrationList(new URLSearchParams());
+    if (isOpen) {
+      loadInitialData();
     }
-  }, [token]);
+  }, [isOpen]);
 
   function close() {
     reset();
@@ -76,7 +81,8 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
         type: form.type,
         address: form.address,
         active: form.active,
-        integrationList: form.integrationList
+        integrationList: form.integrationList,
+        intervalId: form.intervalId
       }
 
       if (props.monitor) {
@@ -109,6 +115,15 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
     });
   }
 
+  async function loadInitialData() {
+    try {
+      await getIntegrationList(new URLSearchParams());
+      await getIntervalList(new URLSearchParams());
+    } catch (error: any) {
+      Alert.error("", error.message);
+    }
+  }
+
   async function getIntegrationList(params: URLSearchParams) {
     if (isSubmitting) return;
     setIsSubmitting(true);
@@ -116,8 +131,24 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
     params.set("page", "0");
 
     try {
-      const { data, total } = await IntegrationService.getIntegrationList(token as string, params);
+      const { data } = await IntegrationService.getIntegrationList(token as string, params);
       setIntegrationList(data);
+    } catch (error: any) {
+      Alert.error("", error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  async function getIntervalList(params: URLSearchParams) {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
+    params.set("page", "0");
+
+    try {
+      const { data } = await IntervalService.getIntervalList(token as string, params);
+      setIntervalList(data);
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
@@ -202,11 +233,31 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
               />
             )} />
           </div>
+          <div>
+            <label className="block">Intervalo de monitoramento <span className="text-red-500">*</span></label>
+            <Controller name="intervalId" control={control} rules={{ required: true }} render={({ field }) => (
+              <Dropdown
+                {...field}
+                inputRef={field.ref}
+                value={watch("intervalId")}
+                onChange={(option) => setValue("intervalId", option.value)}
+                options={intervalList}
+                optionValue="id"
+                optionLabel="name"
+                filter={true}
+                itemTemplate={(option) => (
+                  <span>{option.name}</span>
+                )}
+                valueTemplate={(option) => (option == null ? <div>&#8203;</div> : <span>{option.name}</span>)}
+                className="p-inputtext-sm"
+              />
+            )} />
+          </div>
           <div className="flex items-center space-x-1">
             <Controller name="active" control={control} render={({ field }) => (
               <Checkbox inputId={field.name} checked={field.value} onChange={(e) => field.onChange(e.checked)} />
             )} />
-            <label className="block">Ativo</label>
+            <label className="block">Habilitar monitoramento</label>
           </div>
           <div className="flex justify-end space-x-2 mt-5">
             {props.monitor && (

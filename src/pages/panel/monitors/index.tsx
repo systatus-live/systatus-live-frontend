@@ -61,10 +61,16 @@ const Monitors: NextPageWithLayout = () => {
             monitor.active ? (
               monitor.lastStatus?.startsWith("2") ? 
               (
-                <span>Ok ({monitor.lastIncident})</span>
+                <div className="flex flex-col">
+                  <span>{HttpStatusCodeLabel[getHttpStatusKey(monitor.lastStatus) as keyof typeof HttpStatusCodeLabel]}</span>
+                  <span className="text-gray-500">Uptime {monitor.lastIncident}</span>
+                </div>
               ) : 
               (
-                <span>{HttpStatusCodeLabel[getHttpStatusKey(monitor.lastStatus) as keyof typeof HttpStatusCodeLabel]} ({monitor.lastIncident})</span>
+                <div className="flex flex-col">
+                  <span>{HttpStatusCodeLabel[getHttpStatusKey(monitor.lastStatus) as keyof typeof HttpStatusCodeLabel]}</span>
+                  <span className="text-gray-500">Downtime {monitor.lastIncident}</span>
+                </div>
               )
             ) : (
               <span></span>
@@ -88,7 +94,17 @@ const Monitors: NextPageWithLayout = () => {
           </small>
         </div>
       ),
-      width: "50%"
+      width: "40%"
+    },
+    {
+      title: "Intervalo",
+      template: (monitor: any) => (
+        <div className="flex flex-col">
+          <span>{monitor.interval}</span>
+          <small className="text-gray-500">Cron {monitor.cron}</small>
+        </div>
+      ),
+      width: "10%"
     },
     {
       title: "Ações",
