@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
         hostname: "www.google.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "ui-avatars.com",
+        pathname: "/**",
+      },
     ],
   },
 };

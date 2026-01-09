@@ -130,7 +130,6 @@ export default function SignUp() {
                 </label>
               </div>
               <div className="my-4">
-                {isSubmitting}
                 <Button type="submit" className="w-full">Criar Conta</Button>
               </div>
               <p className="mt-2 text-center text-sm">

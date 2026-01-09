@@ -2,14 +2,26 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import AuthService from '@/services/AuthService';
 import { jwtDecode } from 'jwt-decode';
+import { SignInOptionsDTO } from '@/types/SignInOptionsDTO';
+import { SignInTypeEnum } from '@/types/SignInTypeEnum';
 
 export async function POST(request: Request) {
   try {
-    const json = await request.json();
+    const json: SignInOptionsDTO = await request.json();
+    
+    let response = null;
+    switch (json.type) {
+      case SignInTypeEnum.GOOGLE:
+        response = await AuthService.signIn(json);
+        break;
+      case SignInTypeEnum.EMAIL_PASSWORD:
+        response = await AuthService.signIn(json);
+        break;
+      default:
+        throw new Error("Tipo de autenticação desconhecido.");
+    }
+    
 
-    // TODO Implementar verificação de tipo de login para múltiplos providers (e-mail, google, etc)
-
-    const response = await AuthService.signInEmailPassword(json);
     const accessToken = response.data.access_token;
     const decodedToken = jwtDecode(accessToken);
 

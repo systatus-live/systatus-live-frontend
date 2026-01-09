@@ -7,6 +7,7 @@ import { BarChart2Icon, CircleDotIcon, HelpCircleIcon, LogOut, RadarIcon, SirenI
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Image from "next/image"
 
 export default function PanelLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -105,7 +106,7 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
       {isSubmitting && <Loading />}
 
       <div className="flex flex-rows h-screen">
-        <div className="flex justify-between flex-col shadow-lg sm:w-sm border-r border-gray-200 bg-slate-800">
+        <div className="flex justify-between flex-col shadow-lg w-auto md:w-[300px] border-r border-gray-200 bg-slate-800">
           <div>
             <div className="py-5 px-4 border-b-1 border-b-gray-500 mb-6">
               <Logo inverted={true} />
@@ -126,9 +127,20 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
           </div>
           <div className="w-full px-4 py-6 border-t-1 border-t-gray-500 flex items-center justify-between">
             <div className="truncate mr-3 hidden md:block">
-              <Link href="/panel/account/" className="text-gray-300 font-medium overflow-hidden whitespace-nowrap text-ellipsis" onClick={() => updateActiveNavItem(navList.findIndex(nav => nav.route == "/panel/account"))}>
-                <span>{user?.name}</span><br/>
-                <small>{user?.email}</small>
+              <Link href="/panel/account/" className="block truncate max-w-auto text-gray-300 font-medium" onClick={() => updateActiveNavItem(navList.findIndex(nav => nav.route == "/panel/account"))}>
+                <div className="flex items-center space-x-3">
+                  <Image
+                    src={user?.avatar!}
+                    alt="."
+                    className="rounded-full"
+                    height={38}
+                    width={38}
+                  />
+                  <div className="overflow-hidden whitespace-nowrap text-ellipsis">
+                    <span>{user?.name}</span><br />
+                    <small>{user?.email}</small>
+                  </div>
+                </div>
               </Link>
             </div>
             <div>

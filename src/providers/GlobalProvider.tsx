@@ -4,7 +4,8 @@ type User = {
   id?: string,
   email?: string,
   name?: string,
-  createdAt?: string
+  createdAt?: string,
+  avatar?: string
 }
 
 const GlobalContext = createContext<{

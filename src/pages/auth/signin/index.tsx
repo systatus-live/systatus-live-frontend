@@ -1,20 +1,23 @@
 "use client";
 
-import { Button } from 'primereact/button';
+import Loading from '@/components/Loading';
 import Logo from '@/components/Logo';
+import { Alert } from '@/lib/Alert';
+import AuthService from '@/services/AuthService';
 import { SignInTypeEnum } from '@/types/SignInTypeEnum';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import styles from "./styles.module.scss";
-import AuthService from '@/services/AuthService';
 import { useRouter } from 'next/router';
-import { Alert } from '@/lib/Alert';
-import Loading from '@/components/Loading';
+import { Button } from 'primereact/button';
+import { Checkbox } from 'primereact/checkbox';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
-import { Checkbox } from 'primereact/checkbox';
+import { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import styles from "./styles.module.scss";
+import Script from 'next/script'
+import { Divider } from 'primereact/divider';
+import { SignInOptionsDTO } from '@/types/SignInOptionsDTO';
 
 type IFormValues = {
   email: string;
@@ -26,17 +29,37 @@ type IFormValues = {
 export default function SignIn() {
   const router = useRouter();
   const [isSubmitting, setSubmitting] = useState(false);
-  const { control, register, handleSubmit } = useForm<IFormValues>();
+  const { control, register, handleSubmit, getValues } = useForm<IFormValues>();
 
-  function onSubmit(form: IFormValues) {
+  useEffect(() => {
+    if ((window as any).google) {
+      initGsi();
+    }
+  }, []);
+
+  function initGsi() {
+    const google = (window as any).google
+
+    google.accounts.id.initialize({
+      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+      callback: (response: any) => onSubmitGoogle(response)
+    })
+
+    google.accounts.id.renderButton(
+      document.getElementById("google-signin"),
+      {
+        theme: "outline",
+        size: "large",
+        text: "signin_with",
+        shape: "rectangular"
+      }
+    )
+  }
+
+  function submit(data: SignInOptionsDTO) {
     setSubmitting(true);
 
-    AuthService.authLocal({
-      email: form.email,
-      password: form.password,
-      type: SignInTypeEnum.EMAIL_PASSWORD,
-      keepConected: form.keepConected
-    }).then((_) => {
+    AuthService.authLocal(data).then((_) => {
       router.push("/panel");
     }).catch((error) => {
       Alert.error("", error.message);
@@ -45,11 +68,34 @@ export default function SignIn() {
     })
   }
 
+  function onSubmitForm(form: IFormValues) {
+    return submit({
+      email: form.email,
+      password: form.password,
+      type: SignInTypeEnum.EMAIL_PASSWORD,
+      keepConected: form.keepConected
+    })
+  }
+
+  function onSubmitGoogle(credential: any) {
+    return submit({
+      google: credential,
+      type: SignInTypeEnum.GOOGLE,
+      keepConected: getValues("keepConected")
+    })
+  }
+
   return (
     <>
       <Head>
         <title>Entrar • Systatus.Live</title>
       </Head>
+
+      <Script
+        src="https://accounts.google.com/gsi/client"
+        strategy="afterInteractive"
+        onLoad={() => initGsi()}
+      />
 
       {isSubmitting && <Loading />}
 
@@ -60,7 +106,7 @@ export default function SignIn() {
               <Logo />
             </div>
             <h2 className={`my-6 text-center text-2xl  ${styles["title"]}`}>Entrar</h2>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+            <form onSubmit={handleSubmit(onSubmitForm)} className="space-y-3">
               <div>
                 <label className="block">E-mail <span className="text-red-500">*</span></label>
                 <InputText {...register("email", { required: true })} type="email" placeholder="seu@email.com" className="p-inputtext-sm" />
@@ -87,7 +133,13 @@ export default function SignIn() {
               <div className="my-4">
                 <Button type="submit" className="w-full">Entrar</Button>
               </div>
-              <p className="mt-2 text-center text-sm">
+              <div>
+                <Divider><small>Ou</small></Divider>
+                <div className="flex justify-center">
+                  <div id="google-signin" />
+                </div>
+              </div>
+              <p className="mt-4 text-center text-sm">
                 <span className="text-gray-700">Não possui uma conta?{' '}</span>
                 <Link href="/auth/signup" className="font-medium text-blue-600 hover:text-blue-500">
                   Crie uma gratuitamente
