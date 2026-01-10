@@ -11,7 +11,6 @@ import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import styles from "./styles.module.scss";
 import Loading from '@/components/Loading';
-import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 
 type IFormValues =  {

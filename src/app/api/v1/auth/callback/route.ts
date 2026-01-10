@@ -20,7 +20,6 @@ export async function POST(request: Request) {
       default:
         throw new Error("Tipo de autenticação desconhecido.");
     }
-    
 
     const accessToken = response.data.access_token;
     const decodedToken = jwtDecode(accessToken);

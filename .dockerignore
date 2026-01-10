@@ -1,0 +1,23 @@
+node_modules
+.next
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+.env
+.env.*
+
+# git
+.git
+.gitignore
+
+# SO / editor
+.vscode
+.idea
+
+# Docker
+Dockerfile
+docker-compose.yml

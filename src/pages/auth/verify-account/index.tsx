@@ -14,7 +14,7 @@ import Head from 'next/head';
 import Loading from '@/components/Loading';
 import { InputText } from 'primereact/inputtext';
 
-type IFormValues =  {
+type IFormValues = {
   code: string;
 }
 
@@ -22,10 +22,14 @@ export default function VerifyAccount() {
   const router = useRouter();
   const { email, redirect } = router.query;
   const [isClient, setIsClient] = useState(false);
-
   const [isSubmitting, setSubmitting] = useState(false);
-  const { handleSubmit } = useForm<IFormValues>();
   const [otp, setOtp] = useState("");
+  const [timer, setTimer] = useState<number>(0);
+  const { handleSubmit } = useForm<IFormValues>();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   function onSubmit(_: IFormValues) {
     setSubmitting(true);
@@ -40,9 +44,26 @@ export default function VerifyAccount() {
     })
   }
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  async function sendCode() {
+    if (timer > 0) return;
+
+    setSubmitting(true);
+
+    AuthService.sendCode(email as string).then((response: any) => {
+      Alert.success("", response.message);
+
+      let seconds = 30;
+      setTimer(seconds);
+      const interval = setInterval(() => {
+        setTimer(seconds -= 1);
+        if (seconds == -1) clearInterval(interval);
+      }, 1000);
+    }).catch((error) => {
+      Alert.error("", error.message);
+    }).finally(() => {
+      setSubmitting(false);
+    })
+  }
 
   return (
     <>
@@ -68,15 +89,18 @@ export default function VerifyAccount() {
               <div>
                 {isClient && (
                   <OtpInput
-                  value={otp}
-                  onChange={setOtp}
-                  numInputs={6}
-                  renderSeparator={<span className="mx-1"></span>}
-                  renderInput={(props) => <InputText {...props as any} />}
-                  skipDefaultStyles={true}
+                    value={otp}
+                    onChange={setOtp}
+                    numInputs={6}
+                    renderSeparator={<span className="mx-1"></span>}
+                    renderInput={(props) => <InputText {...props as any} />}
+                    skipDefaultStyles={true}
                   />
                 )}
               </div>
+              <p className="text-sm text-gray-700 mb-4">
+                Verifique o spam ou lixeira, ou <span onClick={() => sendCode()} className="cursor-pointer text-blue-500 font-medium">clique aqui</span> para reenviar{timer > 0 && <i> (aguarde {timer}s)</i>}.
+              </p>
               <div className="my-4">
                 <Button type="submit" className="w-full">Enviar Código</Button>
               </div>
