@@ -2,8 +2,10 @@ import HttpService from "./HttpService";
 import { SignInOptionsDTO } from "@/types/SignInOptionsDTO";
 
 export default class AuthService {
-  static signUp(payload: any) {
-    return HttpService.post(`${process.env.NEXT_PUBLIC_SYSTATUS_API_URL}/v1/auth/signup`, payload, {});
+  static signUp(payload: any, captcha: string) {
+    return HttpService.post(`${process.env.NEXT_PUBLIC_SYSTATUS_API_URL}/v1/auth/signup`, payload, {
+      captcha: captcha
+    });
   }
 
   static authLocal(payload: SignInOptionsDTO) {

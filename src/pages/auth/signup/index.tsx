@@ -65,7 +65,7 @@ export default function SignUp() {
       password: form.password,
       acceptTerms: form.acceptTerms,
       discovery: form.discovery
-    }).then((_) => {
+    }, form.captcha).then((_) => {
       router.push({
         pathname: "/auth/verify-account",
         query: { email: form.email }
