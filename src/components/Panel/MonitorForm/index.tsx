@@ -225,7 +225,7 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
                 filter={true}
                 itemTemplate={(option) => (
                   <div className="flex items-center gap-x-1 w-full overflow-hidden pt-1">
-                    <Image src={option.chatPlatformIconUrl} alt="" width={16} height={16} />
+                    <Image src={option.chatPlatformIconUrl} alt="." width={16} height={16} />
                     <span className="font-medium text-sm">{option.name}</span>
                   </div>
                 )}

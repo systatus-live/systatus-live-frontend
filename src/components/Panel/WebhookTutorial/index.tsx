@@ -11,7 +11,7 @@ export default function WebhookTutorial() {
       <TabView>
         <TabPanel header={
           <div className="flex items-center space-x-2">
-            <Image src="/logos/slack.svg" alt="" width={18} height={18} />
+            <Image src="/logos/slack.svg" alt="." width={18} height={18} />
             <b>Slack</b>
           </div>
         }>
@@ -21,7 +21,7 @@ export default function WebhookTutorial() {
         </TabPanel>
         <TabPanel header={
           <div className="flex items-center space-x-2">
-            <Image src="/logos/google-chat.svg" alt="" width={18} height={18} />
+            <Image src="/logos/google-chat.svg" alt="." width={18} height={18} />
             <b>Google Chat</b>
           </div>
         }>
@@ -31,7 +31,7 @@ export default function WebhookTutorial() {
         </TabPanel>
         <TabPanel header={
           <div className="flex items-center space-x-2">
-            <Image src="/logos/discord.svg" alt="" width={18} height={18} />
+            <Image src="/logos/discord.svg" alt="." width={18} height={18} />
             <b>Discord</b>
           </div>
         }>

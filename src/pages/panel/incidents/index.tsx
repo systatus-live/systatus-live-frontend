@@ -5,19 +5,19 @@ import { useGlobalProvider } from '@/providers/GlobalProvider';
 import IncidentService from '@/services/IncidentService';
 import { getHttpStatusKey, HttpStatusCodeLabel } from '@/types/HttpStatusCode';
 import formatDate from '@/utils/formatDate';
-import { BadgeCheckIcon, CheckIcon, SearchIcon, SirenIcon } from 'lucide-react';
+import ReactECharts from 'echarts-for-react';
+import { BadgeCheckIcon, SearchIcon, SirenIcon } from 'lucide-react';
 import Head from 'next/head';
 import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { InputText } from 'primereact/inputtext';
+import { Paginator } from 'primereact/paginator';
 import { Skeleton } from 'primereact/skeleton';
 import { useEffect, useState, type ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import PanelLayout from '../layout';
 import styles from "./styles.module.scss";
-import { Paginator } from 'primereact/paginator';
-import ReactECharts from 'echarts-for-react';
 
 type IFormSearchValues = {
   search: string;

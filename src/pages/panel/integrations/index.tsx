@@ -39,7 +39,7 @@ const Integrations: NextPageWithLayout = () => {
       template: (integration: any) => (
         <div key={integration.id} className="flex items-center gap-x-3 items-center">
           <div style={{ position: "relative", width: 16, height: 16 }}>
-            <Image src={integration.chatPlatformIconUrl} alt="" fill />
+            <Image src={integration.chatPlatformIconUrl} alt="." fill />
           </div>
           <div className="flex flex-col justify-center w-full overflow-hidden">
             <span className="font-medium">{integration.name}</span>

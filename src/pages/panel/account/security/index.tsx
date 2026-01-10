@@ -1,19 +1,21 @@
 import Loading from "@/components/Loading";
 import { Alert } from "@/lib/Alert";
+import { NextPageWithLayout } from "@/pages/_app";
 import { useGlobalProvider } from "@/providers/GlobalProvider";
 import UserService from "@/services/UserService";
 import { Button } from "primereact/button";
 import { Password } from "primereact/password";
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import AccountLayout from "../layout";
 
-export default function AccountPassword() {
-  type IFormDetails = {
-    currentPassword: string;
-    newPassword: string;
-    confirmPassword: string;
-  }
+type IFormDetails = {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
 
+const AccountSecurity: NextPageWithLayout = () => {
   const { token } = useGlobalProvider();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -77,3 +79,13 @@ export default function AccountPassword() {
     </>
   )
 }
+
+AccountSecurity.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <AccountLayout>
+      {page}
+    </AccountLayout>
+  )
+}
+
+export default AccountSecurity;

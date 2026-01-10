@@ -201,7 +201,7 @@ export default function IntegrationForm(props: { integration: IFormValues | null
                 filter={true}
                 itemTemplate={(option) => (
                   <div className="flex items-center gap-x-1">
-                    <Image src={option.iconUrl} alt="" width={16} height={16} />
+                    <Image src={option.iconUrl} alt="." width={16} height={16} />
                     <span>{option.description}</span>
                   </div>
                 )}
@@ -209,7 +209,7 @@ export default function IntegrationForm(props: { integration: IFormValues | null
                   option == null ?
                     <div>&#8203;</div> :
                     <div className="flex items-center gap-x-1">
-                      <Image src={option.iconUrl} alt="" width={16} height={16} />
+                      <Image src={option.iconUrl} alt="." width={16} height={16} />
                       <span>{option.description}</span>
                     </div>
                 )}
