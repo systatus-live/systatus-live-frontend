@@ -4,13 +4,14 @@ import AuthService from "./services/AuthService";
 
 export async function middleware(request: NextRequest) {
   console.log(`[MIDDLEWARE] - ${request.url}`);
+  const cookieStore = await cookies();
 
   if (request.nextUrl.pathname.startsWith("/auth/verify-account")) {
     return NextResponse.next();
   }
 
-  if (request.nextUrl.pathname.startsWith("/auth/signin")) {
-    return NextResponse.next();
+  if (request.nextUrl.pathname.startsWith("/auth/signin") && cookieStore.has("token")) {
+    return NextResponse.redirect(new URL("/panel", request.url));
   }
 
   if (request.nextUrl.pathname.startsWith("/auth/signup")) {
@@ -21,7 +22,6 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const cookieStore = await cookies();
   if (cookieStore.has("token")) {
     try {
       const { data } = await AuthService.verifyToken(cookieStore.get("token")?.value as string);

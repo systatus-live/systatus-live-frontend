@@ -45,12 +45,6 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
   async function updateNavList() {
     const list = [
       {
-        icon: BarChart2Icon,
-        label: "Dashboard",
-        route: "/panel/dashboard",
-        active: false
-      },
-      {
         icon: RadarIcon,
         label: "Monitores",
         route: "/panel/monitors",
@@ -66,12 +60,6 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
         icon: Waypoints,
         label: "Integrações",
         route: "/panel/integrations",
-        active: false
-      },
-      {
-        icon: UserIcon,
-        label: "Conta",
-        route: "/panel/account",
         active: false
       },
       {

@@ -6,4 +6,10 @@ export default class IncidentService {
       Authorization: `Bearer ${token}`
     });
   }
+
+    static getHistorical(token: string) {
+    return HttpService.get(`${process.env.NEXT_PUBLIC_SYSTATUS_API_URL}/v1/incidents/historical`, {
+      Authorization: `Bearer ${token}`
+    });
+  }
 }

@@ -3,7 +3,7 @@ import { GetServerSideProps } from "next";
 export const getServerSideProps: GetServerSideProps = async () => {
   return {
     redirect: {
-      destination: "/panel/dashboard",
+      destination: "/panel/monitors",
       permanent: false,
     },
   };

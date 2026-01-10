@@ -17,6 +17,7 @@ import { useForm } from 'react-hook-form';
 import PanelLayout from '../layout';
 import styles from "./styles.module.scss";
 import { Paginator } from 'primereact/paginator';
+import ReactECharts from 'echarts-for-react';
 
 type IFormSearchValues = {
   search: string;
@@ -33,6 +34,7 @@ const Incidents: NextPageWithLayout = () => {
     rows: 0,
     total: 0
   });
+  const [historical, setHistorical] = useState<any>();
 
   const tableColumnList = [
     {
@@ -92,7 +94,9 @@ const Incidents: NextPageWithLayout = () => {
 
   useEffect(() => {
     if (token) {
-      search(new URLSearchParams({ page: "0" }));
+      getHistorical().finally(() => {
+        search(new URLSearchParams({ page: "0" })).then;
+      })
     }
   }, [token]);
 
@@ -118,6 +122,21 @@ const Incidents: NextPageWithLayout = () => {
     }
   }
 
+  async function getHistorical() {
+    setIsSubmitting(true);
+
+    try {
+      const response = await IncidentService.getHistorical(token as string);
+
+      setHistorical(response.data);
+    } catch (error: any) {
+      Alert.error("", error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+
   async function onSubmitSearch(form: IFormSearchValues) {
     await search(new URLSearchParams({ search: form.search, page: "0" }));
   }
@@ -131,6 +150,70 @@ const Incidents: NextPageWithLayout = () => {
     search(new URLSearchParams({ page: event.page.toString() }));
   }
 
+  function buildLineChart() {
+    return (
+      historical && <>
+        <ReactECharts option={{
+          tooltip: {
+            trigger: "axis"
+          },
+          xAxis: [
+            {
+              data: [
+                ...historical.map((incident: any) => incident.date),
+                ""
+              ],
+              axisLabel: {
+                color: "#6a7282"
+              }
+            }
+          ],
+          yAxis: [
+            {
+              minInterval: 1,
+              splitNumber: 5,
+              show: false
+            }
+          ],
+          grid: [
+            {
+              left: "0%",
+              right: "0%",
+              top: "0%",
+              bottom: "0%"
+            },
+          ],
+          series: [
+            {
+              type: "line",
+              showSymbol: true,
+              data: [
+                ...historical.map((incident: any) => ({
+                  value: incident.total
+                })),
+                {
+                  value: 0,
+                  symbol: "none"
+                }
+              ],
+              lineStyle: {
+                color: "#FDC700"
+              },
+              itemStyle: {
+                color: "#FDC700"
+              },
+              areaStyle: {
+                color: "#fdc60054"
+              },
+              smooth: true
+            }
+          ]
+        }} style={{ width: "100%", height: "8vh" }} />
+        <small className="text-gray-500">* Gráfico dos últimos 30 dias</small>
+      </>
+    )
+  }
+
   return (
     <>
       <Head>
@@ -139,9 +222,11 @@ const Incidents: NextPageWithLayout = () => {
 
       {isSubmitting && <Loading />}
 
-      <div className="flex items-center justify-between px-6 py-4 bg-white">
+      <div className="flex flex-col px-6 py-4 bg-white">
         <h1 className="text-xl font-bold">Incidentes</h1>
-        <div></div>
+        <div className="w-full">
+          {buildLineChart()}
+        </div>
       </div>
 
       <div className="px-6">
