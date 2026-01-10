@@ -15,6 +15,8 @@ import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import { Password } from 'primereact/password';
 import { Checkbox } from 'primereact/checkbox';
+import { Divider } from 'primereact/divider';
+import ReCAPTCHA from "react-google-recaptcha";
 
 type IFormValues = {
   name: string;
@@ -23,13 +25,15 @@ type IFormValues = {
   confirmPassword: string;
   acceptTerms: boolean;
   discovery?: string;
+  captcha: string;
 }
 
 export default function SignUp() {
   const router = useRouter();
   const [isSubmitting, setSubmitting] = useState(false);
-  const { control, register, handleSubmit, setValue, watch } = useForm<IFormValues>();
+  const { control, register, handleSubmit, setValue, watch, getValues } = useForm<IFormValues>();
   const [discoveryList, setDiscoveryList] = useState<{ id: string, description: string }[]>([]);
+  const captchaKey = process.env.NEXT_PUBLIC_GOOGLE_CAPTCHA_CLIENT_ID!;
 
   useEffect(() => {
     setDiscoveryList([
@@ -42,6 +46,17 @@ export default function SignUp() {
   }, []);
 
   function onSubmit(form: IFormValues) {
+    console.log(getValues("acceptTerms"))
+    if (!getValues("acceptTerms")) {
+      Alert.info("Termos", "Aceite os Termos de Uso e a Política de Privacidade para continuar.");
+      return;
+    }
+
+    if (!getValues("captcha")) {
+      Alert.info("Não sou um robô", "Resolva o reCAPTCHA para continuar.");
+      return;
+    }
+
     setSubmitting(true);
 
     AuthService.signUp({
@@ -115,11 +130,12 @@ export default function SignUp() {
                     )}
                     valueTemplate={(option) => (option == null ? <div>&#8203;</div> : <span>{option.description}</span>)}
                     className="p-inputtext-sm"
+                    showClear={true}
                   />
                 )} />
               </div>
               <div className="flex items-center">
-                <Controller name="acceptTerms" rules={{ required: true }} control={control} render={({ field }) => (
+                <Controller name="acceptTerms" control={control} render={({ field }) => (
                   <Checkbox inputId={field.name} checked={field.value} onChange={(e) => field.onChange(e.checked)} />
                 )} />
                 <label htmlFor="acceptTerms" className="ml-2 block">
@@ -131,6 +147,16 @@ export default function SignUp() {
               </div>
               <div className="my-4">
                 <Button type="submit" className="w-full">Criar Conta</Button>
+              </div>
+              <div>
+                <Divider></Divider>
+                <div className="flex justify-center">
+                  <ReCAPTCHA
+                    sitekey={captchaKey}
+                    onChange={(captcha: string | null) => setValue("captcha", captcha || "")}
+                    type="image"
+                  />
+                </div>
               </div>
               <p className="mt-2 text-center text-sm">
                 Já possui uma conta?{' '}

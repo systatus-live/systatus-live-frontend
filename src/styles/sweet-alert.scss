@@ -1,7 +1,11 @@
 @use "../styles/theme.scss" as theme;
 
 .swal2-title {
-  font-size: 1.25rem !important;
+  font-size: 1rem !important;
+}
+
+.swal2-toast h2:where(.swal2-title) {
+  margin: 0 1rem !important;
 }
 
 .swal2-html-container {

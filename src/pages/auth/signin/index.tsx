@@ -41,7 +41,7 @@ export default function SignIn() {
     const google = (window as any).google
 
     google.accounts.id.initialize({
-      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+      client_id: process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID,
       callback: (response: any) => onSubmitGoogle(response)
     })
 
