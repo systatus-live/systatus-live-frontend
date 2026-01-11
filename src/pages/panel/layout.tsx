@@ -7,6 +7,7 @@ import { CircleDotIcon, HelpCircleIcon, LogOut, RadarIcon, SirenIcon, Waypoints 
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { Avatar } from "primereact/avatar";
 import { useEffect, useState } from "react";
 
 export default function PanelLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -115,13 +116,16 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
               {user && (
                 <Link href="/panel/account/" className="block truncate max-w-auto text-gray-300 font-medium" onClick={() => updateActiveNavItem(null)}>
                   <div className="flex items-center space-x-3">
-                    <Image
-                      src={user.avatar!}
-                      alt="."
-                      className="rounded-full"
-                      height={38}
-                      width={38}
-                    />
+                     <div style={{ width: 37, height: 37, position: "relative", borderRadius: "50%", overflow: "hidden" }}>
+                      <Image
+                        src={user.avatar ?? "/images/avatar.jpg"}
+                        alt="Avatar"
+                        fill
+                        sizes={`${37}px`}
+                        style={{ objectFit: "cover" }}
+                        priority
+                      />
+                    </div>
                     <div className="overflow-hidden whitespace-nowrap text-ellipsis">
                       <span>{user.name}</span><br />
                       <small>{user.email}</small>

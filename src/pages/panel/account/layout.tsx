@@ -49,7 +49,7 @@ export default function AccountLayout({ children }: Readonly<{ children: React.R
   return (
     <>
       <Head>
-        <title>Conta • {navList.find(item => item.active)?.label} • Systatus.Live</title>
+        <title>{`Conta • ${navList.find(item => item.active)?.label} • Systatus.Live}`}</title>
       </Head>
 
       <PanelLayout>

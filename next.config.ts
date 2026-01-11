@@ -10,10 +10,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "ui-avatars.com",
+        hostname: "bbvojsaxozpvmmfd.public.blob.vercel-storage.com",
         pathname: "/**",
-      },
-    ],
+      }
+    ]
   },
   output: "standalone"
 };

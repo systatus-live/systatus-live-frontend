@@ -39,7 +39,6 @@ const AccountSecurity: NextPageWithLayout = () => {
       const response = await UserService.updateUserPassword(token as string, payload);
 
       Alert.success("", response.message);
-      close();
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
