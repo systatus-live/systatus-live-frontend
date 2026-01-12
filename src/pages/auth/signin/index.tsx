@@ -71,9 +71,7 @@ export default function SignIn() {
         router.push({
           pathname: "/auth/signup",
           query: {
-            name: response.name,
-            email: response.email,
-            signUpSignInFlow: true,
+            authFlowId: response.authFlowId,
             keepConected: form.keepConected
           }
         });

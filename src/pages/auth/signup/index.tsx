@@ -30,12 +30,13 @@ type IFormValues = {
 
 export default function SignUp() {
   const router = useRouter();
-  const { signUpSignInFlow, name, email, keepConected } = router.query;
+  const { authFlowId, keepConected } = router.query;
+  const [authFlow, setAuthFlow] = useState<any>();
   const [isSubmitting, setSubmitting] = useState(false);
-  const { control, register, handleSubmit, setValue, watch, getValues } = useForm<IFormValues>({
+  const { control, register, handleSubmit, setValue, watch, getValues, reset } = useForm<IFormValues>({
     values: {
-      name: name as string || "",
-      email: email as string || "",
+      name: "",
+      email: "",
       password: "",
       confirmPassword: "",
       acceptTerms: false,
@@ -54,6 +55,12 @@ export default function SignUp() {
       { id: "OTHER", description: "Outros" }
     ]);
   }, []);
+
+  useEffect(() => {
+    if (authFlowId) {
+      getAuthFlow();
+    }
+  }, [authFlowId]);
 
   function onSubmit(form: IFormValues) {
     if (!getValues("acceptTerms")) {
@@ -78,7 +85,7 @@ export default function SignUp() {
       router.push({
         pathname: "/auth/verify-account",
         query: {
-          email: form.email,
+          authFlowId: authFlowId,
           keepConected: keepConected == "true"
         }
       });
@@ -87,6 +94,23 @@ export default function SignUp() {
     }).finally(() => {
       setSubmitting(false);
     })
+  }
+
+  async function getAuthFlow() {
+    setSubmitting(true);
+
+    try {
+      const response = await AuthService.getAuthFlowId(authFlowId as string);
+      setAuthFlow(response);
+      reset({
+        name: response.name,
+        email: response.email
+      })
+    } catch (error: any) {
+      Alert.error("", error.message);
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -104,7 +128,7 @@ export default function SignUp() {
               <Logo />
             </div>
             <h2 className={`my-6 text-center text-2xl  ${styles["title"]}`}>Criar Conta</h2>
-            {signUpSignInFlow == "true" ? <h2 className={`my-6 text-1xl  ${styles["title"]}`}>Quase lá... Complete as informações restantes para finalizar seu cadastro ✨✨🚀</h2> : <></>}
+            <h2 className={`my-6 text-1xl  ${styles["title"]}`}>Quase lá... Complete as informações abaixo para finalizar seu cadastro ✨✨🚀</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
               <div>
                 <label className="block">Nome <span className="text-red-500">*</span></label>
@@ -114,7 +138,7 @@ export default function SignUp() {
                 <label className="block">E-mail <span className="text-red-500">*</span></label>
                 <InputText {...register("email", { required: true })} type="email" placeholder="seu@email.com" className="p-inputtext-sm" />
               </div>
-              {signUpSignInFlow != "true" ?
+              {!authFlow?.signUpSignInFlow ?
                 <>
                   <div>
                     <label className="block">Senha <span className="text-red-500">*</span></label>

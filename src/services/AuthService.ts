@@ -65,4 +65,8 @@ export default class AuthService {
   static signOutLocal() {
     return HttpService.post(`/api/v1/auth/signout`, {}, {});
   }
+
+  static getAuthFlowId(id: string) {
+    return HttpService.get(`${process.env.NEXT_PUBLIC_SYSTATUS_API_URL}/v1/auth/flows/${id}`, {});
+  }
 }

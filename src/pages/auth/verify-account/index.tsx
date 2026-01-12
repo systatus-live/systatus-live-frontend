@@ -20,7 +20,8 @@ type IFormValues = {
 
 export default function VerifyAccount() {
   const router = useRouter();
-  const { email, keepConected } = router.query;
+  const { authFlowId, keepConected } = router.query;
+  const [authFlow, setAuthFlow] = useState<any>();
   const [isClient, setIsClient] = useState(false);
   const [isSubmitting, setSubmitting] = useState(false);
   const [otp, setOtp] = useState("");
@@ -31,10 +32,16 @@ export default function VerifyAccount() {
     setIsClient(true);
   }, []);
 
+  useEffect(() => {
+    if (authFlowId) {
+      getAuthFlow();
+    }
+  }, [authFlowId]);
+
   function onSubmit(_: IFormValues) {
     setSubmitting(true);
 
-    AuthService.checkCodeLocal({ code: otp, keepConected: keepConected == "true" }).then((response: any) => {
+    AuthService.checkCodeLocal({ code: otp, keepConected: keepConected == "true" }).then(_ => {
       router.push("/panel");
     }).catch((error) => {
       Alert.error("", error.message);
@@ -48,7 +55,7 @@ export default function VerifyAccount() {
 
     setSubmitting(true);
 
-    AuthService.sendCode(email as string).then((response: any) => {
+    AuthService.sendCode(authFlow.email).then((response: any) => {
       Alert.success("", response.message);
 
       let seconds = 30;
@@ -62,6 +69,19 @@ export default function VerifyAccount() {
     }).finally(() => {
       setSubmitting(false);
     })
+  }
+
+  async function getAuthFlow() {
+    setSubmitting(true);
+
+    try {
+      const response = await AuthService.getAuthFlowId(authFlowId as string);
+      setAuthFlow(response);
+    } catch (error: any) {
+      Alert.error("", error.message);
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -82,7 +102,7 @@ export default function VerifyAccount() {
               <h2 className={`my-6 text-center text-2xl  ${styles["title"]}`}>Insira o código</h2>
             </div>
             <p className="text-sm text-gray-700 mb-4">
-              Insira o <strong>código de verificação</strong> enviado para seu e-mail {email && (<strong>{email}</strong>)}.
+              Insira o <strong>código de verificação</strong> enviado para seu e-mail{authFlow && (<strong>{` ${authFlow.email}`}</strong>)}.
             </p>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
               <div>
