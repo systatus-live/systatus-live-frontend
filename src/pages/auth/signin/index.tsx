@@ -22,14 +22,21 @@ import { SignInOptionsDTO } from '@/types/SignInOptionsDTO';
 type IFormValues = {
   email: string;
   password: string;
-  type: SignInTypeEnum,
+  type: SignInTypeEnum | null,
   keepConected: boolean
 }
 
 export default function SignIn() {
   const router = useRouter();
   const [isSubmitting, setSubmitting] = useState(false);
-  const { control, register, handleSubmit, getValues } = useForm<IFormValues>();
+  const { control, register, handleSubmit, getValues } = useForm<IFormValues>({
+    values: {
+      email: "",
+      password: "",
+      type: null,
+      keepConected: false
+    }
+  });
 
   useEffect(() => {
     if ((window as any).google) {
@@ -56,11 +63,23 @@ export default function SignIn() {
     )
   }
 
-  function submit(data: SignInOptionsDTO) {
+  function submit(form: SignInOptionsDTO) {
     setSubmitting(true);
 
-    AuthService.authLocal(data).then((_) => {
-      router.push("/panel");
+    AuthService.signInLocal(form).then((response) => {
+      if (response.signUpSignInFlow) {
+        router.push({
+          pathname: "/auth/signup",
+          query: {
+            name: response.name,
+            email: response.email,
+            signUpSignInFlow: true,
+            keepConected: form.keepConected
+          }
+        });
+      } else {
+        router.push("/panel");
+      }
     }).catch((error) => {
       Alert.error("", error.message);
     }).finally(() => {
@@ -122,13 +141,9 @@ export default function SignIn() {
                   <Controller name="keepConected" control={control} render={({ field }) => (
                     <Checkbox inputId={field.name} checked={field.value} onChange={(e) => field.onChange(e.checked)} />
                   )} />
-                  <label className="ml-2 block text-gray-700">
-                    Manter conectado
-                  </label>
+                  <label htmlFor="keepConected" className="ml-2 block text-gray-700">Manter conectado</label>
                 </div>
-                <Link href="/auth/forgot-password" className="font-medium text-blue-600 hover:text-blue-500 text-sm">
-                  Esqueci minha senha
-                </Link>
+                <Link href="/auth/forgot-password" className="font-medium text-blue-600 hover:text-blue-500 text-sm">Esqueci minha senha</Link>
               </div>
               <div className="my-4">
                 <Button type="submit" className="w-full">Entrar</Button>
@@ -141,9 +156,7 @@ export default function SignIn() {
               </div>
               <p className="mt-4 text-center text-sm">
                 <span className="text-gray-700">Não possui uma conta?{' '}</span>
-                <Link href="/auth/signup" className="font-medium text-blue-600 hover:text-blue-500">
-                  Crie uma gratuitamente
-                </Link>
+                <Link href="/auth/signup" className="font-medium text-blue-600 hover:text-blue-500">Crie uma gratuitamente</Link>
               </p>
             </form>
           </div>

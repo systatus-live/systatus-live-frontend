@@ -1,3 +1,4 @@
+import { SignInTypeEnum } from '@/types/SignInTypeEnum';
 import { createContext, useContext, useState } from 'react';
 
 type User = {
@@ -5,7 +6,8 @@ type User = {
   email?: string,
   name?: string,
   createdAt?: string,
-  avatar?: string
+  avatar?: string,
+  signinType?: SignInTypeEnum
 }
 
 const GlobalContext = createContext<{

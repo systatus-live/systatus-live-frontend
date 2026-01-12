@@ -7,6 +7,7 @@ export async function middleware(request: NextRequest) {
   const cookieStore = await cookies();
 
   if (request.nextUrl.pathname.startsWith("/auth/verify-account")) {
+    cookieStore.delete("token");
     return NextResponse.next();
   }
 
@@ -27,7 +28,7 @@ export async function middleware(request: NextRequest) {
       const { data } = await AuthService.verifyToken(cookieStore.get("token")?.value as string);
 
       if (!data.verified) {
-        return NextResponse.redirect(new URL(`/auth/verify-account?email=${data.email}&redirect=/panel`, request.url));
+        return NextResponse.redirect(new URL(`/auth/verify-account?email=${data.email}`, request.url));
       }
 
       if (request.nextUrl.pathname.startsWith("/auth/signin")) {

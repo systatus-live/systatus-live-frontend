@@ -20,7 +20,7 @@ type IFormValues = {
 
 export default function VerifyAccount() {
   const router = useRouter();
-  const { email, redirect } = router.query;
+  const { email, keepConected } = router.query;
   const [isClient, setIsClient] = useState(false);
   const [isSubmitting, setSubmitting] = useState(false);
   const [otp, setOtp] = useState("");
@@ -34,9 +34,8 @@ export default function VerifyAccount() {
   function onSubmit(_: IFormValues) {
     setSubmitting(true);
 
-    AuthService.checkCode(otp).then((response: any) => {
-      router.push(redirect ? redirect as string : "/auth/signin");
-      Alert.success("", response.message);
+    AuthService.checkCodeLocal({ code: otp, keepConected: keepConected == "true" }).then((response: any) => {
+      router.push("/panel");
     }).catch((error) => {
       Alert.error("", error.message);
     }).finally(() => {

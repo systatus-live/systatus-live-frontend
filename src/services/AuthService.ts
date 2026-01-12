@@ -8,12 +8,16 @@ export default class AuthService {
     });
   }
 
-  static authLocal(payload: SignInOptionsDTO) {
-    return HttpService.post("/api/v1/auth/callback", payload, {});
+  static signInLocal(payload: SignInOptionsDTO) {
+    return HttpService.post("/api/v1/auth/signin", payload, {});
   }
 
   static signIn(payload: any) {
     return HttpService.post(`${process.env.SYSTATUS_API_URL}/v1/auth/signin`, payload, {});
+  }
+
+  static checkCodeLocal(payload: any) {
+    return HttpService.patch("/api//v1/auth/codes", payload, {});
   }
 
   static checkCode(code: string) {

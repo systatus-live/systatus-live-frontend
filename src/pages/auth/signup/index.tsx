@@ -30,8 +30,18 @@ type IFormValues = {
 
 export default function SignUp() {
   const router = useRouter();
+  const { signUpSignInFlow, name, email, keepConected } = router.query;
   const [isSubmitting, setSubmitting] = useState(false);
-  const { control, register, handleSubmit, setValue, watch, getValues } = useForm<IFormValues>();
+  const { control, register, handleSubmit, setValue, watch, getValues } = useForm<IFormValues>({
+    values: {
+      name: name as string || "",
+      email: email as string || "",
+      password: "",
+      confirmPassword: "",
+      acceptTerms: false,
+      captcha: "",
+    }
+  });
   const [discoveryList, setDiscoveryList] = useState<{ id: string, description: string }[]>([]);
   const captchaKey = process.env.NEXT_PUBLIC_GOOGLE_CAPTCHA_CLIENT_ID!;
 
@@ -46,7 +56,6 @@ export default function SignUp() {
   }, []);
 
   function onSubmit(form: IFormValues) {
-    console.log(getValues("acceptTerms"))
     if (!getValues("acceptTerms")) {
       Alert.info("Termos", "Aceite os Termos de Uso e a Política de Privacidade para continuar.");
       return;
@@ -68,7 +77,10 @@ export default function SignUp() {
     }, form.captcha).then((_) => {
       router.push({
         pathname: "/auth/verify-account",
-        query: { email: form.email }
+        query: {
+          email: form.email,
+          keepConected: keepConected == "true"
+        }
       });
     }).catch((error) => {
       Alert.error("", error.message);
@@ -92,6 +104,7 @@ export default function SignUp() {
               <Logo />
             </div>
             <h2 className={`my-6 text-center text-2xl  ${styles["title"]}`}>Criar Conta</h2>
+            {signUpSignInFlow == "true" ? <h2 className={`my-6 text-1xl  ${styles["title"]}`}>Quase lá... Complete as informações restantes para finalizar seu cadastro ✨✨🚀</h2> : <></>}
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
               <div>
                 <label className="block">Nome <span className="text-red-500">*</span></label>
@@ -101,18 +114,22 @@ export default function SignUp() {
                 <label className="block">E-mail <span className="text-red-500">*</span></label>
                 <InputText {...register("email", { required: true })} type="email" placeholder="seu@email.com" className="p-inputtext-sm" />
               </div>
-              <div>
-                <label className="block">Senha <span className="text-red-500">*</span></label>
-                <Controller name="password" control={control} rules={{ required: true }} render={({ field }) => (
-                  <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
-                )} />
-              </div>
-              <div>
-                <label className="block">Confirmar Senha <span className="text-red-500">*</span></label>
-                <Controller name="confirmPassword" control={control} rules={{ required: true }} render={({ field }) => (
-                  <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
-                )} />
-              </div>
+              {signUpSignInFlow != "true" ?
+                <>
+                  <div>
+                    <label className="block">Senha <span className="text-red-500">*</span></label>
+                    <Controller name="password" control={control} rules={{ required: true }} render={({ field }) => (
+                      <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
+                    )} />
+                  </div>
+                  <div>
+                    <label className="block">Confirmar Senha <span className="text-red-500">*</span></label>
+                    <Controller name="confirmPassword" control={control} rules={{ required: true }} render={({ field }) => (
+                      <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
+                    )} />
+                  </div>
+                </> : <></>
+              }
               <div>
                 <label className="block">Onde você conheceu o Systatus.Live?</label>
                 <Controller name="discovery" control={control} rules={{ required: false }} render={({ field }) => (

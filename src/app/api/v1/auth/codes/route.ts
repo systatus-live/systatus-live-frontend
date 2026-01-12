@@ -1,25 +1,13 @@
-import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import AuthService from '@/services/AuthService';
 import { jwtDecode } from 'jwt-decode';
-import { SignInOptionsDTO } from '@/types/SignInOptionsDTO';
-import { SignInTypeEnum } from '@/types/SignInTypeEnum';
+import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(request: Request) {
+export async function PATCH(request: NextRequest) {
   try {
-    const json: SignInOptionsDTO = await request.json();
-    
-    let response = null;
-    switch (json.type) {
-      case SignInTypeEnum.GOOGLE:
-        response = await AuthService.signIn(json);
-        break;
-      case SignInTypeEnum.EMAIL_PASSWORD:
-        response = await AuthService.signIn(json);
-        break;
-      default:
-        throw new Error("Tipo de autenticação desconhecido.");
-    }
+    const json = await request.json();
+
+    let response = await AuthService.checkCode(json.code);
 
     const accessToken = response.data.access_token;
     const decodedToken = jwtDecode(accessToken);
@@ -41,7 +29,7 @@ export async function POST(request: Request) {
     cookieStore.set(cookieData);
 
     return NextResponse.json(response.data, {
-      status: response.status
+      status: 200
     });
   } catch (error: any) {
     return NextResponse.json({

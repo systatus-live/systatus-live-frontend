@@ -32,9 +32,9 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
 
     try {
       await AuthService.signOutLocal();
+      await router.push("/auth/signin");
       setUser(null);
       setToken(null);
-      router.push("/auth/signin");
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {

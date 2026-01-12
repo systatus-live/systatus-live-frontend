@@ -15,7 +15,7 @@ export async function GET() {
         user: response.data,
         token: token
       }, {
-        status: response.status
+        status: 200
       });
     }
 
