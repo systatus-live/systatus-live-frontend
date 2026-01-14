@@ -8,20 +8,17 @@ import PanelLayout from '../../layout';
 
 const NewMonitor: NextPageWithLayout = () => {
   const router = useRouter();
-  
+
   return (
     <>
       <Head>
         <title>Monitores • Systatus.Live</title>
       </Head>
 
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center space-x-2">
-          <ArrowLeftSquare className="cursor-pointer" onClick={() => router.back()} />
-          <h1 className="text-xl font-bold">Novo Monitor</h1>
-        </div>
+      <div className="flex items-center space-x-2 mb-6">
+        <ArrowLeftSquare className="cursor-pointer" onClick={() => router.back()} />
+        <h1 className="text-xl font-bold">Novo Monitor</h1>
       </div>
-
       <div>
         <MonitorForm id={null} />
       </div>

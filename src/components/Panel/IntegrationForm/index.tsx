@@ -149,8 +149,10 @@ export default function IntegrationForm(props: { id: string | null }) {
         createdAt: formatDate(response.createdAt, "D [de] MMMM [de] YYYY"),
       })
     } catch (error: any) {
+      if (error.status == 404) {
+        await router.push("/panel/integrations");
+      }
       Alert.error("", error.message);
-      return [];
     }
   }
 
@@ -171,58 +173,56 @@ export default function IntegrationForm(props: { id: string | null }) {
         <WebhookTutorial />
       </Sidebar>
 
-      <form onSubmit={handleSubmit(handleSave)} className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
-        <div className="space-y-3">
-          <div>
-            <label className="block font-medium">Nome <span className="text-red-500">*</span></label>
-            <InputText {...register("name", { required: true })} placeholder="Ex.: Canal de DevOps" className="p-inputtext-sm" />
-          </div>
-          <div>
-            <label className="block font-medium">Plataforma <span className="text-red-500">*</span></label>
-            <Controller name="chatPlatformId" control={control} rules={{ required: true }} render={({ field }) => (
-              <Dropdown
-                {...field}
-                inputRef={field.ref}
-                value={watch("chatPlatformId")}
-                onChange={(option) => setValue("chatPlatformId", option.value)}
-                options={chatPlatformList}
-                optionLabel="description"
-                optionValue="id"
-                filter={true}
-                itemTemplate={(option) => (
+      <form onSubmit={handleSubmit(handleSave)} className="space-y-3">
+        <div>
+          <label className="block font-medium">Nome <span className="text-red-500">*</span></label>
+          <InputText {...register("name", { required: true })} placeholder="Ex.: Canal de DevOps" className="p-inputtext-sm" />
+        </div>
+        <div>
+          <label className="block font-medium">Plataforma <span className="text-red-500">*</span></label>
+          <Controller name="chatPlatformId" control={control} rules={{ required: true }} render={({ field }) => (
+            <Dropdown
+              {...field}
+              inputRef={field.ref}
+              value={watch("chatPlatformId")}
+              onChange={(option) => setValue("chatPlatformId", option.value)}
+              options={chatPlatformList}
+              optionLabel="description"
+              optionValue="id"
+              filter={true}
+              itemTemplate={(option) => (
+                <div className="flex items-center gap-x-1">
+                  <Image src={option.iconUrl} alt="." width={16} height={16} />
+                  <span>{option.description}</span>
+                </div>
+              )}
+              valueTemplate={(option) => (
+                option == null ?
+                  <div>&#8203;</div> :
                   <div className="flex items-center gap-x-1">
                     <Image src={option.iconUrl} alt="." width={16} height={16} />
                     <span>{option.description}</span>
                   </div>
-                )}
-                valueTemplate={(option) => (
-                  option == null ?
-                    <div>&#8203;</div> :
-                    <div className="flex items-center gap-x-1">
-                      <Image src={option.iconUrl} alt="." width={16} height={16} />
-                      <span>{option.description}</span>
-                    </div>
-                )}
-                className="p-inputtext-sm"
-              />
-            )} />
-          </div>
+              )}
+              className="p-inputtext-sm"
+            />
+          )} />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">{getAddressLabel(watch("chatPlatformId"))} <span className="text-red-500">*</span></label>
+          <InputText {...register("address", { required: true })} className="p-inputtext-sm" />
+          {watch("chatPlatformId") && getWebhookLabel()}
+        </div>
+        {props.id ?
           <div>
-            <label className="block text-sm font-medium">{getAddressLabel(watch("chatPlatformId"))} <span className="text-red-500">*</span></label>
-            <InputText {...register("address", { required: true })} className="p-inputtext-sm" />
-            {watch("chatPlatformId") && getWebhookLabel()}
+            <label className="block">Data de cadastro</label>
+            <InputText {...register("createdAt", { required: false, disabled: true })} className="p-inputtext-sm" />
           </div>
-          {props.id ?
-            <div>
-              <label className="block">Data de cadastro</label>
-              <InputText {...register("createdAt", { required: false, disabled: true })} className="p-inputtext-sm" />
-            </div>
-            : <></>
-          }
-          <div className="flex space-x-4 mt-5">
-            <Button label="Salvar" severity="success" type="submit" />
-            {props.id && <Button label="Excluir" text severity="danger" onClick={() => handleDelete(props.id!)} type="button" />}
-          </div>
+          : <></>
+        }
+        <div className="flex space-x-4 mt-5">
+          <Button label="Salvar" severity="success" type="submit" />
+          {props.id && <Button label="Excluir" text severity="danger" onClick={() => handleDelete(props.id!)} type="button" />}
         </div>
       </form>
     </>

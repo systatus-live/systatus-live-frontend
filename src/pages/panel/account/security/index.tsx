@@ -52,32 +52,30 @@ const AccountSecurity: NextPageWithLayout = () => {
     <>
       {isSubmitting && <Loading />}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 space-y-3">
-        <div className="space-y-3">
-          {user?.signinType == SignInTypeEnum.EMAIL_PASSWORD ?
-            <div>
-              <label className="block">Senha atual <span className="text-red-500">*</span></label>
-              <Controller name="currentPassword" control={control} rules={{ required: true }} render={({ field }) => (
-                <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
-              )} />
-            </div> :
-            <></>
-          }
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+        {user?.signinType == SignInTypeEnum.EMAIL_PASSWORD ?
           <div>
-            <label className="block">Nova senha <span className="text-red-500">*</span></label>
-            <Controller name="newPassword" control={control} rules={{ required: true }} render={({ field }) => (
+            <label className="block">Senha atual <span className="text-red-500">*</span></label>
+            <Controller name="currentPassword" control={control} rules={{ required: true }} render={({ field }) => (
               <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
             )} />
-          </div>
-          <div>
-            <label className="block">Confirmar senha <span className="text-red-500">*</span></label>
-            <Controller name="confirmPassword" control={control} rules={{ required: true }} render={({ field }) => (
-              <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
-            )} />
-          </div>
-          <div>
-            <Button label="Salvar" severity="success" type="submit" />
-          </div>
+          </div> :
+          <></>
+        }
+        <div>
+          <label className="block">Nova senha <span className="text-red-500">*</span></label>
+          <Controller name="newPassword" control={control} rules={{ required: true }} render={({ field }) => (
+            <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
+          )} />
+        </div>
+        <div>
+          <label className="block">Confirmar senha <span className="text-red-500">*</span></label>
+          <Controller name="confirmPassword" control={control} rules={{ required: true }} render={({ field }) => (
+            <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
+          )} />
+        </div>
+        <div>
+          <Button label="Salvar" severity="success" type="submit" />
         </div>
       </form>
     </>

@@ -8,7 +8,11 @@ export default class HttpService {
       });
       return response.data;
     } catch (error: any) {
-      throw new Error(error.response?.data?.message);
+      throw {
+        status: error.response.status,
+        data: error.response.data,
+        message: error.response.data?.message
+      };
     }
   }
 
@@ -19,7 +23,11 @@ export default class HttpService {
       });
       return response.data;
     } catch (error: any) {
-      throw new Error(error.response?.data?.message);
+      throw {
+        status: error.response.status,
+        data: error.response.data,
+        message: error.response.data?.message
+      };
     }
   }
 
@@ -30,7 +38,11 @@ export default class HttpService {
       });
       return response.data;
     } catch (error: any) {
-      throw new Error(error.response?.data?.message);
+      throw {
+        status: error.response.status,
+        data: error.response.data,
+        message: error.response.data?.message
+      };
     }
   }
 
@@ -41,7 +53,11 @@ export default class HttpService {
       });
       return response.data;
     } catch (error: any) {
-      throw new Error(error.response?.data?.message);
+      throw {
+        status: error.response.status,
+        data: error.response.data,
+        message: error.response.data?.message
+      };
     }
   }
 
@@ -52,7 +68,11 @@ export default class HttpService {
       });
       return response.data;
     } catch (error: any) {
-      throw new Error(error.response?.data?.message);
+      throw {
+        status: error.response.status,
+        data: error.response.data,
+        message: error.response.data?.message
+      };
     }
   }
 }

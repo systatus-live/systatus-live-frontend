@@ -136,23 +136,21 @@ const AccountDetail: NextPageWithLayout = () => {
             <small>Max.: 1MB</small>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-4 gap-x-4 w-full">
-          <div className="space-y-3 w-full">
-            <div>
-              <label className="block">Nome <span className="text-red-500">*</span></label>
-              <InputText {...register("name", { required: true })} className="p-inputtext-sm" />
-            </div>
-            <div>
-              <label className="block">E-mail <span className="text-red-500">*</span></label>
-              <InputText {...register("email", { required: true })} className="p-inputtext-sm" />
-            </div>
-            <div>
-              <label className="block">Membro desde</label>
-              <InputText {...register("createdAt", { required: true, disabled: true })} className="p-inputtext-sm" />
-            </div>
-            <div>
-              <Button label="Salvar" severity="success" type="submit" />
-            </div>
+        <div className="space-y-3 w-full">
+          <div>
+            <label className="block">Nome <span className="text-red-500">*</span></label>
+            <InputText {...register("name", { required: true })} className="p-inputtext-sm" />
+          </div>
+          <div>
+            <label className="block">E-mail <span className="text-red-500">*</span></label>
+            <InputText {...register("email", { required: true })} className="p-inputtext-sm" />
+          </div>
+          <div>
+            <label className="block">Membro desde</label>
+            <InputText {...register("createdAt", { required: true, disabled: true })} className="p-inputtext-sm" />
+          </div>
+          <div>
+            <Button label="Salvar" severity="success" type="submit" />
           </div>
         </div>
       </form>
