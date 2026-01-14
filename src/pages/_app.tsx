@@ -7,7 +7,8 @@ import Head from "next/head";
 import { ReactElement, ReactNode } from "react";
 import "../styles/globals.scss";
 import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
-
+import * as cowsay from "cowsay";
+import { useEffect } from "react";
 
 export const metadata: Metadata = {
   title: "Systatus Live",
@@ -24,6 +25,12 @@ type AppPropsWithLayout = AppProps & {
 
 export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page)
+
+  useEffect(() => {
+    console.log(cowsay.say({
+      text: "👀 Olá, dev!\nCaso encontre algo estranho (além deste aviso), conte pra gente em\nhttps://systatus.live/contact"
+    }))
+  }, []);
 
   return (
     <GlobalProvider>

@@ -16,6 +16,7 @@
     "@vercel/blob": "^2.0.0",
     "@vercel/speed-insights": "^1.2.0",
     "axios": "^1.12.2",
+    "cowsay": "^1.6.0",
     "echarts-for-react": "^3.0.5",
     "framer-motion": "^12.23.16",
     "jwt-decode": "^4.0.0",
