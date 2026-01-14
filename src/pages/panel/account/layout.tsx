@@ -53,10 +53,10 @@ export default function AccountLayout({ children }: Readonly<{ children: React.R
       </Head>
 
       <PanelLayout>
-        <div className="flex items-center justify-between px-6 py-4">
+        <div className="flex items-center justify-between mb-6">
           <h1 className="text-xl font-bold">Conta</h1>
         </div>
-        <div className=" px-6">
+        <div className="mb-6">
           <div className="flex items-center bg-slate-800 rounded-lg">
             {navList.map((item, index) => (
               <Link key={index} href={item.route} className="flex justify-center w-[12rem]" onClick={() => updateActiveNavItem(index)}>

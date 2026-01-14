@@ -1,27 +1,28 @@
 import Loading from '@/components/Loading';
-import IntegrationForm from '@/components/Panel/IntegrationForm';
 import { Alert } from '@/lib/Alert';
 import { NextPageWithLayout } from '@/pages/_app';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
 import IntegrationService from '@/services/IntegrationService';
-import { CopyIcon, Play, SearchIcon } from 'lucide-react';
+import { CopyIcon, EditIcon, Play, SearchIcon } from 'lucide-react';
 import Head from 'next/head';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { InputText } from 'primereact/inputtext';
+import { Paginator } from 'primereact/paginator';
 import { Skeleton } from 'primereact/skeleton';
 import { useEffect, useState, type ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import PanelLayout from '../layout';
-import { Paginator } from 'primereact/paginator';
 
 type IFormSearchValues = {
   search: string;
 }
 
 const Integrations: NextPageWithLayout = () => {
+  const router = useRouter();
   const [integrationList, setIntegrationList] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [firstLoading, setFirstLoading] = useState(true);
@@ -56,7 +57,9 @@ const Integrations: NextPageWithLayout = () => {
       template: (integration: any) => (
         <div className="flex">
           <div title="Abrir">
-            <IntegrationForm integration={integration} onClose={resetSearch} />
+            <Button text onClick={() => router.push(`/panel/integrations/edit/${integration.id}`)} type="button">
+              <EditIcon height={14} width={14} />
+            </Button>
           </div>
           <div title="Testar">
             <Button text onClick={() => handleValidate(integration.id)} type="button">
@@ -114,11 +117,6 @@ const Integrations: NextPageWithLayout = () => {
     await search(new URLSearchParams({ search: form.search, page: "0" }));
   }
 
-  async function resetSearch() {
-    reset();
-    search(new URLSearchParams({ page: "0" }));
-  }
-
   async function handleValidate(id: string) {
     setIsSubmitting(true);
 
@@ -149,14 +147,23 @@ const Integrations: NextPageWithLayout = () => {
 
       {isSubmitting && <Loading />}
 
-      <div className="flex items-center justify-between px-6 py-4 bg-white">
+      <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-bold">Integrações</h1>
         <div>
-          <IntegrationForm integration={null} onClose={resetSearch} />
+          <Button label="Adicionar" onClick={() => router.push("/panel/integrations/new")} />
         </div>
       </div>
 
-      <div className="px-6">
+      <form onSubmit={handleSubmit(onSubmitSearch)} className="grid grid-cols-1 lg:grid-cols-3 mb-6">
+        <div className="p-inputgroup flex-1">
+          <InputText {...register("search", { required: false })} placeholder="Pesquisar por nome ou endereço" className="p-inputtext-sm" />
+          <Button severity="secondary">
+            <SearchIcon height={16} />
+          </Button>
+        </div>
+      </form>
+
+      <div>
         {firstLoading ? (
           <Skeleton width="100%" height="10vh"></Skeleton>
         ) : (
@@ -167,16 +174,6 @@ const Integrations: NextPageWithLayout = () => {
               size="small"
               showGridlines={false}
               stripedRows={false}
-              header={
-                <form onSubmit={handleSubmit(onSubmitSearch)} className="grid grid-cols-1 lg:grid-cols-3">
-                  <div className="p-inputgroup flex-1">
-                    <InputText {...register("search", { required: false })} placeholder="Pesquisar por nome ou endereço" className="p-inputtext-sm" />
-                    <Button severity="secondary">
-                      <SearchIcon height={16} />
-                    </Button>
-                  </div>
-                </form>
-              }
               scrollable={true}
               scrollHeight="80vh"
             >

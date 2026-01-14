@@ -139,7 +139,7 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
             </div>
           </div>
         </div>
-        <div className="w-full h-screen overflow-y-auto">
+        <div className="w-full h-screen overflow-y-auto p-4 md:p-12">
           {children}
         </div>
       </div>

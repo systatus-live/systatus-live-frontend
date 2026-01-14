@@ -15,6 +15,8 @@ import { InputText } from 'primereact/inputtext';
 import { MultiSelect } from 'primereact/multiselect';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
+import formatDate from '@/utils/formatDate';
 
 type IFormValues = {
   id: string,
@@ -24,58 +26,40 @@ type IFormValues = {
   active: boolean;
   integrationList: any[],
   intervalId: string;
+  createdAt?: string;
 }
 
-export default function MonitorForm(props: { monitor: IFormValues | null, onClose?: Function; }) {
+export default function MonitorForm(props: { id: string | null }) {
+  const router = useRouter();
   const { token } = useGlobalProvider();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [integrationList, setIntegrationList] = useState([]);
   const [intervalList, setIntervalList] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
   const monitorTypeList = Object.keys(MonitorTypeEnum).map(t => ({ id: t, description: MonitorTypeLabelEnum[t as MonitorTypeEnum] }));
 
-  const { register, handleSubmit, reset, setValue, watch, control } = useForm<IFormValues>(props.monitor ? {
-    values: {
-      id: props.monitor.id,
-      name: props.monitor.name,
-      type: props.monitor.type,
-      address: props.monitor.address,
-      active: props.monitor.active,
-      integrationList: (props.monitor.integrationList || []).map(integration => integration.id),
-      intervalId: props.monitor.intervalId,
-    }
-  } : {
-    values: {
-      id: "",
-      name: "",
-      type: MonitorTypeEnum.GET,
-      address: "",
-      active: true,
-      integrationList: [],
-      intervalId: ""
-    }
-  });
+  const { register, handleSubmit, reset, setValue, watch, control } = useForm<IFormValues>({});
 
   useEffect(() => {
-    if (isOpen) {
-      loadInitialData();
+    if (token) {
+      (async () => {
+        await getIntervalList(new URLSearchParams());
+        await getIntegrationList(new URLSearchParams());
+
+        if (props.id) {
+          await getMonitor(props.id);
+        } else {
+          setValue("active", true);
+        }
+      })();
     }
-  }, [isOpen]);
+  }, [token]);
 
-  function close() {
-    reset();
-    setIsOpen(false);
-
-    if (props.onClose) {
-      props.onClose();
-    }
-  }
-
-  async function onSubmit(form: IFormValues) {
+  async function handleSave(form: IFormValues) {
     setIsSubmitting(true);
 
     try {
       let response = null;
+
       const payload = {
         name: form.name,
         type: form.type,
@@ -85,13 +69,13 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
         intervalId: form.intervalId
       }
 
-      if (props.monitor) {
-        response = await MonitorService.updateMonitor(token as string, props.monitor.id, payload);
+      if (props.id) {
+        response = await MonitorService.updateMonitor(token as string, props.id, payload);
       } else {
         response = await MonitorService.createMonitor(token as string, payload);
+        router.replace(`/panel/monitors/edit/${response.data.id}`);
       }
       Alert.success("", response.message);
-      close();
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
@@ -105,23 +89,14 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
 
       try {
         const response = await MonitorService.deleteMonitor(token as string, id);
+        router.replace("/panel/monitors");
         Alert.success("", response.message);
-        close();
       } catch (error: any) {
         Alert.error("", error.message);
       } finally {
         setIsSubmitting(false);
       }
     });
-  }
-
-  async function loadInitialData() {
-    try {
-      await getIntegrationList(new URLSearchParams());
-      await getIntervalList(new URLSearchParams());
-    } catch (error: any) {
-      Alert.error("", error.message);
-    }
   }
 
   async function getIntegrationList(params: URLSearchParams) {
@@ -156,32 +131,32 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
     }
   }
 
+  async function getMonitor(id: string) {
+    try {
+      const response = await MonitorService.getMonitorById(token as string, id);
+
+      reset({
+        id: response.id,
+        name: response.name,
+        type: response.type,
+        address: response.address,
+        active: response.active,
+        integrationList: response.integrationList.map((i: any) => i.id),
+        intervalId: response.intervalId,
+        createdAt: formatDate(response.createdAt, "D [de] MMMM [de] YYYY"),
+      })
+    } catch (error: any) {
+      Alert.error("", error.message);
+      return [];
+    }
+  }
+
   return (
     <>
       {isSubmitting && <Loading />}
 
-      {props.monitor ? (
-        <Button title="Abrir" text onClick={() => setIsOpen(true)} type="button">
-          <EditIcon height={14} width={14} />
-        </Button>
-      ) : (
-        <Button label="Adicionar" onClick={() => setIsOpen(true)} />
-      )}
-
-      <Dialog
-        header={props.monitor ? "Editar Monitor" : "Novo Monitor"}
-        visible={isOpen}
-        onHide={() => {
-          if (!isOpen) return;
-          reset();
-          setIsOpen(false);
-        }}
-        draggable={false}
-        closeOnEscape={true}
-        dismissableMask={false}
-        style={{ width: "30rem" }}
-      >
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+      <form onSubmit={handleSubmit(handleSave)} className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+        <div className="space-y-3">
           <div>
             <label className="block">Nome <span className="text-red-500">*</span></label>
             <InputText {...register("name", { required: true })} placeholder="Ex.: API de pagamentos" className="p-inputtext-sm" />
@@ -207,7 +182,7 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
             )} />
           </div>
           <div>
-            <label className="block">IP ou domínio <span className="text-red-500">*</span></label>
+            <label className="block">IP ou URL <span className="text-red-500">*</span></label>
             <InputText {...register("address", { required: true })} className="p-inputtext-sm" />
             <small>Timeout: 10 segundos</small>
           </div>
@@ -259,20 +234,19 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
             )} />
             <label htmlFor="active" className="block cursor-pointer">Habilitar monitoramento</label>
           </div>
-          <div className="flex justify-end space-x-2 mt-5">
-            {props.monitor && (
-              <>
-                <div>
-                  <Button label="Excluir" text severity="danger" onClick={() => handleDelete(props.monitor!.id!)} type="button" />
-                </div>
-              </>
-            )}
+          {props.id ?
             <div>
-              <Button label="Salvar" text severity="success" type="submit" />
+              <label className="block">Data de cadastro</label>
+              <InputText {...register("createdAt", { required: false, disabled: true })} className="p-inputtext-sm" />
             </div>
+            : <></>
+          }
+          <div className="flex space-x-4 mt-5">
+            <Button label="Salvar" severity="success" type="submit" />
+            {props.id && <Button label="Excluir" text severity="danger" onClick={() => handleDelete(props.id!)} type="button" />}
           </div>
-        </form>
-      </Dialog >
+        </div>
+      </form>
     </>
   )
 }

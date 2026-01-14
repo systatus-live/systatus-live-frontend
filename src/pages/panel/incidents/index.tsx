@@ -222,14 +222,23 @@ const Incidents: NextPageWithLayout = () => {
 
       {isSubmitting && <Loading />}
 
-      <div className="flex flex-col px-6 py-4 bg-white">
+      <div className="flex flex-col mb-6">
         <h1 className="text-xl font-bold">Incidentes</h1>
         <div className="w-full">
           {buildLineChart()}
         </div>
       </div>
 
-      <div className="px-6">
+      <form onSubmit={handleSubmit(onSubmitSearch)} className="grid grid-cols-1 lg:grid-cols-3 mb-6">
+        <div className="p-inputgroup flex-1">
+          <InputText {...register("search", { required: false })} placeholder="Pesquisar por nome ou endereço" className="p-inputtext-sm" />
+          <Button severity="secondary">
+            <SearchIcon height={16} />
+          </Button>
+        </div>
+      </form>
+
+      <div>
         {firstLoading ? (
           <Skeleton width="100%" height="10vh"></Skeleton>
         ) : (
@@ -240,16 +249,6 @@ const Incidents: NextPageWithLayout = () => {
               size="small"
               showGridlines={false}
               stripedRows={false}
-              header={
-                <form onSubmit={handleSubmit(onSubmitSearch)} className="grid grid-cols-1 lg:grid-cols-3">
-                  <div className="p-inputgroup flex-1">
-                    <InputText {...register("search", { required: false })} placeholder="Pesquisar por nome ou endereço" className="p-inputtext-sm" />
-                    <Button severity="secondary">
-                      <SearchIcon height={16} />
-                    </Button>
-                  </div>
-                </form>
-              }
               scrollable={true}
               scrollHeight="80vh"
             >

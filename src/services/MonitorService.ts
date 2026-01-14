@@ -7,6 +7,12 @@ export default class MonitorService {
     });
   }
 
+  static getMonitorById(token: string, id: string) {
+    return HttpService.get(`${process.env.NEXT_PUBLIC_SYSTATUS_API_URL}/v1/monitors/${id}`, {
+      Authorization: `Bearer ${token}`
+    });
+  }
+
   static createMonitor(token: string, data: any) {
     return HttpService.post(`${process.env.NEXT_PUBLIC_SYSTATUS_API_URL}/v1/monitors`, data, {
       Authorization: `Bearer ${token}`

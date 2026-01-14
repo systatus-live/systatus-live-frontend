@@ -6,24 +6,26 @@ import { useGlobalProvider } from '@/providers/GlobalProvider';
 import MonitorService from '@/services/MonitorService';
 import { getHttpStatusKey, HttpStatusCodeLabel } from '@/types/HttpStatusCode';
 import { MonitorTypeEnum, MonitorTypeLabelEnum } from '@/types/MonitorTypeEnum';
-import { ArrowBigDownDashIcon, ArrowBigUpDashIcon, ClockFadingIcon, CopyIcon, PauseIcon, SearchIcon } from 'lucide-react';
+import { ArrowBigDownDashIcon, ArrowBigUpDashIcon, ClockFadingIcon, CopyIcon, EditIcon, PauseIcon, SearchIcon } from 'lucide-react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { InputText } from 'primereact/inputtext';
+import { Paginator } from 'primereact/paginator';
 import { Skeleton } from 'primereact/skeleton';
 import { useEffect, useState, type ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import PanelLayout from '../layout';
 import styles from "./styles.module.scss";
-import { Paginator } from 'primereact/paginator';
 
 type IFormSearchValues = {
   search: string;
 }
 
 const Monitors: NextPageWithLayout = () => {
+  const router = useRouter();
   const { token } = useGlobalProvider();
   const [monitorList, setMonitorList] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -59,19 +61,19 @@ const Monitors: NextPageWithLayout = () => {
             <span>Pendente</span>
           ) : (
             monitor.active ? (
-              monitor.lastStatus?.startsWith("2") ? 
-              (
-                <div className="flex flex-col">
-                  <span>{HttpStatusCodeLabel[getHttpStatusKey(monitor.lastStatus) as keyof typeof HttpStatusCodeLabel]}</span>
-                  <span className="text-gray-500">Uptime {monitor.lastIncident}</span>
-                </div>
-              ) : 
-              (
-                <div className="flex flex-col">
-                  <span>{HttpStatusCodeLabel[getHttpStatusKey(monitor.lastStatus) as keyof typeof HttpStatusCodeLabel]}</span>
-                  <span className="text-gray-500">Downtime {monitor.lastIncident}</span>
-                </div>
-              )
+              monitor.lastStatus?.startsWith("2") ?
+                (
+                  <div className="flex flex-col">
+                    <span>{HttpStatusCodeLabel[getHttpStatusKey(monitor.lastStatus) as keyof typeof HttpStatusCodeLabel]}</span>
+                    <span className="text-gray-500">Uptime {monitor.lastIncident}</span>
+                  </div>
+                ) :
+                (
+                  <div className="flex flex-col">
+                    <span>{HttpStatusCodeLabel[getHttpStatusKey(monitor.lastStatus) as keyof typeof HttpStatusCodeLabel]}</span>
+                    <span className="text-gray-500">Downtime {monitor.lastIncident}</span>
+                  </div>
+                )
             ) : (
               <span></span>
             )
@@ -111,7 +113,9 @@ const Monitors: NextPageWithLayout = () => {
       template: (monitor: any) => (
         <div className="flex">
           <div title="Abrir">
-            <MonitorForm monitor={monitor} onClose={resetSearch} />
+            <Button text onClick={() => router.push(`/panel/monitors/edit/${monitor.id}`)} type="button">
+              <EditIcon height={14} width={14} />
+            </Button>
           </div>
           <div title="Copiar URL">
             <Button title="Copiar" text onClick={() => handleCopyClick(monitor.address)} type="button">
@@ -163,11 +167,6 @@ const Monitors: NextPageWithLayout = () => {
     await search(new URLSearchParams({ search: form.search, page: "0" }));
   }
 
-  async function resetSearch() {
-    reset();
-    search(new URLSearchParams({ page: "0" }));
-  }
-
   function getHistoricalClass(item: any) {
     if (item.percentOnline + item.percentOffline == 0) {
       return styles["bg-empty"];
@@ -208,14 +207,23 @@ const Monitors: NextPageWithLayout = () => {
 
       {isSubmitting && <Loading />}
 
-      <div className="flex items-center justify-between px-6 py-4 bg-white">
+      <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-bold">Monitores</h1>
         <div>
-          <MonitorForm monitor={null} onClose={resetSearch} />
+          <Button label="Adicionar" onClick={() => router.push("/panel/monitors/new")} />
         </div>
       </div>
 
-      <div className="px-6">
+      <form onSubmit={handleSubmit(onSubmitSearch)} className="grid grid-cols-1 lg:grid-cols-3 mb-6">
+        <div className="p-inputgroup flex-1">
+          <InputText {...register("search", { required: false })} placeholder="Pesquisar por nome ou endereço" className="p-inputtext-sm" />
+          <Button severity="secondary">
+            <SearchIcon height={16} />
+          </Button>
+        </div>
+      </form>
+
+      <div>
         {firstLoading ? (
           <Skeleton width="100%" height="10vh"></Skeleton>
         ) : (
@@ -226,16 +234,6 @@ const Monitors: NextPageWithLayout = () => {
               size="small"
               showGridlines={false}
               stripedRows={false}
-              header={
-                <form onSubmit={handleSubmit(onSubmitSearch)} className="grid grid-cols-1 lg:grid-cols-3 ">
-                  <div className="p-inputgroup flex-1">
-                    <InputText {...register("search", { required: false })} placeholder="Pesquisar por nome ou endereço" className="p-inputtext-sm" />
-                    <Button severity="secondary">
-                      <SearchIcon height={16} />
-                    </Button>
-                  </div>
-                </form>
-              }
               scrollable={true}
               scrollHeight="80vh"
             >

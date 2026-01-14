@@ -7,10 +7,10 @@ import { useGlobalProvider } from '@/providers/GlobalProvider';
 import ChatPlatformService from '@/services/ChatPlatformService';
 import IntegrationService from '@/services/IntegrationService';
 import { ChatPlatformEnum, ChatPlatformTypeEnum } from '@/types/ChatPlatformEnum';
-import { EditIcon } from 'lucide-react';
+import formatDate from '@/utils/formatDate';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { Button } from 'primereact/button';
-import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { Sidebar } from 'primereact/sidebar';
@@ -21,72 +21,62 @@ type IFormValues = {
   id?: string,
   chatPlatformId: string;
   name: string;
-  address: string
+  address: string,
+  createdAt?: string;
 }
 
-export default function IntegrationForm(props: { integration: IFormValues | null, onClose?: Function; }) {
+export default function IntegrationForm(props: { id: string | null }) {
+  const router = useRouter();
   const { token } = useGlobalProvider();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const [chatPlatformList, setChatPlatformList] = useState([]);
   const [isOpenWebhookTutorial, setIsOpenWebhookTutorial] = useState(false);
   const [windowWidth, setWindowWidth] = useState<any>();
 
-  const { register, handleSubmit, reset, setValue, watch, control, getValues } = useForm<IFormValues>(props.integration ? {
-    values: {
-      id: props.integration.id,
-      chatPlatformId: props.integration.chatPlatformId,
-      name: props.integration.name,
-      address: props.integration.address
-    }
-  } : {});
+  const { register, handleSubmit, reset, setValue, watch, control, getValues } = useForm<IFormValues>({});
 
   useEffect(() => {
-    if (isOpen) {
-      getChatPlatformList(new URLSearchParams());
+    // Responsividade do Sidebar
+    setWindowWidth(window.innerWidth);
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth)
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-      // Responsividade do Sidebar
-      setWindowWidth(window.innerWidth);
-      const handleResize = () => {
-        setWindowWidth(window.innerWidth)
-      };
-      window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
+  useEffect(() => {
+    if (token) {
+      (async () => {
+        await getChatPlatformList(new URLSearchParams());
+
+        if (props.id) {
+          await getIntegration(props.id);
+        }
+      })();
     }
-  }, [isOpen]);
+  }, [token]);
 
-  function close() {
-    reset();
-    setIsOpen(false);
-
-    if (props.onClose) {
-      props.onClose();
-    }
-  }
-
-  async function onSubmit(form: IFormValues) {
+  async function handleSave(form: IFormValues) {
     setIsSubmitting(true);
 
     try {
       let response = null;
 
-      if (props.integration) {
-        response = await IntegrationService.updateIntegration(token as string, props.integration.id!, {
-          chatPlatformId: form.chatPlatformId,
-          name: form.name,
-          address: form.address,
-        })
+      const payload = {
+        chatPlatformId: form.chatPlatformId,
+        name: form.name,
+        address: form.address
+      }
+
+      if (props.id) {
+        response = await IntegrationService.updateIntegration(token as string, props.id, payload);
       } else {
-        response = await IntegrationService.createIntegration(token as string, {
-          chatPlatformId: form.chatPlatformId,
-          name: form.name,
-          address: form.address,
-        })
+        response = await IntegrationService.createIntegration(token as string, payload);
+        router.replace(`/panel/integrations/edit/${response.data.id}`);
       }
 
       Alert.success("", response.message);
-
-      close();
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
@@ -100,8 +90,8 @@ export default function IntegrationForm(props: { integration: IFormValues | null
 
       try {
         const response = await IntegrationService.deleteIntegration(token as string, id);
+        router.replace("/panel/integrations");
         Alert.success("", response.message);
-        close();
       } catch (error: any) {
         Alert.error("", error.message);
       } finally {
@@ -147,17 +137,26 @@ export default function IntegrationForm(props: { integration: IFormValues | null
     return <></>
   }
 
+  async function getIntegration(id: string) {
+    try {
+      const response = await IntegrationService.getIntegrationById(token as string, id);
+
+      reset({
+        id: response.id,
+        name: response.name,
+        chatPlatformId: response.chatPlatformId,
+        address: response.address,
+        createdAt: formatDate(response.createdAt, "D [de] MMMM [de] YYYY"),
+      })
+    } catch (error: any) {
+      Alert.error("", error.message);
+      return [];
+    }
+  }
+
   return (
     <>
       {isSubmitting && <Loading />}
-
-      {props.integration ? (
-        <Button title="Abrir" text onClick={() => setIsOpen(true)} type="button">
-          <EditIcon height={14} width={14} />
-        </Button>
-      ) : (
-        <Button label="Adicionar" onClick={() => setIsOpen(true)} />
-      )}
 
       <Sidebar
         header={<b className="text-xl">Como obter a URL do Webhook</b>}
@@ -165,24 +164,15 @@ export default function IntegrationForm(props: { integration: IFormValues | null
         onHide={() => setIsOpenWebhookTutorial(false)}
         position="right"
         style={{ width: windowWidth >= 1366 ? "40vw" : windowWidth >= 1024 ? "50vw" : "100%" }}
+        modal={false}
+        closeOnEscape={false}
+        dismissable={false}
       >
         <WebhookTutorial />
       </Sidebar>
 
-      <Dialog
-        header={props.integration ? "Editar Integração" : "Nova Integração"}
-        visible={isOpen}
-        onHide={() => {
-          if (!isOpen) return;
-          reset();
-          setIsOpen(false);
-        }}
-        draggable={false}
-        closeOnEscape={true}
-        dismissableMask={false}
-        style={{ width: "30rem" }}
-      >
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+      <form onSubmit={handleSubmit(handleSave)} className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+        <div className="space-y-3">
           <div>
             <label className="block font-medium">Nome <span className="text-red-500">*</span></label>
             <InputText {...register("name", { required: true })} placeholder="Ex.: Canal de DevOps" className="p-inputtext-sm" />
@@ -222,20 +212,19 @@ export default function IntegrationForm(props: { integration: IFormValues | null
             <InputText {...register("address", { required: true })} className="p-inputtext-sm" />
             {watch("chatPlatformId") && getWebhookLabel()}
           </div>
-          <div className="flex justify-end space-x-2 mt-5">
-            {props.integration && (
-              <>
-                <div>
-                  <Button label="Excluir" text severity="danger" onClick={() => handleDelete(props.integration!.id!)} type="button" />
-                </div>
-              </>
-            )}
+          {props.id ?
             <div>
-              <Button label="Salvar" text severity="success" type="submit" />
+              <label className="block">Data de cadastro</label>
+              <InputText {...register("createdAt", { required: false, disabled: true })} className="p-inputtext-sm" />
             </div>
+            : <></>
+          }
+          <div className="flex space-x-4 mt-5">
+            <Button label="Salvar" severity="success" type="submit" />
+            {props.id && <Button label="Excluir" text severity="danger" onClick={() => handleDelete(props.id!)} type="button" />}
           </div>
-        </form>
-      </Dialog>
+        </div>
+      </form>
     </>
   )
 }

@@ -95,6 +95,12 @@
   color: theme.$primary-color !important;
 }
 
+// Sidebar
+.p-sidebar .p-sidebar-header .p-sidebar-close {
+  box-shadow: none !important;
+  border: none !important;
+}
+
 @media (min-width: 1024px) {
 
   .p-inputtext,
