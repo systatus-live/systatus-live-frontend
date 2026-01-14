@@ -30,6 +30,11 @@
   line-height: 1rem !important;
 }
 
+// Table
+.p-datatable .p-datatable-header {
+  background: none !important;
+}
+
 // Dialog
 .p-dialog .p-dialog-header .p-dialog-header-icon,
 .p-multiselect {

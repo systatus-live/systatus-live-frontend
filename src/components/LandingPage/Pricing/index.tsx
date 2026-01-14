@@ -73,7 +73,7 @@ export default function Pricing() {
                   <div className="flex justify-center">{plan.mostPopular ? <span className={styles["most-popular"]}>🌟 Mais Popular 🌟</span> : <></>}</div>
                   <div className="flex flex-col items-center">
                     <Image src={plan.image} alt={plan.name} height={58} width={58} />
-                    <h1 className="text-1xl font-semibold text-gray-900 mt-2">Plano {plan.name}</h1>
+                    <h1 className="font-semibold text-gray-900 mt-2">Plano {plan.name}</h1>
                   </div>
                   <div className="flex justify-center items-baseline mt-2">
                     <span className="text-4xl font-extrabold tracking-tight text-gray-900">{plan.price}</span>
@@ -89,9 +89,7 @@ export default function Pricing() {
                   {Object.entries(plan.features).map(([key, included], index) => (
                     <li key={index} className="flex items-start">
                       {included ? <CheckIcon className="flex-shrink-0 h-5 w-5 text-green-500" /> : <XIcon className="flex-shrink-0 h-5 w-5 text-gray-400" />}
-                      <span className={`ml-3 text-base ${included ? "text-gray-700" : "text-gray-400"}`}>
-                        {key}
-                      </span>
+                      <span className={`ml-3 ${included ? "text-gray-700" : "text-gray-400"}`}>{key}</span>
                     </li>
                   ))}
                 </ul>

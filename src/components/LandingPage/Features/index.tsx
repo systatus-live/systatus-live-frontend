@@ -89,17 +89,10 @@ export default function Features() {
             transition={{ delay: 0.2, duration: 0.4 }}
             className="inline-block rounded-full bg-blue-100 px-4 py-1.5 mb-4"
           >
-            <p className="text-sm font-medium text-blue-600 tracking-wide uppercase">
-              Funcionalidades
-            </p>
+            <p className="text-sm font-medium text-blue-600 tracking-wide uppercase">Funcionalidades</p>
           </motion.div>
-          <h2 className="text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-            Saiba quando seus sistemas saírem do ar
-          </h2>
-          <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
-            Notificaremos você sobre indisponibilidades nos seus sistemas
-            para que possa agir rapidamente e mantê-los funcionando
-          </p>
+          <h2 className="text-xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">Saiba quando seus sistemas saírem do ar</h2>
+          <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">Notificaremos você sobre indisponibilidades nos seus sistemas para que possa agir rapidamente e mantê-los funcionando</p>
         </motion.div>
         <motion.div
           className="mt-16"
@@ -122,12 +115,8 @@ export default function Features() {
                         <feature.icon className="h-6 w-6 text-white" aria-hidden="true"/>
                       </span>
                     </div>
-                    <h3 className="mt-8 text-lg font-semibold text-gray-900 tracking-tight">
-                      {feature.name}
-                    </h3>
-                    <p className="mt-5 text-base text-gray-500">
-                      {feature.description}
-                    </p>
+                    <h3 className="mt-8 text-xl font-semibold text-gray-900 tracking-tight">{feature.name}</h3>
+                    <p className="mt-5 text-gray-500">{feature.description}</p>
                   </div>
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg transform scale-[0.98] opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:scale-100 -z-10"></div>

@@ -257,7 +257,7 @@ export default function MonitorForm(props: { monitor: IFormValues | null, onClos
             <Controller name="active" control={control} render={({ field }) => (
               <Checkbox inputId={field.name} checked={field.value} onChange={(e) => field.onChange(e.checked)} />
             )} />
-            <label className="block">Habilitar monitoramento</label>
+            <label htmlFor="active" className="block cursor-pointer">Habilitar monitoramento</label>
           </div>
           <div className="flex justify-end space-x-2 mt-5">
             {props.monitor && (

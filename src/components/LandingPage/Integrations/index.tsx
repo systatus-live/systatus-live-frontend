@@ -89,12 +89,8 @@ export default function Integrations() {
                     />
                   </div>
                   <div className="ml-4">
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {integration.name}
-                    </h3>
-                    <p className="mt-1 text-sm text-gray-500">
-                      {integration.description}
-                    </p>
+                    <h3 className="font-semibold text-xl text-gray-900">{integration.name}</h3>
+                    <p className="mt-1 text-gray-500">{integration.description}</p>
                   </div>
                 </div>
               </div>

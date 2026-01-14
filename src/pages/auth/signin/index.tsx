@@ -139,7 +139,7 @@ export default function SignIn() {
                   <Controller name="keepConected" control={control} render={({ field }) => (
                     <Checkbox inputId={field.name} checked={field.value} onChange={(e) => field.onChange(e.checked)} />
                   )} />
-                  <label htmlFor="keepConected" className="ml-2 block text-gray-700">Manter conectado</label>
+                  <label htmlFor="keepConected" className="ml-2 block text-gray-700 cursor-pointer">Manter conectado</label>
                 </div>
                 <Link href="/auth/forgot-password" className="font-medium text-blue-600 hover:text-blue-500 text-sm">Esqueci minha senha</Link>
               </div>

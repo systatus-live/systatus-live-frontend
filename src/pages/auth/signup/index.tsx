@@ -179,7 +179,7 @@ export default function SignUp() {
                 <Controller name="acceptTerms" control={control} render={({ field }) => (
                   <Checkbox inputId={field.name} checked={field.value} onChange={(e) => field.onChange(e.checked)} />
                 )} />
-                <label htmlFor="acceptTerms" className="ml-2 block">
+                <label htmlFor="acceptTerms" className="ml-2 block cursor-pointer">
                   Eu aceito os {' '}
                   <Link href="/agreements/terms-of-use" target="_blank" className="font-medium text-blue-600 hover:text-blue-500">Termos de Uso</Link>{' '}
                   e a{' '}
