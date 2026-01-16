@@ -1,5 +1,4 @@
 import Loading from '@/components/Loading';
-import MonitorForm from '@/components/Panel/MonitorForm';
 import { Alert } from '@/lib/Alert';
 import { NextPageWithLayout } from '@/pages/_app';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
@@ -30,7 +29,7 @@ const Monitors: NextPageWithLayout = () => {
   const [monitorList, setMonitorList] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [firstLoading, setFirstLoading] = useState(true);
-  const { register, handleSubmit, reset } = useForm<IFormSearchValues>();
+  const { register, handleSubmit } = useForm<IFormSearchValues>();
   const [pagination, setPagination] = useState({
     first: 0,
     rows: 0,
@@ -75,7 +74,7 @@ const Monitors: NextPageWithLayout = () => {
                   </div>
                 )
             ) : (
-              <span></span>
+              <span>Pausado</span>
             )
           )}
         </div>
@@ -227,7 +226,7 @@ const Monitors: NextPageWithLayout = () => {
         {firstLoading ? (
           <Skeleton width="100%" height="10vh"></Skeleton>
         ) : (
-          <div>
+          <div className="shadow-sm bg-white">
             <DataTable
               dataKey="id"
               value={monitorList}
@@ -241,7 +240,7 @@ const Monitors: NextPageWithLayout = () => {
                 <Column key={i} header={col.title} body={col.template} style={{ width: col.width }} />
               ))}
             </DataTable>
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center space-x-4">
               <Paginator
                 first={pagination.first}
                 rows={pagination.rows}

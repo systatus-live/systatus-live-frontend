@@ -52,7 +52,7 @@ const AccountSecurity: NextPageWithLayout = () => {
     <>
       {isSubmitting && <Loading />}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 p-6 bg-white shadow-sm rounded-lg">
         {user?.signinType == SignInTypeEnum.EMAIL_PASSWORD ?
           <div>
             <label className="block">Senha atual <span className="text-red-500">*</span></label>

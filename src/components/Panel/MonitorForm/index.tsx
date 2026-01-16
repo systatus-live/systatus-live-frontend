@@ -132,6 +132,8 @@ export default function MonitorForm(props: { id: string | null }) {
   }
 
   async function getMonitor(id: string) {
+    setIsSubmitting(true);
+
     try {
       const response = await MonitorService.getMonitorById(token as string, id);
 
@@ -150,6 +152,8 @@ export default function MonitorForm(props: { id: string | null }) {
         await router.push("/panel/integrations");
       }
       Alert.error("", error.message);
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -157,7 +161,7 @@ export default function MonitorForm(props: { id: string | null }) {
     <>
       {isSubmitting && <Loading />}
 
-      <form onSubmit={handleSubmit(handleSave)} className="space-y-3">
+      <form onSubmit={handleSubmit(handleSave)} className="space-y-3 shadow-sm bg-white p-6 rounded-lg">
         <div>
           <label className="block">Nome <span className="text-red-500">*</span></label>
           <InputText {...register("name", { required: true })} maxLength={30} placeholder="Ex.: API de pagamentos" className="p-inputtext-sm" />
@@ -185,8 +189,8 @@ export default function MonitorForm(props: { id: string | null }) {
         </div>
         <div>
           <label className="block">IP ou URL <span className="text-red-500">*</span></label>
-          <InputText {...register("address", { required: true })} className="p-inputtext-sm" />
-          <small>Timeout: 10 segundos</small>
+          <InputText {...register("address", { required: true })} maxLength={1000} className="p-inputtext-sm" />
+          <small>{watch("address")?.length}/1000</small>
         </div>
         <div>
           <label className="block">Integração <span className="text-red-500">*</span></label>
@@ -229,6 +233,7 @@ export default function MonitorForm(props: { id: string | null }) {
               className="p-inputtext-sm"
             />
           )} />
+          <small>Timeout: 10 segundos</small>
         </div>
         <div className="flex items-center space-x-1">
           <Controller name="active" control={control} render={({ field }) => (

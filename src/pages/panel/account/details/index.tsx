@@ -106,7 +106,7 @@ const AccountDetail: NextPageWithLayout = () => {
     <>
       {isSubmitting && <Loading />}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="flex space-x-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex space-x-6 shadow-sm bg-white p-6 rounded-lg">
         <div className="flex justify-center flex-col">
           {user && (
             <div style={{ width: 120, height: 120, position: "relative", borderRadius: "50%", overflow: "hidden", border: "1px solid lightgray" }}>

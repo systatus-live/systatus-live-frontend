@@ -63,6 +63,17 @@
   font-size: 0.85rem !important;
 }
 
+.p-datatable .p-datatable-thead>tr>th {
+  background: #314158 !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+.p-datatable .p-datatable-wrapper {
+  border-radius: 4px;
+  overflow: hidden;
+}
+
 // TabView
 .p-tabview-panels {
   padding: 0 !important;
@@ -93,6 +104,10 @@
   height: 1.5rem !important;
   font-size: 0.85rem !important;
   color: theme.$primary-color !important;
+}
+
+.p-paginator {
+  border: 1px solid #ebebeb !important;
 }
 
 // Sidebar

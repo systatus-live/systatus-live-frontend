@@ -138,6 +138,8 @@ export default function IntegrationForm(props: { id: string | null }) {
   }
 
   async function getIntegration(id: string) {
+    setIsSubmitting(true);
+
     try {
       const response = await IntegrationService.getIntegrationById(token as string, id);
 
@@ -153,6 +155,8 @@ export default function IntegrationForm(props: { id: string | null }) {
         await router.push("/panel/integrations");
       }
       Alert.error("", error.message);
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -173,10 +177,11 @@ export default function IntegrationForm(props: { id: string | null }) {
         <WebhookTutorial />
       </Sidebar>
 
-      <form onSubmit={handleSubmit(handleSave)} className="space-y-3">
+      <form onSubmit={handleSubmit(handleSave)} className="space-y-3 shadow-sm bg-white p-6 rounded-lg">
         <div>
           <label className="block font-medium">Nome <span className="text-red-500">*</span></label>
-          <InputText {...register("name", { required: true })} placeholder="Ex.: Canal de DevOps" className="p-inputtext-sm" />
+          <InputText {...register("name", { required: true })} maxLength={30} placeholder="Ex.: Canal de DevOps" className="p-inputtext-sm" />
+          <small>{watch("name")?.length}/30</small>
         </div>
         <div>
           <label className="block font-medium">Plataforma <span className="text-red-500">*</span></label>
@@ -211,7 +216,10 @@ export default function IntegrationForm(props: { id: string | null }) {
         <div>
           <label className="block text-sm font-medium">{getAddressLabel(watch("chatPlatformId"))} <span className="text-red-500">*</span></label>
           <InputText {...register("address", { required: true })} className="p-inputtext-sm" />
-          {watch("chatPlatformId") && getWebhookLabel()}
+          <div className="space-x-6">
+            <small>{watch("address")?.length}/1000</small>
+            {watch("chatPlatformId") && getWebhookLabel()}
+          </div>
         </div>
         {props.id ?
           <div>

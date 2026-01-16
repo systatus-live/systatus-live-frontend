@@ -71,10 +71,8 @@ export default function AccountLayout({ children }: Readonly<{ children: React.R
             ))}
           </div>
         </div>
-        <div className="px-6">
-          <div className="py-4">
-            {children}
-          </div>
+        <div>
+          {children}
         </div>
       </PanelLayout>
     </>

@@ -167,7 +167,7 @@ const Integrations: NextPageWithLayout = () => {
         {firstLoading ? (
           <Skeleton width="100%" height="10vh"></Skeleton>
         ) : (
-          <div>
+          <div className="shadow-sm bg-white">
             <DataTable
               dataKey="id"
               value={integrationList}
@@ -181,7 +181,7 @@ const Integrations: NextPageWithLayout = () => {
                 <Column key={index} header={col.title} body={col.template} style={{ width: col.width }} />
               ))}
             </DataTable>
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center space-x-4">
               <Paginator
                 first={pagination.first}
                 rows={pagination.rows}
