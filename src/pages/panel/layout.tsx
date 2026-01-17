@@ -7,7 +7,6 @@ import { CircleDotIcon, HelpCircleIcon, LogOut, RadarIcon, SirenIcon, Waypoints 
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Avatar } from "primereact/avatar";
 import { useEffect, useState } from "react";
 
 export default function PanelLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -92,7 +91,7 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
       {isSubmitting && <Loading />}
 
       <div className="flex flex-rows h-screen">
-        <div className="flex justify-between flex-col shadow-lg w-auto md:w-[23rem] bg-slate-600">
+        <div className="flex justify-between flex-col shadow-lg w-auto md:w-[22rem] bg-slate-600">
           <div>
             <div className="py-4 px-4 border-b-1 border-b-gray-400 mb-6">
               <Logo inverted={true} />
@@ -111,7 +110,7 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
               ))}
             </div>
           </div>
-          <div className="w-full px-4 py-6 border-t-1 border-t-gray-500 flex items-center justify-between">
+          <div className="w-full px-4 py-6 border-t-1 border-t-gray-500 flex items-center justify-between w-auto md:w-[22rem]">
             <div className="truncate mr-3 hidden md:block">
               {user && (
                 <Link href="/panel/account/" className="block truncate max-w-auto text-gray-100 font-medium" onClick={() => updateActiveNavItem(null)}>

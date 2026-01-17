@@ -52,29 +52,31 @@ const AccountSecurity: NextPageWithLayout = () => {
     <>
       {isSubmitting && <Loading />}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 p-6 bg-white shadow-sm rounded-lg">
+      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-12 gap-3 p-6 border-1 border-gray-200 rounded-lg">
         {user?.signinType == SignInTypeEnum.EMAIL_PASSWORD ?
-          <div>
-            <label className="block">Senha atual <span className="text-red-500">*</span></label>
-            <Controller name="currentPassword" control={control} rules={{ required: true }} render={({ field }) => (
-              <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
-            )} />
+          <div className="grid grid-cols-12 gap-3 col-span-12">
+            <div className="col-span-12 lg:col-span-4">
+              <label className="block">Senha atual <span className="text-red-500">*</span></label>
+              <Controller name="currentPassword" control={control} rules={{ required: true }} render={({ field }) => (
+                <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
+              )} />
+            </div>
           </div> :
           <></>
         }
-        <div>
+        <div className="col-span-12 lg:col-span-4">
           <label className="block">Nova senha <span className="text-red-500">*</span></label>
           <Controller name="newPassword" control={control} rules={{ required: true }} render={({ field }) => (
             <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
           )} />
         </div>
-        <div>
+        <div className="col-span-12 lg:col-span-4">
           <label className="block">Confirmar senha <span className="text-red-500">*</span></label>
           <Controller name="confirmPassword" control={control} rules={{ required: true }} render={({ field }) => (
             <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
           )} />
         </div>
-        <div>
+        <div className="col-span-12">
           <Button label="Salvar" severity="success" type="submit" />
         </div>
       </form>

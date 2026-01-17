@@ -5,18 +5,16 @@ import IntegrationService from '@/services/IntegrationService';
 import IntervalService from '@/services/IntervalService';
 import MonitorService from '@/services/MonitorService';
 import { MonitorTypeEnum, MonitorTypeLabelEnum } from '@/types/MonitorTypeEnum';
-import { EditIcon } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { Button } from 'primereact/button';
 import { Checkbox } from 'primereact/checkbox';
-import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { MultiSelect } from 'primereact/multiselect';
+import { Skeleton } from 'primereact/skeleton';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useRouter } from 'next/router';
-import formatDate from '@/utils/formatDate';
 
 type IFormValues = {
   id: string,
@@ -26,18 +24,18 @@ type IFormValues = {
   active: boolean;
   integrationList: any[],
   intervalId: string;
-  createdAt?: string;
 }
 
 export default function MonitorForm(props: { id: string | null }) {
   const router = useRouter();
   const { token } = useGlobalProvider();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [firstLoading, setFirstLoading] = useState(true);
   const [integrationList, setIntegrationList] = useState([]);
   const [intervalList, setIntervalList] = useState([]);
   const monitorTypeList = Object.keys(MonitorTypeEnum).map(t => ({ id: t, description: MonitorTypeLabelEnum[t as MonitorTypeEnum] }));
 
-  const { register, handleSubmit, reset, setValue, watch, control, getValues } = useForm<IFormValues>({});
+  const { register, handleSubmit, reset, setValue, watch, control } = useForm<IFormValues>({});
 
   useEffect(() => {
     if (token) {
@@ -50,6 +48,8 @@ export default function MonitorForm(props: { id: string | null }) {
         } else {
           setValue("active", true);
         }
+
+        setFirstLoading(false);
       })();
     }
   }, [token]);
@@ -144,8 +144,7 @@ export default function MonitorForm(props: { id: string | null }) {
         address: response.address,
         active: response.active,
         integrationList: response.integrationList.map((i: any) => i.id),
-        intervalId: response.intervalId,
-        createdAt: formatDate(response.createdAt, "D [de] MMMM [de] YYYY"),
+        intervalId: response.intervalId
       })
     } catch (error: any) {
       if (error.status == 404) {
@@ -161,98 +160,95 @@ export default function MonitorForm(props: { id: string | null }) {
     <>
       {isSubmitting && <Loading />}
 
-      <form onSubmit={handleSubmit(handleSave)} className="space-y-3 shadow-sm bg-white p-6 rounded-lg">
-        <div>
-          <label className="block">Nome <span className="text-red-500">*</span></label>
-          <InputText {...register("name", { required: true })} maxLength={30} placeholder="Ex.: API de pagamentos" className="p-inputtext-sm" />
-          <small>{watch("name")?.length}/30</small>
-        </div>
-        <div>
-          <label className="block">Tipo <span className="text-red-500">*</span></label>
-          <Controller name="type" control={control} rules={{ required: true }} render={({ field }) => (
-            <Dropdown
-              {...field}
-              inputRef={field.ref}
-              value={watch("type")}
-              onChange={(option) => setValue("type", option.value)}
-              options={monitorTypeList}
-              optionValue="id"
-              optionLabel="description"
-              filter={true}
-              itemTemplate={(option) => (
-                <span>{option.description}</span>
-              )}
-              valueTemplate={(option) => (option == null ? <div>&#8203;</div> : <span>{option.description}</span>)}
-              className="p-inputtext-sm"
-            />
-          )} />
-        </div>
-        <div>
-          <label className="block">IP ou URL <span className="text-red-500">*</span></label>
-          <InputText {...register("address", { required: true })} maxLength={1000} className="p-inputtext-sm" />
-          <small>{watch("address")?.length}/1000</small>
-        </div>
-        <div>
-          <label className="block">Integração <span className="text-red-500">*</span></label>
-          <Controller name="integrationList" control={control} rules={{ required: true }} render={({ field }) => (
-            <MultiSelect
-              {...field}
-              inputRef={field.ref}
-              value={watch("integrationList")}
-              onChange={(option) => setValue("integrationList", option.value)}
-              options={integrationList}
-              optionLabel="name"
-              optionValue="id"
-              filter={true}
-              itemTemplate={(option) => (
-                <div className="flex items-center gap-x-1 w-full overflow-hidden pt-1">
-                  <Image src={option.chatPlatformIconUrl} alt="." width={16} height={16} />
-                  <span className="font-medium text-sm">{option.name}</span>
-                </div>
-              )}
-              className="p-inputtext-sm w-full"
-            />
-          )} />
-        </div>
-        <div>
-          <label className="block">Intervalo de monitoramento <span className="text-red-500">*</span></label>
-          <Controller name="intervalId" control={control} rules={{ required: true }} render={({ field }) => (
-            <Dropdown
-              {...field}
-              inputRef={field.ref}
-              value={watch("intervalId")}
-              onChange={(option) => setValue("intervalId", option.value)}
-              options={intervalList}
-              optionValue="id"
-              optionLabel="name"
-              filter={true}
-              itemTemplate={(option) => (
-                <span>{option.name}</span>
-              )}
-              valueTemplate={(option) => (option == null ? <div>&#8203;</div> : <span>{option.name}</span>)}
-              className="p-inputtext-sm"
-            />
-          )} />
-          <small>Timeout: 10 segundos</small>
-        </div>
-        <div className="flex items-center space-x-1">
-          <Controller name="active" control={control} render={({ field }) => (
-            <Checkbox inputId={field.name} checked={field.value} onChange={(e) => field.onChange(e.checked)} />
-          )} />
-          <label htmlFor="active" className="block cursor-pointer">Habilitar monitoramento</label>
-        </div>
-        {props.id ?
-          <div>
-            <label className="block">Data de cadastro</label>
-            <InputText {...register("createdAt", { required: false, disabled: true })} className="p-inputtext-sm" />
+      {firstLoading ? (
+        <Skeleton width="100%" height="10vh"></Skeleton>
+      ) : (
+        <form onSubmit={handleSubmit(handleSave)} className="grid grid-cols-12 gap-3 border-1 border-gray-200 p-6 rounded-lg">
+          <div className="col-span-12 lg:col-span-4">
+            <label className="block">Nome <span className="text-red-500">*</span></label>
+            <InputText {...register("name", { required: true })} maxLength={30} placeholder="Ex.: API de pagamentos" className="p-inputtext-sm" />
+            <small>{watch("name")?.length ?? 0}/30</small>
           </div>
-          : <></>
-        }
-        <div className="flex space-x-4 mt-5">
-          <Button label="Salvar" severity="success" type="submit" />
-          {props.id && <Button label="Excluir" text severity="danger" onClick={() => handleDelete(props.id!)} type="button" />}
-        </div>
-      </form>
+          <div className="col-span-12 lg:col-span-2">
+            <label className="block">Tipo <span className="text-red-500">*</span></label>
+            <Controller name="type" control={control} rules={{ required: true }} render={({ field }) => (
+              <Dropdown
+                {...field}
+                inputRef={field.ref}
+                value={watch("type")}
+                onChange={(option) => setValue("type", option.value)}
+                options={monitorTypeList}
+                optionValue="id"
+                optionLabel="description"
+                filter={true}
+                itemTemplate={(option) => (
+                  <span>{option.description}</span>
+                )}
+                valueTemplate={(option) => (option == null ? <div>&#8203;</div> : <span>{option.description}</span>)}
+                className="p-inputtext-sm"
+              />
+            )} />
+          </div>
+          <div className="col-span-12 lg:col-span-6">
+            <label className="block">IP ou URL <span className="text-red-500">*</span></label>
+            <InputText {...register("address", { required: true })} maxLength={1000} className="p-inputtext-sm" />
+            <small>{watch("address")?.length ?? 0}/1000</small>
+          </div>
+          <div className="col-span-12 lg:col-span-8">
+            <label className="block">Integração <span className="text-red-500">*</span></label>
+            <Controller name="integrationList" control={control} rules={{ required: true }} render={({ field }) => (
+              <MultiSelect
+                {...field}
+                inputRef={field.ref}
+                value={watch("integrationList")}
+                onChange={(option) => setValue("integrationList", option.value)}
+                options={integrationList}
+                optionLabel="name"
+                optionValue="id"
+                filter={true}
+                itemTemplate={(option) => (
+                  <div className="flex items-center gap-x-1 w-full overflow-hidden pt-1">
+                    <Image src={option.chatPlatformIconUrl} alt="." width={16} height={16} />
+                    <span className="font-medium text-sm">{option.name}</span>
+                  </div>
+                )}
+                className="p-inputtext-sm w-full"
+              />
+            )} />
+          </div>
+          <div className="col-span-12 lg:col-span-4">
+            <label className="block">Intervalo de monitoramento <span className="text-red-500">*</span></label>
+            <Controller name="intervalId" control={control} rules={{ required: true }} render={({ field }) => (
+              <Dropdown
+                {...field}
+                inputRef={field.ref}
+                value={watch("intervalId")}
+                onChange={(option) => setValue("intervalId", option.value)}
+                options={intervalList}
+                optionValue="id"
+                optionLabel="name"
+                filter={true}
+                itemTemplate={(option) => (
+                  <span>{option.name}</span>
+                )}
+                valueTemplate={(option) => (option == null ? <div>&#8203;</div> : <span>{option.name}</span>)}
+                className="p-inputtext-sm"
+              />
+            )} />
+            <small>Timeout: 10 segundos</small>
+          </div>
+          <div className="flex items-center space-x-1 col-span-12 lg:col-span-4">
+            <Controller name="active" control={control} render={({ field }) => (
+              <Checkbox inputId={field.name} checked={field.value} onChange={(e) => field.onChange(e.checked)} />
+            )} />
+            <label htmlFor="active" className="block cursor-pointer">Habilitar monitoramento</label>
+          </div>
+          <div className="flex space-x-4 mt-5 col-span-12">
+            <Button label="Salvar" severity="success" type="submit" />
+            {props.id && <Button label="Excluir" text severity="danger" onClick={() => handleDelete(props.id!)} type="button" />}
+          </div>
+        </form>
+      )}
     </>
   )
 }

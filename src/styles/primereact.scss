@@ -30,6 +30,10 @@
   line-height: 1rem !important;
 }
 
+.p-inputtext, .p-dropdown, .p-multiselect {
+  border-width: 1px !important;
+}
+
 // Table
 .p-datatable .p-datatable-header {
   background: none !important;

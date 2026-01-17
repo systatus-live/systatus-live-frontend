@@ -95,7 +95,7 @@ export default function ContactForm() {
                   </div>
                 </motion.div>
                 <motion.div
-                  className="lg:col-span-2 bg-white rounded-lg shadow-lg p-6 sm:p-8"
+                  className="lg:col-span-2 border-1 border-gray-200 rounded-lg p-6 sm:p-8"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}

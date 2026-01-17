@@ -106,7 +106,7 @@ const AccountDetail: NextPageWithLayout = () => {
     <>
       {isSubmitting && <Loading />}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="flex space-x-6 shadow-sm bg-white p-6 rounded-lg">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex space-x-6 border-1 border-gray-200 p-6 rounded-lg">
         <div className="flex justify-center flex-col">
           {user && (
             <div style={{ width: 120, height: 120, position: "relative", borderRadius: "50%", overflow: "hidden", border: "1px solid lightgray" }}>
@@ -139,11 +139,13 @@ const AccountDetail: NextPageWithLayout = () => {
         <div className="space-y-3 w-full">
           <div>
             <label className="block">Nome <span className="text-red-500">*</span></label>
-            <InputText {...register("name", { required: true })} className="p-inputtext-sm" />
+            <InputText {...register("name", { required: true })} maxLength={50} className="p-inputtext-sm" />
+            <small>{watch("name")?.length ?? 0}/50</small>
           </div>
           <div>
             <label className="block">E-mail <span className="text-red-500">*</span></label>
-            <InputText {...register("email", { required: true })} className="p-inputtext-sm" />
+            <InputText {...register("email", { required: true })} maxLength={255} className="p-inputtext-sm" />
+            <small>{watch("email")?.length ?? 0}/255</small>
           </div>
           <div>
             <label className="block">Membro desde</label>

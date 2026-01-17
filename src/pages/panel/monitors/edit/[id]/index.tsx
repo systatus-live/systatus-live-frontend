@@ -17,7 +17,10 @@ const EditMonitor: NextPageWithLayout = () => {
 
       <div className="flex items-center space-x-2 mb-6">
         <ArrowLeftSquare className="cursor-pointer" onClick={() => router.back()} />
-        <h1 className="text-xl font-bold">Monitor</h1>
+        <div className="flex flex-col">
+          <h1 className="text-xl font-bold">Monitor</h1>
+          <small>ID: {router.query.id}</small>
+        </div>
       </div>
       <div>
         <MonitorForm id={router.query.id as string} />
