@@ -60,7 +60,7 @@ export default function AccountLayout({ children }: Readonly<{ children: React.R
           <div className="flex items-center bg-slate-800 rounded-lg">
             {navList.map((item, index) => (
               <Link key={index} href={item.route} className="flex justify-center w-[12rem]" onClick={() => updateActiveNavItem(index)}>
-                <div className={`px-4 h-10 w-full flex items-center rounded-lg transition-colors text-white ${item.active ? "bg-slate-700" : "hover:bg-slate-700"}`}>
+                <div className={`px-4 h-10 w-full flex items-center rounded-lg transition-colors text-white ${item.active ? "bg-slate-600" : "hover:bg-slate-600"}`}>
                   <item.icon height={16} />
                   <div className="flex items-center justify-between w-full ml-3">
                     <span>{item.label}</span>

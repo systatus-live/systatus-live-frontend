@@ -92,15 +92,15 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
       {isSubmitting && <Loading />}
 
       <div className="flex flex-rows h-screen">
-        <div className="flex justify-between flex-col shadow-lg w-auto md:w-[300px] bg-slate-800">
+        <div className="flex justify-between flex-col shadow-lg w-auto md:w-[23rem] bg-slate-600">
           <div>
-            <div className="py-4 px-4 border-b-1 border-b-gray-500 mb-6">
+            <div className="py-4 px-4 border-b-1 border-b-gray-400 mb-6">
               <Logo inverted={true} />
             </div>
             <div className="flex flex-col items-center sm:items-start w-full">
               {navList.map((item, index) => (
                 <Link key={index} href={item.route} className="flex justify-center w-full px-2 mb-1" onClick={() => updateActiveNavItem(index)}>
-                  <div className={`px-4 h-10 w-full flex items-center rounded-lg transition-colors text-white ${item.active ? "bg-slate-700" : "hover:bg-slate-700"}`}>
+                  <div className={`px-4 h-10 w-full flex items-center rounded-lg transition-colors text-gray-100 ${item.active ? "text-white bg-slate-800" : "hover:text-white hover:bg-slate-800"}`}>
                     <item.icon height={20} />
                     <div className="flex items-center justify-between w-full hidden sm:flex ml-3">
                       <span>{item.label}</span>
@@ -114,17 +114,12 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
           <div className="w-full px-4 py-6 border-t-1 border-t-gray-500 flex items-center justify-between">
             <div className="truncate mr-3 hidden md:block">
               {user && (
-                <Link href="/panel/account/" className="block truncate max-w-auto text-gray-300 font-medium" onClick={() => updateActiveNavItem(null)}>
+                <Link href="/panel/account/" className="block truncate max-w-auto text-gray-100 font-medium" onClick={() => updateActiveNavItem(null)}>
                   <div className="flex items-center space-x-3">
-                     <div style={{ width: 37, height: 37, position: "relative", borderRadius: "50%", overflow: "hidden" }}>
-                      <Image
-                        src={user.avatar ?? "/images/avatar.jpg"}
-                        alt="Avatar"
-                        fill
-                        sizes={`${37}px`}
-                        style={{ objectFit: "cover" }}
-                        priority
-                      />
+                    <div>
+                      <div style={{ width: 32, height: 32, position: "relative", borderRadius: "50%", overflow: "hidden" }}>
+                        <Image src={user.avatar ?? "/images/avatar.jpg"} alt="Avatar" fill sizes={`${37}px`} style={{ objectFit: "cover" }} priority />
+                      </div>
                     </div>
                     <div className="overflow-hidden whitespace-nowrap text-ellipsis">
                       <span>{user.name}</span><br />
