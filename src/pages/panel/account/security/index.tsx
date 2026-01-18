@@ -13,6 +13,7 @@ import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Paginator } from "primereact/paginator";
 import formatDate from "@/utils/formatDate";
+import UAParser from "my-ua-parser";
 
 type IFormDetails = {
   currentPassword: string;
@@ -67,12 +68,12 @@ const AccountSecurity: NextPageWithLayout = () => {
     },
     {
       title: "IP",
-      template: (history: any) => <span className="font-medium">{history.ip}</span>,
+      template: (history: any) => <span className="text-sm">{history.ip}</span>,
       width: "20%"
     },
     {
-      title: "User-Agent",
-      template: (history: any) => <span className="text-sm">{history.userAgent}</span>,
+      title: "Dispositivo",
+      template: (history: any) => <span className="text-sm">{getDeviceFromAgent(history.userAgent)}</span>,
       width: "30%"
     },
   ]
@@ -126,6 +127,16 @@ const AccountSecurity: NextPageWithLayout = () => {
     } finally {
       setIsSubmitting(false);
     }
+  }
+
+  function getDeviceFromAgent(userAgent: string) {
+    const parser = new UAParser(userAgent);
+    const parserResults = parser.getResult();
+    console.log(parserResults)
+    if (parserResults.browser.name) {
+      return `${parserResults.os.name} ${parserResults.browser.name} v${parserResults.browser.version}`
+    } 
+    return userAgent;
   }
 
   return (

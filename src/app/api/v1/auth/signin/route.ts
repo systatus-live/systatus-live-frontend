@@ -8,11 +8,14 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
   try {
     const json: SignInOptionsDTO = await request.json();
+    const headers = {
+      "x-user-agent": request.headers.get("x-user-agent")
+    };
 
     let response = null;
     switch (json.type) {
       case SignInTypeEnum.GOOGLE:
-        response = await AuthService.signIn(json);
+        response = await AuthService.signIn(json, headers);
 
         // O "signUpSignInFlow" inicia um fluxo que direciona o usuário para o signUp se fizer o signIn com alguma rede social sem estar cadastrado
         if (response.data.signUpSignInFlow) {
@@ -23,7 +26,7 @@ export async function POST(request: NextRequest) {
 
         break;
       case SignInTypeEnum.EMAIL_PASSWORD:
-        response = await AuthService.signIn(json);
+        response = await AuthService.signIn(json, headers);
         break;
       default:
         throw new Error("Tipo de autenticação desconhecido.");

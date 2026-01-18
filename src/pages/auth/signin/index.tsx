@@ -66,7 +66,11 @@ export default function SignIn() {
   function submit(form: SignInOptionsDTO) {
     setSubmitting(true);
 
-    AuthService.signInLocal(form).then((response) => {
+    const headers = {
+      "x-user-agent": window.navigator.userAgent
+    }
+
+    AuthService.signInLocal(form, headers).then((response) => {
       if (response.signUpSignInFlow) {
         router.push({
           pathname: "/auth/signup",
