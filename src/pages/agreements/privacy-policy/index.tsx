@@ -18,7 +18,7 @@ export default function PrivacyPolicy() {
 
         <h1>POLÍTICA DE PRIVACIDADE</h1>
 
-        <p className="my-3">Última atualização em 10 de maio de 2025</p>
+        <p className="my-3">Última atualização em 18 de janeiro de 2026</p>
 
         <p className="my-3">
           Esta Política de Privacidade da ARTUR MIGUEL ROCHA DESENVOLVIMENTO DE SOFTWARE,
@@ -136,7 +136,7 @@ export default function PrivacyPolicy() {
 
         <p className="my-3">
           Dados de login por redes sociais. Podemos oferecer a opção de se registrar usando dados da sua conta de
-          rede social, como Facebook, X ou outra. Caso opte por esse método, coletaremos algumas informações de
+          rede social, como Google ou outra. Caso opte por esse método, coletaremos algumas informações de
           perfil fornecidas pelo provedor da rede social, conforme descrito na seção
           "<Link href="/agreements/privacy-policy#sociallogins">COMO LIDAMOS COM SEUS LOGINS SOCIAIS?</Link>" abaixo.
         </p>
@@ -304,9 +304,9 @@ export default function PrivacyPolicy() {
         </p>
 
         <p className="my-3">
-          Nossos Serviços permitem que você se registre e acesse usando os dados da sua conta de rede social de terceiros (como Facebook ou X).
+          Nossos Serviços permitem que você se registre e acesse usando os dados da sua conta de rede social de terceiros (como Google).
           Caso opte por isso, receberemos algumas informações do seu perfil junto ao provedor dessa rede. As informações recebidas podem variar,
-          mas geralmente incluem seu nome, e-mail, lista de amigos e foto de perfil, além de outros dados que você tornar públicos nessa rede.
+          mas geralmente incluem seu nome, e-mail, e foto de perfil, além de outros dados que você tornar públicos nessa rede.
         </p>
 
         <p className="my-3">
