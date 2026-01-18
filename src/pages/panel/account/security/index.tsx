@@ -55,12 +55,7 @@ const AccountSecurity: NextPageWithLayout = () => {
       title: "Localização",
       template: (history: any) => {
         if (history.locationJson) {
-          return (
-            <div className="flex flex-col">
-              <span className="font-medium">{history.locationJson.city} • {history.locationJson.state} • {history.locationJson.country} {history.locationJson.flag}</span>
-              <small className="text-gray-500">Coordenadas: {history.locationJson.latitude}/{history.locationJson.longitude}</small>
-            </div>
-          )
+          return <span className="font-medium">{history.locationJson.city} • {history.locationJson.state} • {history.locationJson.country} {history.locationJson.flag}</span>
         }
         return <span className="font-medium">Desconhecida</span>
       },
@@ -131,7 +126,7 @@ const AccountSecurity: NextPageWithLayout = () => {
     const parser = new UAParser(userAgent);
     const parserResults = parser.getResult();
     if (parserResults.browser.name) {
-      return `${parserResults.os.name} ${parserResults.browser.name} v${parserResults.browser.version}`
+      return `${parserResults.os.name} • ${parserResults.browser.name}/${parserResults.browser.version}`
     }
     return userAgent;
   }
