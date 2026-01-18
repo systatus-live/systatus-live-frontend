@@ -82,7 +82,8 @@ const Incidents: NextPageWithLayout = () => {
     {
       title: "Resolvido",
       template: (incident: any) => (
-        incident.endedAt ? <span className="text-sm">{formatDate(incident.endedAt, "DD/MM/YYYY HH:mm")}</span> : <span className="text-sm"></span>),
+        incident.endedAt ? <span className="text-sm">{formatDate(incident.endedAt, "DD/MM/YYYY HH:mm")}</span> : <span className="text-sm"></span>
+      ),
       width: "15%"
     },
     {
@@ -242,7 +243,7 @@ const Incidents: NextPageWithLayout = () => {
         {firstLoading ? (
           <Skeleton width="100%" height="10vh"></Skeleton>
         ) : (
-          <div className="shadow-sm bg-white">
+          <div className="border-1 border-gray-200 rounded-lg">
             <DataTable
               dataKey="id"
               value={incidentList}

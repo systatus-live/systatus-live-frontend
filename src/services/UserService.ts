@@ -12,4 +12,10 @@ export default class UserService {
       Authorization: `Bearer ${token}`
     });
   }
+
+  static getAuthHistory(token: string, params: URLSearchParams) {
+    return HttpService.get(`${process.env.NEXT_PUBLIC_SYSTATUS_API_URL}/v1/users/auth-history?${params.toString()}`, {
+      Authorization: `Bearer ${token}`
+    });
+  }
 }

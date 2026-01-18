@@ -167,7 +167,7 @@ const Integrations: NextPageWithLayout = () => {
         {firstLoading ? (
           <Skeleton width="100%" height="10vh"></Skeleton>
         ) : (
-          <div className="shadow-sm bg-white">
+          <div className="border-1 border-gray-200 rounded-lg">
             <DataTable
               dataKey="id"
               value={integrationList}

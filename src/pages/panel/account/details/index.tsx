@@ -136,22 +136,22 @@ const AccountDetail: NextPageWithLayout = () => {
             <small>Max.: 1MB</small>
           </div>
         </div>
-        <div className="space-y-3 w-full">
-          <div>
+        <div className="grid gri-cols-12 gap-3 w-full">
+          <div className="col-span-12 lg:col-span-4">
             <label className="block">Nome <span className="text-red-500">*</span></label>
             <InputText {...register("name", { required: true })} maxLength={50} className="p-inputtext-sm" />
             <small>{watch("name")?.length ?? 0}/50</small>
           </div>
-          <div>
+          <div className="col-span-12 lg:col-span-8">
             <label className="block">E-mail <span className="text-red-500">*</span></label>
             <InputText {...register("email", { required: true })} maxLength={255} className="p-inputtext-sm" />
             <small>{watch("email")?.length ?? 0}/255</small>
           </div>
-          <div>
+          <div className="col-span-12 lg:col-span-4">
             <label className="block">Membro desde</label>
             <InputText {...register("createdAt", { required: true, disabled: true })} className="p-inputtext-sm" />
           </div>
-          <div>
+          <div className="col-span-12">
             <Button label="Salvar" severity="success" type="submit" />
           </div>
         </div>
