@@ -16,7 +16,6 @@ import { Paginator } from 'primereact/paginator';
 import { Skeleton } from 'primereact/skeleton';
 import { useEffect, useState, type ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
-import PanelLayout from '../layout';
 import styles from "./styles.module.scss";
 
 type IFormSearchValues = {
@@ -213,12 +212,14 @@ const Monitors: NextPageWithLayout = () => {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmitSearch)} className="grid grid-cols-1 lg:grid-cols-3 mb-6">
-        <div className="p-inputgroup flex-1">
-          <InputText {...register("search", { required: false })} placeholder="Pesquisar por nome ou endereço" className="p-inputtext-sm" />
-          <Button severity="secondary">
-            <SearchIcon height={16} />
-          </Button>
+      <form onSubmit={handleSubmit(onSubmitSearch)} className="grid grid-cols-12 mb-6">
+        <div className="col-span-12 lg:col-span-4">
+          <div className="p-inputgroup flex-1">
+            <InputText {...register("search", { required: false })} placeholder="Pesquisar por nome ou endereço" className="p-inputtext-sm" />
+            <Button severity="secondary">
+              <SearchIcon size={12} />
+            </Button>
+          </div>
         </div>
       </form>
 
@@ -235,9 +236,10 @@ const Monitors: NextPageWithLayout = () => {
               stripedRows={false}
               scrollable={true}
               scrollHeight="80vh"
+              emptyMessage="&#8203;"
             >
-              {tableColumnList.map((col, i) => (
-                <Column key={i} header={col.title} body={col.template} style={{ width: col.width }} />
+              {tableColumnList.map((col, index) => (
+                <Column key={index} header={col.title} body={col.template} style={{ width: col.width }} />
               ))}
             </DataTable>
             <div className="flex items-center justify-center space-x-4">
@@ -258,11 +260,7 @@ const Monitors: NextPageWithLayout = () => {
 }
 
 Monitors.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <PanelLayout>
-      {page}
-    </PanelLayout>
-  )
+  return page;
 }
 
 export default Monitors;

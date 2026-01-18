@@ -12,9 +12,7 @@ import { useEffect } from "react";
 
 export default function Home() {
   useEffect(() => {
-    console.log(cowsay.say({
-      text: "👀 Olá, dev!\nCaso encontre algo estranho (além deste aviso), conte pra gente em\nhttps://systatus.live/contact"
-    }))
+    console.info(cowsay.say({ text: "Olá, dev!\nCaso encontre algo estranho neste site\n(além deste aviso), conte pra gente em\nhttps://systatus.live/contact"}), "\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
   }, []);
 
   return (

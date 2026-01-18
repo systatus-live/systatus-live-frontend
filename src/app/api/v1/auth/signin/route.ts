@@ -8,8 +8,10 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
   try {
     const json: SignInOptionsDTO = await request.json();
+
     const headers = {
-      "x-user-agent": request.headers.get("x-user-agent")
+      "x-user-agent": request.headers.get("x-user-agent"),
+      "x-client-ip": request.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
     };
 
     let response = null;

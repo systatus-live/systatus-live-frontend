@@ -4,7 +4,6 @@ import { ArrowLeftSquare } from 'lucide-react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { type ReactElement } from 'react';
-import PanelLayout from '../../layout';
 
 const NewIntegration: NextPageWithLayout = () => {
   const router = useRouter();
@@ -27,11 +26,7 @@ const NewIntegration: NextPageWithLayout = () => {
 }
 
 NewIntegration.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <PanelLayout>
-      {page}
-    </PanelLayout>
-  )
+  return page;
 }
 
 export default NewIntegration;

@@ -3,7 +3,7 @@ import Logo from "@/components/Logo";
 import { Alert } from "@/lib/Alert";
 import { useGlobalProvider } from "@/providers/GlobalProvider";
 import AuthService from "@/services/AuthService";
-import { CircleDotIcon, HelpCircleIcon, LogOut, RadarIcon, SirenIcon, Waypoints } from "lucide-react";
+import { CircleDotIcon, HelpCircleIcon, LogOut, RadarIcon, ShieldIcon, SirenIcon, UserIcon, Waypoints } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -12,16 +12,67 @@ import { useEffect, useState } from "react";
 export default function PanelLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { user, setUser, setToken } = useGlobalProvider();
-  const [navList, setNavList] = useState<any[]>([]);
   const router = useRouter();
+
+  const navList = [
+    {
+      group: "Monitoramento",
+      items: [
+        {
+          icon: RadarIcon,
+          label: "Monitores",
+          route: "/panel/monitors",
+          active: router.pathname.startsWith("/panel/monitors")
+        },
+        {
+          icon: SirenIcon,
+          label: "Incidentes",
+          route: "/panel/incidents",
+          active: router.pathname.startsWith("/panel/incidents")
+        },
+        {
+          icon: Waypoints,
+          label: "Integrações",
+          route: "/panel/integrations",
+          active: router.pathname.startsWith("/panel/integrations")
+        },
+      ]
+    },
+    {
+      group: "Conta",
+      items: [
+        {
+          icon: UserIcon,
+          label: "Detalhes",
+          route: "/panel/account/details",
+          active: router.pathname.startsWith("/panel/account/details")
+        },
+        {
+          icon: ShieldIcon,
+          label: "Segurança",
+          route: "/panel/account/security",
+          active: router.pathname.startsWith("/panel/account/security")
+        }
+      ]
+    },
+    {
+      group: "Suporte",
+      items: [
+        {
+          icon: HelpCircleIcon,
+          label: "Ajuda",
+          route: "/panel/help",
+          active: router.pathname.startsWith("/panel/help")
+        }
+      ]
+    }
+  ]
 
   useEffect(() => {
     AuthService.meLocal().then((response: any) => {
       setUser(response.user);
       setToken(response.token);
     })
-
-    updateNavList();
 
     return () => { }
   }, [])
@@ -41,79 +92,39 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
     }
   }
 
-  async function updateNavList() {
-    const list = [
-      {
-        icon: RadarIcon,
-        label: "Monitores",
-        route: "/panel/monitors",
-        active: false
-      },
-      {
-        icon: SirenIcon,
-        label: "Incidentes",
-        route: "/panel/incidents",
-        active: false
-      },
-      {
-        icon: Waypoints,
-        label: "Integrações",
-        route: "/panel/integrations",
-        active: false
-      },
-      {
-        icon: HelpCircleIcon,
-        label: "Ajuda",
-        route: "/panel/help",
-        active: false
-      }
-    ]
-
-    const navItem = list.find(item => item.route == window.location.pathname);
-    if (navItem) {
-      navItem.active = true;
-    }
-
-    setNavList(list);
-  }
-
-  function updateActiveNavItem(index: number | null) {
-    const list = [...navList];
-    list.forEach(item => item.active = false);
-    if (index != null && list[index]) {
-      list[index].active = true;
-    }
-    setNavList(list);
-  }
-
   return (
     <>
       {isSubmitting && <Loading />}
 
       <div className="flex flex-rows h-screen">
-        <div className="flex justify-between flex-col shadow-lg w-auto md:w-[22rem] bg-slate-600">
+        <div className="flex justify-between flex-col border-r-1 border-gray-200 w-auto md:w-[22rem] bg-slate-600">
           <div>
             <div className="py-4 px-4 border-b-1 border-b-gray-400 mb-6">
               <Logo inverted={true} />
             </div>
             <div className="flex flex-col items-center sm:items-start w-full">
-              {navList.map((item, index) => (
-                <Link key={index} href={item.route} className="flex justify-center w-full px-2 mb-1" onClick={() => updateActiveNavItem(index)}>
-                  <div className={`px-4 h-10 w-full flex items-center rounded-lg transition-colors text-gray-100 ${item.active ? "text-white bg-slate-800" : "hover:text-white hover:bg-slate-800"}`}>
-                    <item.icon height={20} />
-                    <div className="flex items-center justify-between w-full hidden sm:flex ml-3">
-                      <span>{item.label}</span>
-                      {item.active && <CircleDotIcon size={10} />}
-                    </div>
-                  </div>
-                </Link>
+              {navList.map((group, i) => (
+                <div key={i} className="w-full">
+                  <span className="hidden sm:flex uppercase tracking-wider my-3 px-4 text-gray-300">{group.group}</span>
+                  {group.items.map((item: any, j: any) => (
+                    <Link key={j} href={item.route} className="flex justify-center w-full mb-1 px-2">
+                      <div className={`h-10 w-full flex items-center rounded-lg transition-colors text-gray-100 px-4 ${item.active ? "text-white bg-slate-800" : "hover:text-white hover:bg-slate-800"}`}>
+                        <item.icon height={20} />
+                        <div className="flex items-center justify-between w-full hidden sm:flex ml-3">
+                          <span>{item.label}</span>
+                          {item.active && <CircleDotIcon size={10} />}
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
               ))}
             </div>
           </div>
           <div className="w-full px-4 py-6 border-t-1 border-t-gray-500 flex items-center justify-between w-auto md:w-[22rem]">
             <div className="truncate mr-3 hidden md:block">
               {user && (
-                <Link href="/panel/account/" className="block truncate max-w-auto text-gray-100 font-medium" onClick={() => updateActiveNavItem(null)}>
+                <Link href="/panel/account/" className="block truncate max-w-auto text-gray-100 font-medium">
                   <div className="flex items-center space-x-3">
                     <div>
                       <div style={{ width: 32, height: 32, position: "relative", borderRadius: "50%", overflow: "hidden" }}>
@@ -133,7 +144,7 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
             </div>
           </div>
         </div>
-        <div className="w-full h-screen overflow-y-auto p-4 md:p-12">
+        <div className="w-full h-screen overflow-y-auto py-4 px-6 md:px-12 md:py-6">
           {children}
         </div>
       </div>

@@ -40,13 +40,17 @@ export default function MonitorForm(props: { id: string | null }) {
   useEffect(() => {
     if (token) {
       (async () => {
-        await getIntervalList(new URLSearchParams());
+        const [interval] = await getIntervalList(new URLSearchParams());
         await getIntegrationList(new URLSearchParams());
 
         if (props.id) {
           await getMonitor(props.id);
         } else {
-          setValue("active", true);
+          reset({
+            active: true,
+            intervalId: interval.id,
+            type: monitorTypeList[0].id
+          });
         }
 
         setFirstLoading(false);
@@ -124,6 +128,7 @@ export default function MonitorForm(props: { id: string | null }) {
     try {
       const { data } = await IntervalService.getIntervalList(token as string, params);
       setIntervalList(data);
+      return data;
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {

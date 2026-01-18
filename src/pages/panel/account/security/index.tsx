@@ -14,6 +14,7 @@ import { DataTable } from "primereact/datatable";
 import { Paginator } from "primereact/paginator";
 import formatDate from "@/utils/formatDate";
 import UAParser from "my-ua-parser";
+import { Panel } from "primereact/panel";
 
 type IFormDetails = {
   currentPassword: string;
@@ -25,7 +26,6 @@ const AccountSecurity: NextPageWithLayout = () => {
   const { user, setUser, token } = useGlobalProvider();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [authHistory, setAuthHistory] = useState([]);
-  const [firstLoading, setFirstLoading] = useState(true);
   const [pagination, setPagination] = useState({
     first: 0,
     rows: 0,
@@ -86,8 +86,6 @@ const AccountSecurity: NextPageWithLayout = () => {
       const response = await UserService.getAuthHistory(token as string, params);
 
       setAuthHistory(response.data);
-      setFirstLoading(false);
-
       setPagination(prev => ({
         ...prev,
         rows: response.pagination.rows,
@@ -132,10 +130,9 @@ const AccountSecurity: NextPageWithLayout = () => {
   function getDeviceFromAgent(userAgent: string) {
     const parser = new UAParser(userAgent);
     const parserResults = parser.getResult();
-    console.log(parserResults)
     if (parserResults.browser.name) {
       return `${parserResults.os.name} ${parserResults.browser.name} v${parserResults.browser.version}`
-    } 
+    }
     return userAgent;
   }
 
@@ -143,67 +140,68 @@ const AccountSecurity: NextPageWithLayout = () => {
     <>
       {isSubmitting && <Loading />}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-12 gap-3 p-6 border-1 border-gray-200 rounded-lg">
-        <div className="col-span-12">
-          <span className="text-sm font-bold">Alterar senha</span>
-        </div>
 
-        {user?.signinType == SignInTypeEnum.EMAIL_PASSWORD ?
-          <div className="grid grid-cols-12 gap-3 col-span-12">
-            <div className="col-span-12 lg:col-span-4">
-              <label className="block">Senha atual <span className="text-red-500">*</span></label>
-              <Controller name="currentPassword" control={control} rules={{ required: true }} render={({ field }) => (
-                <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
-              )} />
-            </div>
-          </div> :
-          <></>
-        }
-        <div className="col-span-12 lg:col-span-4">
-          <label className="block">Nova senha <span className="text-red-500">*</span></label>
-          <Controller name="newPassword" control={control} rules={{ required: true }} render={({ field }) => (
-            <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
-          )} />
-        </div>
-        <div className="col-span-12 lg:col-span-4">
-          <label className="block">Confirmar senha <span className="text-red-500">*</span></label>
-          <Controller name="confirmPassword" control={control} rules={{ required: true }} render={({ field }) => (
-            <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
-          )} />
-        </div>
-        <div className="col-span-12">
-          <Button label="Salvar" severity="success" type="submit" />
-        </div>
-      </form>
+      <Panel header="Alterar Senha">
 
-      <div className="border-1 border-gray-200 rounded-lg mt-6">
-        <div className="p-3">
-          <span className="text-sm font-bold">Histórico de login</span>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-12 gap-3">
+          {user?.signinType == SignInTypeEnum.EMAIL_PASSWORD ?
+            <div className="grid grid-cols-12 gap-3 col-span-12">
+              <div className="col-span-12 lg:col-span-4">
+                <label className="block">Senha atual <span className="text-red-500">*</span></label>
+                <Controller name="currentPassword" control={control} rules={{ required: true }} render={({ field }) => (
+                  <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
+                )} />
+              </div>
+            </div> :
+            <></>
+          }
+          <div className="col-span-12 lg:col-span-4">
+            <label className="block">Nova senha <span className="text-red-500">*</span></label>
+            <Controller name="newPassword" control={control} rules={{ required: true }} render={({ field }) => (
+              <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
+            )} />
+          </div>
+          <div className="col-span-12 lg:col-span-4">
+            <label className="block">Confirmar senha <span className="text-red-500">*</span></label>
+            <Controller name="confirmPassword" control={control} rules={{ required: true }} render={({ field }) => (
+              <Password {...field} inputRef={field.ref} className="p-inputtext-sm" feedback={false} toggleMask={true} />
+            )} />
+          </div>
+          <div className="col-span-12">
+            <Button label="Salvar" severity="success" type="submit" />
+          </div>
+        </form>
+      </Panel>
+
+      <Panel header="Histórico de login" className="mt-6">
+        <div className="border-1 border-gray-200">
+          <DataTable
+            dataKey="id"
+            value={authHistory}
+            size="small"
+            showGridlines={false}
+            stripedRows={false}
+            scrollable={true}
+            scrollHeight="80vh"
+            emptyMessage="&#8203;"
+          >
+            {tableColumnList.map((col, index) => (
+              <Column key={index} header={col.title} body={col.template} style={{ width: col.width }} />
+            ))}
+          </DataTable>
+          <div className="flex items-center justify-center space-x-4">
+            <Paginator
+              first={pagination.first}
+              rows={pagination.rows}
+              totalRecords={pagination.total}
+              onPageChange={onPageChange}
+              template={{ layout: "FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink" }}
+            />
+            <small>{pagination.total} incidentes</small>
+          </div>
         </div>
-        <DataTable
-          dataKey="id"
-          value={authHistory}
-          size="small"
-          showGridlines={false}
-          stripedRows={false}
-          scrollable={true}
-          scrollHeight="80vh"
-        >
-          {tableColumnList.map((col, i) => (
-            <Column header={col.title} body={col.template} style={{ width: col.width }} />
-          ))}
-        </DataTable>
-        <div className="flex items-center justify-center space-x-4">
-          <Paginator
-            first={pagination.first}
-            rows={pagination.rows}
-            totalRecords={pagination.total}
-            onPageChange={onPageChange}
-            template={{ layout: "FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink" }}
-          />
-          <small>{pagination.total} incidentes</small>
-        </div>
-      </div>
+      </Panel>
     </>
   )
 }

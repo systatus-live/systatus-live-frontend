@@ -9,6 +9,8 @@ import "../styles/globals.scss";
 import "primereact/resources/themes/viva-light/theme.css";
 import * as cowsay from "cowsay";
 import { useEffect } from "react";
+import { useRouter } from "next/router";
+import PanelLayout from "./panel/layout";
 
 export const metadata: Metadata = {
   title: "Systatus Live",
@@ -25,11 +27,12 @@ type AppPropsWithLayout = AppProps & {
 
 export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page)
+  const { pathname } = useRouter();
+  const isPanel = pathname.startsWith("/panel");
+  const Layout = isPanel ? PanelLayout: ({ children }: { children?: ReactNode }) => <>{children}</>;
 
   useEffect(() => {
-    console.log(cowsay.say({
-      text: "👀 Olá, dev!\nCaso encontre algo estranho (além deste aviso), conte pra gente em\nhttps://systatus.live/contact"
-    }))
+    console.info(cowsay.say({ text: "Olá, dev!\nCaso encontre algo estranho neste site\n(além deste aviso), conte pra gente em\nhttps://systatus.live/contact"}), "\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
   }, []);
 
   return (
@@ -42,9 +45,9 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       <Analytics />
       <SpeedInsights />
 
-      <div>
+      <Layout>
         {getLayout(<Component {...pageProps} />)}
-      </div>
+      </Layout>
     </GlobalProvider>
   )
 }

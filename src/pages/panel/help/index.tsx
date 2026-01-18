@@ -2,7 +2,6 @@ import ContactForm from '@/components/ContactForm';
 import { NextPageWithLayout } from '@/pages/_app';
 import Head from 'next/head';
 import { type ReactElement } from 'react';
-import PanelLayout from '../layout';
 
 const Help: NextPageWithLayout = () => {
   return (
@@ -17,11 +16,7 @@ const Help: NextPageWithLayout = () => {
 }
 
 Help.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <PanelLayout>
-      {page}
-    </PanelLayout>
-  )
+  return page;
 }
 
 export default Help;

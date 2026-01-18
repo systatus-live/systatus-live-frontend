@@ -1,50 +1,25 @@
-import { RadarIcon, SirenIcon, Waypoints, HelpCircleIcon, UserIcon, ShieldIcon, CircleDotIcon } from "lucide-react";
-import { useEffect, useState } from "react";
-import PanelLayout from "../layout";
-import Link from "next/link";
+import { CircleDotIcon, ShieldIcon, UserIcon } from "lucide-react";
 import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function AccountLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const [navList, setNavList] = useState<any[]>([]);
+  const router = useRouter();
 
-  useEffect(() => {
-    updateNavList();
-  }, []);
-
-  async function updateNavList() {
-    const list = [
+  const navList = [
       {
         icon: UserIcon,
         label: "Detalhes",
         route: "/panel/account/details",
-        active: false
+        active: router.pathname.startsWith("/panel/account/details")
       },
       {
         icon: ShieldIcon,
         label: "Segurança",
         route: "/panel/account/security",
-        active: false
+        active: router.pathname.startsWith("/panel/account/security")
       }
     ]
-
-    const navItem = list.find(item => item.route == window.location.pathname);
-    if (navItem) {
-      navItem.active = true;
-    } else {
-      list[0].active = true;
-    }
-
-    setNavList(list);
-  }
-
-  function updateActiveNavItem(index: number) {
-    const list = [...navList];
-    list.forEach(item => item.active = false);
-    if (list[index]) {
-      list[index].active = true;
-    }
-    setNavList(list);
-  }
 
   return (
     <>
@@ -52,29 +27,27 @@ export default function AccountLayout({ children }: Readonly<{ children: React.R
         <title>{`Conta • ${navList.find(item => item.active)?.label} • Systatus.Live}`}</title>
       </Head>
 
-      <PanelLayout>
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-xl font-bold">Conta</h1>
-        </div>
-        <div className="mb-6">
-          <div className="flex items-center bg-slate-800 rounded-lg">
-            {navList.map((item, index) => (
-              <Link key={index} href={item.route} className="flex justify-center w-[12rem]" onClick={() => updateActiveNavItem(index)}>
-                <div className={`px-4 h-10 w-full flex items-center rounded-lg transition-colors text-white ${item.active ? "bg-slate-600" : "hover:bg-slate-600"}`}>
-                  <item.icon height={16} />
-                  <div className="flex items-center justify-between w-full ml-3">
-                    <span>{item.label}</span>
-                    {item.active && <CircleDotIcon size={10} />}
-                  </div>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-xl font-bold">Conta</h1>
+      </div>
+      <div className="mb-6">
+        <div className="flex items-center bg-slate-600 rounded-lg">
+          {navList.map((item, index) => (
+            <Link key={index} href={item.route} className="flex justify-center w-[12rem]">
+              <div className={`px-4 h-10 w-full flex items-center rounded-lg transition-colors text-gray-100 ${item.active ? "text-white bg-slate-800" : "hover:text-white hover:bg-slate-800"}`}>
+                <item.icon height={16} />
+                <div className="flex items-center justify-between w-full ml-3">
+                  <span>{item.label}</span>
+                  {item.active && <CircleDotIcon size={10} />}
                 </div>
-              </Link>
-            ))}
-          </div>
+              </div>
+            </Link>
+          ))}
         </div>
-        <div>
-          {children}
-        </div>
-      </PanelLayout>
+      </div>
+      <div>
+        {children}
+      </div>
     </>
   )
 }

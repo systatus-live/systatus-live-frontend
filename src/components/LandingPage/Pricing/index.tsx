@@ -72,7 +72,9 @@ export default function Pricing() {
                 <div>
                   <div className="flex justify-center">{plan.mostPopular ? <span className={styles["most-popular"]}>🌟 Mais Popular 🌟</span> : <></>}</div>
                   <div className="flex flex-col items-center">
-                    <Image src={plan.image} alt={plan.name} height={58} width={58} />
+                    <div style={{ width: 58, height: 58, position: "relative", overflow: "hidden" }}>
+                      <Image src={plan.image} alt="Plano" fill sizes={`${58}px`} style={{ objectFit: "contain" }} priority />
+                    </div>
                     <h1 className="font-semibold text-gray-900 mt-2">Plano {plan.name}</h1>
                   </div>
                   <div className="flex justify-center items-baseline mt-2">
