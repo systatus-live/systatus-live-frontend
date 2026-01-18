@@ -75,13 +75,17 @@ export default function SignUp() {
 
     setSubmitting(true);
 
+    const headers = { 
+      captcha: form.captcha
+    }
+
     AuthService.signUp({
       name: form.name,
       email: form.email,
       password: form.password,
       acceptTerms: form.acceptTerms,
       discovery: form.discovery
-    }, form.captcha).then((_) => {
+    }, headers).then((_) => {
       router.push({
         pathname: "/auth/verify-account",
         query: {
@@ -192,11 +196,7 @@ export default function SignUp() {
               <div>
                 <Divider></Divider>
                 <div className="flex justify-center">
-                  <ReCAPTCHA
-                    sitekey={captchaKey}
-                    onChange={(captcha: string | null) => setValue("captcha", captcha || "")}
-                    type="image"
-                  />
+                  <ReCAPTCHA sitekey={captchaKey} onChange={(captcha: string | null) => setValue("captcha", captcha || "")} type="image"/>
                 </div>
               </div>
               <p className="mt-2 text-center text-sm">

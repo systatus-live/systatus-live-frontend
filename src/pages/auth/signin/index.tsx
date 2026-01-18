@@ -18,25 +18,29 @@ import styles from "./styles.module.scss";
 import Script from 'next/script'
 import { Divider } from 'primereact/divider';
 import { SignInOptionsDTO } from '@/types/SignInOptionsDTO';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 type IFormValues = {
   email: string;
   password: string;
   type: SignInTypeEnum | null,
-  keepConected: boolean
+  keepConected: boolean,
+  captcha: string | null;
 }
 
 export default function SignIn() {
   const router = useRouter();
   const [isSubmitting, setSubmitting] = useState(false);
-  const { control, register, handleSubmit, getValues } = useForm<IFormValues>({
+  const { control, register, handleSubmit, getValues, setValue } = useForm<IFormValues>({
     values: {
       email: "",
       password: "",
       type: null,
-      keepConected: false
+      keepConected: false,
+      captcha: null
     }
   });
+  const captchaKey = process.env.NEXT_PUBLIC_GOOGLE_CAPTCHA_CLIENT_ID!;
 
   useEffect(() => {
     if ((window as any).google) {
@@ -63,11 +67,12 @@ export default function SignIn() {
     )
   }
 
-  function submit(form: SignInOptionsDTO) {
+  function submit(form: SignInOptionsDTO, captcha: string | null) {
     setSubmitting(true);
 
     const headers = {
-      "x-user-agent": window.navigator.userAgent
+      "x-user-agent": window.navigator.userAgent,
+      captcha: captcha
     }
 
     AuthService.signInLocal(form, headers).then((response) => {
@@ -90,12 +95,17 @@ export default function SignIn() {
   }
 
   function onSubmitForm(form: IFormValues) {
+    if (!getValues("captcha")) {
+      Alert.info("Não sou um robô", "Resolva o reCAPTCHA para continuar.");
+      return;
+    }
+
     return submit({
       email: form.email,
       password: form.password,
       type: SignInTypeEnum.EMAIL_PASSWORD,
       keepConected: form.keepConected
-    })
+    }, form.captcha)
   }
 
   function onSubmitGoogle(credential: any) {
@@ -103,7 +113,7 @@ export default function SignIn() {
       google: credential,
       type: SignInTypeEnum.GOOGLE,
       keepConected: getValues("keepConected")
-    })
+    }, null)
   }
 
   return (
@@ -146,6 +156,9 @@ export default function SignIn() {
                   <label htmlFor="keepConected" className="ml-2 block text-gray-700 cursor-pointer">Manter conectado</label>
                 </div>
                 <Link href="/auth/forgot-password" className="font-medium text-blue-600 hover:text-blue-500 text-sm">Esqueci minha senha</Link>
+              </div>
+              <div className="flex justify-center">
+                <ReCAPTCHA sitekey={captchaKey} onChange={(captcha: string | null) => setValue("captcha", captcha || "")} type="image" />
               </div>
               <div className="my-4">
                 <Button type="submit" className="w-full">Entrar</Button>

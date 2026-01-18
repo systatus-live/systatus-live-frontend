@@ -163,7 +163,8 @@ export default function ContactForm() {
                       {/* Message */}
                       <div>
                         <label className="block text-sm">Mensagem <span className="text-red-500">*</span></label>
-                        <InputTextarea {...register("message", { required: true })} rows={5} className="p-inputtext-sm" />
+                        <InputTextarea {...register("message", { required: true })} rows={5} maxLength={4000} className="p-inputtext-sm" />
+                        <small>{watch("message")?.length ?? 0}/4000</small>
                       </div>
                       <div className="flex justify-end">
                         <Button type="submit" disabled={isSubmitting} className="w-full">{isSubmitting ? "Enviando.." : "Enviar Mensagem"}</Button>
