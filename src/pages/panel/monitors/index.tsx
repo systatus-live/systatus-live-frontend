@@ -6,6 +6,7 @@ import MonitorService from '@/services/MonitorService';
 import { getHttpStatusKey, HttpStatusCodeLabel } from '@/types/HttpStatusCode';
 import { MonitorTypeEnum, MonitorTypeLabelEnum } from '@/types/MonitorTypeEnum';
 import { ArrowBigDownDashIcon, ArrowBigUpDashIcon, ClockFadingIcon, CopyIcon, EditIcon, PauseIcon, SearchIcon } from 'lucide-react';
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { Button } from 'primereact/button';
@@ -21,6 +22,10 @@ import styles from "./styles.module.scss";
 type IFormSearchValues = {
   search: string;
 }
+
+export const getServerSideProps = (async () => {
+  return { props: {} }
+}) satisfies GetServerSideProps<{}>
 
 const Monitors: NextPageWithLayout = () => {
   const router = useRouter();

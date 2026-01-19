@@ -12,6 +12,7 @@ import AccountLayout from "../layout";
 import styles from "./styles.module.scss";
 import { useGlobalProvider } from "@/providers/GlobalProvider";
 import UserService from "@/services/UserService";
+import formatMoney from "@/utils/formatMoney";
 
 const AccountSubscription: NextPageWithLayout = () => {
   const { token } = useGlobalProvider();
@@ -22,8 +23,8 @@ const AccountSubscription: NextPageWithLayout = () => {
   useEffect(() => {
     if (token) {
       (async () => {
-        await getPlanList();
         await getUserPlan();
+        await getPlanList();
       })();
     }
   }, [token]);
@@ -71,7 +72,7 @@ const AccountSubscription: NextPageWithLayout = () => {
               </div>
             </div>
             <div className="flex justify-center items-baseline mt-2">
-              <span className="text-4xl font-extrabold tracking-tight text-gray-900">{plan.price}</span>
+              <span className="text-4xl font-extrabold tracking-tight text-gray-900">{plan.price == 0 ? "Grátis" : formatMoney(plan.price)}</span>
               {plan.period && <span className="text-xl font-medium text-gray-500 ml-1">{plan.period}</span>}
             </div>
           </div>
@@ -92,7 +93,7 @@ const AccountSubscription: NextPageWithLayout = () => {
                     <h1 className="font-semibold text-gray-900 mt-2">Plano {plan.name}</h1>
                   </div>
                   <div className="flex justify-center items-baseline mt-2">
-                    <span className="text-4xl font-extrabold tracking-tight text-gray-900">{plan.price}</span>
+                    <span className="text-4xl font-extrabold tracking-tight text-gray-900">{plan.price == 0 ? "Grátis" : formatMoney(plan.price)}</span>
                     {plan.period && <span className="text-xl font-medium text-gray-500 ml-1">{plan.period}</span>}
                   </div>
                 </div>
