@@ -135,10 +135,7 @@ const AccountSecurity: NextPageWithLayout = () => {
     <>
       {isSubmitting && <Loading />}
 
-
-      <Panel header="Alterar Senha">
-
-
+      <Panel header="Alterar senha">
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-12 gap-3">
           {user?.signinType == SignInTypeEnum.EMAIL_PASSWORD ?
             <div className="grid grid-cols-12 gap-3 col-span-12">
@@ -193,7 +190,7 @@ const AccountSecurity: NextPageWithLayout = () => {
               onPageChange={onPageChange}
               template={{ layout: "FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink" }}
             />
-            <small>{pagination.total} incidentes</small>
+            <small>{pagination.total} entradas</small>
           </div>
         </div>
       </Panel>

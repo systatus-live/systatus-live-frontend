@@ -115,6 +115,11 @@
   border: 1px solid #ebebeb !important;
 }
 
+.p-panel .p-panel-content,
+.p-panel .p-panel-header {
+  color: initial !important;
+}
+
 // Sidebar
 .p-sidebar .p-sidebar-header .p-sidebar-close {
   box-shadow: none !important;
