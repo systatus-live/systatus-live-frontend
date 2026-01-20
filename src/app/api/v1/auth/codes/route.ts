@@ -7,7 +7,12 @@ export async function PATCH(request: NextRequest) {
   try {
     const json = await request.json();
 
-    let response = await AuthService.checkCode(json.code);
+    const headers = {
+      "x-user-agent": request.headers.get("user-agent"),
+      "x-client-ip": request.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
+    }
+
+    let response = await AuthService.checkCode(json.code, headers);
 
     const accessToken = response.data.access_token;
     const decodedToken = jwtDecode(accessToken);

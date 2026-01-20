@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     const json: SignInOptionsDTO = await request.json();
 
     const headers = {
-      "x-user-agent": request.headers.get("x-user-agent"),
+      "x-user-agent": request.headers.get("user-agent"),
       "x-client-ip": request.headers.get("x-forwarded-for")?.split(",")[0]?.trim(),
       captcha: request.headers.get("captcha")
     };

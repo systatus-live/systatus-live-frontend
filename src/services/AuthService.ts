@@ -18,10 +18,10 @@ export default class AuthService {
     return HttpService.patch("/api//v1/auth/codes", payload, {});
   }
 
-  static checkCode(code: string) {
+  static checkCode(code: string, headers = {}) {
     return HttpService.patch(`${process.env.NEXT_PUBLIC_SYSTATUS_API_URL}/v1/auth/codes`, {
       code: code
-    }, {});
+    }, headers);
   }
 
   static sendCode(email: string) {

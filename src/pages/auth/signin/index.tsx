@@ -71,7 +71,6 @@ export default function SignIn() {
     setSubmitting(true);
 
     const headers = {
-      "x-user-agent": window.navigator.userAgent,
       captcha: captcha
     }
 
