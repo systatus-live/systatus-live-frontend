@@ -3,7 +3,7 @@ import Logo from "@/components/Logo";
 import { Alert } from "@/lib/Alert";
 import { useGlobalProvider } from "@/providers/GlobalProvider";
 import AuthService from "@/services/AuthService";
-import { CircleDotIcon, CreditCardIcon, HelpCircleIcon, LogOut, RadarIcon, ShieldIcon, SirenIcon, UserIcon, Waypoints } from "lucide-react";
+import { CircleDotIcon, CreditCardIcon, HelpCircleIcon, LogOut, LucideCircleDollarSign, RadarIcon, ShieldIcon, SirenIcon, UserIcon, Waypoints } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -58,6 +58,12 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
           label: "Assinatura",
           route: "/panel/account/subscription",
           active: router.pathname.startsWith("/panel/account/subscription")
+        },
+        {
+          icon: LucideCircleDollarSign,
+          label: "Faturamento",
+          route: "/panel/account/billing",
+          active: router.pathname.startsWith("/panel/account/billing")
         }
       ]
     },

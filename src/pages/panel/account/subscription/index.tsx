@@ -13,17 +13,18 @@ import styles from "./styles.module.scss";
 import { useGlobalProvider } from "@/providers/GlobalProvider";
 import UserService from "@/services/UserService";
 import formatMoney from "@/utils/formatMoney";
+import { Skeleton } from "primereact/skeleton";
 
 const AccountSubscription: NextPageWithLayout = () => {
   const { token } = useGlobalProvider();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [planList, setPlanList] = useState<any[]>([]);
-  const [plan, setPlan] = useState<any>(null);
+  const [subscription, setSubscription] = useState<any>(null);
 
   useEffect(() => {
     if (token) {
       (async () => {
-        await getUserPlan();
+        await getUserSubscription();
         await getPlanList();
       })();
     }
@@ -41,11 +42,11 @@ const AccountSubscription: NextPageWithLayout = () => {
     }
   }
 
-  async function getUserPlan() {
+  async function getUserSubscription() {
     setIsSubmitting(true);
     try {
-      const response = await UserService.getUserPlan(token as string);
-      setPlan(response);
+      const response = await UserService.getUserSubscription(token as string);
+      setSubscription(response);
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
@@ -57,67 +58,69 @@ const AccountSubscription: NextPageWithLayout = () => {
     <>
       {isSubmitting && <Loading />}
 
-      {plan == null ? <></> :
+      {subscription == null ? <Skeleton width="100%" height="8rem" /> :
         <Panel header="Assinatura atual">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <div style={{ width: 58, height: 58, position: "relative", overflow: "hidden" }}>
-                <Image src={plan.image} alt="Plano" fill sizes={`${58}px`} style={{ objectFit: "contain" }} priority />
+                <Image src={subscription.image} alt="Plano" fill sizes={`${58}px`} style={{ objectFit: "contain" }} priority />
               </div>
               <div>
-                <span className="font-bold">Plano {plan.name}</span>
+                <span className="font-bold">Plano {subscription.name}</span>
                 <div>
-                  <span className="text-sm">Próximo faturamento: {plan.nextBilling}</span>
+                  <span className="text-sm">Próximo faturamento: {subscription.nextBilling}</span>
                 </div>
               </div>
             </div>
             <div className="flex justify-center items-baseline mt-2">
-              <span className="text-4xl font-extrabold tracking-tight text-gray-900">{plan.price == 0 ? "Grátis" : formatMoney(plan.price)}</span>
-              {plan.period && <span className="text-xl font-medium text-gray-500 ml-1">{plan.period}</span>}
+              <span className="text-4xl font-extrabold tracking-tight text-gray-900">{subscription.price == 0 ? "Grátis" : formatMoney(subscription.price)}</span>
+              {subscription.period && <span className="text-xl font-medium text-gray-500 ml-1">{subscription.period}</span>}
             </div>
           </div>
         </Panel>
       }
 
-      <Panel header="Planos disponíveis" className="mt-6">
-        <div className="space-y-12 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-x-8">
-          {planList.map((plan, index) => (
-            <div key={index} className={`relative flex flex-col rounded-2xl shadow-xl overflow-hidden ${plan.mostPopular ? 'border-2 border-blue-400' : 'border border-gray-200'} p-6 `}>
-              <div>
+      {planList.length == 0 ? <></> :
+        <Panel header="Planos disponíveis" className="mt-6">
+          <div className="space-y-12 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-x-8">
+            {planList.map((plan, index) => (
+              <div key={index} className={`relative flex flex-col rounded-2xl shadow-xl overflow-hidden ${plan.mostPopular ? 'border-2 border-blue-400' : 'border border-gray-200'} p-6 `}>
                 <div>
-                  <div className="flex justify-center">{plan.mostPopular ? <span className={styles["most-popular"]}>🌟 Mais Popular 🌟</span> : <></>}</div>
-                  <div className="flex flex-col items-center">
-                    <div style={{ width: 58, height: 58, position: "relative", overflow: "hidden" }}>
-                      <Image src={plan.image} alt="Plano" fill sizes={`${58}px`} style={{ objectFit: "contain" }} priority />
+                  <div>
+                    <div className="flex justify-center">{plan.mostPopular ? <span className={styles["most-popular"]}>🌟 Mais Popular 🌟</span> : <></>}</div>
+                    <div className="flex flex-col items-center">
+                      <div style={{ width: 58, height: 58, position: "relative", overflow: "hidden" }}>
+                        <Image src={plan.image} alt="Plano" fill sizes={`${58}px`} style={{ objectFit: "contain" }} priority />
+                      </div>
+                      <h1 className="font-semibold text-gray-900 mt-2">Plano {plan.name}</h1>
                     </div>
-                    <h1 className="font-semibold text-gray-900 mt-2">Plano {plan.name}</h1>
+                    <div className="flex justify-center items-baseline mt-2">
+                      <span className="text-4xl font-extrabold tracking-tight text-gray-900">{plan.price == 0 ? "Grátis" : formatMoney(plan.price)}</span>
+                      {plan.period && <span className="text-xl font-medium text-gray-500 ml-1">{plan.period}</span>}
+                    </div>
                   </div>
-                  <div className="flex justify-center items-baseline mt-2">
-                    <span className="text-4xl font-extrabold tracking-tight text-gray-900">{plan.price == 0 ? "Grátis" : formatMoney(plan.price)}</span>
-                    {plan.period && <span className="text-xl font-medium text-gray-500 ml-1">{plan.period}</span>}
+                </div>
+                <div className="bg-gray-50 p-2 mt-2 rounded-lg">
+                  <h3 className="text-center text-gray-500 mb-6">{plan.description}</h3>
+                  <ul className="space-y-4">
+                    {Object.entries(plan.features).map(([key, included], index) => (
+                      <li key={index} className="flex items-start">
+                        {included ? <CheckIcon className="flex-shrink-0 h-5 w-5 text-green-500" /> : <XIcon className="flex-shrink-0 h-5 w-5 text-gray-400" />}
+                        <span className={`ml-3 ${included ? "text-gray-700" : "text-gray-400"}`}>{key}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-6 p-fluid">
+                    <Link href={plan.btaLink}>
+                      <Button>{plan.bta}</Button>
+                    </Link>
                   </div>
                 </div>
               </div>
-              <div className="bg-gray-50 p-2 mt-2 rounded-lg">
-                <h3 className="text-center text-gray-500 mb-6">{plan.description}</h3>
-                <ul className="space-y-4">
-                  {Object.entries(plan.features).map(([key, included], index) => (
-                    <li key={index} className="flex items-start">
-                      {included ? <CheckIcon className="flex-shrink-0 h-5 w-5 text-green-500" /> : <XIcon className="flex-shrink-0 h-5 w-5 text-gray-400" />}
-                      <span className={`ml-3 ${included ? "text-gray-700" : "text-gray-400"}`}>{key}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-6 p-fluid">
-                  <Link href={plan.btaLink}>
-                    <Button>{plan.bta}</Button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Panel>
+            ))}
+          </div>
+        </Panel>
+      }
     </>
   )
 }

@@ -5,13 +5,12 @@ import { useGlobalProvider } from "@/providers/GlobalProvider";
 import UserService from "@/services/UserService";
 import formatDate from "@/utils/formatDate";
 import { Trash2Icon, UploadIcon } from "lucide-react";
-import { Avatar } from "primereact/avatar";
+import Image from "next/image";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { ReactElement, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import AccountLayout from "../layout";
-import Image from "next/image";
 
 type IFormDetails = {
   name: string;

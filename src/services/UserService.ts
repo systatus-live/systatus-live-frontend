@@ -19,8 +19,8 @@ export default class UserService {
     });
   }
 
-  static getUserPlan(token: string) {
-    return HttpService.get(`${process.env.NEXT_PUBLIC_SYSTATUS_API_URL}/v1/users/plans`, {
+  static getUserSubscription(token: string) {
+    return HttpService.get(`${process.env.NEXT_PUBLIC_SYSTATUS_API_URL}/v1/users/subscriptions`, {
       Authorization: `Bearer ${token}`
     });
   }
