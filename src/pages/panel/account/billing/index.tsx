@@ -16,7 +16,7 @@ import { ReactElement, useEffect, useState } from "react";
 import AccountLayout from "../layout";
 
 const BillingAccount: NextPageWithLayout = () => {
-  const { user, setUser, token } = useGlobalProvider();
+  const { token } = useGlobalProvider();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [invoiceList, setInvoiceList] = useState([]);
   const [pagination, setPagination] = useState({
@@ -118,33 +118,41 @@ const BillingAccount: NextPageWithLayout = () => {
   }
 
   async function getInvoicePDF(id: string) {
-    const response = await InvoiceService.getInvoicePDF(token!, id);
-    const blob = await response.blob();
+    setIsSubmitting(true);
 
-    const disposition = response.headers.get("content-disposition");
-    let filename = "invoice.pdf";
+    try {
+      const response = await InvoiceService.getInvoicePDF(token!, id);
+      const blob = await response.blob();
 
-    if (disposition) {
-      const match = disposition.match(/filename="?([^"]+)"?/);
-      if (match?.[1]) {
-        filename = match[1];
+      const disposition = response.headers.get("content-disposition");
+      let filename = "invoice.pdf";
+
+      if (disposition) {
+        const match = disposition.match(/filename="?([^"]+)"?/);
+        if (match?.[1]) {
+          filename = match[1];
+        }
       }
+
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      link.target = "_blank";
+
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url);
+      }, 1000);
+    } catch (error) {
+      Alert.error("", "Falha ao gerar o PDF");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    const url = window.URL.createObjectURL(blob);
-
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = filename;
-    link.target = "_blank";
-
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-
-    setTimeout(() => {
-      window.URL.revokeObjectURL(url);
-    }, 1000);
   }
 
   return (
