@@ -1,4 +1,3 @@
-import Loading from '@/components/Loading';
 import { Alert } from '@/lib/Alert';
 import { NextPageWithLayout } from '@/pages/_app';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
@@ -14,7 +13,6 @@ import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { InputText } from 'primereact/inputtext';
 import { Paginator } from 'primereact/paginator';
-import { Skeleton } from 'primereact/skeleton';
 import { useEffect, useState, type ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import styles from "./styles.module.scss";
@@ -23,22 +21,31 @@ type IFormSearchValues = {
   search: string;
 }
 
-export const getServerSideProps = (async () => {
-  return { props: {} }
+export const getServerSideProps = (async (context) => {
+  const { token } = context.req.cookies;
+  const response = await MonitorService.getMonitorList(token as string, new URLSearchParams({ page: "0" }));
+
+  return {
+    props: {
+      monitorResponse: response
+    }
+  }
 }) satisfies GetServerSideProps<{}>
 
-const Monitors: NextPageWithLayout = () => {
+const Monitors: NextPageWithLayout = ({ monitorResponse }: any) => {
   const router = useRouter();
-  const { token } = useGlobalProvider();
-  const [monitorList, setMonitorList] = useState([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [firstLoading, setFirstLoading] = useState(true);
+  const { token, setLoading } = useGlobalProvider();
   const { register, handleSubmit } = useForm<IFormSearchValues>();
+  const [monitorList, setMonitorList] = useState(monitorResponse.data);
   const [pagination, setPagination] = useState({
     first: 0,
-    rows: 0,
-    total: 0
+    rows: monitorResponse.pagination.rows,
+    total: monitorResponse.pagination.total
   });
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
 
   const tableColumnList = [
     {
@@ -116,7 +123,10 @@ const Monitors: NextPageWithLayout = () => {
       template: (monitor: any) => (
         <div className="flex">
           <div title="Abrir">
-            <Button text onClick={() => router.push(`/panel/monitors/edit/${monitor.id}`)} type="button">
+            <Button text onClick={() => {
+              setLoading(true);
+              router.push(`/panel/monitors/edit/${monitor.id}`);
+            }} type="button">
               <EditIcon height={14} width={14} />
             </Button>
           </div>
@@ -131,21 +141,13 @@ const Monitors: NextPageWithLayout = () => {
     }
   ]
 
-  useEffect(() => {
-    if (token) {
-      search(new URLSearchParams({ page: "0" }));
-    }
-  }, [token]);
-
   async function search(params: URLSearchParams) {
-    if (isSubmitting) return;
-    setIsSubmitting(true);
+    setLoading(true);
 
     try {
       const response = await MonitorService.getMonitorList(token as string, params);
 
       setMonitorList(response.data);
-      setFirstLoading(false);
 
       setPagination(prev => ({
         ...prev,
@@ -155,7 +157,7 @@ const Monitors: NextPageWithLayout = () => {
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
-      setIsSubmitting(false);
+      setLoading(false);
     }
   }
 
@@ -208,12 +210,13 @@ const Monitors: NextPageWithLayout = () => {
         <title>Monitores • Systatus.Live</title>
       </Head>
 
-      {isSubmitting && <Loading />}
-
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-bold">Monitores</h1>
         <div>
-          <Button label="Adicionar" onClick={() => router.push("/panel/monitors/new")} />
+          <Button label="Adicionar" onClick={() => {
+            setLoading(true);
+            router.push("/panel/monitors/new");
+          }} />
         </div>
       </div>
 
@@ -229,36 +232,32 @@ const Monitors: NextPageWithLayout = () => {
       </form>
 
       <div>
-        {firstLoading ? (
-          <Skeleton width="100%" height="10vh"></Skeleton>
-        ) : (
-          <div className="border-1 border-gray-200 rounded-lg">
-            <DataTable
-              dataKey="id"
-              value={monitorList}
-              size="small"
-              showGridlines={false}
-              stripedRows={false}
-              scrollable={true}
-              scrollHeight="80vh"
-              emptyMessage="&#8203;"
-            >
-              {tableColumnList.map((col, index) => (
-                <Column key={index} header={col.title} body={col.template} style={{ width: col.width }} />
-              ))}
-            </DataTable>
-            <div className="flex items-center justify-center space-x-4">
-              <Paginator
-                first={pagination.first}
-                rows={pagination.rows}
-                totalRecords={pagination.total}
-                onPageChange={onPageChange}
-                template={{ layout: "FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink" }}
-              />
-              <small>{pagination.total} monitores</small>
-            </div>
+        <div className="border-1 border-gray-200 rounded-lg">
+          <DataTable
+            dataKey="id"
+            value={monitorList}
+            size="small"
+            showGridlines={false}
+            stripedRows={false}
+            scrollable={true}
+            scrollHeight="80vh"
+            emptyMessage="&#8203;"
+          >
+            {tableColumnList.map((col, index) => (
+              <Column key={index} header={col.title} body={col.template} style={{ width: col.width }} />
+            ))}
+          </DataTable>
+          <div className="flex items-center justify-center space-x-4">
+            <Paginator
+              first={pagination.first}
+              rows={pagination.rows}
+              totalRecords={pagination.total}
+              onPageChange={onPageChange}
+              template={{ layout: "FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink" }}
+            />
+            <small>{pagination.total} monitores</small>
           </div>
-        )}
+        </div>
       </div>
     </>
   )

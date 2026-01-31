@@ -1,4 +1,3 @@
-import Loading from "@/components/Loading";
 import { Alert } from "@/lib/Alert";
 import { NextPageWithLayout } from "@/pages/_app";
 import { useGlobalProvider } from "@/providers/GlobalProvider";
@@ -8,7 +7,7 @@ import { Trash2Icon, UploadIcon } from "lucide-react";
 import Image from "next/image";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
-import { ReactElement, useRef, useState } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import AccountLayout from "../layout";
 
@@ -20,8 +19,7 @@ type IFormDetails = {
 }
 
 const AccountDetail: NextPageWithLayout = () => {
-  const { user, setUser, token } = useGlobalProvider();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { user, setUser, token, setLoading } = useGlobalProvider();
   const [isChangedAvatar, setIsChangedAvatar] = useState(false);
   const inputFileRef = useRef<HTMLInputElement>(null);
   const { register, handleSubmit, setValue, getValues, watch } = useForm<IFormDetails>({
@@ -33,8 +31,12 @@ const AccountDetail: NextPageWithLayout = () => {
     }
   });
 
+  useEffect(() => {
+    setLoading(false);
+  }, []);
+
   async function onSubmit(form: IFormDetails) {
-    setIsSubmitting(true);
+    setLoading(true);
 
     try {
       const formData = new FormData();
@@ -68,7 +70,7 @@ const AccountDetail: NextPageWithLayout = () => {
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
-      setIsSubmitting(false);
+      setLoading(false);
     }
   }
 
@@ -103,8 +105,6 @@ const AccountDetail: NextPageWithLayout = () => {
 
   return (
     <>
-      {isSubmitting && <Loading />}
-
       <form onSubmit={handleSubmit(onSubmit)} className="flex space-x-6 border-1 border-gray-200 p-6 rounded-lg">
         <div className="flex justify-center flex-col">
           {user && (

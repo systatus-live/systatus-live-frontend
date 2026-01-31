@@ -1,31 +1,29 @@
-"use client";
-
-import { Button } from 'primereact/button';
 import Logo from '@/components/Logo';
+import { Alert } from '@/lib/Alert';
+import { useGlobalProvider } from '@/providers/GlobalProvider';
+import AuthService from '@/services/AuthService';
+import { motion } from 'framer-motion';
+import { CheckIcon } from 'lucide-react';
+import Head from 'next/head';
 import Link from 'next/link';
+import { Button } from 'primereact/button';
+import { InputText } from 'primereact/inputtext';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styles from "./styles.module.scss";
-import Head from 'next/head';
-import { motion } from 'framer-motion';
-import { CheckIcon } from 'lucide-react';
-import AuthService from '@/services/AuthService';
-import { Alert } from '@/lib/Alert';
-import Loading from '@/components/Loading';
-import { InputText } from 'primereact/inputtext';
 
 type IFormValues =  {
   email: string;
 }
 
 export default function ForgotPassword() {
-  const [isSubmitting, setSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { register, handleSubmit, reset } = useForm<IFormValues>();
   const [message, setMessage] = useState<string | null>(null);
+  const { setLoading } = useGlobalProvider();
 
   function onSubmit(form: IFormValues) {
-    setSubmitting(true);
+    setLoading(true);
 
     AuthService.forgotPassword(form.email).then((response) => {
       setIsSubmitted(true);
@@ -34,7 +32,7 @@ export default function ForgotPassword() {
     }).catch((error) => {
       Alert.error("", error.message);
     }).finally(() => {
-      setSubmitting(false);
+      setLoading(false);
     });
   }
 
@@ -43,8 +41,6 @@ export default function ForgotPassword() {
       <Head>
         <title>Redefinir Senha • Systatus.Live</title>
       </Head>
-
-      {isSubmitting && <Loading />}
 
       <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 px-2 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">

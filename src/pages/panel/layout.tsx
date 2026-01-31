@@ -1,4 +1,3 @@
-import Loading from "@/components/Loading";
 import Logo from "@/components/Logo";
 import { Alert } from "@/lib/Alert";
 import { useGlobalProvider } from "@/providers/GlobalProvider";
@@ -7,11 +6,10 @@ import { CircleDotIcon, CreditCardIcon, HelpCircleIcon, LogOut, LucideCircleDoll
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function PanelLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { user, setUser, setToken } = useGlobalProvider();
+  const { user, setUser, setToken, setLoading } = useGlobalProvider();
   const router = useRouter();
 
   const navList = [
@@ -90,7 +88,7 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
   }, [])
 
   async function signOut() {
-    setIsSubmitting(true);
+    setLoading(true);
 
     try {
       await AuthService.signOutLocal();
@@ -100,14 +98,12 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
-      setIsSubmitting(false);
+      setLoading(false);
     }
   }
 
   return (
     <>
-      {isSubmitting && <Loading />}
-
       <div className="flex flex-rows h-screen">
         <div className="flex justify-between flex-col border-r-1 border-gray-200 w-auto md:w-[22rem] bg-slate-600">
           <div>
@@ -119,10 +115,10 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
                 <div key={i} className="w-full">
                   <span className="hidden sm:flex uppercase tracking-wider my-3 px-4 text-gray-300">{group.group}</span>
                   {group.items.map((item: any, j: any) => (
-                    <Link key={j} href={item.route} className="flex justify-center w-full mb-1 px-2">
+                    <Link key={j} href={item.route} className="flex justify-center w-full mb-1 px-2" onClick={() => setLoading(true)}>
                       <div className={`h-10 w-full flex items-center rounded-lg transition-colors text-gray-100 px-4 ${item.active ? "text-white bg-slate-800" : "hover:text-white hover:bg-slate-800"}`}>
-                        <item.icon height={20} />
-                        <div className="flex items-center justify-between w-full hidden sm:flex ml-3">
+                        <item.icon height={16} />
+                        <div className="flex items-center justify-between w-full hidden sm:flex ml-2">
                           <span>{item.label}</span>
                           {item.active && <CircleDotIcon size={10} />}
                         </div>
@@ -136,7 +132,7 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
           <div className="w-full px-4 py-6 border-t-1 border-t-gray-500 flex items-center justify-between w-auto md:w-[22rem]">
             <div className="truncate mr-3 hidden md:block">
               {user && (
-                <Link href="/panel/account/" className="block truncate max-w-auto text-gray-100 font-medium">
+                <Link href="/panel/account/" className="block truncate max-w-auto text-gray-100 font-medium" onClick={() => setLoading(true)}>
                   <div className="flex items-center space-x-3">
                     <div>
                       <div style={{ width: 32, height: 32, position: "relative", borderRadius: "50%", overflow: "hidden" }}>
@@ -156,7 +152,7 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
             </div>
           </div>
         </div>
-        <div className="w-full h-screen overflow-y-auto py-4 px-6 md:px-12 md:py-6">
+        <div className="w-full h-screen overflow-y-auto py-4 px-6 md:py-6">
           {children}
         </div>
       </div>

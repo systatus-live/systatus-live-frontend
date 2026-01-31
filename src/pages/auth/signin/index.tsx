@@ -1,24 +1,22 @@
-"use client";
-
-import Loading from '@/components/Loading';
 import Logo from '@/components/Logo';
 import { Alert } from '@/lib/Alert';
+import { useGlobalProvider } from '@/providers/GlobalProvider';
 import AuthService from '@/services/AuthService';
+import { SignInOptionsDTO } from '@/types/SignInOptionsDTO';
 import { SignInTypeEnum } from '@/types/SignInTypeEnum';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import Script from 'next/script';
 import { Button } from 'primereact/button';
 import { Checkbox } from 'primereact/checkbox';
+import { Divider } from 'primereact/divider';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { Controller, useForm } from 'react-hook-form';
 import styles from "./styles.module.scss";
-import Script from 'next/script'
-import { Divider } from 'primereact/divider';
-import { SignInOptionsDTO } from '@/types/SignInOptionsDTO';
-import ReCAPTCHA from 'react-google-recaptcha';
 
 type IFormValues = {
   email: string;
@@ -30,7 +28,7 @@ type IFormValues = {
 
 export default function SignIn() {
   const router = useRouter();
-  const [isSubmitting, setSubmitting] = useState(false);
+  const { setLoading } = useGlobalProvider();
   const { control, register, handleSubmit, getValues, setValue } = useForm<IFormValues>({
     values: {
       email: "",
@@ -43,6 +41,8 @@ export default function SignIn() {
   const captchaKey = process.env.NEXT_PUBLIC_GOOGLE_CAPTCHA_CLIENT_ID!;
 
   useEffect(() => {
+    setLoading(false);
+    
     if ((window as any).google) {
       initGsi();
     }
@@ -68,13 +68,13 @@ export default function SignIn() {
   }
 
   function submit(form: SignInOptionsDTO, captcha: string | null) {
-    setSubmitting(true);
+    setLoading(true);
 
     const headers = {
       captcha: captcha
     }
 
-    AuthService.signInLocal(form, headers).then((response) => {
+    AuthService.signInLocal(form, headers).then(async (response) => {
       if (response.signUpSignInFlow) {
         router.push({
           pathname: "/auth/signup",
@@ -82,14 +82,13 @@ export default function SignIn() {
             authFlowId: response.authFlowId,
             keepConected: form.keepConected
           }
-        });
+        }).finally(() => setLoading(false));;
       } else {
-        router.push("/panel");
+        router.push("/panel").finally(() => setLoading(false));
       }
     }).catch((error) => {
       Alert.error("", error.message);
-    }).finally(() => {
-      setSubmitting(false);
+      setLoading(false);
     })
   }
 
@@ -126,8 +125,6 @@ export default function SignIn() {
         strategy="afterInteractive"
         onLoad={() => initGsi()}
       />
-
-      {isSubmitting && <Loading />}
 
       <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 px-2 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">

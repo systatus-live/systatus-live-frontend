@@ -1,18 +1,18 @@
 "use client";
 
-import { Button } from 'primereact/button';
 import Logo from '@/components/Logo';
+import { Alert } from '@/lib/Alert';
+import { useGlobalProvider } from '@/providers/GlobalProvider';
+import AuthService from '@/services/AuthService';
+import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { Button } from 'primereact/button';
+import { InputText } from 'primereact/inputtext';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import styles from "./styles.module.scss";
 import OtpInput from 'react-otp-input';
-import AuthService from '@/services/AuthService';
-import { Alert } from '@/lib/Alert';
-import Head from 'next/head';
-import Loading from '@/components/Loading';
-import { InputText } from 'primereact/inputtext';
+import styles from "./styles.module.scss";
 
 type IFormValues = {
   code: string;
@@ -23,10 +23,10 @@ export default function VerifyAccount() {
   const { authFlowId, keepConected } = router.query;
   const [authFlow, setAuthFlow] = useState<any>();
   const [isClient, setIsClient] = useState(false);
-  const [isSubmitting, setSubmitting] = useState(false);
   const [otp, setOtp] = useState("");
   const [timer, setTimer] = useState<number>(0);
   const { handleSubmit } = useForm<IFormValues>();
+  const { setLoading } = useGlobalProvider();
 
   useEffect(() => {
     setIsClient(true);
@@ -39,21 +39,21 @@ export default function VerifyAccount() {
   }, [authFlowId]);
 
   function onSubmit(_: IFormValues) {
-    setSubmitting(true);
+    setLoading(true);
 
     AuthService.checkCodeLocal({ code: otp, keepConected: keepConected == "true" }).then(_ => {
       router.push("/panel");
     }).catch((error) => {
       Alert.error("", error.message);
     }).finally(() => {
-      setSubmitting(false);
+      setLoading(false);
     })
   }
 
   async function sendCode() {
     if (timer > 0) return;
 
-    setSubmitting(true);
+    setLoading(true);
 
     AuthService.sendCode(authFlow.email).then((response: any) => {
       Alert.success("", response.message);
@@ -67,12 +67,12 @@ export default function VerifyAccount() {
     }).catch((error) => {
       Alert.error("", error.message);
     }).finally(() => {
-      setSubmitting(false);
+      setLoading(false);
     })
   }
 
   async function getAuthFlow() {
-    setSubmitting(true);
+    setLoading(true);
 
     try {
       const response = await AuthService.getAuthFlowId(authFlowId as string);
@@ -80,7 +80,7 @@ export default function VerifyAccount() {
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
-      setSubmitting(false);
+      setLoading(false);
     }
   }
 
@@ -89,8 +89,6 @@ export default function VerifyAccount() {
       <Head>
         <title>Verificar Conta • Systatus.Live</title>
       </Head>
-
-      {isSubmitting && <Loading />}
 
       <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 px-2 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">

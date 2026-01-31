@@ -1,20 +1,20 @@
-import Loading from "@/components/Loading";
 import { Alert } from "@/lib/Alert";
 import { NextPageWithLayout } from "@/pages/_app";
 import { useGlobalProvider } from "@/providers/GlobalProvider";
 import UserService from "@/services/UserService";
+import { SignInTypeEnum } from "@/types/SignInTypeEnum";
+import formatDate from "@/utils/formatDate";
+import UAParser from "my-ua-parser";
 import { Button } from "primereact/button";
+import { Column } from "primereact/column";
+import { DataTable } from "primereact/datatable";
+import { Paginator } from "primereact/paginator";
+import { Panel } from "primereact/panel";
 import { Password } from "primereact/password";
 import { ReactElement, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import AccountLayout from "../layout";
-import { SignInTypeEnum } from "@/types/SignInTypeEnum";
-import { Column } from "primereact/column";
-import { DataTable } from "primereact/datatable";
-import { Paginator } from "primereact/paginator";
-import formatDate from "@/utils/formatDate";
-import UAParser from "my-ua-parser";
-import { Panel } from "primereact/panel";
+import { GetServerSideProps } from "next";
 
 type IFormDetails = {
   currentPassword: string;
@@ -22,14 +22,24 @@ type IFormDetails = {
   confirmPassword: string;
 }
 
-const AccountSecurity: NextPageWithLayout = () => {
-  const { user, setUser, token } = useGlobalProvider();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [authHistory, setAuthHistory] = useState([]);
+export const getServerSideProps = (async (context) => {
+  const { token } = context.req.cookies;
+  const response = await UserService.getAuthHistory(token as string, new URLSearchParams({ page: "0" }));
+
+  return {
+    props: {
+      authHistoryResponse: response
+    }
+  }
+}) satisfies GetServerSideProps<{}>
+
+const AccountSecurity: NextPageWithLayout = ({ authHistoryResponse }: any) => {
+  const { user, setUser, token, setLoading } = useGlobalProvider();
+  const [authHistory, setAuthHistory] = useState(authHistoryResponse.data);
   const [pagination, setPagination] = useState({
     first: 0,
-    rows: 0,
-    total: 0
+    rows: authHistoryResponse.pagination.rows,
+    total: authHistoryResponse.pagination.total
   });
   const { handleSubmit, control } = useForm<IFormDetails>({
     values: {
@@ -40,10 +50,8 @@ const AccountSecurity: NextPageWithLayout = () => {
   });
 
   useEffect(() => {
-    if (token) {
-      search(new URLSearchParams({ page: "0" }));
-    }
-  }, [token]);
+    setLoading(false);
+  }, []);
 
   const tableColumnList = [
     {
@@ -74,8 +82,7 @@ const AccountSecurity: NextPageWithLayout = () => {
   ]
 
   async function search(params: URLSearchParams) {
-    if (isSubmitting) return;
-    setIsSubmitting(true);
+    setLoading(true);
 
     try {
       const response = await UserService.getAuthHistory(token as string, params);
@@ -89,7 +96,7 @@ const AccountSecurity: NextPageWithLayout = () => {
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
-      setIsSubmitting(false);
+      setLoading(false);
     }
   }
 
@@ -103,7 +110,7 @@ const AccountSecurity: NextPageWithLayout = () => {
   }
 
   async function onSubmit(form: IFormDetails) {
-    setIsSubmitting(true);
+    setLoading(true);
 
     try {
       const payload = {
@@ -118,7 +125,7 @@ const AccountSecurity: NextPageWithLayout = () => {
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
-      setIsSubmitting(false);
+      setLoading(false);
     }
   }
 
@@ -133,8 +140,6 @@ const AccountSecurity: NextPageWithLayout = () => {
 
   return (
     <>
-      {isSubmitting && <Loading />}
-
       <Panel header="Alterar senha">
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-12 gap-3">
           {user?.signinType == SignInTypeEnum.EMAIL_PASSWORD ?

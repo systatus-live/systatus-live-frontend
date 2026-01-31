@@ -1,5 +1,3 @@
-"use client"
-
 import { Alert } from '@/lib/Alert';
 import PlanService from '@/services/PlanService';
 import { motion } from 'framer-motion';

@@ -9,6 +9,7 @@ import Pricing from "@/components/LandingPage/Pricing";
 import { PrimeReactProvider } from 'primereact/api';
 import * as cowsay from "cowsay";
 import { useEffect } from "react";
+import { GlobalProvider } from "@/providers/GlobalProvider";
 
 export default function Home() {
   useEffect(() => {
@@ -16,13 +17,15 @@ export default function Home() {
   }, []);
 
   return (
-    <PrimeReactProvider>
-      <Navbar />
-      <Hero />
-      <Features />
-      <Integrations />
-      <Pricing />
-      <Footer />
-    </PrimeReactProvider>
+    <GlobalProvider>
+      <PrimeReactProvider>
+        <Navbar />
+        <Hero />
+        <Features />
+        <Integrations />
+        <Pricing />
+        <Footer />
+      </PrimeReactProvider>
+    </GlobalProvider>
   );
 }

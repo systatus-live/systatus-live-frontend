@@ -1,5 +1,6 @@
+import Loading from '@/components/Loading';
 import { SignInTypeEnum } from '@/types/SignInTypeEnum';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 type User = {
   id?: string,
@@ -15,27 +16,36 @@ const GlobalContext = createContext<{
   setUser: (user: User | null) => void
   token: string | null,
   setToken: (token: string | null) => void
+  loading: boolean,
+  setLoading: (loading: boolean) => void
 }>({
   user: {},
-  setUser: () => {},
+  setUser: () => { },
   token: null,
-  setToken: () => {},
+  setToken: () => { },
+  loading: false,
+  setLoading: () => { }
 });
 
 export function GlobalProvider({ children }: any) {
   const [user, setUser] = useState<User | null>({});
   const [token, setToken] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  return (
-    <GlobalContext.Provider value={{ 
-      user, 
+  return <>
+    {loading == true ? <Loading /> : <></>}
+
+    <GlobalContext.Provider value={{
+      user,
       setUser,
       token,
-      setToken
+      setToken,
+      loading,
+      setLoading
     }}>
       {children}
     </GlobalContext.Provider>
-  );
+  </>
 }
 
 export function useGlobalProvider() {

@@ -1,27 +1,27 @@
-import Loading from "@/components/Loading";
 import { Alert } from "@/lib/Alert";
 import { NextPageWithLayout } from "@/pages/_app";
+import { useGlobalProvider } from "@/providers/GlobalProvider";
 import PlanService from "@/services/PlanService";
+import UserService from "@/services/UserService";
+import formatMoney from "@/utils/formatMoney";
 import { CheckIcon, XIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "primereact/button";
 import { Panel } from "primereact/panel";
+import { Skeleton } from "primereact/skeleton";
 import { ReactElement, useEffect, useState } from "react";
 import AccountLayout from "../layout";
 import styles from "./styles.module.scss";
-import { useGlobalProvider } from "@/providers/GlobalProvider";
-import UserService from "@/services/UserService";
-import formatMoney from "@/utils/formatMoney";
-import { Skeleton } from "primereact/skeleton";
 
 const AccountSubscription: NextPageWithLayout = () => {
-  const { token } = useGlobalProvider();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { token, setLoading } = useGlobalProvider();
   const [planList, setPlanList] = useState<any[]>([]);
   const [subscription, setSubscription] = useState<any>(null);
 
   useEffect(() => {
+    setLoading(false);
+    
     if (token) {
       (async () => {
         await getUserSubscription();
@@ -31,33 +31,31 @@ const AccountSubscription: NextPageWithLayout = () => {
   }, [token]);
 
   async function getPlanList() {
-    setIsSubmitting(true);
+    setLoading(true);
     try {
       const response = await PlanService.getPlanList();
       setPlanList(response.data);
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
-      setIsSubmitting(false);
+      setLoading(false);
     }
   }
 
   async function getUserSubscription() {
-    setIsSubmitting(true);
+    setLoading(true);
     try {
       const response = await UserService.getUserSubscription(token as string);
       setSubscription(response);
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
-      setIsSubmitting(false);
+      setLoading(false);
     }
   }
 
   return (
     <>
-      {isSubmitting && <Loading />}
-
       {subscription == null ? <Skeleton width="100%" height="8rem" /> :
         <Panel header="Assinatura atual">
           <div className="flex items-center justify-between">

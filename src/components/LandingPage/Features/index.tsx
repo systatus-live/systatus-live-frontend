@@ -1,5 +1,3 @@
-"use client"
-
 import { Button } from 'primereact/button';
 import { motion } from 'framer-motion';
 import { AlertTriangleIcon, BarChart2Icon, BellIcon, ClockIcon, GlobeIcon, MessageSquareIcon } from 'lucide-react';

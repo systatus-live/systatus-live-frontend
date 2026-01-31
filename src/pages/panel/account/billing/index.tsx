@@ -1,4 +1,3 @@
-import Loading from "@/components/Loading";
 import { Alert } from "@/lib/Alert";
 import { NextPageWithLayout } from "@/pages/_app";
 import { useGlobalProvider } from "@/providers/GlobalProvider";
@@ -16,8 +15,7 @@ import { ReactElement, useEffect, useState } from "react";
 import AccountLayout from "../layout";
 
 const BillingAccount: NextPageWithLayout = () => {
-  const { token } = useGlobalProvider();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { token, setLoading } = useGlobalProvider();
   const [invoiceList, setInvoiceList] = useState([]);
   const [pagination, setPagination] = useState({
     first: 0,
@@ -26,6 +24,8 @@ const BillingAccount: NextPageWithLayout = () => {
   });
 
   useEffect(() => {
+    setLoading(false);
+    
     if (token) {
       search(new URLSearchParams({ page: "0" }));
     }
@@ -74,8 +74,7 @@ const BillingAccount: NextPageWithLayout = () => {
   ]
 
   async function search(params: URLSearchParams) {
-    if (isSubmitting) return;
-    setIsSubmitting(true);
+    setLoading(true);
 
     try {
       const response = await InvoiceService.getInvoiceList(token as string, params);
@@ -89,7 +88,7 @@ const BillingAccount: NextPageWithLayout = () => {
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
-      setIsSubmitting(false);
+      setLoading(false);
     }
   }
 
@@ -118,7 +117,7 @@ const BillingAccount: NextPageWithLayout = () => {
   }
 
   async function getInvoicePDF(id: string) {
-    setIsSubmitting(true);
+    setLoading(true);
 
     try {
       const response = await InvoiceService.getInvoicePDF(token!, id);
@@ -151,14 +150,12 @@ const BillingAccount: NextPageWithLayout = () => {
     } catch (error) {
       Alert.error("", "Falha ao gerar o PDF");
     } finally {
-      setIsSubmitting(false);
+      setLoading(false);
     }
   }
 
   return (
     <>
-      {isSubmitting && <Loading />}
-
       <Panel header="Histórico de faturas" className="mt-6">
         <div className="border-1 border-gray-200">
           <DataTable

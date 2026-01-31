@@ -1,22 +1,20 @@
-"use client";
-
-import { Button } from 'primereact/button';
 import Logo from '@/components/Logo';
+import { Alert } from '@/lib/Alert';
+import { useGlobalProvider } from '@/providers/GlobalProvider';
+import AuthService from '@/services/AuthService';
+import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import styles from "./styles.module.scss";
-import AuthService from '@/services/AuthService';
-import { Alert } from '@/lib/Alert';
-import Head from 'next/head';
-import Loading from '@/components/Loading';
-import { InputText } from 'primereact/inputtext';
-import { Dropdown } from 'primereact/dropdown';
-import { Password } from 'primereact/password';
+import { Button } from 'primereact/button';
 import { Checkbox } from 'primereact/checkbox';
 import { Divider } from 'primereact/divider';
+import { Dropdown } from 'primereact/dropdown';
+import { InputText } from 'primereact/inputtext';
+import { Password } from 'primereact/password';
+import { useEffect, useState } from 'react';
 import ReCAPTCHA from "react-google-recaptcha";
+import { Controller, useForm } from 'react-hook-form';
+import styles from "./styles.module.scss";
 
 type IFormValues = {
   name: string;
@@ -32,7 +30,6 @@ export default function SignUp() {
   const router = useRouter();
   const { authFlowId, keepConected } = router.query;
   const [authFlow, setAuthFlow] = useState<any>();
-  const [isSubmitting, setSubmitting] = useState(false);
   const { control, register, handleSubmit, setValue, watch, getValues, reset } = useForm<IFormValues>({
     values: {
       name: "",
@@ -45,6 +42,7 @@ export default function SignUp() {
   });
   const [discoveryList, setDiscoveryList] = useState<{ id: string, description: string }[]>([]);
   const captchaKey = process.env.NEXT_PUBLIC_GOOGLE_CAPTCHA_CLIENT_ID!;
+  const { setLoading } = useGlobalProvider();
 
   useEffect(() => {
     setDiscoveryList([
@@ -73,7 +71,7 @@ export default function SignUp() {
       return;
     }
 
-    setSubmitting(true);
+    setLoading(true);
 
     const headers = { 
       captcha: form.captcha
@@ -96,12 +94,12 @@ export default function SignUp() {
     }).catch((error) => {
       Alert.error("", error.message);
     }).finally(() => {
-      setSubmitting(false);
+      setLoading(false);
     })
   }
 
   async function getAuthFlow() {
-    setSubmitting(true);
+    setLoading(true);
 
     try {
       const response = await AuthService.getAuthFlowId(authFlowId as string);
@@ -113,7 +111,7 @@ export default function SignUp() {
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
-      setSubmitting(false);
+      setLoading(false);
     }
   }
 
@@ -122,8 +120,6 @@ export default function SignUp() {
       <Head>
         <title>Cadastrar • Systatus.Live</title>
       </Head>
-
-      {isSubmitting && <Loading />}
 
       <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 px-2 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">

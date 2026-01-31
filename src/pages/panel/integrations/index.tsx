@@ -1,9 +1,9 @@
-import Loading from '@/components/Loading';
 import { Alert } from '@/lib/Alert';
 import { NextPageWithLayout } from '@/pages/_app';
 import { useGlobalProvider } from '@/providers/GlobalProvider';
 import IntegrationService from '@/services/IntegrationService';
 import { CopyIcon, EditIcon, Play, SearchIcon } from 'lucide-react';
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -12,7 +12,6 @@ import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { InputText } from 'primereact/inputtext';
 import { Paginator } from 'primereact/paginator';
-import { Skeleton } from 'primereact/skeleton';
 import { useEffect, useState, type ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -20,18 +19,31 @@ type IFormSearchValues = {
   search: string;
 }
 
-const Integrations: NextPageWithLayout = () => {
+export const getServerSideProps = (async (context) => {
+  const { token } = context.req.cookies;
+  const response = await IntegrationService.getIntegrationList(token as string, new URLSearchParams({ page: "0" }));
+
+  return {
+    props: {
+      integrationResponse: response
+    }
+  }
+}) satisfies GetServerSideProps<{}>
+
+const Integrations: NextPageWithLayout = ({ integrationResponse }: any) => {
   const router = useRouter();
-  const [integrationList, setIntegrationList] = useState([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [firstLoading, setFirstLoading] = useState(true);
-  const { register, handleSubmit, reset } = useForm<IFormSearchValues>();
-  const { token } = useGlobalProvider();
+  const { register, handleSubmit } = useForm<IFormSearchValues>();
+  const { token, setLoading } = useGlobalProvider();
+  const [integrationList, setIntegrationList] = useState(integrationResponse.data);
   const [pagination, setPagination] = useState({
     first: 0,
-    rows: 0,
-    total: 0
+    rows: integrationResponse.pagination.rows,
+    total: integrationResponse.pagination.total
   });
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
 
   const tableColumnList = [
     {
@@ -56,7 +68,10 @@ const Integrations: NextPageWithLayout = () => {
       template: (integration: any) => (
         <div className="flex">
           <div title="Abrir">
-            <Button text onClick={() => router.push(`/panel/integrations/edit/${integration.id}`)} type="button">
+            <Button text onClick={() => {
+              setLoading(true);
+              router.push(`/panel/integrations/edit/${integration.id}`);
+            }} type="button">
               <EditIcon height={14} width={14} />
             </Button>
           </div>
@@ -76,22 +91,13 @@ const Integrations: NextPageWithLayout = () => {
     }
   ]
 
-  useEffect(() => {
-    if (token) {
-      search(new URLSearchParams({ page: "0" }));
-    }
-  }, [token]);
-
-
   async function search(params: URLSearchParams) {
-    if (isSubmitting) return;
-    setIsSubmitting(true);
+    setLoading(true);
 
     try {
       const response = await IntegrationService.getIntegrationList(token as string, params);
 
       setIntegrationList(response.data);
-      setFirstLoading(false);
 
       setPagination(prev => ({
         ...prev,
@@ -101,7 +107,7 @@ const Integrations: NextPageWithLayout = () => {
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
-      setIsSubmitting(false);
+      setLoading(false);
     }
   }
 
@@ -117,7 +123,7 @@ const Integrations: NextPageWithLayout = () => {
   }
 
   async function handleValidate(id: string) {
-    setIsSubmitting(true);
+    setLoading(true);
 
     try {
       const response = await IntegrationService.validateIntegration(token as string, id);
@@ -125,7 +131,7 @@ const Integrations: NextPageWithLayout = () => {
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
-      setIsSubmitting(false);
+      setLoading(false);
     }
   }
 
@@ -144,12 +150,13 @@ const Integrations: NextPageWithLayout = () => {
         <title>Integrações • Systatus.Live</title>
       </Head>
 
-      {isSubmitting && <Loading />}
-
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-bold">Integrações</h1>
         <div>
-          <Button label="Adicionar" onClick={() => router.push("/panel/integrations/new")} />
+          <Button label="Adicionar" onClick={() => {
+            setLoading(true);
+            router.push("/panel/integrations/new");
+          }} />
         </div>
       </div>
 
@@ -165,36 +172,32 @@ const Integrations: NextPageWithLayout = () => {
       </form>
 
       <div>
-        {firstLoading ? (
-          <Skeleton width="100%" height="10vh"></Skeleton>
-        ) : (
-          <div className="border-1 border-gray-200 rounded-lg">
-            <DataTable
-              dataKey="id"
-              value={integrationList}
-              size="small"
-              showGridlines={false}
-              stripedRows={false}
-              scrollable={true}
-              scrollHeight="80vh"
-              emptyMessage="&#8203;"
-            >
-              {tableColumnList.map((col, index) => (
-                <Column key={index} header={col.title} body={col.template} style={{ width: col.width }} />
-              ))}
-            </DataTable>
-            <div className="flex items-center justify-center space-x-4">
-              <Paginator
-                first={pagination.first}
-                rows={pagination.rows}
-                totalRecords={pagination.total}
-                onPageChange={onPageChange}
-                template={{ layout: "FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink" }}
-              />
-              <small>{pagination.total} integrações</small>
-            </div>
+        <div className="border-1 border-gray-200 rounded-lg">
+          <DataTable
+            dataKey="id"
+            value={integrationList}
+            size="small"
+            showGridlines={false}
+            stripedRows={false}
+            scrollable={true}
+            scrollHeight="80vh"
+            emptyMessage="&#8203;"
+          >
+            {tableColumnList.map((col, index) => (
+              <Column key={index} header={col.title} body={col.template} style={{ width: col.width }} />
+            ))}
+          </DataTable>
+          <div className="flex items-center justify-center space-x-4">
+            <Paginator
+              first={pagination.first}
+              rows={pagination.rows}
+              totalRecords={pagination.total}
+              onPageChange={onPageChange}
+              template={{ layout: "FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink" }}
+            />
+            <small>{pagination.total} integrações</small>
           </div>
-        )}
+        </div>
       </div>
     </>
   )

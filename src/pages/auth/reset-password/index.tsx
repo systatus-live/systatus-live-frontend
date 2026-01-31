@@ -1,17 +1,16 @@
 "use client";
 
-import { Button } from 'primereact/button';
 import Logo from '@/components/Logo';
 import { Alert } from '@/lib/Alert';
+import { useGlobalProvider } from '@/providers/GlobalProvider';
 import AuthService from '@/services/AuthService';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { Button } from 'primereact/button';
+import { Password } from 'primereact/password';
 import { Controller, useForm } from 'react-hook-form';
 import styles from "./styles.module.scss";
-import Loading from '@/components/Loading';
-import { Password } from 'primereact/password';
 
 type IFormValues =  {
   password: string;
@@ -21,11 +20,11 @@ type IFormValues =  {
 export default function ResetPassword() {
   const router = useRouter();
   const { token } = router.query;
-  const [isSubmitting, setSubmitting] = useState(false);
   const { control, handleSubmit } = useForm<IFormValues>();
+  const { setLoading } = useGlobalProvider();
 
   function onSubmit(form: IFormValues) {
-    setSubmitting(true);
+    setLoading(true);
 
     AuthService.resetPassword(form.password, token as string).then((response: any) => {
       router.push({
@@ -35,7 +34,7 @@ export default function ResetPassword() {
     }).catch((error) => {
       Alert.error("", error.message);
     }).finally(() => {
-      setSubmitting(false);
+      setLoading(false);
     })
   }
 
@@ -44,8 +43,6 @@ export default function ResetPassword() {
       <Head>
         <title>Redefinir Senha • Systatus.Live</title>
       </Head>
-
-      {isSubmitting && <Loading />}
 
       <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 px-2 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">

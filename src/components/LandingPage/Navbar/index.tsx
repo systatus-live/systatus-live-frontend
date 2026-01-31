@@ -1,5 +1,3 @@
-"use client"
-
 import Logo from '@/components/Logo';
 import { AnimatePresence } from 'framer-motion';
 import { MenuIcon, XIcon } from 'lucide-react';
@@ -7,9 +5,11 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import styles from "./styles.module.scss";
 import { Button } from 'primereact/button';
+import { useGlobalProvider } from '@/providers/GlobalProvider';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { setLoading } = useGlobalProvider();
 
   const navItemList = [
     { name: "Início", href: "/" },
@@ -35,7 +35,7 @@ const Navbar: React.FC = () => {
             </div>
           </div>
           <div className="hidden sm:flex sm:items-center ml-4 space-x-3">
-            <Link href="/auth/signin">
+            <Link href="/auth/signin" onClick={() => setLoading(true)}>
               <Button text>Entrar</Button>
             </Link>
             <Link href="/auth/signup">
@@ -62,7 +62,7 @@ const Navbar: React.FC = () => {
             </div>
             <div className="pt-4 pb-3 border-t border-gray-200">
               <div className="flex items-center px-4 space-x-3">
-                <Link href="/auth/signin">
+                <Link href="/auth/signin" onClick={() => setLoading(true)}>
                   <Button text>Entrar</Button>
                 </Link>
                 <Link href="/auth/signup">

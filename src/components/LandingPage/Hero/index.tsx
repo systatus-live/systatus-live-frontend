@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from 'primereact/button';
 import { motion } from 'framer-motion';
 import { GlobeIcon, Waypoints } from 'lucide-react';

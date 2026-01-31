@@ -7,13 +7,13 @@ import { getHttpStatusKey, HttpStatusCodeLabel } from '@/types/HttpStatusCode';
 import formatDate from '@/utils/formatDate';
 import ReactECharts from 'echarts-for-react';
 import { BadgeCheckIcon, SearchIcon, SirenIcon } from 'lucide-react';
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { InputText } from 'primereact/inputtext';
 import { Paginator } from 'primereact/paginator';
-import { Skeleton } from 'primereact/skeleton';
 import { useEffect, useState, type ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import styles from "./styles.module.scss";
@@ -22,18 +22,34 @@ type IFormSearchValues = {
   search: string;
 }
 
-const Incidents: NextPageWithLayout = () => {
-  const { token } = useGlobalProvider();
-  const [incidentList, setIncidentList] = useState([]);
+export const getServerSideProps = (async (context) => {
+  const { token } = context.req.cookies;
+  const historicalResponse = await IncidentService.getHistorical(token as string);
+  const incidentResponse = await IncidentService.getIncidentList(token as string, new URLSearchParams({ page: "0" }));
+
+  return {
+    props: {
+      historicalResponse: historicalResponse,
+      incidentResponse: incidentResponse
+    }
+  }
+}) satisfies GetServerSideProps<{}>
+
+const Incidents: NextPageWithLayout = ({ historicalResponse, incidentResponse }: any) => {
+  const { token, setLoading } = useGlobalProvider();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [firstLoading, setFirstLoading] = useState(true);
   const { register, handleSubmit } = useForm<IFormSearchValues>();
+  const [historical, setHistorical] = useState<any>(historicalResponse.data);
+  const [incidentList, setIncidentList] = useState(incidentResponse.data);
   const [pagination, setPagination] = useState({
     first: 0,
-    rows: 0,
-    total: 0
+    rows: incidentResponse.pagination.rows,
+    total: incidentResponse.pagination.total
   });
-  const [historical, setHistorical] = useState<any>();
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
 
   const tableColumnList = [
     {
@@ -92,14 +108,6 @@ const Incidents: NextPageWithLayout = () => {
     }
   ]
 
-  useEffect(() => {
-    if (token) {
-      getHistorical().finally(() => {
-        search(new URLSearchParams({ page: "0" })).then;
-      })
-    }
-  }, [token]);
-
   async function search(params: URLSearchParams) {
     if (isSubmitting) return;
     setIsSubmitting(true);
@@ -108,7 +116,6 @@ const Incidents: NextPageWithLayout = () => {
       const response = await IncidentService.getIncidentList(token as string, params);
 
       setIncidentList(response.data);
-      setFirstLoading(false);
 
       setPagination(prev => ({
         ...prev,
@@ -121,21 +128,6 @@ const Incidents: NextPageWithLayout = () => {
       setIsSubmitting(false);
     }
   }
-
-  async function getHistorical() {
-    setIsSubmitting(true);
-
-    try {
-      const response = await IncidentService.getHistorical(token as string);
-
-      setHistorical(response.data);
-    } catch (error: any) {
-      Alert.error("", error.message);
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
-
 
   async function onSubmitSearch(form: IFormSearchValues) {
     await search(new URLSearchParams({ search: form.search, page: "0" }));
@@ -240,36 +232,32 @@ const Incidents: NextPageWithLayout = () => {
         </div>
       </form>
       <div>
-        {firstLoading ? (
-          <Skeleton width="100%" height="10vh"></Skeleton>
-        ) : (
-          <div className="border-1 border-gray-200 rounded-lg">
-            <DataTable
-              dataKey="id"
-              value={incidentList}
-              size="small"
-              showGridlines={false}
-              stripedRows={false}
-              scrollable={true}
-              scrollHeight="80vh"
-              emptyMessage="&#8203;"
-            >
-              {tableColumnList.map((col, index) => (
-                <Column key={index} header={col.title} body={col.template} style={{ width: col.width }} />
-              ))}
-            </DataTable>
-            <div className="flex items-center justify-center space-x-4">
-              <Paginator
-                first={pagination.first}
-                rows={pagination.rows}
-                totalRecords={pagination.total}
-                onPageChange={onPageChange}
-                template={{ layout: "FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink" }}
-              />
-              <small>{pagination.total} incidentes</small>
-            </div>
+        <div className="border-1 border-gray-200 rounded-lg">
+          <DataTable
+            dataKey="id"
+            value={incidentList}
+            size="small"
+            showGridlines={false}
+            stripedRows={false}
+            scrollable={true}
+            scrollHeight="80vh"
+            emptyMessage="&#8203;"
+          >
+            {tableColumnList.map((col, index) => (
+              <Column key={index} header={col.title} body={col.template} style={{ width: col.width }} />
+            ))}
+          </DataTable>
+          <div className="flex items-center justify-center space-x-4">
+            <Paginator
+              first={pagination.first}
+              rows={pagination.rows}
+              totalRecords={pagination.total}
+              onPageChange={onPageChange}
+              template={{ layout: "FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink" }}
+            />
+            <small>{pagination.total} incidentes</small>
           </div>
-        )}
+        </div>
       </div>
     </>
   )
