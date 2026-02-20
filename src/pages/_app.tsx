@@ -1,6 +1,4 @@
 import { GlobalProvider } from "@/providers/GlobalProvider";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata, NextPage } from "next";
 import type { AppProps } from 'next/app';
 import Head from "next/head";
@@ -40,10 +38,6 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       <Head>
         <title>Systatus.Live</title>
       </Head>
-
-      {/* Vercel */}
-      <Analytics />
-      <SpeedInsights />
 
       <Layout>
         {getLayout(<Component {...pageProps} />)}
