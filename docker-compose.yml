@@ -4,6 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: systatus.live-web
     ports:
       - "4002:3000"
     restart: unless-stopped
