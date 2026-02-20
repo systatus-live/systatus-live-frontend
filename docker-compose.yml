@@ -1,24 +1,9 @@
 services:
-  app:
-    container_name: systatus-live-web
+  systatus.live-web:
+    image: systatus.live-web:latest
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        NEXT_PUBLIC_SYSTATUS_API_URL: ${NEXT_PUBLIC_SYSTATUS_API_URL}
-        NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID: ${NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID}
-        NEXT_PUBLIC_GOOGLE_CAPTCHA_CLIENT_ID: ${NEXT_PUBLIC_GOOGLE_CAPTCHA_CLIENT_ID}
     ports:
-      - "3000:3000"
-    environment:
-      NODE_ENV: production
-      NEXT_PUBLIC_SYSTATUS_API_URL: ${NEXT_PUBLIC_SYSTATUS_API_URL}
-      SYSTATUS_API_URL: ${SYSTATUS_API_URL}
-      SYSTATUS_WEB_URL: ${SYSTATUS_WEB_URL}
-      RESEND_API_URL: ${RESEND_API_URL}
-      RESEND_API_KEY: ${RESEND_API_KEY}
-      CONTACT_EMAIL: ${CONTACT_EMAIL}
-      ENV: ${ENV}
-      NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID: ${NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID}
-      NEXT_PUBLIC_GOOGLE_CAPTCHA_CLIENT_ID: ${NEXT_PUBLIC_GOOGLE_CAPTCHA_CLIENT_ID}
+      - "4002:3000"
     restart: unless-stopped

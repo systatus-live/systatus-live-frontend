@@ -22,7 +22,7 @@ export async function PATCH(request: NextRequest) {
       value: accessToken,
       httpOnly: true,
       path: "/",
-      secure: process.env.ENV === "PROD"
+      secure: process.env.NODE_ENV === "production"
     }
 
     if (json.keepConected) {
