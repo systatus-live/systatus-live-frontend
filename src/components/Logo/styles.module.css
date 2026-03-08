@@ -1,0 +1,22 @@
+.logo {
+  color: #113455;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.logo-white {
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: #FDFCFD;
+}
+
+@media (max-width: 640px) {
+  .hidden-text {
+    display: none;
+  }
+
+  .logo,
+  .logo-white {
+    justify-content: center;
+  }
+}
