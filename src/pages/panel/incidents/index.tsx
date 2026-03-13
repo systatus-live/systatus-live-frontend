@@ -9,7 +9,7 @@ import { Area, AreaChart, XAxis } from "recharts";
 import Head from "next/head";
 import { ReactElement, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { DataTable } from "./data-table";
+import DataTable from "@/components/Panel/Incidents/DataTable";
 
 type IFormSearchValues = {
   search: string;

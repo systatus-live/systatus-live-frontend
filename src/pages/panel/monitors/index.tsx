@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { ReactElement, useEffect, useState } from 'react';
-import { DataTable } from './data-table';
+import DataTable from '@/components/Panel/Monitors/DataTable';
 
 const Monitors: NextPageWithLayout = () => {
   const router = useRouter();
@@ -33,12 +33,14 @@ const Monitors: NextPageWithLayout = () => {
       <Head>
         <title>Monitores • Systatus.Live</title>
       </Head>
+      
       <div className="flex items-center justify-between">
         <h1 className="text-base font-semibold">Monitores</h1>
         <Button onClick={() => router.push("/panel/monitors/new")}>
           Novo Monitor
         </Button>
       </div>
+
       <DataTable data={monitorList} />
     </>
   )

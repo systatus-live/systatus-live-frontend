@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { ReactElement, useEffect, useState } from "react";
-import { DataTable } from "./data-table";
+import DataTable from "@/components/Panel/Integrations/DataTable";
 
 const Integrations: NextPageWithLayout = () => {
   const router = useRouter();
@@ -45,12 +45,14 @@ const Integrations: NextPageWithLayout = () => {
       <Head>
         <title>Integrações • Systatus.Live</title>
       </Head>
+      
       <div className="flex items-center justify-between">
         <h1 className="text-base font-semibold">Integrações</h1>
         <Button onClick={() => router.push("/panel/integrations/new")}>
           Nova Integração
         </Button>
       </div>
+
       <DataTable data={integrationList} onValidate={handleValidate} />
     </>
   );

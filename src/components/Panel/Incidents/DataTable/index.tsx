@@ -11,7 +11,7 @@ interface DataTableProps<TData> {
   data: TData[];
 }
 
-export function DataTable<TData>({ data }: DataTableProps<TData>) {
+export default function DataTable<TData>({ data }: DataTableProps<TData>) {
   const columnList: ColumnDef<any>[] = [
     {
       header: "Status",

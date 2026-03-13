@@ -17,7 +17,7 @@ interface DataTableProps<TData> {
   data: TData[]
 }
 
-export function DataTable<TData>({ data }: DataTableProps<TData>) {
+export default function DataTable<TData>({ data }: DataTableProps<TData>) {
   const router = useRouter();
 
   const columnList: ColumnDef<any>[] = [

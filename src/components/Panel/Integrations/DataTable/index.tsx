@@ -14,7 +14,7 @@ interface DataTableProps<TData> {
   onValidate: (id: string) => void;
 }
 
-export function DataTable<TData>({ data, onValidate }: DataTableProps<TData>) {
+export default function DataTable<TData>({ data, onValidate }: DataTableProps<TData>) {
   const router = useRouter();
 
   const columnList: ColumnDef<any>[] = [
