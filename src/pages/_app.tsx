@@ -1,4 +1,6 @@
 import { GlobalProvider } from "@/providers/GlobalProvider";
+import { Toaster } from "@/components/ui/sonner";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 import type { Metadata, NextPage } from "next";
 import type { AppProps } from 'next/app';
 import Head from "next/head";
@@ -41,6 +43,9 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       <Layout>
         {getLayout(<Component {...pageProps} />)}
       </Layout>
+
+      <Toaster position="top-center" />
+      <ConfirmDialog />
     </GlobalProvider>
   )
 }

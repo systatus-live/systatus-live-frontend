@@ -1,0 +1,19 @@
+.font-success {
+  color: #05DF72;
+}
+
+.font-danger {
+  color: #FF6467;
+}
+
+.blink {
+  animation: blinker 1s linear infinite;
+  display: inline-block;
+  border-radius: 100%;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0.5;
+  }
+}

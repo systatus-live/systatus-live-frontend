@@ -1,0 +1,51 @@
+.zoom:hover {
+  transform: scale(1.4);
+  transition: transform 0.1s ease-in-out;
+}
+
+.bg-empty {
+  background: lightgray;
+  letter-spacing: 1;
+}
+
+.font-empty {
+  color: gray;
+  letter-spacing: 1;
+}
+
+.bg-success {
+  background: #05DF72;
+  letter-spacing: 1;
+}
+
+.font-success {
+  color: #05DF72;
+  letter-spacing: 1;
+}
+
+.bg-danger {
+  background: #FF6467;
+  letter-spacing: 1;
+}
+
+.font-danger {
+  color: #FF6467;
+  letter-spacing: 1;
+}
+
+.bg-partial {
+  background: #FDC700;
+  letter-spacing: 1;
+}
+
+.blink {
+  animation: blinker 1s linear infinite;
+  display: inline-block;
+  border-radius: 100%;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0.5;
+  }
+}

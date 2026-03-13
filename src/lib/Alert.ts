@@ -1,64 +1,32 @@
-import Swal from "sweetalert2";
+import { toast } from "sonner";
+
+type ConfirmPayload = {
+  title: string;
+  text: string;
+  onConfirm?: Function;
+  onDeny?: Function;
+}
+
+let _showConfirm: ((payload: ConfirmPayload) => void) | null = null;
+
+export function registerConfirm(fn: typeof _showConfirm) {
+  _showConfirm = fn;
+}
 
 export class Alert {
   static success(title: string, text: string, timer = 3000) {
-    Swal.fire({
-      title: title,
-      text: text,
-      icon: "success",
-      toast: true,
-      position: "top",
-      showConfirmButton: false,
-      timer: timer,
-      timerProgressBar: true,
-      showCloseButton: true,
-    })
+    toast.success(title || text, { description: title ? text : undefined, duration: timer });
   }
 
   static error(title: string, text: string, timer = 3000) {
-    Swal.fire({
-      title: title,
-      text: text,
-      icon: "error",
-      toast: true,
-      position: "top",
-      showConfirmButton: false,
-      timer: timer,
-      timerProgressBar: true,
-      showCloseButton: true
-    })
+    toast.error(title || text, { description: title ? text : undefined, duration: timer });
   }
 
   static info(title: string, text: string, timer = 3000) {
-    Swal.fire({
-      title: title,
-      text: text,
-      icon: "info",
-      toast: true,
-      position: "top",
-      showConfirmButton: false,
-      timer: timer,
-      timerProgressBar: true,
-      showCloseButton: true
-    })
+    toast.info(title || text, { description: title ? text : undefined, duration: timer });
   }
 
   static confirm(title: string, text: string, onConfirm?: Function, onDeny?: Function) {
-    Swal.fire({
-      title: title,
-      text: text,
-      icon: "question",
-      showDenyButton: false,
-      showCancelButton: true,
-      cancelButtonText: "Cancelar",
-      confirmButtonText: "Confirmar",
-      reverseButtons: true,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        onConfirm && onConfirm();
-      } else if (result.isDenied) {
-        onDeny && onDeny();
-      }
-    });
+    _showConfirm?.({ title, text, onConfirm, onDeny });
   }
 }
