@@ -2,8 +2,8 @@ import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from "next/server";
 import AuthService from "./services/AuthService";
 
-export async function middleware(request: NextRequest) {
-  console.log(`[MIDDLEWARE] - ${request.url}`);
+export async function proxy(request: NextRequest) {
+  console.log(`[PROXY] - ${request.url}`);
   const cookieStore = await cookies();
 
   if (request.nextUrl.pathname.startsWith("/auth/verify-account")) {

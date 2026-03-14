@@ -10,9 +10,10 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import OtpInput from 'react-otp-input';
-import styles from "./styles.module.css";
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { FieldGroup, FieldDescription } from '@/components/ui/field';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 type IFormValues = {
   code: string;
@@ -90,45 +91,52 @@ export default function VerifyAccount() {
         <title>Verificar Conta • Systatus.Live</title>
       </Head>
 
-      <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 px-2 sm:px-6 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <div className="sm:mx-auto sm:w-full sm:max-w-md">
-              <div className="flex justify-center">
-                <Logo />
-              </div>
-              <h2 className={`my-6 text-center text-2xl  ${styles["title"]}`}>Insira o código</h2>
-            </div>
-            <p className="text-sm text-gray-700 mb-4">
-              Insira o <strong>código de verificação</strong> enviado para seu e-mail{authFlow && (<strong>{` ${authFlow.email}`}</strong>)}.
-            </p>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-              <div>
-                {isClient && (
-                  <OtpInput
-                    value={otp}
-                    onChange={setOtp}
-                    numInputs={6}
-                    renderSeparator={<span className="mx-1"></span>}
-                    renderInput={(props) => <Input {...props as any} />}
-                    skipDefaultStyles={true}
-                  />
-                )}
-              </div>
-              <p className="text-sm text-gray-700 mb-4">
-                Verifique o spam ou lixeira, ou <span onClick={() => sendCode()} className="cursor-pointer text-blue-500 font-medium">clique aqui</span> para reenviar{timer > 0 && <i> (aguarde {timer}s)</i>}.
-              </p>
-              <div className="my-4">
-                <Button type="submit" className="w-full">Enviar Código</Button>
-              </div>
-              <p className="mt-2 text-center text-sm text-gray-600">
-                Lembrou a senha?{' '}
-                <Link href="/auth/signin" className="font-medium text-blue-600 hover:text-blue-500">
-                  Entrar na sua conta
-                </Link>
-              </p>
-            </form>
-          </div>
+      <div className="min-h-screen bg-muted/40 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto w-full max-w-md">
+          <Card>
+            <CardHeader className="items-center text-center">
+              <Logo />
+              <CardTitle className="mt-2">Insira o código</CardTitle>
+              <CardDescription>
+                Código de verificação enviado para{authFlow ? <strong>{` ${authFlow.email}`}</strong> : ' seu e-mail'}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <FieldGroup>
+                  <div className="flex justify-center">
+                    {isClient && (
+                      <OtpInput
+                        value={otp}
+                        onChange={setOtp}
+                        numInputs={6}
+                        renderSeparator={<span className="mx-1" />}
+                        renderInput={(props) => <Input {...props as any} />}
+                        skipDefaultStyles={true}
+                      />
+                    )}
+                  </div>
+                  <FieldDescription className="text-center">
+                    Verifique o spam ou lixeira, ou{' '}
+                    <span
+                      onClick={() => sendCode()}
+                      className={`font-medium underline-offset-4 hover:underline text-foreground ${timer > 0 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                    >
+                      clique aqui para reenviar
+                    </span>
+                    {timer > 0 && <i> (aguarde {timer}s)</i>}
+                  </FieldDescription>
+                  <Button type="submit" className="w-full">Verificar Conta</Button>
+                  <FieldDescription className="text-center">
+                    Lembrou a senha?{' '}
+                    <Link href="/auth/signin" className="font-medium underline-offset-4 hover:underline text-foreground">
+                      Entrar na sua conta
+                    </Link>
+                  </FieldDescription>
+                </FieldGroup>
+              </form>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </>

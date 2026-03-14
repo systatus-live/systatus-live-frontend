@@ -11,12 +11,12 @@ import Script from 'next/script';
 import { useEffect } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { Controller, useForm } from 'react-hook-form';
-import styles from "./styles.module.css";
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
-import { Field, FieldLabel } from '@/components/ui/field';
+import { Field, FieldGroup, FieldLabel, FieldDescription } from '@/components/ui/field';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 type IFormValues = {
   email: string;
@@ -42,7 +42,7 @@ export default function SignIn() {
 
   useEffect(() => {
     setLoading(false);
-    
+
     if ((window as any).google) {
       initGsi();
     }
@@ -126,49 +126,56 @@ export default function SignIn() {
         onLoad={() => initGsi()}
       />
 
-      <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 px-2 sm:px-6 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <div className="flex justify-center">
+      <div className="min-h-screen bg-muted/40 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto w-full max-w-md">
+          <Card>
+            <CardHeader className="items-center text-center">
               <Logo />
-            </div>
-            <h2 className={`my-6 text-center text-2xl  ${styles["title"]}`}>Entrar</h2>
-            <form onSubmit={handleSubmit(onSubmitForm)} className="space-y-3">
-              <Field>
-                <FieldLabel>E-mail <span className="text-red-500">*</span></FieldLabel>
-                <Input {...register("email", { required: true })} type="email" placeholder="seu@email.com" />
-              </Field>
-              <Field>
-                <FieldLabel>Senha <span className="text-red-500">*</span></FieldLabel>
-                <Input {...register("password", { required: true })} type="password" />
-              </Field>
-              <div className="text-sm flex items-center justify-between">
-                <div className="flex items-center">
-                  <Controller name="keepConected" control={control} render={({ field }) => (
-                    <Checkbox id={field.name} checked={field.value} onCheckedChange={(checked) => field.onChange(checked === true)} />
-                  )} />
-                  <label htmlFor="keepConected" className="ml-2 block text-gray-700 cursor-pointer">Manter conectado</label>
+              <CardTitle className="mt-2">Entrar</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <FieldGroup>
+                <form onSubmit={handleSubmit(onSubmitForm)}>
+                  <FieldGroup>
+                    <Field>
+                      <FieldLabel htmlFor="email">E-mail <span className="text-destructive">*</span></FieldLabel>
+                      <Input id="email" {...register("email", { required: true })} type="email" placeholder="seu@email.com" />
+                    </Field>
+                    <Field>
+                      <div className="flex items-center justify-between">
+                        <FieldLabel htmlFor="password">Senha <span className="text-destructive">*</span></FieldLabel>
+                        <Link href="/auth/forgot-password" className="text-sm underline-offset-4 hover:underline text-muted-foreground">
+                          Esqueci minha senha
+                        </Link>
+                      </div>
+                      <Input id="password" {...register("password", { required: true })} type="password" />
+                    </Field>
+                    <div className="flex items-center gap-2">
+                      <Controller name="keepConected" control={control} render={({ field }) => (
+                        <Checkbox id={field.name} checked={field.value} onCheckedChange={(checked) => field.onChange(checked === true)} />
+                      )} />
+                      <label htmlFor="keepConected" className="text-sm text-muted-foreground cursor-pointer">Manter conectado</label>
+                    </div>
+                    <div className="flex justify-center">
+                      <ReCAPTCHA sitekey={captchaKey} onChange={(captcha: string | null) => setValue("captcha", captcha || "")} type="image" />
+                    </div>
+                    <Button type="submit" className="w-full">Entrar</Button>
+                  </FieldGroup>
+                </form>
+                <div className="relative">
+                  <Separator />
+                  <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-2 text-xs text-muted-foreground">ou</span>
                 </div>
-                <Link href="/auth/forgot-password" className="font-medium text-blue-600 hover:text-blue-500 text-sm">Esqueci minha senha</Link>
-              </div>
-              <div className="flex justify-center">
-                <ReCAPTCHA sitekey={captchaKey} onChange={(captcha: string | null) => setValue("captcha", captcha || "")} type="image" />
-              </div>
-              <div className="my-4">
-                <Button type="submit" className="w-full">Entrar</Button>
-              </div>
-              <div>
-                <Separator />
                 <div className="flex justify-center mt-4">
                   <div id="google-signin" />
                 </div>
-              </div>
-              <p className="mt-4 text-center text-sm">
-                <span className="text-gray-700">Não possui uma conta?{' '}</span>
-                <Link href="/auth/signup" className="font-medium text-blue-600 hover:text-blue-500">Crie uma gratuitamente</Link>
-              </p>
-            </form>
-          </div>
+                <FieldDescription className="text-center">
+                  Não possui uma conta?{' '}
+                  <Link href="/auth/signup" className="font-medium underline-offset-4 hover:underline">Crie uma gratuitamente</Link>
+                </FieldDescription>
+              </FieldGroup>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </>

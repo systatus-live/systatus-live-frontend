@@ -118,8 +118,8 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
                       <DropdownMenuTrigger asChild>
                         <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
                           <Avatar className="h-8 w-8 rounded-lg">
-                            <AvatarImage src={user.avatar} alt={user.name} />
-                            <AvatarFallback className="rounded-lg">{user.name?.charAt(0)}</AvatarFallback>
+                            <AvatarImage src={user.avatar ?? "/images/avatar.jpg"} alt={user.name} />
+                            <AvatarFallback className="rounded-lg" />
                           </Avatar>
                           <div className="grid flex-1 text-left text-sm leading-tight">
                             <span className="truncate font-medium">{user.name}</span>
