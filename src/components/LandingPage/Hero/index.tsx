@@ -98,7 +98,7 @@ export default function Hero() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.5 }}
               >
-                <Link href="/auth/signup">
+                <Link href="/auth/signin">
                   <Button>Comece agora</Button>
                 </Link>
                 <Link href="#features">

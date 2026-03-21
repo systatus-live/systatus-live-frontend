@@ -99,7 +99,7 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
                     {group.items.map((item) => (
                       <Link href={item.url} key={item.url}>
                         <SidebarMenuItem>
-                          <SidebarMenuButton isActive={item.isActive}>
+                          <SidebarMenuButton isActive={item.isActive} className="cursor-pointer">
                             {item.icon && <item.icon />}
                             <span>{item.title}</span>
                           </SidebarMenuButton>

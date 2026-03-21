@@ -281,13 +281,13 @@ const Subscription: NextPageWithLayout = () => {
                 <p className="text-xs text-center text-muted-foreground mb-4">{plan.description}</p>
 
                 <ul className="flex-1 space-y-2.5 mb-6">
-                  {Object.entries(plan.features).map(([key, included], i) => (
-                    <li key={i} className="flex items-center gap-2 text-sm">
-                      {included
+                  {plan.features.map((feature: any) => (
+                    <li key={feature.label} className="flex items-center gap-2 text-sm">
+                      {feature.enabled
                         ? <CheckIcon className="h-4 w-4 shrink-0 text-green-500" />
                         : <XIcon className="h-4 w-4 shrink-0 text-muted-foreground/40" />
                       }
-                      <span className={included ? "" : "text-muted-foreground"}>{key}</span>
+                      <span className={feature.enabled ? "" : "text-muted-foreground"}>{feature.label}</span>
                     </li>
                   ))}
                 </ul>

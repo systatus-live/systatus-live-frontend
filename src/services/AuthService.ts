@@ -15,7 +15,7 @@ export default class AuthService {
   }
 
   static checkCodeLocal(payload: any) {
-    return HttpService.patch("/api//v1/auth/codes", payload, {});
+    return HttpService.patch("/api/v1/auth/codes", payload, {});
   }
 
   static checkCode(code: string, headers = {}) {

@@ -273,7 +273,6 @@ const Details: NextPageWithLayout = () => {
               </div>
               <span className="text-xs text-muted-foreground">Máx. 1 MB</span>
             </div>
-
             <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Field>
                 <FieldLabel htmlFor="name">Nome <span className="text-destructive">*</span></FieldLabel>
@@ -287,7 +286,6 @@ const Details: NextPageWithLayout = () => {
                   {detailsForm.watch("name")?.length ?? 0}/50
                 </p>
               </Field>
-
               <Field>
                 <FieldLabel htmlFor="email">E-mail <span className="text-destructive">*</span></FieldLabel>
                 <Input
@@ -301,7 +299,6 @@ const Details: NextPageWithLayout = () => {
                   {detailsForm.watch("email")?.length ?? 0}/255
                 </p>
               </Field>
-
               <Field>
                 <FieldLabel htmlFor="createdAt" className="flex items-center gap-1.5">
                   <CalendarIcon className="h-3.5 w-3.5 text-muted-foreground" />
@@ -309,8 +306,7 @@ const Details: NextPageWithLayout = () => {
                 </FieldLabel>
                 <Input id="createdAt" {...detailsForm.register("createdAt")} disabled />
               </Field>
-
-              <div className="sm:col-span-2 flex justify-end pt-2">
+              <div className="flex items-center pt-2">
                 <Button type="submit" size="sm">Salvar alterações</Button>
               </div>
             </div>
@@ -346,7 +342,7 @@ const Details: NextPageWithLayout = () => {
               <FieldLabel htmlFor="confirmPassword">Confirmar senha <span className="text-destructive">*</span></FieldLabel>
               <Input id="confirmPassword" {...passwordForm.register("confirmPassword", { required: true })} type="password" placeholder="••••••••" />
             </Field>
-            <div className="sm:col-span-3 flex justify-end pt-2">
+            <div className="pt-2">
               <Button type="submit" size="sm">Atualizar senha</Button>
             </div>
           </div>

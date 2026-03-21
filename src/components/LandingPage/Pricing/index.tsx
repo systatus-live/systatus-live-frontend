@@ -5,9 +5,9 @@ import { CheckIcon, XIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import styles from "./styles.module.css";
 import formatMoney from '@/utils/formatMoney';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 export default function Pricing() {
   const [planList, setPlanList] = useState<any[]>([]);
@@ -60,19 +60,20 @@ export default function Pricing() {
               {planList.map((plan, index) => (
                 <motion.div
                   key={index}
-                  className={`
-                relative flex flex-col rounded-2xl shadow-xl overflow-hidden
-                ${plan.mostPopular ? 'border-2 border-blue-500' : 'border border-gray-200'}
-                p-6 
-              `}
+                  className={`relative flex flex-col rounded-2xl shadow-xl p-6 border ${plan.mostPopular ? 'border-primary shadow-md' : 'border-gray-200'}`}
                   initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 + 0.3, duration: 0.5 }}
                 >
+                  {plan.mostPopular && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                      <Badge className="px-3 py-0.5 text-xs">Mais Popular</Badge>
+                    </div>
+                  )}
+
                   <div>
                     <div>
-                      <div className="flex justify-center">{plan.mostPopular ? <span className={styles["most-popular"]}>🌟 Mais Popular 🌟</span> : <></>}</div>
                       <div className="flex flex-col items-center">
                         <div style={{ width: 58, height: 58, position: "relative", overflow: "hidden" }}>
                           <Image src={plan.image} alt="Plano" fill sizes={`${58}px`} style={{ objectFit: "contain" }} priority />
@@ -88,16 +89,16 @@ export default function Pricing() {
                   <div className="bg-gray-50 p-2 mt-2 rounded-lg">
                     <h3 className="text-center text-gray-500 mb-6">{plan.description}</h3>
                     <ul className="space-y-4">
-                      {Object.entries(plan.features).map(([key, included], index) => (
-                        <li key={index} className="flex items-start">
-                          {included ? <CheckIcon className="flex-shrink-0 h-5 w-5 text-green-500" /> : <XIcon className="flex-shrink-0 h-5 w-5 text-gray-400" />}
-                          <span className={`ml-3 ${included ? "text-gray-700" : "text-gray-400"}`}>{key}</span>
+                      {plan.features.map((feature: any) => (
+                        <li key={feature.label} className="flex items-start">
+                          {feature.enabled ? <CheckIcon className="flex-shrink-0 h-5 w-5 text-green-500" /> : <XIcon className="flex-shrink-0 h-5 w-5 text-gray-400" />}
+                          <span className={`ml-3 ${feature.enabled ? "text-gray-700" : "text-gray-400"}`}>{feature.label}</span>
                         </li>
                       ))}
                     </ul>
                     <div className="mt-6 p-fluid">
                       <Link href={plan.btaLink}>
-                        <Button className="w-full">{plan.bta}</Button>
+                        <Button variant={plan.mostPopular ? "default" : "outline"} className="w-full">{plan.bta}</Button>
                       </Link>
                     </div>
                   </div>

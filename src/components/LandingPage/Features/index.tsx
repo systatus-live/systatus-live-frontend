@@ -129,7 +129,7 @@ export default function Features() {
           viewport={{ once: true }}
           transition={{ delay: 0.8, duration: 0.5 }}
         >
-          <Link href="/auth/signup">
+          <Link href="/auth/signin">
             <Button>Comece a monitorar seus serviços</Button>
           </Link>
         </motion.div>
