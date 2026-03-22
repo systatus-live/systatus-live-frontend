@@ -65,6 +65,9 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
     AuthService.meLocal().then((response: any) => {
       setUser(response.user);
       setToken(response.token);
+    }).catch((error) => {
+      Alert.error("", error.message);
+      router.replace("/auth/signin");
     });
   }, []);
 

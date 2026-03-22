@@ -3,9 +3,9 @@ import { cookies } from 'next/headers';
 import AuthService from '@/services/AuthService';
 
 export async function GET() {
-  try {
-    const cookieStore = await cookies();
+  const cookieStore = await cookies();
 
+  try {
     if (cookieStore.has("token")) {
       const token = (cookieStore.get("token")?.value) as string;
 
@@ -25,6 +25,8 @@ export async function GET() {
       status: 401
     });
   } catch (error: any) {
+    cookieStore.delete("token");
+
     return NextResponse.json({
       message: error.message
     }, {
