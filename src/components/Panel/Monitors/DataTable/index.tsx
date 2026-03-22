@@ -194,7 +194,7 @@ function MonitorFavicon({ address }: { address: string }) {
     const url = new URL(address);
     faviconUrl = `https://www.google.com/s2/favicons?domain=${url.hostname}&sz=16`;
   } catch {
-    return null;
+    faviconUrl = "https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&size=16";
   }
 
   if (!visible) return <span style={{ width: 16, display: "inline-block" }} />;

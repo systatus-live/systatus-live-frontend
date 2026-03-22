@@ -16,16 +16,13 @@ const Monitors: NextPageWithLayout = () => {
   useEffect(() => {
     if (!token) return;
     setLoading(true);
-    MonitorService.getMonitorList(token as string, new URLSearchParams({ page: "0" }))
-      .then(response => {
-        setMonitorList(response.data);
-      })
-      .catch(error => {
-        Alert.error("", error.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    MonitorService.getMonitorList(token as string, new URLSearchParams({ page: "0" })).then(response => {
+      setMonitorList(response.data);
+    }).catch(error => {
+      Alert.error("", error.message);
+    }).finally(() => {
+      setLoading(false);
+    });
   }, [token]);
 
   return (
@@ -33,7 +30,7 @@ const Monitors: NextPageWithLayout = () => {
       <Head>
         <title>Monitores • Systatus.Live</title>
       </Head>
-      
+
       <div className="flex items-center justify-between">
         <h1 className="text-base font-semibold">Monitores</h1>
         <Button onClick={() => router.push("/panel/monitors/new")}>
