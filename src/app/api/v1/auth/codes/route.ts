@@ -17,21 +17,17 @@ export async function PATCH(request: NextRequest) {
     const accessToken = response.data.access_token;
     const decodedToken = jwtDecode(accessToken);
 
-    const cookieData: any = {
+    const cookieStore = await cookies();
+    cookieStore.set({
       name: "token",
       value: accessToken,
       httpOnly: true,
       path: "/",
-      secure: process.env.NODE_ENV === "production"
-    }
-
-    if (json.keepConected) {
-      cookieData["expires"] = new Date(decodedToken.exp! * 1000); // "exp" is in seconds, convert to milliseconds
-      cookieData["maxAge"] = decodedToken.exp! - decodedToken.iat!; // maxAge in seconds
-    }
-
-    const cookieStore = await cookies();
-    cookieStore.set(cookieData);
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      expires: new Date(decodedToken.exp! * 1000), // "exp" is in seconds, convert to milliseconds
+      maxAge: decodedToken.exp! - decodedToken.iat! // maxAge in seconds
+    });
 
     return NextResponse.json(response.data, {
       status: 200
