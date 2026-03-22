@@ -47,8 +47,9 @@ const EditIntegration: NextPageWithLayout = () => {
     ]).then(([integrationRes, platformRes]) => {
       setIntegration(integrationRes);
       setPlatformList(platformRes.data);
+
       reset({
-        chatPlatformId: integrationRes.chatPlatformId,
+        chatPlatformId: integrationRes.chat_platform_id,
         name: integrationRes.name,
         address: integrationRes.address,
       });
@@ -183,7 +184,7 @@ const EditIntegration: NextPageWithLayout = () => {
                           {platformList.map((platform) => (
                             <SelectItem key={platform.id} value={platform.id}>
                               <div className="flex items-center gap-2">
-                                <Image src={platform.iconUrl} alt="" width={14} height={14} />
+                                <Image src={platform.icon_url} alt="" width={14} height={14} />
                                 {platform.description}
                               </div>
                             </SelectItem>

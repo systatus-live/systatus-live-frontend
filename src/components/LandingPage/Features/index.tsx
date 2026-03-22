@@ -1,43 +1,43 @@
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import { AlertTriangleIcon, BarChart2Icon, BellIcon, ClockIcon, GlobeIcon, MessageSquareIcon } from 'lucide-react';
+import { AlertTriangleIcon, BarChart2Icon, BellIcon, ClockIcon, GlobeIcon, LayoutDashboardIcon } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Features() {
   const featureList = [
     {
-      name: "Monitoramento",
-      description: "Monitore sites, APIs e servidores com verificações globais frequentes para identificar problemas rapidamente.",
+      name: "Monitoramento Contínuo",
+      description: "Sites, APIs e servidores monitorados o tempo todo — você descobre a falha antes que seu usuário tente acessar.",
       icon: GlobeIcon,
       color: "bg-blue-500",
     },
     {
       name: "Alertas Instantâneos",
-      description: "Receba notificações imediatas quando seus serviços ficarem indisponíveis por e-mail, Slack, Google Chat, Discord e outros canais",
+      description: "A notificação chega no canal que você já usa. Nada de ficar abrindo dashboard para ver se está tudo bem.",
       icon: BellIcon,
       color: "bg-red-500",
     },
     {
       name: "Histórico de Disponibilidade",
-      description: "Acompanhe o histórico de disponibilidade dos seus serviços para identificar padrões de problemas.",
+      description: "Identifique padrões de instabilidade e chegue em reuniões com dados — não com desculpas.",
       icon: ClockIcon,
       color: "bg-green-500",
     },
     {
       name: "Gestão de Incidentes",
-      description: "Gerencie e acompanhe incidentes com relatórios detalhados e métricas de tempo de resposta.",
+      description: "Registre, acompanhe e encerre incidentes com linha do tempo completa. Útil para post-mortems e relatórios de SLA.",
       icon: AlertTriangleIcon,
       color: "bg-yellow-500",
     },
     {
-      name: "Colaboração em Equipe",
-      description: "Colabore com sua equipe compartilhando monitores e configurando regras de notificação baseadas em equipe.",
-      icon: MessageSquareIcon,
+      name: "Página de Status Pública",
+      description: "Publique o status dos seus serviços em tempo real. Seus clientes ficam informados e o suporte recebe menos tickets.",
+      icon: LayoutDashboardIcon,
       color: "bg-purple-500",
     },
     {
       name: "Análise de Desempenho",
-      description: "Acompanhe tempos de resposta e métricas de desempenho para garantir que seus serviços sejam rápidos.",
+      description: "Detecte lentidão antes que o usuário perceba. Tempo de resposta ao longo do tempo, tudo em um só lugar.",
       icon: BarChart2Icon,
       color: "bg-indigo-500",
     },

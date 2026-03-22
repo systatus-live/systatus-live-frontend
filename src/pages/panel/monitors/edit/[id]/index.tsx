@@ -64,7 +64,7 @@ const EditMonitor: NextPageWithLayout = () => {
           address: monitorRes.address,
           active: monitorRes.active,
           integrationList: monitorRes.integrationList.map((i: any) => i.id),
-          intervalId: monitorRes.intervalId,
+          intervalId: monitorRes.interval_id,
         });
       }).catch((error: any) => {
         Alert.error("", error.message);

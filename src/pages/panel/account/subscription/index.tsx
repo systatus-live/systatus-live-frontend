@@ -186,8 +186,8 @@ const Subscription: NextPageWithLayout = () => {
                     <TableRow key={invoice.id}>
                       <TableCell className="font-medium text-sm font-mono">{invoice.id}</TableCell>
                       <TableCell className="text-sm">{invoice.plan}</TableCell>
-                      <TableCell className="text-sm whitespace-nowrap">{formatDate(invoice.issueDate, "DD/MM/YYYY")}</TableCell>
-                      <TableCell className="text-sm whitespace-nowrap">{formatDate(invoice.dueDate, "DD/MM/YYYY")}</TableCell>
+                      <TableCell className="text-sm whitespace-nowrap">{formatDate(invoice.issue_date, "DD/MM/YYYY")}</TableCell>
+                      <TableCell className="text-sm whitespace-nowrap">{formatDate(invoice.due_date, "DD/MM/YYYY")}</TableCell>
                       <TableCell className="text-sm">{formatMoney(invoice.amount)}</TableCell>
                       <TableCell>
                         {status && (

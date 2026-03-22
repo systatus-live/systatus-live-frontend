@@ -98,7 +98,7 @@ const NewIntegration: NextPageWithLayout = () => {
       </div>
 
       <form id="new-integration-form" onSubmit={handleSubmit(handleSave)}>
-        <div className="max-w-2xl">
+        <div className="max-w-3xl">
           <div className="rounded-xl border bg-card p-6 space-y-5">
               <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Configurações
@@ -131,7 +131,7 @@ const NewIntegration: NextPageWithLayout = () => {
                           {platformList.map((platform) => (
                             <SelectItem key={platform.id} value={platform.id}>
                               <div className="flex items-center gap-2">
-                                <Image src={platform.iconUrl} alt="" width={14} height={14} />
+                                <Image src={platform.icon_url} alt="" width={14} height={14} />
                                 {platform.description}
                               </div>
                             </SelectItem>

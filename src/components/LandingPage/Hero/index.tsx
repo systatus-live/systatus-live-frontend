@@ -38,8 +38,8 @@ export default function Hero() {
         title: "website.com",
         icon: GlobeIcon,
         color: "green",
-        uptime: "Disponibilidade 92%",
-        progress: "92%"
+        uptime: "Disponibilidade 99.9%",
+        progress: "99%"
       },
       {
         title: "api.service.com",
@@ -72,7 +72,7 @@ export default function Hero() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                <span className="block xl:inline">Monitore seus aplicativos com</span>{' '}
+                <span className="block xl:inline">Saiba antes dos seus clientes</span>{' '}
                 <motion.span
                   className={"block"}
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -80,7 +80,7 @@ export default function Hero() {
                   transition={{ delay: 0.3, duration: 0.5 }}
                   style={{ color: "#4D9EFF"}}
                 >
-                  systatus.live
+                  quando algo sai do ar
                 </motion.span>
               </motion.h1>
               <motion.p
@@ -104,6 +104,24 @@ export default function Hero() {
                 <Link href="#features">
                   <Button variant="outline">Saiba mais</Button>
                 </Link>
+              </motion.div>
+
+              <motion.div
+                className="mt-8 flex flex-wrap gap-x-6 gap-y-2 sm:justify-center lg:justify-start"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.9, duration: 0.5 }}
+              >
+                {[
+                  { label: "Verificação a cada 60s" },
+                  { label: "Alerta em menos de 30s" },
+                  { label: "Grátis para começar" },
+                ].map((stat) => (
+                  <div key={stat.label} className="flex items-center gap-1.5 text-sm text-gray-500">
+                    <span className="h-1.5 w-1.5 rounded-full bg-green-500 inline-block" />
+                    {stat.label}
+                  </div>
+                ))}
               </motion.div>
             </div>
           </main>

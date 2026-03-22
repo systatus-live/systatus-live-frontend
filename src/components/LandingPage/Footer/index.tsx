@@ -2,6 +2,7 @@ import Logo from '@/components/Logo'
 import { motion } from 'framer-motion'
 import { ArrowUpIcon } from 'lucide-react'
 import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 
 export default function Footer() {
   const navItemList = [
@@ -38,6 +39,22 @@ export default function Footer() {
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
+        <motion.div
+          className="mb-16 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <h3 className="text-2xl font-bold text-white mb-2">Pronto para monitorar seus serviços?</h3>
+          <p className="text-gray-400 mb-6">Crie sua conta grátis. Sem cartão de crédito, sem compromisso.</p>
+          <Link href="/auth/signup">
+            <Button variant="outline" className="bg-transparent text-white border-white hover:bg-white hover:text-gray-900">
+              Criar conta grátis
+            </Button>
+          </Link>
+        </motion.div>
+
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8 xl:col-span-1">
             <motion.div

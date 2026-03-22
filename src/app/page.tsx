@@ -3,6 +3,7 @@
 import Features from "@/components/LandingPage/Features";
 import Footer from "@/components/LandingPage/Footer";
 import Hero from "@/components/LandingPage/Hero";
+import HowItWorks from "@/components/LandingPage/HowItWorks";
 import Integrations from "@/components/LandingPage/Integrations";
 import Navbar from "@/components/LandingPage/Navbar";
 import Pricing from "@/components/LandingPage/Pricing";
@@ -19,6 +20,7 @@ export default function Home() {
     <GlobalProvider>
       <Navbar />
       <Hero />
+      <HowItWorks />
       <Features />
       <Integrations />
       <Pricing />

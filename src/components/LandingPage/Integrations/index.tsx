@@ -1,6 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export default function Integrations() {
   const integrations = [
@@ -94,6 +96,19 @@ export default function Integrations() {
               </div>
             </motion.div>
           ))}
+        </motion.div>
+
+        <motion.div
+          className="mt-12 text-center"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.6, duration: 0.5 }}
+        >
+          <p className="text-gray-500 mb-4">Configure seus canais de alerta em menos de 2 minutos.</p>
+          <Link href="/auth/signin">
+            <Button>Conectar integrações</Button>
+          </Link>
         </motion.div>
       </div>
     </div>

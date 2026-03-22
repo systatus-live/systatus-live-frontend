@@ -32,10 +32,10 @@ type IFormPassword = {
 
 type AuthHistoryItem = {
   id: string;
-  createdAt: string;
-  locationJson: { city: string; state: string; country: string; flag: string } | null;
+  created_at: string;
+  location_json: { city: string; state: string; country: string; flag: string } | null;
   ip: string;
-  userAgent: string;
+  user_agent: string;
 };
 
 const Details: NextPageWithLayout = () => {
@@ -376,16 +376,16 @@ const Details: NextPageWithLayout = () => {
                 authHistory.map((item) => (
                   <TableRow key={item.id}>
                     <TableCell className="text-sm font-medium whitespace-nowrap">
-                      {formatDate(item.createdAt, "DD/MM/YYYY HH:mm")}
+                      {formatDate(item.created_at, "DD/MM/YYYY HH:mm")}
                     </TableCell>
                     <TableCell className="text-sm">
-                      {item.locationJson
-                        ? `${item.locationJson.city} • ${item.locationJson.state} • ${item.locationJson.country} ${item.locationJson.flag}`
+                      {item.location_json
+                        ? `${item.location_json.city} • ${item.location_json.state} • ${item.location_json.country} ${item.location_json.flag}`
                         : <span className="text-muted-foreground">Desconhecida</span>
                       }
                     </TableCell>
                     <TableCell className="text-sm font-mono">{item.ip}</TableCell>
-                    <TableCell className="text-sm text-muted-foreground">{getDevice(item.userAgent)}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground">{getDevice(item.user_agent)}</TableCell>
                   </TableRow>
                 ))
               )}

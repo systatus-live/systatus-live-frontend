@@ -43,7 +43,7 @@ const Navbar: React.FC = () => {
             </Link>
           </div>
           <div className="-mr-2 flex items-center sm:hidden">
-            <Button onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(!isMenuOpen)}>
               {isMenuOpen ? <XIcon className="block h-6 w-6" /> : <MenuIcon className="block h-6 w-6" />}
             </Button>
           </div>

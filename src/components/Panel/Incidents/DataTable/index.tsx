@@ -17,7 +17,7 @@ export default function DataTable<TData>({ data }: DataTableProps<TData>) {
       header: "Status",
       cell: ({ row }) => {
         const incident = row.original;
-        if (incident.endedAt) {
+        if (incident.ended_at) {
           return (
             <div className="flex items-center gap-1.5">
               <BadgeCheckIcon size={16} className={styles["font-success"]} />
@@ -59,15 +59,15 @@ export default function DataTable<TData>({ data }: DataTableProps<TData>) {
     {
       header: "Iniciado",
       cell: ({ row }) => (
-        <span className="text-sm">{formatDate(row.original.createdAt, "DD/MM/YYYY HH:mm")}</span>
+        <span className="text-sm">{formatDate(row.original.created_at, "DD/MM/YYYY HH:mm")}</span>
       ),
     },
     {
       header: "Resolvido",
       cell: ({ row }) => {
         const incident = row.original;
-        if (incident.endedAt) {
-          return <span className="text-sm">{formatDate(incident.endedAt, "DD/MM/YYYY HH:mm")}</span>;
+        if (incident.ended_at) {
+          return <span className="text-sm">{formatDate(incident.ended_at, "DD/MM/YYYY HH:mm")}</span>;
         }
         return <span className="text-sm text-muted-foreground">Em andamento</span>;
       },

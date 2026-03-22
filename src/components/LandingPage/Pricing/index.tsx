@@ -53,6 +53,16 @@ export default function Pricing() {
             Todos os planos incluem nossos recursos principais de monitoramento
             com diferentes níveis de serviço.
           </p>
+          <motion.div
+            className="mt-8 inline-flex items-center gap-3 rounded-xl border border-amber-200 bg-amber-50 px-5 py-3 text-sm text-amber-800"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4, duration: 0.4 }}
+          >
+            <span className="text-base">⚠️</span>
+            <span>Seu site pode estar fora do ar agora — e você só vai saber quando um cliente reclamar.</span>
+          </motion.div>
         </motion.div>
         <div className="mt-16 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-x-8">
           {planList.length == 0 ? <></> : (
