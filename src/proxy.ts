@@ -35,6 +35,7 @@ export async function proxy(request: NextRequest) {
         return NextResponse.redirect(new URL("/panel", request.url));
       }
     } catch (error: any) {
+      console.log(`[PROXY] - Token error ${error.message}`);
       cookieStore.delete("token");
       return NextResponse.redirect(new URL("/auth/signin", request.url));
     }
