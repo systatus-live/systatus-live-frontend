@@ -6,10 +6,11 @@ import { InvoiceStatusEnum, InvoiceStatusLabelEnum } from "@/types/InvoiceStatus
 import formatDate from "@/utils/formatDate";
 import formatMoney from "@/utils/formatMoney";
 import { DownloadIcon, ReceiptIcon } from "lucide-react";
+import Image from "next/image";
 import { ReactElement, useEffect, useState } from "react";
 import AccountLayout from "../layout";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
@@ -71,7 +72,6 @@ const Billing: NextPageWithLayout = () => {
       }
 
       const url = window.URL.createObjectURL(blob);
-
       const link = document.createElement("a");
       link.href = url;
       link.download = filename;
@@ -128,9 +128,16 @@ const Billing: NextPageWithLayout = () => {
                   return (
                     <TableRow key={invoice.id}>
                       <TableCell className="font-medium text-sm font-mono">{invoice.id}</TableCell>
-                      <TableCell className="text-sm">{invoice.plan}</TableCell>
-                      <TableCell className="text-sm whitespace-nowrap">{formatDate(invoice.issueDate, "DD/MM/YYYY")}</TableCell>
-                      <TableCell className="text-sm whitespace-nowrap">{formatDate(invoice.dueDate, "DD/MM/YYYY")}</TableCell>
+                      <TableCell className="text-sm">
+                        <div className="flex items-center gap-x-2">
+                          <div className="relative h-5 w-5">
+                            <Image src={invoice.image} alt="Plano" fill sizes="20px" style={{ objectFit: "contain" }} priority />
+                          </div>
+                          <span>{invoice.plan}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-sm whitespace-nowrap">{formatDate(invoice.issue_date, "DD/MM/YYYY")}</TableCell>
+                      <TableCell className="text-sm whitespace-nowrap">{formatDate(invoice.due_date, "DD/MM/YYYY")}</TableCell>
                       <TableCell className="text-sm">{formatMoney(invoice.amount)}</TableCell>
                       <TableCell>
                         {status && (
