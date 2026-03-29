@@ -97,8 +97,8 @@ const Incidents: NextPageWithLayout = () => {
           <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             Incidentes (30 dias)
           </p>
-          <ChartContainer config={chartConfig} className="h-[80px] w-full aspect-auto">
-            <AreaChart data={historical} margin={{ top: 4, right: 0, left: 0, bottom: 0 }}>
+          <ChartContainer config={chartConfig} className="h-[80px] w-full aspect-auto overflow-visible [&_.recharts-wrapper]:overflow-visible [&_.recharts-surface]:overflow-visible">
+            <AreaChart data={historical} margin={{ top: 8, right: 0, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="incidentFill" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#FDC700" stopOpacity={0.3} />

@@ -3,13 +3,14 @@ import { NextPageWithLayout } from "@/pages/_app";
 import { useGlobalProvider } from "@/providers/GlobalProvider";
 import InvoiceService from "@/services/InvoiceService";
 import PlanService from "@/services/PlanService";
+import StripeService from "@/services/StripeService";
 import UserService from "@/services/UserService";
 import { InvoiceStatusEnum, InvoiceStatusLabelEnum } from "@/types/InvoiceStatusEnum";
 import formatDate from "@/utils/formatDate";
 import formatMoney from "@/utils/formatMoney";
 import { CheckIcon, CreditCardIcon, DownloadIcon, ReceiptIcon, SparklesIcon, XIcon } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import { ReactElement, useEffect, useState } from "react";
 import AccountLayout from "../layout";
 import { Badge } from "@/components/ui/badge";
@@ -26,39 +27,56 @@ const statusVariantMap: Record<InvoiceStatusEnum, { label: string; className: st
 
 const Subscription: NextPageWithLayout = () => {
   const { token, setLoading } = useGlobalProvider();
+  const router = useRouter();
   const [planList, setPlanList] = useState<any[]>([]);
   const [subscription, setSubscription] = useState<any>(null);
   const [invoiceList, setInvoiceList] = useState<any[]>([]);
   const [pagination, setPagination] = useState({ page: 0, rows: 0, total: 0 });
 
   useEffect(() => {
-    if (!token) {
-      return;
+    if (!router.isReady) return;
+
+    const { status } = router.query;
+
+    if (status === "success") {
+      Alert.success("", "Assinatura realizada com sucesso!");
+      loadData();
+    } else if (status === "cancel") {
+      Alert.info("", "Assinatura cancelada.");
     }
+  }, [router.isReady, router.query.status]);
 
-    async function loadData() {
-      setLoading(true);
-
-      try {
-        const [subResponse, planResponse, invoiceResponse] = await Promise.all([
-          UserService.getUserSubscription(token!),
-          PlanService.getPlanList(),
-          InvoiceService.getInvoiceList(token!, new URLSearchParams({ page: "0" })),
-        ]);
-
-        setSubscription(subResponse);
-        setPlanList(planResponse.data);
-        setInvoiceList(invoiceResponse.data);
-        setPagination({ page: 0, rows: invoiceResponse.pagination.rows, total: invoiceResponse.pagination.total });
-      } catch (error: any) {
-        Alert.error("", error.message);
-      } finally {
-        setLoading(false);
-      }
+  useEffect(() => {
+    if (token) {
+      loadData();
     }
-
-    loadData();
   }, [token]);
+
+  async function loadData() {
+    setLoading(true);
+
+    try {
+      const [subResponse, planResponse, invoiceResponse] = await Promise.all([
+        UserService.getUserSubscription(token!),
+        PlanService.getPlanList(),
+        InvoiceService.getInvoiceList(token!, new URLSearchParams({ page: "0" })),
+      ]);
+
+      setSubscription(subResponse);
+      setPlanList(planResponse.data);
+      setInvoiceList(invoiceResponse.data);
+
+      setPagination({
+        page: 0,
+        rows: invoiceResponse.pagination.rows,
+        total: invoiceResponse.pagination.total
+      });
+    } catch (error: any) {
+      Alert.error("", error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   async function loadInvoices(page: number) {
     setLoading(true);
@@ -77,6 +95,18 @@ const Subscription: NextPageWithLayout = () => {
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleSubscribe(planId: string) {
+    setLoading(true);
+
+    try {
+      const response = await StripeService.createCheckoutSession(token!, planId);
+      window.location.href = response.url;
+    } catch (error: any) {
+      Alert.error("", error.message ?? "Falha ao iniciar o checkout.");
       setLoading(false);
     }
   }
@@ -185,7 +215,14 @@ const Subscription: NextPageWithLayout = () => {
                   return (
                     <TableRow key={invoice.id}>
                       <TableCell className="font-medium text-sm font-mono">{invoice.id}</TableCell>
-                      <TableCell className="text-sm">{invoice.plan}</TableCell>
+                      <TableCell className="text-sm">
+                        <div className="flex items-center gap-x-2">
+                          <div className="relative h-5 w-5">
+                            <Image src={invoice.image} alt="Plano" fill sizes="5px" style={{ objectFit: "contain" }} priority />
+                          </div>
+                          <span>{invoice.plan}</span>
+                        </div>
+                      </TableCell>
                       <TableCell className="text-sm whitespace-nowrap">{formatDate(invoice.issue_date, "DD/MM/YYYY")}</TableCell>
                       <TableCell className="text-sm whitespace-nowrap">{formatDate(invoice.due_date, "DD/MM/YYYY")}</TableCell>
                       <TableCell className="text-sm">{formatMoney(invoice.amount)}</TableCell>
@@ -292,11 +329,20 @@ const Subscription: NextPageWithLayout = () => {
                   ))}
                 </ul>
 
-                <Link href={plan.btaLink}>
-                  <Button variant={plan.mostPopular ? "default" : "outline"} className="w-full" size="sm">
+                {subscription?.id === plan.id ? (
+                  <Button variant="outline" className="w-full" size="sm" disabled>
+                    Plano atual
+                  </Button>
+                ) : (
+                  <Button
+                    variant={plan.mostPopular ? "default" : "outline"}
+                    className="w-full"
+                    size="sm"
+                    onClick={() => handleSubscribe(plan.id)}
+                  >
                     {plan.bta}
                   </Button>
-                </Link>
+                )}
               </div>
             ))}
           </div>
