@@ -21,7 +21,19 @@ export default class UserService {
 
   static getUserSubscription(token: string) {
     return HttpService.get(`${process.env.NEXT_PUBLIC_SYSTATUS_API_URL}/v1/users/subscriptions`, {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
+    });
+  }
+
+  static getUserBillingData(token: string) {
+    return HttpService.get(`${process.env.NEXT_PUBLIC_SYSTATUS_API_URL}/v1/users/billing`, {
+      Authorization: `Bearer ${token}`,
+    });
+  }
+
+  static updateUserBillingData(token: string, data: any) {
+    return HttpService.patch(`${process.env.NEXT_PUBLIC_SYSTATUS_API_URL}/v1/users/billing`, data, {
+      Authorization: `Bearer ${token}`,
     });
   }
 }

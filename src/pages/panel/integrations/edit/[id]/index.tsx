@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import Head from "next/head";
 import Image from "next/image";
+import { PencilIcon } from "lucide-react";
 import { useRouter } from "next/router";
 import { ReactElement, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -30,6 +31,7 @@ const EditIntegration: NextPageWithLayout = () => {
   const [integration, setIntegration] = useState<any>(null);
   const [platformList, setPlatformList] = useState<any[]>([]);
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const { register, handleSubmit, watch, control, reset } = useForm<IFormValues>();
 
@@ -79,19 +81,36 @@ const EditIntegration: NextPageWithLayout = () => {
 
   async function handleSave(form: IFormValues) {
     setLoading(true);
-    
+
     try {
       const response = await IntegrationService.updateIntegration(token as string, integration.id, {
         chatPlatformId: form.chatPlatformId,
         name: form.name,
         address: form.address,
       });
+
+      setIntegration({
+        ...integration,
+        chat_platform_id: form.chatPlatformId,
+        name: form.name,
+        address: form.address,
+      });
+      setIsEditing(false);
       Alert.success("", response.message);
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
       setLoading(false);
     }
+  }
+
+  function handleCancel() {
+    reset({
+      chatPlatformId: integration.chat_platform_id,
+      name: integration.name,
+      address: integration.address,
+    });
+    setIsEditing(false);
   }
 
   async function handleDelete() {
@@ -130,10 +149,7 @@ const EditIntegration: NextPageWithLayout = () => {
       </Head>
 
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-base font-semibold leading-tight">Editar Integração</h1>
-          <p className="text-sm text-muted-foreground">{integration.name}</p>
-        </div>
+        <h1 className="text-base font-semibold leading-tight">Integração</h1>
         <div className="flex items-center gap-2">
           <Button
             type="button"
@@ -143,9 +159,21 @@ const EditIntegration: NextPageWithLayout = () => {
           >
             Excluir
           </Button>
-          <Button type="submit" form="edit-integration-form">
-            Salvar alterações
-          </Button>
+          {isEditing ? (
+            <>
+              <Button type="button" variant="ghost" onClick={handleCancel}>
+                Cancelar
+              </Button>
+              <Button type="submit" form="edit-integration-form">
+                Salvar alterações
+              </Button>
+            </>
+          ) : (
+            <Button type="button" onClick={() => setIsEditing(true)}>
+              <PencilIcon className="h-3.5 w-3.5 mr-1" />
+              Editar
+            </Button>
+          )}
         </div>
       </div>
 
@@ -156,70 +184,101 @@ const EditIntegration: NextPageWithLayout = () => {
               <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Configurações
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <Field className="sm:col-span-2">
-                  <FieldLabel htmlFor="name">Nome <span className="text-destructive">*</span></FieldLabel>
-                  <Input
-                    id="name"
-                    {...register("name", { required: true })}
-                    maxLength={30}
-                    placeholder="Ex.: Canal de DevOps"
-                  />
-                  <p className="text-xs text-muted-foreground text-right">
-                    {watch("name")?.length ?? 0}/30
-                  </p>
-                </Field>
-                <Field>
-                  <FieldLabel>Plataforma <span className="text-destructive">*</span></FieldLabel>
-                  <Controller
-                    name="chatPlatformId"
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <Select value={field.value} onValueChange={field.onChange}>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Selecione" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {platformList.map((platform) => (
-                            <SelectItem key={platform.id} value={platform.id}>
-                              <div className="flex items-center gap-2">
-                                <Image src={platform.icon_url} alt="" width={14} height={14} />
-                                {platform.description}
-                              </div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    )}
-                  />
-                </Field>
-              </div>
-              <Field>
-                <FieldLabel htmlFor="address">
-                  {getAddressLabel()} <span className="text-destructive">*</span>
-                </FieldLabel>
-                <Input
-                  id="address"
-                  {...register("address", { required: true })}
-                  maxLength={1000}
-                  placeholder={isWebhookPlatform ? "https://hooks.example.com/..." : undefined}
-                />
-                <div className="flex items-center justify-between">
-                  <p className="text-xs text-muted-foreground">
-                    {watch("address")?.length ?? 0}/1000
-                  </p>
-                  {isWebhookPlatform && (
-                    <button
-                      type="button"
-                      onClick={() => setIsTutorialOpen(true)}
-                      className="text-xs text-primary underline underline-offset-4"
-                    >
-                      Como obter a URL do Webhook?
-                    </button>
-                  )}
+              {!isEditing ? (
+                <div className="space-y-3 text-sm">
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-0.5">Nome</p>
+                    <p className="font-medium">{integration.name}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-0.5">Plataforma</p>
+                    <div className="flex items-center gap-2">
+                      {platformList.find((p) => p.id === integration.chat_platform_id) && (
+                        <Image
+                          src={platformList.find((p) => p.id === integration.chat_platform_id).icon_url}
+                          alt=""
+                          width={14}
+                          height={14}
+                        />
+                      )}
+                      <p className="font-medium">
+                        {platformList.find((p) => p.id === integration.chat_platform_id)?.description}
+                      </p>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-0.5">{getAddressLabel()}</p>
+                    <p className="font-medium break-all">{integration.address}</p>
+                  </div>
                 </div>
-              </Field>
+              ) : (
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <Field className="sm:col-span-2">
+                      <FieldLabel htmlFor="name">Nome <span className="text-destructive">*</span></FieldLabel>
+                      <Input
+                        id="name"
+                        {...register("name", { required: true })}
+                        maxLength={30}
+                        placeholder="Ex.: Canal de DevOps"
+                      />
+                      <p className="text-xs text-muted-foreground text-right">
+                        {watch("name")?.length ?? 0}/30
+                      </p>
+                    </Field>
+                    <Field>
+                      <FieldLabel>Plataforma <span className="text-destructive">*</span></FieldLabel>
+                      <Controller
+                        name="chatPlatformId"
+                        control={control}
+                        rules={{ required: true }}
+                        render={({ field }) => (
+                          <Select value={field.value} onValueChange={field.onChange}>
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Selecione" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {platformList.map((platform) => (
+                                <SelectItem key={platform.id} value={platform.id}>
+                                  <div className="flex items-center gap-2">
+                                    <Image src={platform.icon_url} alt="" width={14} height={14} />
+                                    {platform.description}
+                                  </div>
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        )}
+                      />
+                    </Field>
+                  </div>
+                  <Field>
+                    <FieldLabel htmlFor="address">
+                      {getAddressLabel()} <span className="text-destructive">*</span>
+                    </FieldLabel>
+                    <Input
+                      id="address"
+                      {...register("address", { required: true })}
+                      maxLength={1000}
+                      placeholder={isWebhookPlatform ? "https://hooks.example.com/..." : undefined}
+                    />
+                    <div className="flex items-center justify-between">
+                      <p className="text-xs text-muted-foreground">
+                        {watch("address")?.length ?? 0}/1000
+                      </p>
+                      {isWebhookPlatform && (
+                        <button
+                          type="button"
+                          onClick={() => setIsTutorialOpen(true)}
+                          className="text-xs text-primary underline underline-offset-4"
+                        >
+                          Como obter a URL do Webhook?
+                        </button>
+                      )}
+                    </div>
+                  </Field>
+                </>
+              )}
             </div>
           </div>
           <div>

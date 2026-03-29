@@ -1,12 +1,12 @@
-import { Alert } from '@/lib/Alert';
-import { NextPageWithLayout } from '@/pages/_app';
-import { useGlobalProvider } from '@/providers/GlobalProvider';
-import MonitorService from '@/services/MonitorService';
-import { Button } from '@/components/ui/button';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { ReactElement, useEffect, useState } from 'react';
-import DataTable from '@/components/Panel/Monitors/DataTable';
+import { Alert } from "@/lib/Alert";
+import { NextPageWithLayout } from "@/pages/_app";
+import { useGlobalProvider } from "@/providers/GlobalProvider";
+import MonitorService from "@/services/MonitorService";
+import { Button } from "@/components/ui/button";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { ReactElement, useEffect, useState } from "react";
+import DataTable from "@/components/Panel/Monitors/DataTable";
 
 const Monitors: NextPageWithLayout = () => {
   const router = useRouter();

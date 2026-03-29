@@ -8,7 +8,7 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel
 import { Alert } from "@/lib/Alert";
 import { useGlobalProvider } from "@/providers/GlobalProvider";
 import AuthService from "@/services/AuthService";
-import { BadgeCheck, ChevronsUpDown, CreditCard, CreditCardIcon, HelpCircleIcon, LogOut, RadarIcon, ReceiptIcon, SirenIcon, Waypoints } from "lucide-react";
+import { BadgeCheck, ChevronsUpDown, CreditCard, CreditCardIcon, HelpCircleIcon, LogOut, RadarIcon, SirenIcon, Waypoints } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -51,7 +51,6 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
       items: [
         { icon: BadgeCheck, title: "Detalhes", url: "/panel/account/details", isActive: router.pathname.startsWith("/panel/account/details") },
         { icon: CreditCardIcon, title: "Assinatura", url: "/panel/account/subscription", isActive: router.pathname.startsWith("/panel/account/subscription") },
-        { icon: ReceiptIcon, title: "Cobranças", url: "/panel/account/billing", isActive: router.pathname.startsWith("/panel/account/billing") },
       ]
     },
     {
@@ -157,12 +156,6 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
                             <DropdownMenuItem>
                               <CreditCard />
                               Assinatura
-                            </DropdownMenuItem>
-                          </Link>
-                          <Link href="/panel/account/billing">
-                            <DropdownMenuItem>
-                              <ReceiptIcon />
-                              Cobranças
                             </DropdownMenuItem>
                           </Link>
                         </DropdownMenuGroup>

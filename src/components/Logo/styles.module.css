@@ -4,6 +4,10 @@
   font-size: 1.25rem;
 }
 
+:global(.dark) .logo {
+  color: #FDFCFD;
+}
+
 .logo-white {
   font-weight: 600;
   font-size: 1.25rem;

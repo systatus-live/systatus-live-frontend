@@ -1,19 +1,19 @@
-import Logo from '@/components/Logo';
-import { Alert } from '@/lib/Alert';
-import { useGlobalProvider } from '@/providers/GlobalProvider';
-import AuthService from '@/services/AuthService';
-import Head from 'next/head';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import Logo from "@/components/Logo";
+import { Alert } from "@/lib/Alert";
+import { useGlobalProvider } from "@/providers/GlobalProvider";
+import AuthService from "@/services/AuthService";
+import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-import { Controller, useForm } from 'react-hook-form';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Button } from '@/components/ui/button';
-import { Field, FieldGroup, FieldLabel, FieldDescription } from '@/components/ui/field';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Controller, useForm } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { Field, FieldGroup, FieldLabel, FieldDescription } from "@/components/ui/field";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 type IFormValues = {
   name: string;

@@ -1,17 +1,17 @@
 "use client";
 
-import Logo from '@/components/Logo';
-import { Alert } from '@/lib/Alert';
-import { useGlobalProvider } from '@/providers/GlobalProvider';
-import AuthService from '@/services/AuthService';
-import Head from 'next/head';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useForm } from 'react-hook-form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Field, FieldGroup, FieldLabel, FieldDescription } from '@/components/ui/field';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import Logo from "@/components/Logo";
+import { Alert } from "@/lib/Alert";
+import { useGlobalProvider } from "@/providers/GlobalProvider";
+import AuthService from "@/services/AuthService";
+import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Field, FieldGroup, FieldLabel, FieldDescription } from "@/components/ui/field";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 type IFormValues = {
   password: string;

@@ -5,7 +5,7 @@ import UserService from "@/services/UserService";
 import { SignInTypeEnum } from "@/types/SignInTypeEnum";
 import formatDate from "@/utils/formatDate";
 import UAParser from "my-ua-parser";
-import { CalendarIcon, KeyRoundIcon, MonitorIcon, ShieldIcon, Trash2Icon, UploadIcon, UserIcon } from "lucide-react";
+import { CalendarIcon, KeyRoundIcon, MonitorIcon, PencilIcon, ShieldIcon, Trash2Icon, UploadIcon, UserIcon } from "lucide-react";
 import Image from "next/image";
 import { ReactElement, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -44,6 +44,8 @@ const Details: NextPageWithLayout = () => {
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [authHistory, setAuthHistory] = useState<AuthHistoryItem[]>([]);
   const [pagination, setPagination] = useState({ page: 0, rows: 0, total: 0 });
+  const [detailsExpanded, setDetailsExpanded] = useState(false);
+  const [passwordExpanded, setPasswordExpanded] = useState(false);
   const inputFileRef = useRef<HTMLInputElement>(null);
 
   const detailsForm = useForm<IFormDetails>({
@@ -126,6 +128,7 @@ const Details: NextPageWithLayout = () => {
         setIsChangedAvatar(false);
       }
 
+      setDetailsExpanded(false);
       Alert.success("", response.message);
     } catch (error: any) {
       Alert.error("", error.message);
@@ -149,7 +152,7 @@ const Details: NextPageWithLayout = () => {
       });
 
       passwordForm.reset();
-
+      setPasswordExpanded(false);
       Alert.success("", response.message);
     } catch (error: any) {
       Alert.error("", error.message);
@@ -233,85 +236,108 @@ const Details: NextPageWithLayout = () => {
         </div>
         <Separator className="mb-6" />
 
-        <form onSubmit={detailsForm.handleSubmit(onSubmitDetails)}>
-          <div className="flex flex-col sm:flex-row gap-8">
-            <div className="flex flex-col items-center gap-3 shrink-0">
-              <div className="relative h-24 w-24 rounded-full overflow-hidden border bg-muted">
-                <Image src={getAvatarSrc()} alt="Avatar" fill sizes="96px" style={{ objectFit: "cover" }} priority />
-              </div>
-              <div className="flex items-center gap-2">
-                <input
-                  id="upload-avatar"
-                  ref={inputFileRef}
-                  type="file"
-                  className="hidden"
-                  accept="image/jpg,image/jpeg,image/png"
-                  onChange={onUploadAvatar}
-                />
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="icon"
-                  className="h-7 w-7"
-                  title="Enviar foto"
-                  onClick={() => document.getElementById("upload-avatar")?.click()}
-                >
-                  <UploadIcon className="h-3.5 w-3.5" />
-                </Button>
-                {detailsForm.watch("avatar") && (
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <UserIcon className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm font-medium">Dados do perfil</span>
+          </div>
+          <Button variant="ghost" size="sm" onClick={() => setDetailsExpanded(!detailsExpanded)}>
+            <PencilIcon className="h-3.5 w-3.5 mr-1" />
+            {detailsExpanded ? "Cancelar" : "Editar"}
+          </Button>
+        </div>
+
+        {detailsExpanded ? (
+          <form onSubmit={detailsForm.handleSubmit(onSubmitDetails)} className="mt-5">
+            <div className="flex flex-col sm:flex-row gap-8">
+              <div className="flex flex-col items-center gap-3 shrink-0">
+                <div className="relative h-24 w-24 rounded-full overflow-hidden border bg-muted">
+                  <Image src={getAvatarSrc()} alt="Avatar" fill sizes="96px" style={{ objectFit: "cover" }} priority />
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    id="upload-avatar"
+                    ref={inputFileRef}
+                    type="file"
+                    className="hidden"
+                    accept="image/jpg,image/jpeg,image/png"
+                    onChange={onUploadAvatar}
+                  />
                   <Button
                     type="button"
                     variant="outline"
                     size="icon"
                     className="h-7 w-7"
-                    title="Remover foto"
-                    onClick={onDeleteAvatar}
+                    title="Enviar foto"
+                    onClick={() => document.getElementById("upload-avatar")?.click()}
                   >
-                    <Trash2Icon className="h-3.5 w-3.5" />
+                    <UploadIcon className="h-3.5 w-3.5" />
                   </Button>
-                )}
+                  {detailsForm.watch("avatar") && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      className="h-7 w-7"
+                      title="Remover foto"
+                      onClick={onDeleteAvatar}
+                    >
+                      <Trash2Icon className="h-3.5 w-3.5" />
+                    </Button>
+                  )}
+                </div>
+                <span className="text-xs text-muted-foreground">Máx. 1 MB</span>
               </div>
-              <span className="text-xs text-muted-foreground">Máx. 1 MB</span>
+              <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Field>
+                  <FieldLabel htmlFor="name">Nome <span className="text-destructive">*</span></FieldLabel>
+                  <Input
+                    id="name"
+                    {...detailsForm.register("name", { required: true })}
+                    maxLength={50}
+                    placeholder="Seu nome"
+                  />
+                  <p className="text-xs text-muted-foreground text-right">
+                    {detailsForm.watch("name")?.length ?? 0}/50
+                  </p>
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="email">E-mail <span className="text-destructive">*</span></FieldLabel>
+                  <Input
+                    id="email"
+                    {...detailsForm.register("email", { required: true })}
+                    type="email"
+                    maxLength={255}
+                    placeholder="seu@email.com"
+                  />
+                  <p className="text-xs text-muted-foreground text-right">
+                    {detailsForm.watch("email")?.length ?? 0}/255
+                  </p>
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="createdAt" className="flex items-center gap-1.5">
+                    <CalendarIcon className="h-3.5 w-3.5 text-muted-foreground" />
+                    Membro desde
+                  </FieldLabel>
+                  <Input id="createdAt" {...detailsForm.register("createdAt")} disabled />
+                </Field>
+                <div className="flex items-center pt-2">
+                  <Button type="submit" size="sm">Salvar alterações</Button>
+                </div>
+              </div>
             </div>
-            <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Field>
-                <FieldLabel htmlFor="name">Nome <span className="text-destructive">*</span></FieldLabel>
-                <Input
-                  id="name"
-                  {...detailsForm.register("name", { required: true })}
-                  maxLength={50}
-                  placeholder="Seu nome"
-                />
-                <p className="text-xs text-muted-foreground text-right">
-                  {detailsForm.watch("name")?.length ?? 0}/50
-                </p>
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="email">E-mail <span className="text-destructive">*</span></FieldLabel>
-                <Input
-                  id="email"
-                  {...detailsForm.register("email", { required: true })}
-                  type="email"
-                  maxLength={255}
-                  placeholder="seu@email.com"
-                />
-                <p className="text-xs text-muted-foreground text-right">
-                  {detailsForm.watch("email")?.length ?? 0}/255
-                </p>
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="createdAt" className="flex items-center gap-1.5">
-                  <CalendarIcon className="h-3.5 w-3.5 text-muted-foreground" />
-                  Membro desde
-                </FieldLabel>
-                <Input id="createdAt" {...detailsForm.register("createdAt")} disabled />
-              </Field>
-              <div className="flex items-center pt-2">
-                <Button type="submit" size="sm">Salvar alterações</Button>
-              </div>
+          </form>
+        ) : (
+          <div className="mt-3 flex items-center gap-3">
+            <div className="relative h-10 w-10 rounded-full overflow-hidden border bg-muted shrink-0">
+              <Image src={getAvatarSrc()} alt="Avatar" fill sizes="40px" style={{ objectFit: "cover" }} priority />
+            </div>
+            <div className="space-y-0.5 text-sm text-muted-foreground">
+              <p className="text-foreground font-medium">{user?.name}</p>
+              <p>{user?.email}</p>
             </div>
           </div>
-        </form>
+        )}
       </section>
 
       <section>
@@ -321,32 +347,46 @@ const Details: NextPageWithLayout = () => {
         </div>
         <Separator className="mb-6" />
 
-        <div className="flex items-center gap-2 mb-4">
-          <KeyRoundIcon className="h-4 w-4 text-muted-foreground" />
-          <h3 className="text-sm font-medium">Alterar senha</h3>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <KeyRoundIcon className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm font-medium">Alterar senha</span>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setPasswordExpanded(!passwordExpanded)}
+          >
+            <PencilIcon className="h-3.5 w-3.5 mr-1" />
+            {passwordExpanded ? "Cancelar" : "Editar"}
+          </Button>
         </div>
 
-        <form onSubmit={passwordForm.handleSubmit(onSubmitPassword)}>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl">
-            {user?.signinType === SignInTypeEnum.EMAIL_PASSWORD && (
+        {passwordExpanded ? (
+          <form onSubmit={passwordForm.handleSubmit(onSubmitPassword)} className="mt-5">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl">
+              {user?.signinType === SignInTypeEnum.EMAIL_PASSWORD && (
+                <Field>
+                  <FieldLabel htmlFor="currentPassword">Senha atual <span className="text-destructive">*</span></FieldLabel>
+                  <Input id="currentPassword" {...passwordForm.register("currentPassword", { required: true })} type="password" placeholder="••••••••" />
+                </Field>
+              )}
               <Field>
-                <FieldLabel htmlFor="currentPassword">Senha atual <span className="text-destructive">*</span></FieldLabel>
-                <Input id="currentPassword" {...passwordForm.register("currentPassword", { required: true })} type="password" placeholder="••••••••" />
+                <FieldLabel htmlFor="newPassword">Nova senha <span className="text-destructive">*</span></FieldLabel>
+                <Input id="newPassword" {...passwordForm.register("newPassword", { required: true })} type="password" placeholder="••••••••" />
               </Field>
-            )}
-            <Field>
-              <FieldLabel htmlFor="newPassword">Nova senha <span className="text-destructive">*</span></FieldLabel>
-              <Input id="newPassword" {...passwordForm.register("newPassword", { required: true })} type="password" placeholder="••••••••" />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="confirmPassword">Confirmar senha <span className="text-destructive">*</span></FieldLabel>
-              <Input id="confirmPassword" {...passwordForm.register("confirmPassword", { required: true })} type="password" placeholder="••••••••" />
-            </Field>
-            <div className="pt-2">
-              <Button type="submit" size="sm">Atualizar senha</Button>
+              <Field>
+                <FieldLabel htmlFor="confirmPassword">Confirmar senha <span className="text-destructive">*</span></FieldLabel>
+                <Input id="confirmPassword" {...passwordForm.register("confirmPassword", { required: true })} type="password" placeholder="••••••••" />
+              </Field>
+              <div className="pt-2">
+                <Button type="submit" size="sm">Atualizar senha</Button>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+        ) : (
+          <p className="mt-3 text-sm text-muted-foreground">••••••••</p>
+        )}
       </section>
 
       <section>

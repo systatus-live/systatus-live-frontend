@@ -1,5 +1,5 @@
 import { useGlobalProvider } from "@/providers/GlobalProvider";
-import { CreditCardIcon, ReceiptIcon, UserIcon } from "lucide-react";
+import { CreditCardIcon, UserIcon } from "lucide-react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -25,12 +25,6 @@ export default function AccountLayout({ children }: Readonly<{ children: React.R
       label: "Assinatura",
       route: "/panel/account/subscription",
       active: router.pathname.startsWith("/panel/account/subscription")
-    },
-    {
-      icon: ReceiptIcon,
-      label: "Cobranças",
-      route: "/panel/account/billing",
-      active: router.pathname.startsWith("/panel/account/billing")
     }
   ]
 
