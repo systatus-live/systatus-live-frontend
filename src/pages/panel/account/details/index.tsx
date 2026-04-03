@@ -392,8 +392,9 @@ const Details: NextPageWithLayout = () => {
       <section>
         <div className="flex items-center gap-2 mb-4">
           <MonitorIcon className="h-4 w-4 text-muted-foreground" />
-          <h3 className="text-sm font-medium">Histórico de acesso</h3>
+          <h2 className="text-sm font-semibold tracking-wide uppercase text-muted-foreground">Histórico de acesso</h2>
         </div>
+        <Separator className="mb-6" />
 
         <div className="rounded-md border">
           <Table>

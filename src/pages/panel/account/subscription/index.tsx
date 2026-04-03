@@ -9,12 +9,13 @@ import UtilsService from "@/services/UtilsService";
 import { InvoiceStatusEnum, InvoiceStatusLabelEnum } from "@/types/InvoiceStatusEnum";
 import formatDate from "@/utils/formatDate";
 import formatMoney from "@/utils/formatMoney";
-import { CheckIcon, CreditCardIcon, DownloadIcon, MapPinIcon, PencilIcon, ReceiptIcon, SparklesIcon, XIcon } from "lucide-react";
+import { CheckIcon, CreditCardIcon, DownloadIcon, MapPinIcon, PencilIcon, ReceiptIcon, ShieldCheckIcon, SparklesIcon, XIcon } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { ReactElement, useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import AccountLayout from "../layout";
+import { Alert as AlertBox, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Field, FieldLabel } from "@/components/ui/field";
@@ -22,6 +23,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { SubscriptionStatusEnum } from "@/types/SubscriptionStatusEnum";
 
 type IFormBilling = {
   billing_name: string;
@@ -119,7 +121,6 @@ const Subscription: NextPageWithLayout = () => {
 
     if (status === "success") {
       Alert.success("", "Assinatura realizada com sucesso!");
-      loadData();
     } else if (status === "cancel") {
       Alert.info("", "Assinatura cancelada.");
     }
@@ -233,6 +234,12 @@ const Subscription: NextPageWithLayout = () => {
   }
 
   async function handleSubscribe(planId: string) {
+    if (!billingData?.billing_name) {
+      Alert.info("", "Preencha os dados de cobrança antes de assinar um plano pago.");
+      setBillingExpanded(true);
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -345,17 +352,21 @@ const Subscription: NextPageWithLayout = () => {
                 </div>
                 <div>
                   <p className="font-semibold">Plano {subscription.name}</p>
-                  <p className="text-sm text-muted-foreground">Próximo faturamento: {subscription.nextBilling}</p>
+                  <p className="text-sm text-muted-foreground">{subscription.nextBilling}</p>
                 </div>
               </div>
-              <div className="flex items-baseline gap-1">
+              {subscription.status == SubscriptionStatusEnum.TRIAL ? (
                 <span className="text-3xl font-bold">
-                  {subscription.price === 0 ? "Grátis" : formatMoney(subscription.price)}
+                  Trial
                 </span>
-                {subscription.period && (
+              ) : (
+                <div className="flex items-baseline gap-1">
+                  <span className="text-3xl font-bold">
+                    {formatMoney(subscription.price)}
+                  </span>
                   <span className="text-sm text-muted-foreground">{subscription.period}</span>
-                )}
-              </div>
+                </div>
+              )}
             </div>
 
             <div className="rounded-lg border p-5">
@@ -580,6 +591,28 @@ const Subscription: NextPageWithLayout = () => {
                       <Button type="submit" size="sm">Salvar alterações</Button>
                     </div>
                   </div>
+
+                  <AlertBox className="mt-4">
+                    <ShieldCheckIcon />
+                    <AlertTitle>Seus dados estão protegidos</AlertTitle>
+                    <AlertDescription>
+                      <p>
+                        As informações do seu cartão de crédito são processadas diretamente pelo{" "}
+                        <a href="https://stripe.com/br" target="_blank" rel="noreferrer">Stripe</a>
+                        {" "}— uma das plataformas de pagamento mais seguras do mundo. Esses dados nunca trafegam nem são armazenados em nossos servidores.
+                      </p>
+                      <p>
+                        Os dados de endereço e documento preenchidos aqui são armazenados em nossa base exclusivamente para fins de emissão de nota fiscal.
+                        Em qualquer momento, você pode cancelar sua assinatura sem burocracia.
+                      </p>
+                      <p>
+                        Ao assinar um plano, você concorda com os nossos{" "}
+                        <a href="/agreements/privacy-policy" target="_blank" rel="noreferrer">Termos de Uso</a>
+                        {" "}e a nossa{" "}
+                        <a href="/agreements/terms-of-use" target="_blank" rel="noreferrer">Política de Privacidade</a>.
+                      </p>
+                    </AlertDescription>
+                  </AlertBox>
                 </form>
               ) : (
                 billingData?.billing_name ? (
@@ -625,7 +658,7 @@ const Subscription: NextPageWithLayout = () => {
                   <p className="font-semibold text-sm">Plano {plan.name}</p>
                   <div className="flex items-baseline gap-1">
                     <span className="text-3xl font-bold">
-                      {plan.price === 0 ? "Grátis" : formatMoney(plan.price)}
+                      {formatMoney(plan.price)}
                     </span>
                     {plan.period && (
                       <span className="text-sm text-muted-foreground">{plan.period}</span>
@@ -647,19 +680,26 @@ const Subscription: NextPageWithLayout = () => {
                   ))}
                 </ul>
 
-                {subscription?.id === plan.id ? (
+                {subscription?.id === plan.id && subscription.status != SubscriptionStatusEnum.TRIAL ? (
                   <Button variant="outline" className="w-full" size="sm" disabled>
                     Plano atual
                   </Button>
                 ) : (
-                  <Button
-                    variant={plan.mostPopular ? "default" : "outline"}
-                    className="w-full"
-                    size="sm"
-                    onClick={() => handleSubscribe(plan.id)}
-                  >
-                    {plan.bta}
-                  </Button>
+                  <div className="space-y-1.5">
+                    <Button
+                      variant={plan.mostPopular ? "default" : "outline"}
+                      className="w-full"
+                      size="sm"
+                      onClick={() => handleSubscribe(plan.id)}
+                    >
+                      {plan.bta}
+                    </Button>
+                    {!billingData?.billing_name && (
+                      <p className="text-xs text-center text-muted-foreground">
+                        Dados de cobrança necessários
+                      </p>
+                    )}
+                  </div>
                 )}
               </div>
             ))}

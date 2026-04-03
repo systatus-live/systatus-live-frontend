@@ -4,7 +4,7 @@ import Logo from "@/components/Logo";
 import Head from "next/head";
 
 export default function PrivacyPolicy() {
-  const supportMail = "support@artcode.dev";
+  const supportMail = "systatus@artcode.dev";
 
   return (
     <>
@@ -18,7 +18,7 @@ export default function PrivacyPolicy() {
 
         <h1>POLÍTICA DE PRIVACIDADE</h1>
 
-        <p className="my-3">Última atualização em 18 de janeiro de 2026</p>
+        <p className="my-3">Última atualização em 03 de abril de 2026</p>
 
         <p className="my-3">
           Esta Política de Privacidade da ARTUR MIGUEL ROCHA DESENVOLVIMENTO DE SOFTWARE,
@@ -29,7 +29,7 @@ export default function PrivacyPolicy() {
 
         <ul className="list-disc list-inside">
           <li>
-            Visita nosso site em <Link href="/">https://systatus.live</Link>, ou qualquer outro site nosso
+            Visita nosso site em <Link className="ml-1 underline underline-offset-2" href="/">https://systatus.live</Link>, ou qualquer outro site nosso
             que tenha link para esta Política de Privacidade
           </li>
           <li>
@@ -56,7 +56,7 @@ export default function PrivacyPolicy() {
           Quais informações pessoais processamos? Quando você visita, utiliza ou navega pelos nossos Serviços,
           podemos processar informações pessoais, dependendo de como você interage conosco e com os Serviços,
           das escolhas que faz e dos produtos e funcionalidades que utiliza. Saiba mais sobre
-          <Link href="/agreements/privacy-policy#personalinfo">as informações pessoais que você nos fornece</Link>.
+          <Link className="ml-1 underline underline-offset-2" href="/agreements/privacy-policy#personalinfo">as informações pessoais que você nos fornece</Link>.
         </p>
 
         <p className="my-3">
@@ -79,7 +79,7 @@ export default function PrivacyPolicy() {
         <p className="my-3">
           Em quais situações e com quais partes compartilhamos informações pessoais? Podemos compartilhar informações
           em situações específicas e com determinados terceiros. Saiba mais sobre
-          <Link href="/agreements/privacy-policy#whoshare">quando e com quem compartilhamos suas informações pessoais.</Link>
+          <Link className="ml-1 underline underline-offset-2" href="/agreements/privacy-policy#whoshare">quando e com quem compartilhamos suas informações pessoais.</Link>
         </p>
 
         <p className="my-3">
@@ -87,17 +87,17 @@ export default function PrivacyPolicy() {
           proteger suas informações pessoais. No entanto, nenhuma transmissão eletrônica pela internet ou tecnologia
           de armazenamento pode ser 100% segura, por isso não podemos garantir que hackers, cibercriminosos ou
           terceiros não autorizados não conseguirão burlar nossa segurança e acessar, coletar ou modificar seus dados.
-          Saiba mais sobre <Link href="/agreements/privacy-policy#infosafe">como protegemos suas informações</Link>.
+          Saiba mais sobre <Link className="ml-1 underline underline-offset-2" href="/agreements/privacy-policy#infosafe">como protegemos suas informações</Link>.
         </p>
 
         <p className="my-3">
           Quais são seus direitos? Dependendo da sua localização, a legislação aplicável pode garantir certos direitos
           em relação às suas informações pessoais. Saiba mais sobre seus
-          <Link href="/agreements/privacy-policy#privacyrights">direitos de privacidade</Link>.
+          <Link className="ml-1 underline underline-offset-2" href="/agreements/privacy-policy#privacyrights">direitos de privacidade</Link>.
         </p>
 
         <p className="my-3">
-          Como exercer seus direitos? A maneira mais fácil de exercer seus direitos é acessando <Link href="/agreements/terms-of-use">https://systatus.live/agreements/terms-of-use</Link>,
+          Como exercer seus direitos? A maneira mais fácil de exercer seus direitos é acessando <Link className="ml-1 underline underline-offset-2" href="/agreements/terms-of-use">https://systatus.live/agreements/terms-of-use</Link>,
           ou entrando em contato conosco. Consideraremos e responderemos a todas as solicitações de acordo com a
           legislação de proteção de dados aplicável.
         </p>
@@ -132,13 +132,11 @@ export default function PrivacyPolicy() {
           <li>números de cartão de débito/crédito</li>
         </ul>
 
-        <p className="my-3">Informações sensíveis. Não processamos informações sensíveis.</p>
-
         <p className="my-3">
           Dados de login por redes sociais. Podemos oferecer a opção de se registrar usando dados da sua conta de
           rede social, como Google ou outra. Caso opte por esse método, coletaremos algumas informações de
           perfil fornecidas pelo provedor da rede social, conforme descrito na seção
-          "<Link href="/agreements/privacy-policy#sociallogins">COMO LIDAMOS COM SEUS LOGINS SOCIAIS?</Link>" abaixo.
+          "<Link className="ml-1 underline underline-offset-2" href="/agreements/privacy-policy#sociallogins">COMO LIDAMOS COM SEUS LOGINS SOCIAIS?</Link>" abaixo.
         </p>
 
         <p className="my-3">
@@ -200,10 +198,10 @@ export default function PrivacyPolicy() {
 
         <p className="my-3">
           O uso das informações recebidas das APIs do Google seguirá a
-          <Link href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank">
+          <Link className="ml-1 underline underline-offset-2" href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank">
             Política de Dados do Usuário dos Serviços de API do Google
           </Link>, incluindo os requisitos de
-          <Link href="https://developers.google.com/terms/api-services-user-data-policy#limited-use" target="_blank">
+          <Link className="ml-1 underline underline-offset-2" href="https://developers.google.com/terms/api-services-user-data-policy#limited-use" target="_blank">
             Uso Limitado
           </Link>.
         </p>
@@ -352,7 +350,7 @@ export default function PrivacyPolicy() {
         <p className="my-3">
           Retirada de consentimento: Quando o tratamento for baseado em seu consentimento, você poderá retirá-lo a qualquer momento,
           seja ele expresso ou implícito (conforme a legislação aplicável). Para isso, basta entrar em contato conosco pelos meios indicados em
-          "<Link href="/agreements/privacy-policy#contact">COMO ENTRAR EM CONTATO CONOSCO SOBRE ESTE AVISO?</Link>" abaixo.
+          "<Link className="ml-1 underline underline-offset-2" href="/agreements/privacy-policy#contact">COMO ENTRAR EM CONTATO CONOSCO SOBRE ESTE AVISO?</Link>" abaixo.
         </p>
 
         <p className="my-3">
@@ -363,7 +361,7 @@ export default function PrivacyPolicy() {
         <p className="my-3">
           Cancelamento de comunicações promocionais: Você pode se descadastrar a qualquer momento clicando no link de cancelamento
           nos e-mails ou entrando em contato conforme descrito em
-          "<Link href="/agreements/privacy-policy#contact">COMO ENTRAR EM CONTATO CONOSCO SOBRE ESTE AVISO?</Link>".
+          "<Link className="ml-1 underline underline-offset-2" href="/agreements/privacy-policy#contact">COMO ENTRAR EM CONTATO CONOSCO SOBRE ESTE AVISO?</Link>".
           Após isso, você será removido das listas promocionais, mas ainda poderemos enviar mensagens importantes sobre o uso dos Serviços ou sua conta.
         </p>
 
@@ -411,8 +409,7 @@ export default function PrivacyPolicy() {
 
         <h3 className="my-3" id="contact">11. COMO ENTRAR EM CONTATO CONOSCO SOBRE ESTE AVISO?</h3>
         <p className="my-3">
-          Caso tenha dúvidas ou comentários sobre esta política, envie um e-mail para { supportMail }
-          ou nos escreva para:
+          Caso tenha dúvidas ou comentários sobre esta política, envie um e-mail para { supportMail } ou nos escreva para:
         </p>
 
         <p>ARTUR MIGUEL ROCHA DESENVOLVIMENTO DE SOFTWARE - CNPJ 43.682.698/0001-85</p>
@@ -424,7 +421,7 @@ export default function PrivacyPolicy() {
           De acordo com as leis aplicáveis do seu país, você pode ter o direito de solicitar acesso às informações pessoais
           que coletamos, detalhes sobre seu tratamento, correção de imprecisões ou exclusão dos seus dados.
           Também pode ter o direito de retirar seu consentimento. Esses direitos podem ser limitados em algumas situações por exigência legal.
-          Para solicitar revisão, atualização ou exclusão dos seus dados, acesse: <Link href="/agreements/terms-of-use">https://systatus.live/agreements/terms-of-use</Link>.
+          Para solicitar revisão, atualização ou exclusão dos seus dados, acesse: <Link className="ml-1 underline underline-offset-2" href="/agreements/terms-of-use">https://systatus.live/agreements/terms-of-use</Link>.
         </p>
       </div>
     </>

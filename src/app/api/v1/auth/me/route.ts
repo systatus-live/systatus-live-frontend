@@ -25,6 +25,10 @@ export async function GET() {
       status: 401
     });
   } catch (error: any) {
+    if (error.status === 402) {
+      return NextResponse.json(error.data, { status: 402 });
+    }
+
     cookieStore.delete("token");
 
     return NextResponse.json({

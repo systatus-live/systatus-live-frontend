@@ -4,7 +4,7 @@ import Logo from "@/components/Logo";
 import Head from "next/head";
 
 export default function TermsOfUse() {
-  const supportMail = "support@artcode.dev";
+  const supportMail = "systatus@artcode.dev";
 
   return (
     <>
@@ -18,7 +18,7 @@ export default function TermsOfUse() {
         
         <h1>TERMOS DE USO</h1>
 
-        <p className="my-3">Última atualização: 03 de janeiro de 2026</p>
+        <p className="my-3">Última atualização: 03 de abril de 2026</p>
 
         <h3 className="my-3">ACEITAÇÃO DOS NOSSOS TERMOS LEGAIS</h3>
 
@@ -28,7 +28,7 @@ export default function TermsOfUse() {
           Uberlândia,
           Minas Gerais, 38408-097.</p>
 
-        <p className="my-3">Operamos o site <Link href="/">https://systatus.live</Link> (o "Site"), assim como quaisquer outros produtos e
+        <p className="my-3">Operamos o site <Link className="ml-1 underline underline-offset-2" href="/">https://systatus.live</Link> (o "Site"), assim como quaisquer outros produtos e
           serviços relacionados que mencionem ou estejam vinculados a estes termos legais (os "Termos Legais") (coletivamente, os "Serviços").</p>
 
         <p className="my-3">O Systatus Live é um sistema de monitoramento de aplicações que verifica continuamente a disponibilidade dos seus
@@ -267,7 +267,7 @@ export default function TermsOfUse() {
 
         <h3 className="my-3">13. POLÍTICA DE PRIVACIDADE</h3>
         <p className="my-3">
-          Nos importamos com sua privacidade e segurança. Leia nossa Política de Privacidade: <Link href="/agreements/privacy-policy" target="_blank">https://systatus.live/agreements/privacy-policy</Link>. Ao usar os Serviços, você concorda com essa política, que está incorporada a estes Termos. Os Serviços são hospedados no Brasil e nos Estados Unidos. Se você acessá-los de outra região com leis diferentes, ao continuar a usá-los, você concorda com a transferência e o processamento dos seus dados nessas localidades.
+          Nos importamos com sua privacidade e segurança. Leia nossa Política de Privacidade: <Link className="ml-1 underline underline-offset-2" href="/agreements/privacy-policy" target="_blank">https://systatus.live/agreements/privacy-policy</Link>. Ao usar os Serviços, você concorda com essa política, que está incorporada a estes Termos. Os Serviços são hospedados no Brasil e nos Estados Unidos. Se você acessá-los de outra região com leis diferentes, ao continuar a usá-los, você concorda com a transferência e o processamento dos seus dados nessas localidades.
         </p>
 
         <h3 className="my-3">14. VIGÊNCIA E RESCISÃO</h3>

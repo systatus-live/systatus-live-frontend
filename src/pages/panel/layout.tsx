@@ -1,4 +1,5 @@
 import Logo from "@/components/Logo";
+import { TrialBanner } from "@/components/TrialBanner";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList } from "@/components/ui/breadcrumb";
@@ -12,6 +13,7 @@ import { BadgeCheck, ChevronsUpDown, CreditCard, CreditCardIcon, HelpCircleIcon,
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { SubscriptionStatusEnum } from "@/types/SubscriptionStatusEnum";
 
 function SidebarLogoHeader() {
   const { state } = useSidebar();
@@ -23,7 +25,7 @@ function SidebarLogoHeader() {
 }
 
 export default function PanelLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const { user, setUser, setToken, setLoading } = useGlobalProvider();
+  const { user, setUser, setToken, setLoading, setSubscription, subscription } = useGlobalProvider();
   const router = useRouter();
   const [isDark, setIsDark] = useState(false);
 
@@ -65,7 +67,8 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
     AuthService.meLocal().then((response: any) => {
       setUser(response.user);
       setToken(response.token);
-    }).catch((error) => {
+      setSubscription(response.user?.subscription ?? null);
+    }).catch((error: any) => {
       Alert.error("", error.message);
       router.replace("/auth/signin");
     });
@@ -173,9 +176,12 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
             <SidebarRail />
           </Sidebar>
           <SidebarInset>
+            {subscription?.status === SubscriptionStatusEnum.TRIAL && subscription.endDate && (
+              <TrialBanner endDate={subscription.endDate} />
+            )}
             <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-              <div className="flex items-center gap-2 px-4 flex-1">
-                <SidebarTrigger className="-ml-1" />
+              <div className="flex items-center justify-center gap-2 px-4 flex-1">
+                <SidebarTrigger className="ml-1" />
                 <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
                 <Breadcrumb>
                   <BreadcrumbList>

@@ -25,10 +25,10 @@ export async function proxy(request: NextRequest) {
 
   if (cookieStore.has("token")) {
     try {
-      const { data } = await AuthService.verifyToken(cookieStore.get("token")?.value as string);
+      const response = await AuthService.verifyToken(cookieStore.get("token")?.value as string);
 
-      if (!data.verified) {
-        return NextResponse.redirect(new URL(`/auth/verify-account?email=${data.email}`, request.url));
+      if (!response.data.verified) {
+        return NextResponse.redirect(new URL(`/auth/verify-account?email=${response.data.email}`, request.url));
       }
 
       if (request.nextUrl.pathname.startsWith("/auth/signin")) {
@@ -36,6 +36,9 @@ export async function proxy(request: NextRequest) {
       }
     } catch (error: any) {
       console.log(`[PROXY] - Token error ${error.message}`);
+      if (error.data?.needVerifyFlow == true) {
+        return NextResponse.redirect(new URL(`/auth/verify-account?authFlowId=${error.data.authFlowId}`, request.url));
+      }
       cookieStore.delete("token");
       return NextResponse.redirect(new URL("/auth/signin", request.url));
     }

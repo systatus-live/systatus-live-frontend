@@ -1,6 +1,6 @@
 import Loading from '@/components/Loading';
 import { SignInTypeEnum } from '@/types/SignInTypeEnum';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 
 type User = {
   id?: string,
@@ -11,6 +11,11 @@ type User = {
   signinType?: SignInTypeEnum
 }
 
+type Subscription = {
+  status?: string,
+  endDate?: string
+}
+
 const GlobalContext = createContext<{
   user: User | null,
   setUser: (user: User | null) => void
@@ -18,19 +23,24 @@ const GlobalContext = createContext<{
   setToken: (token: string | null) => void
   loading: boolean,
   setLoading: (loading: boolean) => void
+  subscription: Subscription | null,
+  setSubscription: (subscription: Subscription | null) => void
 }>({
   user: {},
   setUser: () => { },
   token: null,
   setToken: () => { },
   loading: false,
-  setLoading: () => { }
+  setLoading: () => { },
+  subscription: null,
+  setSubscription: () => { }
 });
 
 export function GlobalProvider({ children }: any) {
   const [user, setUser] = useState<User | null>({});
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [subscription, setSubscription] = useState<Subscription | null>(null);
 
   return <>
     {loading == true ? <Loading /> : <></>}
@@ -41,7 +51,9 @@ export function GlobalProvider({ children }: any) {
       token,
       setToken,
       loading,
-      setLoading
+      setLoading,
+      subscription,
+      setSubscription
     }}>
       {children}
     </GlobalContext.Provider>
