@@ -15,17 +15,16 @@ const Integrations: NextPageWithLayout = () => {
 
   useEffect(() => {
     if (!token) return;
+
     setLoading(true);
-    IntegrationService.getIntegrationList(token, new URLSearchParams({ page: "0" }))
-      .then((response) => {
-        setIntegrationList(response.data);
-      })
-      .catch((error: any) => {
-        Alert.error("", error.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+
+    IntegrationService.getIntegrationList(token, new URLSearchParams({ page: "0" })).then((response) => {
+      setIntegrationList(response.data);
+    }).catch((error: any) => {
+      Alert.error("", error.message);
+    }).finally(() => {
+      setLoading(false);
+    });
   }, [token]);
 
   async function handleValidate(id: string) {
@@ -45,7 +44,7 @@ const Integrations: NextPageWithLayout = () => {
       <Head>
         <title>Integrações • Systatus.Live</title>
       </Head>
-      
+
       <div className="flex items-center justify-between">
         <h1 className="text-base font-semibold">Integrações</h1>
         <Button onClick={() => router.push("/panel/integrations/new")}>

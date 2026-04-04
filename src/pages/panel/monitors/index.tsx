@@ -15,7 +15,9 @@ const Monitors: NextPageWithLayout = () => {
 
   useEffect(() => {
     if (!token) return;
+
     setLoading(true);
+    
     MonitorService.getMonitorList(token as string, new URLSearchParams({ page: "0" })).then(response => {
       setMonitorList(response.data);
     }).catch(error => {
