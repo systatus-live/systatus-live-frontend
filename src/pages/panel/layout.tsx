@@ -9,7 +9,7 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel
 import { Alert } from "@/lib/Alert";
 import { useGlobalProvider } from "@/providers/GlobalProvider";
 import AuthService from "@/services/AuthService";
-import { BadgeCheck, ChevronsUpDown, CreditCard, CreditCardIcon, HelpCircleIcon, LogOut, RadarIcon, SirenIcon, Waypoints } from "lucide-react";
+import { BadgeCheck, ChevronsUpDown, CreditCard, CreditCardIcon, Globe, HelpCircleIcon, LogOut, RadarIcon, SirenIcon, Waypoints } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -46,6 +46,7 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
         { icon: RadarIcon, title: "Monitores", url: "/panel/monitors", isActive: router.pathname.startsWith("/panel/monitors") },
         { icon: SirenIcon, title: "Incidentes", url: "/panel/incidents", isActive: router.pathname.startsWith("/panel/incidents") },
         { icon: Waypoints, title: "Integrações", url: "/panel/integrations", isActive: router.pathname.startsWith("/panel/integrations") },
+        { icon: Globe, title: "Página de Status", url: "/panel/status-page", isActive: router.pathname.startsWith("/panel/status-page") },
       ]
     },
     {
