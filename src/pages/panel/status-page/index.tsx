@@ -153,32 +153,26 @@ const StatusPagePanel: NextPageWithLayout = () => {
               </Field>
               <Field>
                 <FieldLabel htmlFor="slug">
-                  Subdomínio <span className="text-destructive">*</span>
+                  Identificador <span className="text-destructive">*</span>
                 </FieldLabel>
-                <div className="flex items-center gap-0">
-                  <Controller
-                    name="slug"
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <Input
-                        id="slug"
-                        value={field.value ?? ""}
-                        onChange={(e) => field.onChange(normalizeSlug(e.target.value))}
-                        maxLength={40}
-                        placeholder="minhaempresa"
-                        className="rounded-r-none border-r-0 z-10"
-                      />
-                    )}
-                  />
-                  <span className="inline-flex items-center h-9 px-3 text-sm text-muted-foreground bg-muted border border-input rounded-r-md shrink-0">
-                    .systatus.live
-                  </span>
-                </div>
+                <Controller
+                  name="slug"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <Input
+                      id="slug"
+                      value={field.value ?? ""}
+                      onChange={(e) => field.onChange(normalizeSlug(e.target.value))}
+                      maxLength={40}
+                      placeholder="minhaempresa"
+                    />
+                  )}
+                />
                 {slug && (
                   <p className="text-xs text-muted-foreground">
                     Sua página ficará disponível em{" "}
-                    <span className="font-medium">https://{slug}.systatus.live</span>
+                    <span className="font-medium">{process.env.NEXT_PUBLIC_SYSTATUS_WEB_URL}/status/{slug}</span>
                   </p>
                 )}
               </Field>
@@ -229,12 +223,12 @@ const StatusPagePanel: NextPageWithLayout = () => {
               </p>
               {isEdit && slug ? (
                 <a
-                  href={`https://${slug}.systatus.live`}
+                  href={`${process.env.NEXT_PUBLIC_SYSTATUS_WEB_URL}/status/${slug}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-primary underline underline-offset-4 break-all"
                 >
-                  https://{slug}.systatus.live
+                  {process.env.NEXT_PUBLIC_SYSTATUS_WEB_URL}/status/{slug}
                 </a>
               ) : (
                 <p className="text-sm text-muted-foreground">

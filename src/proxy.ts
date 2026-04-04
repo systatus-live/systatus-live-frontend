@@ -6,18 +6,6 @@ export async function proxy(request: NextRequest) {
   console.log(`[PROXY] - ${request.url}`);
   const { pathname } = request.nextUrl;
 
-  // Redireciona subdomínios para /status/:slug
-  const host = request.headers.get("host") ?? "";
-  const baseDomain = process.env.NEXT_PUBLIC_BASE_DOMAIN ?? "systatus.live";
-  const isSubdomain = host.endsWith(`.${baseDomain}`) && !host.startsWith("www.") && host !== baseDomain;
-
-  if (isSubdomain) {
-    const slug = host.replace(`.${baseDomain}`, "");
-    const url = request.nextUrl.clone();
-    url.pathname = `/status/${slug}`;
-    return NextResponse.rewrite(url);
-  }
-
   // Lógica de auth: só roda em /panel e /auth
   if (!pathname.startsWith("/panel") && !pathname.startsWith("/auth")) {
     return NextResponse.next();
