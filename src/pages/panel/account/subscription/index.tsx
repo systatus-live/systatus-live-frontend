@@ -120,7 +120,9 @@ const Subscription: NextPageWithLayout = () => {
     const { status } = router.query;
 
     if (status === "success") {
-      Alert.success("", "Assinatura realizada com sucesso!");
+      router.replace("/panel/account/subscription").then(_ => {
+        Alert.success("", "Assinatura realizada com sucesso!");
+      });
     } else if (status === "cancel") {
       Alert.info("", "Assinatura cancelada.");
     }

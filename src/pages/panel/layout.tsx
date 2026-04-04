@@ -8,7 +8,9 @@ import { Separator } from "@/components/ui/separator";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarRail, SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { Alert } from "@/lib/Alert";
 import { useGlobalProvider } from "@/providers/GlobalProvider";
+import { usePermission } from "@/hooks/usePermission";
 import AuthService from "@/services/AuthService";
+import { PermissionEnum } from "@/types/PermissionEnum";
 import { BadgeCheck, ChevronsUpDown, CreditCard, CreditCardIcon, Globe, HelpCircleIcon, LogOut, RadarIcon, SirenIcon, Waypoints } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -25,7 +27,8 @@ function SidebarLogoHeader() {
 }
 
 export default function PanelLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const { user, setUser, setToken, setLoading, setSubscription, subscription } = useGlobalProvider();
+  const { user, setUser, setToken, setLoading, setSubscription, subscription, setPermissionList } = useGlobalProvider();
+  const canAccessStatusPage = usePermission(PermissionEnum.STATUS_PAGE);
   const router = useRouter();
   const [isDark, setIsDark] = useState(false);
 
@@ -46,7 +49,7 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
         { icon: RadarIcon, title: "Monitores", url: "/panel/monitors", isActive: router.pathname.startsWith("/panel/monitors") },
         { icon: SirenIcon, title: "Incidentes", url: "/panel/incidents", isActive: router.pathname.startsWith("/panel/incidents") },
         { icon: Waypoints, title: "Integrações", url: "/panel/integrations", isActive: router.pathname.startsWith("/panel/integrations") },
-        { icon: Globe, title: "Página de Status", url: "/panel/status-page", isActive: router.pathname.startsWith("/panel/status-page") },
+        ...(canAccessStatusPage ? [{ icon: Globe, title: "Página de Status", url: "/panel/status-page", isActive: router.pathname.startsWith("/panel/status-page") }] : []),
       ]
     },
     {
@@ -69,6 +72,7 @@ export default function PanelLayout({ children }: Readonly<{ children: React.Rea
       setUser(response.user);
       setToken(response.token);
       setSubscription(response.user?.subscription ?? null);
+      setPermissionList(response.user?.permissionList ?? []);
     }).catch((error: any) => {
       Alert.error("", error.message);
       router.replace("/auth/signin");

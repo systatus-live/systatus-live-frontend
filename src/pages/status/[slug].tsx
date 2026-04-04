@@ -256,7 +256,12 @@ const StatusPage: NextPageWithLayout = () => {
 
           <div className="flex flex-col gap-1">
             {data && data.monitors.length > 0 && (
-              <p className="text-xs text-muted-foreground mb-1">Últimos 30 dias</p>
+              <div className="w-full py-4 flex items-center justify-between text-xs text-muted-foreground">
+                <span className="text-xs text-muted-foreground">Histórico dos últimos 30 dias </span>
+                <span>
+                  {lastUpdated ? `Atualizado às ${lastUpdated.toLocaleTimeString("pt-BR")} · Próxima atualização em ${countdown}s` : "Carregando..."}
+                </span>
+              </div>
             )}
             {data ? (
               data.monitors.length === 0 ? (
@@ -317,12 +322,7 @@ const StatusPage: NextPageWithLayout = () => {
           </div>
         </main>
         <footer className="border-t border-border">
-          <div className="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between text-xs text-muted-foreground">
-            <span>
-              {lastUpdated
-                ? `Atualizado às ${lastUpdated.toLocaleTimeString("pt-BR")} · Próxima atualização em ${countdown}s`
-                : "Carregando..."}
-            </span>
+          <div className="px-4 py-4 flex items-center justify-center text-xs text-muted-foreground">
             <Link href="/" className="hover:text-foreground transition-colors">
               Monitorado por Systatus.Live
             </Link>

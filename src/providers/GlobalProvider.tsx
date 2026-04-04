@@ -1,4 +1,5 @@
 import Loading from '@/components/Loading';
+import { PermissionEnum } from '@/types/PermissionEnum';
 import { SignInTypeEnum } from '@/types/SignInTypeEnum';
 import { createContext, useContext, useState } from 'react';
 
@@ -25,6 +26,8 @@ const GlobalContext = createContext<{
   setLoading: (loading: boolean) => void
   subscription: Subscription | null,
   setSubscription: (subscription: Subscription | null) => void
+  permissionList: PermissionEnum[],
+  setPermissionList: (permissionList: PermissionEnum[]) => void
 }>({
   user: {},
   setUser: () => { },
@@ -33,7 +36,9 @@ const GlobalContext = createContext<{
   loading: false,
   setLoading: () => { },
   subscription: null,
-  setSubscription: () => { }
+  setSubscription: () => { },
+  permissionList: [],
+  setPermissionList: () => { }
 });
 
 export function GlobalProvider({ children }: any) {
@@ -41,6 +46,7 @@ export function GlobalProvider({ children }: any) {
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [subscription, setSubscription] = useState<Subscription | null>(null);
+  const [permissionList, setPermissionList] = useState<PermissionEnum[]>([]);
 
   return <>
     {loading == true ? <Loading /> : <></>}
@@ -53,7 +59,9 @@ export function GlobalProvider({ children }: any) {
       loading,
       setLoading,
       subscription,
-      setSubscription
+      setSubscription,
+      permissionList,
+      setPermissionList
     }}>
       {children}
     </GlobalContext.Provider>

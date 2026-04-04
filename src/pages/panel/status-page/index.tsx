@@ -1,6 +1,7 @@
 import { Alert } from "@/lib/Alert";
 import { NextPageWithLayout } from "@/pages/_app";
 import { useGlobalProvider } from "@/providers/GlobalProvider";
+import { usePermission } from "@/hooks/usePermission";
 import MonitorService from "@/services/MonitorService";
 import StatusPageService from "@/services/StatusPageService";
 import { Button } from "@/components/ui/button";
@@ -10,9 +11,11 @@ import { Input } from "@/components/ui/input";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Separator } from "@/components/ui/separator";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { ReactElement, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import normalizeSlug from "@/utils/normalizeSlug";
+import { PermissionEnum } from "@/types/PermissionEnum";
 
 type IFormValues = {
   title: string;
@@ -23,8 +26,21 @@ type IFormValues = {
 
 const StatusPagePanel: NextPageWithLayout = () => {
   const { token, setLoading } = useGlobalProvider();
+  const hasPermission = usePermission(PermissionEnum.STATUS_PAGE);
+  const router = useRouter();
   const [monitorList, setMonitorList] = useState<any[]>([]);
   const [isEdit, setIsEdit] = useState(false);
+
+  useEffect(() => {
+    if (!token) {
+      return
+    };
+
+    if (!hasPermission) {
+      router.replace("/panel/monitors");
+    }
+    
+  }, [token, hasPermission]);
 
   const { register, handleSubmit, setValue, watch, control, reset } = useForm<IFormValues>({
     defaultValues: {
