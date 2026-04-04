@@ -6,8 +6,8 @@ export async function GET() {
   const cookieStore = await cookies();
 
   try {
-    if (cookieStore.has("token")) {
-      const token = (cookieStore.get("token")?.value) as string;
+    if (cookieStore.has("systatus_token")) {
+      const token = (cookieStore.get("systatus_token")?.value) as string;
 
       const response = await AuthService.me(token);
 
@@ -25,12 +25,6 @@ export async function GET() {
       status: 401
     });
   } catch (error: any) {
-    if (error.status === 402) {
-      return NextResponse.json(error.data, { status: 402 });
-    }
-
-    cookieStore.delete("token");
-
     return NextResponse.json({
       message: error.message
     }, {

@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
 
     const cookieStore = await cookies();
     cookieStore.set({
-      name: "token",
+      name: "systatus_token",
       value: accessToken,
       httpOnly: true,
       path: "/",

@@ -19,7 +19,7 @@ export async function PATCH(request: NextRequest) {
 
     const cookieStore = await cookies();
     cookieStore.set({
-      name: "token",
+      name: "systatus_token",
       value: accessToken,
       httpOnly: true,
       path: "/",

@@ -4,46 +4,54 @@ import AuthService from "./services/AuthService";
 
 export async function proxy(request: NextRequest) {
   console.log(`[PROXY] - ${request.url}`);
+  const { pathname } = request.nextUrl;
   const cookieStore = await cookies();
 
-  if (request.nextUrl.pathname.startsWith("/auth/verify-account")) {
-    cookieStore.delete("token");
+  // Rotas públicas — sempre permitidas
+  if (pathname.startsWith("/auth/signup") || pathname.startsWith("/auth/forgot-password")) {
     return NextResponse.next();
   }
 
-  if (request.nextUrl.pathname.startsWith("/auth/signin") && cookieStore.has("token")) {
-    return NextResponse.redirect(new URL("/panel", request.url));
-  }
-
-  if (request.nextUrl.pathname.startsWith("/auth/signup")) {
+  // verify-account limpa o cookie e permite acesso
+  if (pathname.startsWith("/auth/verify-account")) {
+    cookieStore.delete("systatus_token");
     return NextResponse.next();
   }
 
-  if (request.nextUrl.pathname.startsWith("/auth/forgot-password")) {
-    return NextResponse.next();
-  }
-
-  if (cookieStore.has("token")) {
-    try {
-      const response = await AuthService.verifyToken(cookieStore.get("token")?.value as string);
-
-      if (!response.data.verified) {
-        return NextResponse.redirect(new URL(`/auth/verify-account?email=${response.data.email}`, request.url));
-      }
-
-      if (request.nextUrl.pathname.startsWith("/auth/signin")) {
-        return NextResponse.redirect(new URL("/panel", request.url));
-      }
-    } catch (error: any) {
-      console.log(`[PROXY] - Token error ${error.message}`);
-      if (error.data?.needVerifyFlow == true) {
-        return NextResponse.redirect(new URL(`/auth/verify-account?authFlowId=${error.data.authFlowId}`, request.url));
-      }
-      cookieStore.delete("token");
+  // Sem token: protege /panel
+  if (!cookieStore.has("systatus_token")) {
+    if (pathname.startsWith("/panel")) {
       return NextResponse.redirect(new URL("/auth/signin", request.url));
     }
-  } else if (request.nextUrl.pathname.startsWith("/panel")) {
-    return NextResponse.redirect(new URL("/auth/signin", request.url));
+    return NextResponse.next();
+  }
+
+  // Com token: valida antes de qualquer redirect
+  try {
+    const response = await AuthService.verifyToken(cookieStore.get("systatus_token")!.value);
+
+    if (!response.data.verified) {
+      return NextResponse.redirect(new URL(`/auth/verify-account?email=${response.data.email}`, request.url));
+    }
+
+    if (pathname.startsWith("/auth/signin")) {
+      return NextResponse.redirect(new URL("/panel", request.url));
+    }
+  } catch (error: any) {
+    console.log(`[PROXY] - Token error ${error.message}`);
+
+    if (error.data?.needVerifyFlow == true) {
+      return NextResponse.redirect(new URL(`/auth/verify-account?authFlowId=${error.data.authFlowId}`, request.url));
+    }
+
+    // Só invalida o token em erros de autenticação, não em falhas de infra
+    if ([401, 403].includes(error.status)) {
+      cookieStore.delete("systatus_token");
+      return NextResponse.redirect(new URL("/auth/signin", request.url));
+    }
+
+    // API fora do ar ou 5xx: deixa passar sem deslogar
+    return NextResponse.next();
   }
 }
 
