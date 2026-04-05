@@ -115,7 +115,7 @@ export default function Hero() {
                 {[
                   { label: "Verificação a cada 60s" },
                   { label: "Alerta em menos de 30s" },
-                  { label: "Grátis para começar" },
+                  { label: "Trial de 14 dias" },
                 ].map((stat) => (
                   <div key={stat.label} className="flex items-center gap-1.5 text-sm text-gray-500">
                     <span className="h-1.5 w-1.5 rounded-full bg-green-500 inline-block" />

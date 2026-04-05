@@ -66,6 +66,15 @@ export default function DataTable<TData>({ data }: DataTableProps<TData>) {
       },
     },
     {
+      header: "Tempo",
+      cell: ({ row }) => {
+        const monitor = row.original;
+        return (
+          <span>{monitor.lastDuration / 1000}s</span>
+        )
+      }
+    },
+    {
       header: "Histórico (30 dias)",
       cell: ({ row }) => {
         const monitor = row.original;
@@ -90,7 +99,7 @@ export default function DataTable<TData>({ data }: DataTableProps<TData>) {
         return (
           <div className="flex flex-col">
             <span>{monitor.interval}</span>
-            <small className="text-muted-foreground">Cron {monitor.cron}</small>
+            <span className="text-muted-foreground">Cron {monitor.cron}</span>
           </div>
         )
       }

@@ -50,7 +50,7 @@ export default function DataTable<TData>({ data }: DataTableProps<TData>) {
       cell: ({ row }) => {
         const incident = row.original;
         return (
-          <span className="text-sm">
+          <span>
             {HttpStatusCodeLabel[getHttpStatusKey(incident.lastError) as keyof typeof HttpStatusCodeLabel]}
           </span>
         );
@@ -59,7 +59,7 @@ export default function DataTable<TData>({ data }: DataTableProps<TData>) {
     {
       header: "Iniciado",
       cell: ({ row }) => (
-        <span className="text-sm">{formatDate(row.original.created_at, "DD/MM/YYYY HH:mm")}</span>
+        <span>{formatDate(row.original.created_at, "DD/MM/YYYY HH:mm")}</span>
       ),
     },
     {
@@ -67,7 +67,7 @@ export default function DataTable<TData>({ data }: DataTableProps<TData>) {
       cell: ({ row }) => {
         const incident = row.original;
         if (incident.ended_at) {
-          return <span className="text-sm">{formatDate(incident.ended_at, "DD/MM/YYYY HH:mm")}</span>;
+          return <span>{formatDate(incident.ended_at, "DD/MM/YYYY HH:mm")}</span>;
         }
         return <span className="text-sm text-muted-foreground">Em andamento</span>;
       },
@@ -75,7 +75,7 @@ export default function DataTable<TData>({ data }: DataTableProps<TData>) {
     {
       header: "Duração",
       cell: ({ row }) => (
-        <span className="text-sm">{row.original.duration || "—"}</span>
+        <span>{row.original.duration || "—"}</span>
       ),
     },
   ];

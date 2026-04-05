@@ -45,7 +45,7 @@ function getOverallStatus(monitors: Monitor[]): "operational" | "partial" | "out
   if (monitors.length === 0) {
     return "empty";
   }
-  const withStatus = monitors.filter((m) => m.lastStatus !== null);
+  const withStatus = monitors.filter((m: any) => m.lastStatus !== null);
   if (withStatus.length === 0) {
     return "empty";
   }
@@ -103,7 +103,7 @@ function MonitorStatusLabel({ monitor }: { monitor: Monitor }) {
     return null;
   }
   const label = HttpStatusCodeLabel[getHttpStatusKey(monitor.lastStatus) as keyof typeof HttpStatusCodeLabel];
-  const text = monitor.lastIncident ? `${label} • ${monitor.lastIncident}` : label;
+  const text = monitor.lastIncident ? `${label} a ${monitor.lastIncident} • Tempo de resposta: ${monitor.lastDuration! / 1000}s` : label;
   return (
     <span className="text-xs text-muted-foreground">{text}</span>
   )
