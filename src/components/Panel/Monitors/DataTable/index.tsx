@@ -197,7 +197,6 @@ function getHistoricalClass(item: any) {
 
 function MonitorFavicon({ address }: { address: string }) {
   const [visible, setVisible] = useState(true);
-
   let faviconUrl = "";
   try {
     const url = new URL(address);
@@ -206,17 +205,12 @@ function MonitorFavicon({ address }: { address: string }) {
     faviconUrl = "https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&size=16";
   }
 
-  if (!visible) return <span style={{ width: 16, display: "inline-block" }} />;
+  if (!visible) {
+    return <span style={{ width: 16, display: "inline-block" }} />;
+  }
 
   return (
-    <img
-      src={faviconUrl}
-      width={18}
-      height={18}
-      alt=""
-      onError={() => setVisible(false)}
-      className="rounded-lg"
-    />
+    <img src={faviconUrl} width={16} height={16} alt="" onError={() => setVisible(false)} className="rounded" />
   );
 }
 

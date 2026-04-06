@@ -52,17 +52,30 @@ const NewIntegration: NextPageWithLayout = () => {
       return "URL Webhook";
     }
 
-    switch (selectedPlatform.name) {
-      case ChatPlatformEnum.EMAIL:
+    switch (selectedPlatform.type) {
+      case ChatPlatformTypeEnum.EMAIL:
         return "E-mail";
-      case ChatPlatformEnum.WHATSAPP:
+      case ChatPlatformTypeEnum.PHONE:
         return "Telefone";
       default:
         return "URL Webhook";
     }
   }
 
-  const isWebhookPlatform = selectedPlatform?.type === ChatPlatformTypeEnum.WEBHOOK;
+  function getAddressPlaceholder() {
+    if (!selectedPlatform) {
+      return "";
+    }
+
+    switch (selectedPlatform.type) {
+      case ChatPlatformTypeEnum.EMAIL:
+        return "destinatario@email.com";
+      case ChatPlatformTypeEnum.PHONE:
+        return "WhatsApp (com DDD)";
+      default:
+        return "https://hooks.example.com/...";
+    }
+  }
 
   async function handleSave(form: IFormValues) {
     setLoading(true);
@@ -100,77 +113,77 @@ const NewIntegration: NextPageWithLayout = () => {
       <form id="new-integration-form" onSubmit={handleSubmit(handleSave)}>
         <div className="max-w-3xl">
           <div className="rounded-xl border bg-card p-6 space-y-5">
-              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Configurações
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <Field className="sm:col-span-2">
-                  <FieldLabel htmlFor="name">Nome <span className="text-destructive">*</span></FieldLabel>
-                  <Input
-                    id="name"
-                    {...register("name", { required: true })}
-                    maxLength={30}
-                    placeholder="Ex.: Canal de DevOps"
-                  />
-                  <p className="text-xs text-muted-foreground text-right">
-                    {watch("name")?.length ?? 0}/30
-                  </p>
-                </Field>
-                <Field>
-                  <FieldLabel>Plataforma <span className="text-destructive">*</span></FieldLabel>
-                  <Controller
-                    name="chatPlatformId"
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <Select value={field.value} onValueChange={field.onChange}>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Selecione" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {platformList.map((platform) => (
-                            <SelectItem key={platform.id} value={platform.id}>
-                              <div className="flex items-center gap-2">
-                                <Image src={platform.icon_url} alt="" width={14} height={14} />
-                                {platform.description}
-                              </div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    )}
-                  />
-                </Field>
-              </div>
-              <Field>
-                <FieldLabel htmlFor="address">
-                  {getAddressLabel()} <span className="text-destructive">*</span>
-                </FieldLabel>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Configurações
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <Field className="sm:col-span-2">
+                <FieldLabel htmlFor="name">Nome <span className="text-destructive">*</span></FieldLabel>
                 <Input
-                  id="address"
-                  {...register("address", { required: true })}
-                  maxLength={1000}
-                  placeholder={isWebhookPlatform ? "https://hooks.example.com/..." : undefined}
+                  id="name"
+                  {...register("name", { required: true })}
+                  maxLength={30}
+                  placeholder="Ex.: Canal de DevOps"
                 />
-                <div className="flex items-center justify-between">
-                  <p className="text-xs text-muted-foreground">
-                    {watch("address")?.length ?? 0}/1000
-                  </p>
-                  {isWebhookPlatform && (
-                    <button
-                      type="button"
-                      onClick={() => setIsTutorialOpen(true)}
-                      className="text-xs text-primary underline underline-offset-4"
-                    >
-                      Como obter a URL do Webhook?
-                    </button>
+                <p className="text-xs text-muted-foreground text-right">
+                  {watch("name")?.length ?? 0}/30
+                </p>
+              </Field>
+              <Field>
+                <FieldLabel>Plataforma <span className="text-destructive">*</span></FieldLabel>
+                <Controller
+                  name="chatPlatformId"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Selecione" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {platformList.map((platform) => (
+                          <SelectItem key={platform.id} value={platform.id}>
+                            <div className="flex items-center gap-2">
+                              <Image src={platform.icon_url} alt="" width={14} height={14} />
+                              {platform.description}
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   )}
-                </div>
+                />
               </Field>
             </div>
+            <Field>
+              <FieldLabel htmlFor="address">
+                {getAddressLabel()} <span className="text-destructive">*</span>
+              </FieldLabel>
+              <Input
+                id="address"
+                {...register("address", { required: true })}
+                maxLength={1000}
+                placeholder={getAddressPlaceholder()}
+              />
+              <div className="flex items-center justify-between">
+                <p className="text-xs text-muted-foreground">
+                  {watch("address")?.length ?? 0}/1000
+                </p>
+                {selectedPlatform?.type === ChatPlatformTypeEnum.WEBHOOK && (
+                  <button
+                    type="button"
+                    onClick={() => setIsTutorialOpen(true)}
+                    className="text-xs text-primary underline underline-offset-4"
+                  >
+                    Como obter a URL do Webhook?
+                  </button>
+                )}
+              </div>
+            </Field>
           </div>
+        </div>
       </form>
-      
+
       <Dialog open={isTutorialOpen} onOpenChange={setIsTutorialOpen}>
         <DialogContent className="max-w-xl">
           <DialogHeader>

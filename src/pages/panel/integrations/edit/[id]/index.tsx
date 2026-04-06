@@ -62,6 +62,21 @@ const EditIntegration: NextPageWithLayout = () => {
     });
   }, [token, id]);
 
+  function getAddressPlaceholder() {
+    if (!selectedPlatform) {
+      return "";
+    }
+
+    switch (selectedPlatform.type) {
+      case ChatPlatformTypeEnum.EMAIL:
+        return "destinatario@email.com";
+      case ChatPlatformTypeEnum.PHONE:
+        return "WhatsApp (com DDD)";
+      default:
+        return "https://hooks.example.com/...";
+    }
+  }
+
   function getAddressLabel() {
     if (!selectedPlatform) {
       return "URL Webhook";
@@ -76,8 +91,6 @@ const EditIntegration: NextPageWithLayout = () => {
         return "URL Webhook";
     }
   }
-
-  const isWebhookPlatform = selectedPlatform?.type === ChatPlatformTypeEnum.WEBHOOK;
 
   async function handleSave(form: IFormValues) {
     setLoading(true);
@@ -260,13 +273,13 @@ const EditIntegration: NextPageWithLayout = () => {
                       id="address"
                       {...register("address", { required: true })}
                       maxLength={1000}
-                      placeholder={isWebhookPlatform ? "https://hooks.example.com/..." : undefined}
+                      placeholder={getAddressPlaceholder()}
                     />
                     <div className="flex items-center justify-between">
                       <p className="text-xs text-muted-foreground">
                         {watch("address")?.length ?? 0}/1000
                       </p>
-                      {isWebhookPlatform && (
+                      {selectedPlatform?.type === ChatPlatformTypeEnum.WEBHOOK && (
                         <button
                           type="button"
                           onClick={() => setIsTutorialOpen(true)}
@@ -296,7 +309,7 @@ const EditIntegration: NextPageWithLayout = () => {
           </div>
         </div>
       </form>
-      
+
       <Dialog open={isTutorialOpen} onOpenChange={setIsTutorialOpen}>
         <DialogContent className="max-w-xl">
           <DialogHeader>

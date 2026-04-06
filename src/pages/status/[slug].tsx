@@ -14,34 +14,7 @@ import Logo from "@/components/Logo";
 
 const REFRESH_INTERVAL = 60;
 
-type HistoricalDay = {
-  date: string;
-  totalOnline: number;
-  totalOffline: number;
-  percentOnline: number;
-  percentOffline: number;
-  note: string;
-};
-
-type Monitor = {
-  id: string;
-  name: string;
-  type: string;
-  address: string;
-  interval: string;
-  lastStatus: string | null;
-  lastDuration: number | null;
-  lastIncident: string | null;
-  historical: HistoricalDay[];
-  percentOnline: number;
-};
-
-type StatusPageData = {
-  title: string;
-  monitors: Monitor[];
-};
-
-function getOverallStatus(monitors: Monitor[]): "operational" | "partial" | "outage" | "empty" {
+function getOverallStatus(monitors: any[]): "operational" | "partial" | "outage" | "empty" {
   if (monitors.length === 0) {
     return "empty";
   }
@@ -59,7 +32,7 @@ function getOverallStatus(monitors: Monitor[]): "operational" | "partial" | "out
   return "outage";
 }
 
-function getHistoricalClass(item: HistoricalDay) {
+function getHistoricalClass(item: any) {
   if (item.percentOnline + item.percentOffline === 0) {
     return styles["bg-empty"];
   }
@@ -87,18 +60,11 @@ function MonitorFavicon({ address }: { address: string }) {
   }
 
   return (
-    <img
-      src={faviconUrl}
-      width={16}
-      height={16}
-      alt=""
-      onError={() => setVisible(false)}
-      className="rounded"
-    />
+    <img src={faviconUrl} width={16} height={16} alt="" onError={() => setVisible(false)} className="rounded" />
   );
 }
 
-function MonitorStatusLabel({ monitor }: { monitor: Monitor }) {
+function MonitorStatusLabel({ monitor }: { monitor: any }) {
   if (monitor.lastStatus === null) {
     return null;
   }
@@ -109,7 +75,7 @@ function MonitorStatusLabel({ monitor }: { monitor: Monitor }) {
   )
 }
 
-function MonitorStatusBadge({ monitor }: { monitor: Monitor }) {
+function MonitorStatusBadge({ monitor }: { monitor: any }) {
   if (monitor.lastStatus === null) {
     return (
       <Badge variant="outline" className="flex items-center gap-1.5 px-1.5 text-muted-foreground w-fit text-xs">
@@ -138,7 +104,7 @@ const StatusPage: NextPageWithLayout = () => {
   const router = useRouter();
   const { slug } = router.query as { slug: string };
 
-  const [data, setData] = useState<StatusPageData | null>(null);
+  const [data, setData] = useState<any>(null);
   const [notFound, setNotFound] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [countdown, setCountdown] = useState(REFRESH_INTERVAL);
@@ -269,7 +235,7 @@ const StatusPage: NextPageWithLayout = () => {
                   Nenhum monitor configurado.
                 </p>
               ) : (
-                data.monitors.map((monitor, idx) => (
+                data.monitors.map((monitor: any, idx: number) => (
                   <div key={monitor.id}>
                     {idx > 0 && <Separator />}
                     <div className="py-4 flex flex-col gap-2.5">
@@ -287,7 +253,7 @@ const StatusPage: NextPageWithLayout = () => {
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="flex gap-px flex-1">
-                          {monitor.historical.map((item, i) => (
+                          {monitor.historical.map((item: any, i: number) => (
                             <div
                               key={i}
                               className={`flex-1 h-6 rounded-sm ${getHistoricalClass(item)} ${styles["zoom"]}`}
