@@ -5,7 +5,7 @@ import IncidentService from "@/services/IncidentService";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { Area, AreaChart, XAxis } from "recharts";
+import { Area, AreaChart, XAxis, YAxis } from "recharts";
 import Head from "next/head";
 import { ReactElement, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -97,8 +97,8 @@ const Incidents: NextPageWithLayout = () => {
           <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             Incidentes (30 dias)
           </p>
-          <ChartContainer config={chartConfig} className="h-[80px] w-full aspect-auto overflow-visible [&_.recharts-wrapper]:overflow-visible [&_.recharts-surface]:overflow-visible">
-            <AreaChart data={historical} margin={{ top: 8, right: 0, left: 0, bottom: 0 }}>
+          <ChartContainer config={chartConfig} className="h-[80px] w-full aspect-auto">
+            <AreaChart data={historical} margin={{ top: 4, right: 0, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="incidentFill" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#FDC700" stopOpacity={0.3} />
@@ -106,6 +106,7 @@ const Incidents: NextPageWithLayout = () => {
                 </linearGradient>
               </defs>
               <XAxis dataKey="date" hide />
+              <YAxis hide domain={[0, (dataMax: number) => dataMax === 0 ? 1 : Math.ceil(dataMax * 1.25)]} />
               <ChartTooltip content={<ChartTooltipContent />} />
               <Area
                 type="monotone"
