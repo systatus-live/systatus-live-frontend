@@ -1,0 +1,63 @@
+<div class="flex flex-col gap-4">
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-base font-semibold leading-tight">Nova Integração</h1>
+      <p class="text-sm text-muted-foreground">Configure um canal de notificação</p>
+    </div>
+    <button hlmBtn type="button" (click)="handleSave()">Salvar</button>
+  </div>
+
+  <form [formGroup]="form">
+    <div class="max-w-3xl">
+      <div class="rounded-xl border bg-card p-6 space-y-5">
+        <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          Configurações
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="sm:col-span-2 flex flex-col gap-1">
+            <label hlmLabel>Nome <span class="text-destructive">*</span></label>
+            <input hlmInput formControlName="name" maxlength="30" placeholder="Ex.: Canal de DevOps" />
+            <p class="text-xs text-muted-foreground text-right">
+              {{ form.controls.name.value?.length ?? 0 }}/30
+            </p>
+          </div>
+          <div class="flex flex-col gap-1">
+            <label hlmLabel>Plataforma <span class="text-destructive">*</span></label>
+            <div hlmSelect class="w-full"
+              [value]="form.controls.chatPlatformId.value ?? ''"
+              [itemToString]="platformItemToString"
+              (valueChange)="form.controls.chatPlatformId.setValue($event ?? null)">
+              <hlm-select-trigger class="w-full">
+                <hlm-select-value placeholder="Selecione" />
+              </hlm-select-trigger>
+              <ng-template hlmSelectPortal>
+                <hlm-select-content>
+                  @for (platform of platformList(); track platform.id) {
+                    <hlm-select-item [value]="platform.id">
+                      <div class="flex items-center gap-2">
+                        <img [src]="getPlatformLogo(platform.name)" alt="" width="14" height="14" />
+                        {{ platform.description }}
+                      </div>
+                    </hlm-select-item>
+                  }
+                </hlm-select-content>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col gap-1">
+          <label hlmLabel>{{ addressLabel }} <span class="text-destructive">*</span></label>
+          <input hlmInput formControlName="address" maxlength="1000" [placeholder]="addressPlaceholder" />
+          <div class="flex items-center justify-between">
+            <p class="text-xs text-muted-foreground">
+              {{ form.controls.address.value?.length ?? 0 }}/1000
+            </p>
+            @if (isWebhookType) {
+              <app-webhook-tutorial />
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

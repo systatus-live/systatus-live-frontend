@@ -1,0 +1,83 @@
+<nav class="sticky top-0 z-50 border-b border-white/10 backdrop-blur-md bg-[#0D1B35]/90">
+  <!-- Desktop -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <!-- Logo + status dot -->
+      <div class="flex items-center gap-2">
+        <app-logo [inverted]="true" />
+        <span class="relative flex h-2.5 w-2.5 -mt-3">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+        </span>
+      </div>
+
+      <!-- Nav links -->
+      <div class="hidden sm:flex sm:items-center sm:gap-8">
+        @for (item of navItemList; track item.name) {
+          <a
+            [href]="item.href"
+            class="text-sm font-medium text-[#8BA3C7] hover:text-[#E8F0FE] transition-colors duration-200"
+          >
+            {{ item.name }}
+          </a>
+        }
+      </div>
+
+      <!-- Action buttons -->
+      <div class="hidden sm:flex sm:items-center gap-3">
+        <button
+          hlmBtn
+          variant="ghost"
+          routerLink="/auth/signin"
+          (click)="appState.loading.set(true)"
+          class="text-[#8BA3C7] hover:bg-[#4D9EFF]/10 hover:text-[#A8C4E8]"
+        >
+          Entrar
+        </button>
+        <button
+          hlmBtn
+          routerLink="/auth/signup"
+          class="bg-[#4D9EFF] hover:bg-[#3A85E8] text-white border-0"
+        >
+          Começar Grátis
+        </button>
+      </div>
+
+      <!-- Mobile toggle -->
+      <button
+        hlmBtn
+        variant="ghost"
+        size="icon"
+        class="sm:hidden text-[#8BA3C7] hover:text-[#E8F0FE]"
+        (click)="isMenuOpen.set(!isMenuOpen())"
+      >
+        @if (isMenuOpen()) {
+          <svg lucideX class="h-5 w-5"></svg>
+        } @else {
+          <svg lucideMenu class="h-5 w-5"></svg>
+        }
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  @if (isMenuOpen()) {
+    <div class="sm:hidden bg-[#0D1B35] border-t border-white/10 px-4 py-4">
+      <div class="space-y-1">
+        @for (item of navItemList; track item.name) {
+          <a
+            [href]="item.href"
+            class="block px-3 py-2.5 rounded-lg text-sm font-medium text-[#8BA3C7] hover:text-[#E8F0FE] hover:bg-white/5 transition-all duration-200"
+            (click)="isMenuOpen.set(false)"
+          >
+            {{ item.name }}
+          </a>
+        }
+      </div>
+      <div class="mt-4 pt-4 border-t border-white/10 flex flex-col gap-2">
+        <button hlmBtn variant="outline" routerLink="/auth/signin" (click)="appState.loading.set(true)" class="w-full bg-white/5 border-white/15 text-[#8BA3C7] hover:bg-[#4D9EFF]/12 hover:border-[#4D9EFF]/30 hover:text-[#A8C4E8]">Entrar</button>
+        <button hlmBtn routerLink="/auth/signup" class="w-full bg-[#4D9EFF] text-white border-0">Começar Grátis</button>
+      </div>
+    </div>
+  }
+</nav>

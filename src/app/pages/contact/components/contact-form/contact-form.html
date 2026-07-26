@@ -1,0 +1,95 @@
+<div class="min-h-screen flex flex-col bg-background">
+  <main class="flex-grow">
+    <div class="py-16 sm:py-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <h1 class="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">Entre em Contato</h1>
+          <p class="mt-4 max-w-2xl text-xl text-muted-foreground mx-auto">
+            Tem dúvidas sobre nosso serviço de monitoramento? Estamos aqui para ajudar.
+          </p>
+        </div>
+        <div class="mt-16 lg:mt-20">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-16">
+            <div class="lg:col-span-1">
+              <div class="space-y-8">
+                <div class="flex items-start">
+                  <div class="ml-4">
+                    <h2 class="text-lg font-medium text-foreground flex items-center gap-x-2">
+                      <svg lucideMail></svg>
+                      E-mail
+                    </h2>
+                    <p class="mt-1 text-muted-foreground">systatus&#64;artcode.dev</p>
+                  </div>
+                </div>
+                <div class="flex items-start">
+                  <div class="ml-4">
+                    <h2 class="text-lg font-medium text-foreground flex items-center gap-x-2">
+                      <svg lucideMapPin></svg>
+                      Endereço Fiscal
+                    </h2>
+                    <p class="mt-1 text-muted-foreground">
+                      Av. Anselmo Alves dos Santos, 1076, loja 01, CXPST 98<br />
+                      Uberlândia-MG, CEP 38408-097, Brasil
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="lg:col-span-2 border border-border rounded-lg p-6 sm:p-8">
+              @if (isSubmitted()) {
+                <div class="text-center py-16">
+                  <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100">
+                    <svg lucideCheck class="h-8 w-8 text-green-600"></svg>
+                  </div>
+                  <h2 class="mt-6 text-2xl font-semibold text-foreground">Recebemos sua mensagem!</h2>
+                  <p class="my-2 text-muted-foreground">Retornaremos o mais breve possível.</p>
+                  <button hlmBtn (click)="resetForm()">Enviar outra mensagem</button>
+                </div>
+              } @else {
+                <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-3">
+                  <div class="grid grid-cols-1 gap-y-3 gap-x-4 sm:grid-cols-2">
+                    <div class="flex flex-col gap-1">
+                      <label hlmLabel>Nome <span class="text-red-500">*</span></label>
+                      <input hlmInput type="text" formControlName="name" />
+                    </div>
+                    <div class="flex flex-col gap-1">
+                      <label hlmLabel>E-mail <span class="text-red-500">*</span></label>
+                      <input hlmInput type="email" formControlName="email" />
+                    </div>
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <label hlmLabel>Assunto <span class="text-red-500">*</span></label>
+                    <div hlmSelect class="w-full"
+                      [value]="form.controls.subject.value ?? ''"
+                      (valueChange)="form.controls.subject.setValue($event ?? null)">
+                      <hlm-select-trigger class="w-full">
+                        <hlm-select-value placeholder="Selecione um assunto" />
+                      </hlm-select-trigger>
+                      <ng-template hlmSelectPortal>
+                        <hlm-select-content>
+                          @for (option of subjectList; track option.description) {
+                            <hlm-select-item [value]="option.description">{{ option.description }}</hlm-select-item>
+                          }
+                        </hlm-select-content>
+                      </ng-template>
+                    </div>
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <label hlmLabel>Mensagem <span class="text-red-500">*</span></label>
+                    <textarea hlmTextarea rows="5" maxlength="4000" formControlName="message"></textarea>
+                    <small>{{ messageLength }}/4000</small>
+                  </div>
+                  <div class="flex justify-end">
+                    <button hlmBtn type="submit" class="w-full" [disabled]="isSubmitting()">
+                      {{ isSubmitting() ? 'Enviando..' : 'Enviar Mensagem' }}
+                    </button>
+                  </div>
+                </form>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,14 @@
+@if (appState.loading()) {
+  <div style="z-index: 999999999; position: absolute; top: -12px; left: 0; right: 0;">
+    <hlm-progress>
+      <hlm-progress-indicator />
+    </hlm-progress>
+  </div>
+}
+
+<router-outlet />
+
+@if (isBrowser) {
+  <hlm-toaster position="top-center" />
+  <app-confirm-dialog />
+}

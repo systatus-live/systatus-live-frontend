@@ -1,0 +1,15 @@
+<section class="bg-[#071428] border-y border-white/5">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+      @for (stat of statList; track stat.value; let last = $last) {
+        <div class="text-center relative">
+          <div class="text-3xl font-extrabold text-[#4D9EFF] tracking-tight">{{ stat.value }}</div>
+          <div class="mt-1 text-sm text-[#8BA3C7]">{{ stat.label }}</div>
+          @if (!last) {
+            <div class="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 h-10 w-px bg-white/10"></div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,44 @@
+<section class="relative overflow-hidden bg-[#071428] py-24">
+  <!-- Gradient glow background -->
+  <div class="absolute inset-0 pointer-events-none">
+    <div class="absolute inset-0 bg-gradient-to-br from-[#4D9EFF]/15 via-[#7C3AED]/10 to-[#0D1B35]/0"></div>
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full bg-[#4D9EFF]/8 blur-[100px]"></div>
+  </div>
+
+  <div class="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <!-- Badge -->
+    <div class="inline-flex items-center gap-2 rounded-full border border-[#4D9EFF]/30 bg-[#4D9EFF]/10 px-4 py-1.5 mb-8">
+      <span class="relative flex h-2 w-2">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+      </span>
+      <span class="text-sm font-medium text-[#4D9EFF]">Sem cartão de crédito · Pronto em 2 minutos</span>
+    </div>
+
+    <!-- Headline -->
+    <h2 class="text-3xl font-extrabold tracking-tight text-[#E8F0FE] sm:text-5xl leading-tight">
+      Seu site pode estar fora do ar<br />
+      <span class="text-[#4D9EFF]">agora mesmo.</span>
+    </h2>
+    <p class="mt-6 text-lg text-[#8BA3C7] max-w-xl mx-auto leading-relaxed">
+      Não espere o cliente reclamar. Configure o monitoramento em 2 minutos e durma tranquilo
+      sabendo que receberá o alerta antes de qualquer um.
+    </p>
+
+    <!-- CTAs -->
+    <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+      <button hlmBtn routerLink="/auth/signup" class="bg-[#4D9EFF] hover:bg-[#3A85E8] text-white border-0 text-base px-8 py-3 h-auto">
+        Criar conta grátis
+        <svg lucideArrowRight class="w-4 h-4 ml-2"></svg>
+      </button>
+      <button hlmBtn variant="outline" routerLink="/contact" class="bg-white/5 border-white/15 text-[#8BA3C7] hover:bg-[#4D9EFF]/12 hover:border-[#4D9EFF]/30 hover:text-[#A8C4E8] text-base px-8 py-3 h-auto">
+        Falar com o time
+      </button>
+    </div>
+
+    <!-- Bottom trust line -->
+    <p class="mt-8 text-sm text-[#8BA3C7]">
+      Trial de 14 dias · Cancele quando quiser · Suporte incluso
+    </p>
+  </div>
+</section>

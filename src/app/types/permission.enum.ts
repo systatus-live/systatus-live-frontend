@@ -1,0 +1,4 @@
+export enum PermissionEnum {
+  STATUS_PAGE = "STATUS_PAGE",
+  CUSTOM_NOTIFICATION = "CUSTOM_NOTIFICATION",
+}

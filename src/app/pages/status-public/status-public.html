@@ -1,0 +1,137 @@
+@if (notFound()) {
+  <div class="min-h-screen flex flex-col items-center justify-center gap-3 text-center px-4">
+    <p class="text-4xl font-bold">404</p>
+    <p class="text-muted-foreground">Página de status não encontrada.</p>
+    <a routerLink="/" class="text-sm text-primary underline underline-offset-4">Voltar ao início</a>
+  </div>
+} @else {
+  <div class="min-h-screen bg-background text-foreground flex flex-col">
+    <header class="border-b border-border">
+      <div class="max-w-3xl mx-auto px-4 py-5 flex items-center justify-between">
+        <div>
+          @if (data()) {
+            <h1 class="text-lg font-semibold">{{ data().title }}</h1>
+            <small class="text-sm text-muted-foreground">{{ data().owner }}</small>
+          } @else {
+            <div class="h-6 w-48 bg-muted animate-pulse rounded"></div>
+          }
+        </div>
+        <app-logo [iconOnly]="true" />
+      </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto w-full px-4 py-8 flex flex-col gap-6 flex-1">
+      @if (data()) {
+        @if (overallStatus === 'operational') {
+          <div class="w-full rounded-lg border px-4 py-3 flex items-center gap-3 bg-[#05DF72]/10 border-[#05DF72]/30">
+            <ng-icon name="lucideBadgeCheck" class="text-[#05DF72] shrink-0" size="16" />
+            <p class="font-medium text-sm text-[#05DF72]">Todos os sistemas operacionais</p>
+          </div>
+        } @else if (overallStatus === 'partial') {
+          <div class="w-full rounded-lg border px-4 py-3 flex items-center gap-3 border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-50">
+            <ng-icon name="lucideAlertTriangle" class="shrink-0" size="16" />
+            <p class="font-medium text-sm">Alguns sistemas estão indisponíveis</p>
+          </div>
+        } @else if (overallStatus === 'outage') {
+          <div class="w-full rounded-lg border px-4 py-3 flex items-center gap-3 bg-[#FF6467]/10 border-[#FF6467]/30">
+            <ng-icon name="lucideCircleAlert" class="text-[#FF6467] shrink-0" size="16" />
+            <p class="font-medium text-sm text-[#FF6467]">Todos os sistemas indisponíveis</p>
+          </div>
+        } @else {
+          <div class="w-full rounded-lg border px-4 py-3 flex items-center gap-3 bg-muted/40 border-border">
+            <ng-icon name="lucideInfo" class="text-muted-foreground shrink-0" size="16" />
+            <p class="font-medium text-sm text-muted-foreground">Sem dados de monitoramento</p>
+          </div>
+        }
+      } @else {
+        <div class="h-14 w-full bg-muted animate-pulse rounded-xl"></div>
+      }
+
+      <div class="flex flex-col gap-1">
+        @if (data() && data().monitors.length > 0) {
+          <div class="w-full py-4 flex items-center justify-between text-xs text-muted-foreground">
+            <span>Histórico dos últimos 30 dias</span>
+            <span>
+              @if (lastUpdated()) {
+                Atualizado às {{ lastUpdated()!.toLocaleTimeString("pt-BR") }} · Próxima atualização em {{ countdown() }}s
+              } @else {
+                Carregando...
+              }
+            </span>
+          </div>
+        }
+
+        @if (data()) {
+          @if (data().monitors.length === 0) {
+            <p class="text-sm text-muted-foreground text-center py-8">Nenhum monitor configurado.</p>
+          } @else {
+            @for (monitor of data().monitors; track monitor.id; let idx = $index) {
+              @if (idx > 0) {
+                <div class="h-px bg-border"></div>
+              }
+              <div class="py-4 flex flex-col gap-2.5">
+                <div class="flex items-center justify-between gap-4">
+                  <div class="flex items-center gap-2 min-w-0">
+                    <img [src]="getFaviconUrl(monitor.address)" width="16" height="16" alt=""
+                      class="rounded shrink-0" (error)="hideFavicon($event)" />
+                    <span class="font-medium text-sm truncate">{{ monitor.name }}</span>
+                    <span class="text-muted-foreground text-xs hidden sm:block truncate">{{ monitor.address }}</span>
+                  </div>
+                  <div class="shrink-0">
+                    @if (monitor.lastStatus === null) {
+                      <span class="inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs text-muted-foreground">
+                        <ng-icon name="lucideClock" size="12" />
+                        Pendente
+                      </span>
+                    } @else if (monitor.lastStatus.startsWith('2')) {
+                      <span class="inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs text-muted-foreground">
+                        <ng-icon name="lucideBadgeCheck" size="12" class="text-[#05DF72]" />
+                        Operacional
+                      </span>
+                    } @else {
+                      <span class="inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs text-muted-foreground">
+                        <ng-icon name="lucideBadgeAlert" size="12" class="text-[#FF6467]" />
+                        Indisponível
+                      </span>
+                    }
+                  </div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <div class="flex gap-px flex-1">
+                    @for (item of monitor.historical; track $index) {
+                      <div class="flex-1 h-6 rounded-sm hover:scale-y-125 transition-transform cursor-default" [style]="getHistoricalStyle(item)" [title]="item.note"></div>
+                    }
+                  </div>
+                  <span class="text-xs text-muted-foreground whitespace-nowrap shrink-0">{{ monitor.percentOnline }}%</span>
+                </div>
+                @if (getStatusLabel(monitor); as label) {
+                  <span class="text-xs text-muted-foreground">{{ label }}</span>
+                }
+              </div>
+            }
+          }
+        } @else {
+          @for (item of [0, 1, 2]; track item) {
+            <div class="py-4 flex flex-col gap-2.5">
+              <div class="flex items-center justify-between">
+                <div class="h-4 w-40 bg-muted animate-pulse rounded"></div>
+                <div class="h-5 w-20 bg-muted animate-pulse rounded-full"></div>
+              </div>
+              <div class="flex gap-px">
+                @for (bar of [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]; track bar) {
+                  <div class="flex-1 h-6 rounded-sm bg-muted animate-pulse"></div>
+                }
+              </div>
+            </div>
+          }
+        }
+      </div>
+    </main>
+
+    <footer class="border-t border-border">
+      <div class="px-4 py-4 flex items-center justify-center text-xs text-muted-foreground">
+        <a routerLink="/" class="hover:text-foreground transition-colors">Monitorado por Systatus.Live</a>
+      </div>
+    </footer>
+  </div>
+}

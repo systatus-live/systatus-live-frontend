@@ -1,0 +1,60 @@
+<div class="flex flex-col gap-4">
+  <div class="flex items-center justify-between">
+    <h1 class="text-base font-semibold">Integrações</h1>
+    <button hlmBtn routerLink="/panel/integrations/new">Nova Integração</button>
+  </div>
+
+  <div hlmTableContainer class="rounded-md border">
+    <table hlmTable>
+      <thead hlmTHead>
+        <tr hlmTr>
+          <th hlmTh>Integração</th>
+          <th hlmTh></th>
+        </tr>
+      </thead>
+      <tbody hlmTBody>
+        @if (integrationList().length === 0) {
+          <tr hlmTr>
+            <td hlmTd colspan="2" class="h-24 text-center text-muted-foreground">Nenhuma integração encontrada.</td>
+          </tr>
+        }
+        @for (integration of integrationList(); track integration.id) {
+          <tr hlmTr class="cursor-pointer" (click)="router.navigate(['/panel/integrations/edit', integration.id])">
+            <td hlmTd>
+              <div class="flex items-center gap-2.5">
+                <img [src]="getPlatformLogo(integration.chatPlatform)" alt="" width="16" height="16" class="shrink-0" />
+                <div class="flex flex-col justify-center overflow-hidden">
+                  <span class="font-medium">{{ integration.name }}</span>
+                  <small class="text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis">
+                    {{ integration.chatPlatform }} • {{ integration.address }}
+                  </small>
+                </div>
+              </div>
+            </td>
+            <td hlmTd>
+              <div class="flex justify-end" (click)="$event.stopPropagation()">
+                <button hlmBtn variant="ghost" class="h-8 w-8 p-0" [hlmDropdownMenuTrigger]="actionsMenu">
+                  <ng-icon name="lucideEllipsis" class="size-4" />
+                </button>
+                <ng-template #actionsMenu>
+                  <div hlmDropdownMenu>
+                    <div hlmDropdownMenuLabel>Ações</div>
+                    <button hlmDropdownMenuItem (triggered)="router.navigate(['/panel/integrations/edit', integration.id])">
+                      Editar
+                    </button>
+                    <button hlmDropdownMenuItem (triggered)="handleValidate(integration.id)">
+                      Testar integração
+                    </button>
+                    <button hlmDropdownMenuItem (triggered)="copyToClipboard(integration.address)">
+                      Copiar URL
+                    </button>
+                  </div>
+                </ng-template>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

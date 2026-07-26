@@ -1,0 +1,51 @@
+<div class="min-h-screen bg-muted/40 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+  <div class="mx-auto w-full max-w-md">
+    <section hlmCard>
+      <div hlmCardHeader class="items-center text-center">
+        <app-logo />
+        <h2 class="mt-2 text-xl font-semibold leading-none">Insira o código</h2>
+        <p hlmCardDescription>
+          Código de verificação enviado para
+          @if (authFlow()) {
+            <strong>{{ authFlow().email }}</strong>
+          } @else {
+            seu e-mail
+          }
+        </p>
+      </div>
+      <div hlmCardContent>
+        <div class="space-y-3">
+          @if (isBrowser) {
+            <div class="flex justify-center">
+              <brn-input-otp hlmInputOtp [maxLength]="6" [value]="otp()" (valueChange)="otp.set($event)">
+                <hlm-input-otp-group>
+                  <hlm-input-otp-slot [index]="0" />
+                  <hlm-input-otp-slot [index]="1" />
+                  <hlm-input-otp-slot [index]="2" />
+                  <hlm-input-otp-slot [index]="3" />
+                  <hlm-input-otp-slot [index]="4" />
+                  <hlm-input-otp-slot [index]="5" />
+                </hlm-input-otp-group>
+              </brn-input-otp>
+            </div>
+          }
+          <p class="text-left text-sm leading-normal font-normal text-muted-foreground">
+            Verifique o spam ou lixeira, ou
+            <span
+              (click)="sendCode()"
+              [class]="timer() > 0 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'"
+              class="font-medium underline-offset-4 hover:underline text-foreground">clique aqui para reenviar</span>
+            @if (timer() > 0) {
+              <i> (aguarde {{ timer() }}s)</i>
+            }
+          </p>
+          <button hlmBtn type="button" class="w-full" (click)="onSubmit()">Verificar Conta</button>
+          <p class="text-center text-sm text-muted-foreground">
+            Lembrou a senha?
+            <a routerLink="/auth/signin" class="font-medium underline-offset-4 hover:underline text-foreground">Entrar na sua conta</a>
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

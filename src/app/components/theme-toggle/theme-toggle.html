@@ -1,0 +1,5 @@
+<div class="flex items-center gap-2 text-muted-foreground">
+  <ng-icon name="lucideSun" class="size-3.5" [class.text-foreground]="!isDark()" />
+  <hlm-switch [checked]="isDark()" (checkedChange)="toggle.emit($event)" />
+  <ng-icon name="lucideMoon" class="size-3.5" [class.text-foreground]="isDark()" />
+</div>

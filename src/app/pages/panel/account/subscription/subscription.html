@@ -1,0 +1,348 @@
+<div class="space-y-8">
+  <section>
+    <div class="flex items-center gap-2 mb-4">
+      <ng-icon name="lucideCreditCard" class="h-4 w-4 text-muted-foreground" />
+      <h2 class="text-sm font-semibold tracking-wide uppercase text-muted-foreground">Assinatura atual</h2>
+    </div>
+    <div hlmSeparator class="mb-6"></div>
+
+    @if (subscription()) {
+      <div class="space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-lg border p-5">
+          <div class="flex items-center gap-4">
+            <img [src]="subscription().image" alt="Plano" class="h-12 w-12 object-contain shrink-0" />
+            <div>
+              <p class="font-semibold">Plano {{ subscription().name }}</p>
+              <p class="text-sm text-muted-foreground">{{ subscription().nextBilling }}</p>
+            </div>
+          </div>
+          @if (subscription().status === SubscriptionStatusEnum.TRIAL) {
+            <span class="text-3xl font-bold">Trial</span>
+          } @else {
+            <div class="flex items-baseline gap-1">
+              <span class="text-3xl font-bold">{{ formatMoney(subscription().price) }}</span>
+              <span class="text-sm text-muted-foreground">{{ subscription().period }}</span>
+            </div>
+          }
+        </div>
+
+        <div class="rounded-lg border p-5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <ng-icon name="lucideMapPin" class="h-4 w-4 text-muted-foreground" />
+              <span class="text-sm font-medium">Dados de cobrança</span>
+            </div>
+            <button hlmBtn variant="ghost" size="sm" type="button" (click)="toggleBilling()">
+              <ng-icon name="lucidePencil" class="h-3.5 w-3.5 mr-1" />
+              {{ billingExpanded() ? "Cancelar" : "Editar" }}
+            </button>
+          </div>
+
+          @if (billingExpanded()) {
+            <form [formGroup]="billingForm" (ngSubmit)="onSubmitBilling()" class="mt-5">
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+                <div class="flex flex-col gap-1">
+                  <label hlmLabel for="billing_name">Nome para cobrança <span class="text-destructive">*</span></label>
+                  <input hlmInput id="billing_name" formControlName="billing_name" maxlength="100"
+                    placeholder="Nome ou razão social" />
+                </div>
+
+                <div class="flex flex-col gap-1 lg:col-span-2">
+                  <label hlmLabel for="billing_email">E-mail para cobrança <span class="text-destructive">*</span></label>
+                  <input hlmInput id="billing_email" type="email" formControlName="billing_email" maxlength="255"
+                    placeholder="cobranca@empresa.com" />
+                </div>
+
+                <div class="flex flex-col gap-1">
+                  <label hlmLabel>Tipo de pessoa <span class="text-destructive">*</span></label>
+                  <div hlmSelect class="w-full"
+                    [value]="billingForm.controls.person_type.value ?? ''"
+                    [itemToString]="personTypeItemToString"
+                    (valueChange)="onPersonTypeChange($event)">
+                    <hlm-select-trigger class="w-full">
+                      <hlm-select-value placeholder="Selecione" />
+                    </hlm-select-trigger>
+                    <ng-template hlmSelectPortal>
+                      <hlm-select-content>
+                        <hlm-select-item value="PF">Pessoa Física</hlm-select-item>
+                        <hlm-select-item value="PJ">Pessoa Jurídica</hlm-select-item>
+                      </hlm-select-content>
+                    </ng-template>
+                  </div>
+                </div>
+
+                <div class="flex flex-col gap-1">
+                  <label hlmLabel for="document">
+                    {{ billingForm.controls.person_type.value === "PF" ? "CPF" : "CNPJ" }}
+                    <span class="text-destructive">*</span>
+                  </label>
+                  <input hlmInput id="document"
+                    [value]="billingForm.controls.document.value ?? ''"
+                    (input)="onDocumentInput($event)"
+                    [placeholder]="billingForm.controls.person_type.value === 'PF' ? '000.000.000-00' : '00.000.000/0000-00'"
+                    [attr.maxlength]="billingForm.controls.person_type.value === 'PF' ? 14 : 18" />
+                </div>
+
+                <div class="flex flex-col gap-1">
+                  <label hlmLabel for="zip_code">CEP <span class="text-destructive">*</span></label>
+                  <input hlmInput id="zip_code"
+                    [value]="billingForm.controls.zip_code.value ?? ''"
+                    (input)="onCepInput($event)"
+                    (blur)="onCepBlur()"
+                    placeholder="00000-000"
+                    maxlength="9" />
+                </div>
+
+                <div class="col-span-full grid grid-cols-[3fr_6rem_2fr] gap-4">
+                  <div class="flex flex-col gap-1">
+                    <label hlmLabel for="address">Endereço <span class="text-destructive">*</span></label>
+                    <input hlmInput id="address" formControlName="address" maxlength="255"
+                      placeholder="Rua, avenida, logradouro..." />
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <label hlmLabel for="number">Número <span class="text-destructive">*</span></label>
+                    <input hlmInput id="number" formControlName="number" maxlength="20" placeholder="123" />
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <label hlmLabel for="complement">Complemento</label>
+                    <input hlmInput id="complement" formControlName="complement" maxlength="100"
+                      placeholder="Apto, sala, bloco..." />
+                  </div>
+                </div>
+
+                <div class="col-span-full grid grid-cols-[1fr_5rem_1fr] gap-4">
+                  <div class="flex flex-col gap-1">
+                    <label hlmLabel for="neighborhood">Bairro <span class="text-destructive">*</span></label>
+                    <input hlmInput id="neighborhood" formControlName="neighborhood" maxlength="100"
+                      placeholder="Bairro" />
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <label hlmLabel>UF <span class="text-destructive">*</span></label>
+                    <div hlmSelect class="w-full"
+                      [value]="billingForm.controls.state.value ?? ''"
+                      [itemToString]="stateItemToString"
+                      (valueChange)="onStateChange($event ?? '')">
+                      <hlm-select-trigger class="w-full">
+                        <hlm-select-value placeholder="..." />
+                      </hlm-select-trigger>
+                      <ng-template hlmSelectPortal>
+                        <hlm-select-content>
+                          @for (s of states(); track s.code) {
+                            <hlm-select-item [value]="s.code">{{ s.code }}</hlm-select-item>
+                          }
+                        </hlm-select-content>
+                      </ng-template>
+                    </div>
+                  </div>
+                  <div class="flex flex-col gap-1 relative">
+                    <label hlmLabel>Cidade <span class="text-destructive">*</span></label>
+                    <input hlmInput
+                      [value]="citySearch()"
+                      (input)="onCitySearchInput($any($event.target).value)"
+                      (focus)="cities().length > 0 && cityDropdownOpen.set(true)"
+                      (blur)="hideCityDropdown()"
+                      [placeholder]="cities().length === 0 ? 'Selecione...' : 'Buscar...'"
+                      [disabled]="cities().length === 0" />
+                    @if (cityDropdownOpen() && filteredCities.length > 0) {
+                      <div class="absolute z-10 w-full top-full mt-1 bg-popover border border-border rounded-md shadow-md max-h-48 overflow-y-auto">
+                        @for (city of filteredCities; track city) {
+                          <button type="button"
+                            class="w-full text-left px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
+                            (mousedown)="selectCity(city)">
+                            {{ city }}
+                          </button>
+                        }
+                      </div>
+                    }
+                  </div>
+                </div>
+
+                <div class="flex items-end pb-0.5">
+                  <button hlmBtn type="submit" size="sm">Salvar alterações</button>
+                </div>
+              </div>
+
+              <div class="mt-4 rounded-lg border p-4 flex gap-3 text-sm">
+                <ng-icon name="lucideShieldCheck" class="h-4 w-4 shrink-0 mt-0.5 text-muted-foreground" />
+                <div class="space-y-1 text-muted-foreground">
+                  <p class="font-medium text-foreground">Seus dados estão protegidos</p>
+                  <p>
+                    As informações do seu cartão de crédito são processadas diretamente pelo
+                    <a href="https://stripe.com/br" target="_blank" rel="noreferrer" class="underline">Stripe</a>
+                    — uma das plataformas de pagamento mais seguras do mundo. Esses dados nunca trafegam nem são armazenados em nossos servidores.
+                  </p>
+                  <p>
+                    Os dados de endereço e documento preenchidos aqui são armazenados em nossa base exclusivamente para fins de emissão de nota fiscal.
+                    Em qualquer momento, você pode cancelar sua assinatura sem burocracia.
+                  </p>
+                  <p>
+                    Ao assinar um plano, você concorda com os nossos
+                    <a routerLink="/agreements/privacy-policy" target="_blank" class="underline">Termos de Uso</a>
+                    e a nossa
+                    <a routerLink="/agreements/terms-of-use" target="_blank" class="underline">Política de Privacidade</a>.
+                  </p>
+                </div>
+              </div>
+            </form>
+          } @else {
+            @if (billingData()?.billing_name) {
+              <div class="mt-3 space-y-0.5 text-sm text-muted-foreground">
+                <p class="text-foreground font-medium">{{ billingData().billing_name }}</p>
+                <p>{{ billingData().person_type === "PF" ? "CPF" : "CNPJ" }}: {{ billingData().document }}</p>
+                @if (billingAddressLine) {
+                  <p>{{ billingAddressLine }}</p>
+                }
+                @if (billingLocationLine) {
+                  <p>{{ billingLocationLine }}</p>
+                }
+              </div>
+            } @else {
+              <p class="mt-3 text-sm text-muted-foreground">Nenhum dado de cobrança preenchido.</p>
+            }
+          }
+        </div>
+      </div>
+    }
+  </section>
+
+  @if (planList().length > 0) {
+    <section>
+      <div class="flex items-center gap-2 mb-4">
+        <ng-icon name="lucideSparkles" class="h-4 w-4 text-muted-foreground" />
+        <h2 class="text-sm font-semibold tracking-wide uppercase text-muted-foreground">Planos disponíveis</h2>
+      </div>
+      <div hlmSeparator class="mb-6"></div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        @for (plan of planList(); track plan.id) {
+          <div class="relative flex flex-col rounded-lg border p-6"
+            [class.border-primary]="plan.mostPopular"
+            [class.shadow-md]="plan.mostPopular">
+            @if (plan.mostPopular) {
+              <div class="absolute -top-3 left-1/2 -translate-x-1/2">
+                <span hlmBadge class="px-3 py-0.5 text-xs">Mais Popular</span>
+              </div>
+            }
+            <div class="flex flex-col items-center gap-2 mb-4">
+              <img [src]="plan.image" alt="Plano" class="h-12 w-12 object-contain" />
+              <p class="font-semibold text-sm">Plano {{ plan.name }}</p>
+              <div class="flex items-baseline gap-1">
+                <span class="text-3xl font-bold">{{ formatMoney(plan.price) }}</span>
+                @if (plan.period) {
+                  <span class="text-sm text-muted-foreground">{{ plan.period }}</span>
+                }
+              </div>
+            </div>
+            <p class="text-xs text-center text-muted-foreground mb-4">{{ plan.description }}</p>
+            <ul class="flex-1 space-y-2.5 mb-6">
+              @for (feature of plan.features; track feature.label) {
+                <li class="flex items-center gap-2 text-sm">
+                  @if (feature.enabled) {
+                    <ng-icon name="lucideCheck" class="h-4 w-4 shrink-0 text-green-500" />
+                    <span>{{ feature.label }}</span>
+                  } @else {
+                    <ng-icon name="lucideX" class="h-4 w-4 shrink-0 text-muted-foreground/40" />
+                    <span class="text-muted-foreground">{{ feature.label }}</span>
+                  }
+                </li>
+              }
+            </ul>
+            @if (subscription()?.id === plan.id && subscription().status !== SubscriptionStatusEnum.TRIAL) {
+              <button hlmBtn variant="outline" class="w-full" size="sm" disabled>Plano atual</button>
+            } @else {
+              <div class="space-y-1.5">
+                <button hlmBtn [variant]="plan.mostPopular ? 'default' : 'outline'" class="w-full" size="sm"
+                  type="button" (click)="handleSubscribe(plan.id)">
+                  {{ plan.bta }}
+                </button>
+                @if (!billingData()?.billing_name) {
+                  <p class="text-xs text-center text-muted-foreground">Dados de cobrança necessários</p>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </section>
+  }
+
+  <section>
+    <div class="flex items-center gap-2 mb-4">
+      <ng-icon name="lucideReceipt" class="h-4 w-4 text-muted-foreground" />
+      <h2 class="text-sm font-semibold tracking-wide uppercase text-muted-foreground">Histórico de faturas</h2>
+    </div>
+    <div hlmSeparator class="mb-6"></div>
+
+    <div hlmTableContainer class="rounded-md border">
+      <table hlmTable>
+        <thead hlmTHead>
+          <tr hlmTr>
+            <th hlmTh>Fatura</th>
+            <th hlmTh>Plano</th>
+            <th hlmTh>Emissão</th>
+            <th hlmTh>Vencimento</th>
+            <th hlmTh>Valor</th>
+            <th hlmTh>Status</th>
+            <th hlmTh class="w-10"></th>
+          </tr>
+        </thead>
+        <tbody hlmTBody>
+          @if (invoiceList().length === 0) {
+            <tr hlmTr>
+              <td hlmTd colspan="7" class="h-24 text-center text-muted-foreground">Nenhuma fatura encontrada.</td>
+            </tr>
+          }
+          @for (invoice of invoiceList(); track invoice.id) {
+            <tr hlmTr>
+              <td hlmTd class="font-medium text-sm font-mono">{{ invoice.id }}</td>
+              <td hlmTd class="text-sm">
+                <div class="flex items-center gap-x-2">
+                  <img [src]="invoice.image" alt="Plano" class="h-5 w-5 object-contain shrink-0" />
+                  <span>{{ invoice.plan }}</span>
+                </div>
+              </td>
+              <td hlmTd class="text-sm whitespace-nowrap">{{ invoice.issue_date | date:'dd/MM/yyyy' }}</td>
+              <td hlmTd class="text-sm whitespace-nowrap">{{ invoice.due_date | date:'dd/MM/yyyy' }}</td>
+              <td hlmTd class="text-sm">{{ formatMoney(invoice.amount) }}</td>
+              <td hlmTd>
+                @if (getInvoiceStatus(invoice.status); as status) {
+                  <span hlmBadge variant="outline" class="text-xs" [class]="status.className">
+                    {{ status.label }}
+                  </span>
+                }
+              </td>
+              <td hlmTd>
+                <button hlmBtn variant="ghost" size="icon" class="h-7 w-7" type="button" title="Baixar PDF"
+                  (click)="getInvoicePDF(invoice.id)">
+                  <ng-icon name="lucideDownload" class="h-3.5 w-3.5" />
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    @if (pagination().total > 0) {
+      <div class="flex items-center justify-between pt-3 text-sm text-muted-foreground">
+        <span>{{ pagination().total }} faturas</span>
+        <div class="flex items-center gap-2">
+          <button hlmBtn variant="outline" size="sm" type="button"
+            [disabled]="pagination().page === 0"
+            (click)="loadInvoices(pagination().page - 1)">
+            Anterior
+          </button>
+          <span hlmBadge variant="outline" class="font-normal">
+            {{ pagination().page + 1 }} / {{ totalPages || 1 }}
+          </span>
+          <button hlmBtn variant="outline" size="sm" type="button"
+            [disabled]="pagination().page + 1 >= totalPages"
+            (click)="loadInvoices(pagination().page + 1)">
+            Próximo
+          </button>
+        </div>
+      </div>
+    }
+  </section>
+</div>

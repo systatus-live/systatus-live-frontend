@@ -1,34 +1,105 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
-    "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
     "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
-    "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "preserve",
     "paths": {
-      "@/*": ["./src/*"]
+      "@spartan-ng/helm/button": [
+        "./src/app/components/button/src/index.ts"
+      ],
+      "@spartan-ng/helm/input": [
+        "./src/app/components/input/src/index.ts"
+      ],
+      "@spartan-ng/helm/utils": [
+        "./src/app/components/utils/src/index.ts"
+      ],
+      "@spartan-ng/helm/badge": [
+        "./src/app/components/badge/src/index.ts"
+      ],
+      "@spartan-ng/helm/sonner": [
+        "./src/app/components/sonner/src/index.ts"
+      ],
+      "@spartan-ng/helm/select": [
+        "./src/app/components/select/src/index.ts"
+      ],
+      "@spartan-ng/helm/textarea": [
+        "./src/app/components/textarea/src/index.ts"
+      ],
+      "@spartan-ng/helm/label": [
+        "./src/app/components/label/src/index.ts"
+      ],
+      "@spartan-ng/helm/card": [
+        "./src/app/components/card/src/index.ts"
+      ],
+      "@spartan-ng/helm/checkbox": [
+        "./src/app/components/checkbox/src/index.ts"
+      ],
+      "@spartan-ng/helm/input-otp": [
+        "./src/app/components/input-otp/src/index.ts"
+      ],
+      "@spartan-ng/helm/sidebar": [
+        "./src/app/components/sidebar/src/index.ts"
+      ],
+      "@spartan-ng/helm/separator": [
+        "./src/app/components/separator/src/index.ts"
+      ],
+      "@spartan-ng/helm/sheet": [
+        "./src/app/components/sheet/src/index.ts"
+      ],
+      "@spartan-ng/helm/skeleton": [
+        "./src/app/components/skeleton/src/index.ts"
+      ],
+      "@spartan-ng/helm/tooltip": [
+        "./src/app/components/tooltip/src/index.ts"
+      ],
+      "@spartan-ng/helm/avatar": [
+        "./src/app/components/avatar/src/index.ts"
+      ],
+      "@spartan-ng/helm/dropdown-menu": [
+        "./src/app/components/dropdown-menu/src/index.ts"
+      ],
+      "@spartan-ng/helm/breadcrumb": [
+        "./src/app/components/breadcrumb/src/index.ts"
+      ],
+      "@spartan-ng/helm/switch": [
+        "./src/app/components/switch/src/index.ts"
+      ],
+      "@spartan-ng/helm/alert": [
+        "./src/app/components/alert/src/index.ts"
+      ],
+      "@spartan-ng/helm/table": [
+        "./src/app/components/table/src/index.ts"
+      ],
+      "@spartan-ng/helm/alert-dialog": [
+        "./src/app/components/alert-dialog/src/index.ts"
+      ],
+      "@spartan-ng/helm/progress": [
+        "./src/app/components/progress/src/index.ts"
+      ]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts",
-    "**/*.mts"
-  ],
-  "exclude": ["node_modules"]
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
 }

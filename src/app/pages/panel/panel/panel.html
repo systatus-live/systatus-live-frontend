@@ -1,0 +1,113 @@
+<div class="bg-background text-foreground min-h-screen">
+  <div hlmSidebarWrapper>
+    <hlm-sidebar collapsible="icon">
+      <div hlmSidebarHeader class="flex items-center justify-center py-3">
+        <app-logo [iconOnly]="sidebarService.state() === 'collapsed'" [inverted]="isDark()" />
+      </div>
+
+      <div hlmSidebarContent>
+        @for (group of navList(); track group.title) {
+        <div hlmSidebarGroup>
+          <div hlmSidebarGroupLabel>{{ group.title }}</div>
+          <ul hlmSidebarMenu>
+            @for (item of group.items; track item.url) {
+            <li hlmSidebarMenuItem>
+              <a hlmSidebarMenuButton [routerLink]="item.url" [isActive]="currentUrl().startsWith(item.url)">
+                <ng-icon [name]="item.icon" />
+                <span>{{ item.title }}</span>
+              </a>
+            </li>
+            }
+          </ul>
+        </div>
+        }
+      </div>
+
+      <div hlmSidebarFooter>
+        <ul hlmSidebarMenu>
+          @if (appState.user()) {
+          <li hlmSidebarMenuItem>
+            <button hlmSidebarMenuButton size="lg"
+              class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              [hlmDropdownMenuTrigger]="userMenu" side="top" align="end">
+              <hlm-avatar class="h-8 w-8 rounded-lg">
+                <img hlmAvatarImage [src]="appState.user()?.avatar ?? '/images/avatar.jpg'"
+                  [alt]="appState.user()?.name" />
+                <span hlmAvatarFallback class="rounded-lg"></span>
+              </hlm-avatar>
+              <div class="grid flex-1 text-left text-sm leading-tight">
+                <span class="truncate font-medium">{{ appState.user()?.name }}</span>
+                <span class="truncate text-xs">{{ appState.user()?.email }}</span>
+              </div>
+              <ng-icon name="lucideChevronsUpDown" class="ml-auto size-4" />
+            </button>
+          </li>
+          }
+        </ul>
+      </div>
+
+      <button hlmSidebarRail></button>
+    </hlm-sidebar>
+
+    <main hlmSidebarInset>
+      @if (appState.subscription()?.status === SubscriptionStatusEnum.TRIAL && appState.subscription()?.endDate) {
+      <app-trial-banner [endDate]="appState.subscription()!.endDate" />
+      }
+
+      <header
+        class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+        <div class="flex items-center justify-center gap-2 px-4 flex-1">
+          <button hlmSidebarTrigger class="ml-1"></button>
+          <div class="mr-2 h-4 w-px bg-border"></div>
+          <nav hlmBreadcrumb>
+            <ol hlmBreadcrumbList>
+              <li hlmBreadcrumbItem class="hidden md:block">
+                <a hlmBreadcrumbLink [link]="activeItem()?.url">{{ activeItem()?.title }}</a>
+              </li>
+            </ol>
+          </nav>
+          <div class="ml-auto pr-2">
+            <app-theme-toggle [isDark]="isDark()" (toggle)="handleThemeToggle($event)" />
+          </div>
+        </div>
+      </header>
+
+      <div class="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <router-outlet />
+      </div>
+    </main>
+  </div>
+</div>
+
+<ng-template #userMenu>
+  <div hlmDropdownMenu>
+    <div hlmDropdownMenuLabel class="p-0 font-normal">
+      <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+        <hlm-avatar class="h-8 w-8 rounded-lg">
+          <img hlmAvatarImage [src]="appState.user()?.avatar" [alt]="appState.user()?.name" />
+          <span hlmAvatarFallback class="rounded-lg">{{ appState.user()?.name?.charAt(0) }}</span>
+        </hlm-avatar>
+        <div class="grid flex-1 text-left text-sm leading-tight">
+          <span class="truncate font-medium">{{ appState.user()?.name }}</span>
+          <span class="truncate text-xs">{{ appState.user()?.email }}</span>
+        </div>
+      </div>
+    </div>
+    <div hlmDropdownMenuSeparator></div>
+    <div hlmDropdownMenuGroup>
+      <button hlmDropdownMenuItem (triggered)="router.navigate(['/panel/account/details'])">
+        <ng-icon name="lucideBadgeCheck" />
+        Conta
+      </button>
+      <button hlmDropdownMenuItem (triggered)="router.navigate(['/panel/account/subscription'])">
+        <ng-icon name="lucideCreditCard" />
+        Assinatura
+      </button>
+    </div>
+    <div hlmDropdownMenuSeparator></div>
+    <button hlmDropdownMenuItem (triggered)="signOut()">
+      <ng-icon name="lucideLogOut" />
+      Sair
+    </button>
+  </div>
+</ng-template>

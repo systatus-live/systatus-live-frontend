@@ -1,0 +1,19 @@
+import { ApplicationConfig, importProvidersFrom, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { httpErrorInterceptor } from './interceptors/http-error-interceptor';
+import { jwtInterceptor } from './interceptors/jwt-interceptor';
+import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+
+import { routes } from './app.routes';
+import { NgxPermissionsModule } from 'ngx-permissions';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideBrowserGlobalErrorListeners(),
+    provideRouter(routes),
+    provideClientHydration(withEventReplay()),
+    provideHttpClient(withFetch(), withInterceptors([jwtInterceptor, httpErrorInterceptor])),
+    importProvidersFrom(NgxPermissionsModule.forRoot()),
+  ],
+};

@@ -1,0 +1,39 @@
+<section id="features" class="bg-[#0D1B35] py-24">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section header -->
+    <div class="text-center mb-16">
+      <div class="inline-block rounded-full border border-[#4D9EFF]/30 bg-[#4D9EFF]/10 px-4 py-1.5 mb-4">
+        <p class="text-sm font-medium text-[#4D9EFF] tracking-wide uppercase">Funcionalidades</p>
+      </div>
+      <h2 class="text-3xl font-extrabold tracking-tight text-[#E8F0FE] sm:text-4xl">
+        Tudo que você precisa para<br class="hidden sm:block" /> manter seus sistemas no ar
+      </h2>
+      <p class="mt-4 max-w-2xl mx-auto text-lg text-[#8BA3C7]">
+        Da detecção ao alerta em menos de 30 segundos. Sem agentes, sem configuração complexa.
+      </p>
+    </div>
+
+    <!-- Feature cards grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      @for (feature of featureList; track feature.name) {
+        <div class="group relative p-6 rounded-2xl border border-white/8 bg-white/3 hover:bg-white/6 hover:border-white/15 hover:shadow-xl transition-all duration-300 cursor-default">
+          <!-- Icon -->
+          <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl mb-4" [class]="feature.colorClass">
+            <ng-container [ngComponentOutlet]="feature.icon" />
+          </div>
+
+          <!-- Content -->
+          <h3 class="text-base font-semibold text-[#E8F0FE] mb-2">{{ feature.name }}</h3>
+          <p class="text-sm text-[#8BA3C7] leading-relaxed">{{ feature.description }}</p>
+        </div>
+      }
+    </div>
+
+    <!-- CTA link -->
+    <div class="mt-12 text-center">
+      <button hlmBtn routerLink="/auth/signup" class="bg-[#4D9EFF] hover:bg-[#3A85E8] text-white border-0">
+        Começar agora, é grátis
+      </button>
+    </div>
+  </div>
+</section>

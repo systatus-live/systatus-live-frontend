@@ -1,0 +1,21 @@
+<div>
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-base font-semibold">{{ activeLabel }}</h1>
+  </div>
+
+  <nav class="flex gap-1 border-b mb-6">
+    @for (item of navList; track item.url) {
+      <a [routerLink]="item.url"
+        class="flex items-center gap-2 px-3 py-2 text-sm font-medium border-b-2 -mb-px transition-colors"
+        [class.border-primary]="currentUrl().startsWith(item.url)"
+        [class.text-foreground]="currentUrl().startsWith(item.url)"
+        [class.border-transparent]="!currentUrl().startsWith(item.url)"
+        [class.text-muted-foreground]="!currentUrl().startsWith(item.url)">
+        <ng-icon [name]="item.icon" class="h-4 w-4" />
+        {{ item.label }}
+      </a>
+    }
+  </nav>
+
+  <router-outlet />
+</div>
