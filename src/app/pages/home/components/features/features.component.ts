@@ -42,7 +42,7 @@ export class FeaturesComponent {
     },
     {
       name: 'Histórico de 90 Dias',
-      description: 'Identifique padrões de instabilidade e chegue em reuniões com dados. Gráficos de disponibilidade no estilo Uptime Robot.',
+      description: 'Identifique padrões de instabilidade e chegue em reuniões com dados.',
       icon: LucideClock,
       colorClass: 'bg-emerald-500/15 text-emerald-400',
       glowClass: 'group-hover:shadow-emerald-500/20',

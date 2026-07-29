@@ -33,8 +33,8 @@ export class DemoTabsComponent {
     { name: 'Slack', logo: '/logos/slack.svg', status: 'Conectado', active: true },
     { name: 'WhatsApp', logo: '/logos/whatsapp.svg', status: 'Conectado', active: true },
     { name: 'Discord', logo: '/logos/discord.svg', status: 'Conectado', active: true },
-    { name: 'E-mail', logo: '/logos/mail.svg', status: 'Configurar', active: false },
-    { name: 'Google Chat', logo: '/logos/google-chat.svg', status: 'Configurar', active: false },
+    { name: 'E-mail', logo: '/logos/mail.svg', status: '', active: false },
+    { name: 'Google Chat', logo: '/logos/google-chat.svg', status: '', active: false },
   ];
 
   public readonly incidentList: Incident[] = [

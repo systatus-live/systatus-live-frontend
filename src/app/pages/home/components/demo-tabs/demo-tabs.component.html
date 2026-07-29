@@ -127,7 +127,7 @@
                         <svg lucideCheck class="w-3.5 h-3.5"></svg>
                         {{ channel.status }}
                       </div>
-                    } @else {
+                    } @else if (channel.status) {
                       <span class="text-xs text-[#8BA3C7] border border-white/15 rounded-md px-2 py-0.5 cursor-default">{{ channel.status }}</span>
                     }
                   </div>

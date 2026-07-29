@@ -46,32 +46,56 @@
 :root.dark {
   color-scheme: dark;
 
-  --background: #313338;
-  --foreground: #DBDEE1;
-  --card: #2B2D31;
-  --card-foreground: #DBDEE1;
-  --popover: #111214;
-  --popover-foreground: #DBDEE1;
-  --primary: #5865F2;
+  /* Background hierarchy (dark → light): popover < sidebar < bg < muted < card */
+  --background: #0D1B35;
+  --foreground: #E8F0FE;
+  --card: #132240;
+  --card-foreground: #E8F0FE;
+  --popover: #040E1F;
+  --popover-foreground: #E8F0FE;
+  --primary: #4D9EFF;
   --primary-foreground: #FFFFFF;
-  --secondary: #383A40;
-  --secondary-foreground: #DBDEE1;
-  --muted: #2B2D31;
-  --muted-foreground: #949BA4;
-  --accent: #404249;
-  --accent-foreground: #DBDEE1;
+  --secondary: #0F2040;
+  --secondary-foreground: #E8F0FE;
+  --muted: #102038;
+  --muted-foreground: #8BA3C7;
+  --accent: #1E3254;
+  --accent-foreground: #E8F0FE;
   --destructive: oklch(0.704 0.191 22.216);
-  --border: #3F4147;
-  --input: #1E1F22;
-  --ring: #5865F2;
-  --sidebar: #2B2D31;
-  --sidebar-foreground: #DBDEE1;
-  --sidebar-primary: #DBDEE1;
-  --sidebar-primary-foreground: #313338;
-  --sidebar-accent: #3C3F44;
-  --sidebar-accent-foreground: #DBDEE1;
-  --sidebar-border: #1E1F22;
-  --sidebar-ring: #5865F2;
+  --border: rgb(255 255 255 / 10%);
+  --input: #162434;
+  --ring: #4D9EFF;
+  --sidebar: #071428;
+  --sidebar-foreground: #E8F0FE;
+  --sidebar-primary: #E8F0FE;
+  --sidebar-primary-foreground: #0D1B35;
+  --sidebar-accent: #162434;
+  --sidebar-accent-foreground: #E8F0FE;
+  --sidebar-border: rgb(255 255 255 / 8%);
+  --sidebar-ring: #4D9EFF;
+}
+
+// Public landing pages (contact, etc.) — same palette as :root.dark without sidebar tokens
+.page-dark {
+  color-scheme: dark;
+  --background: #0D1B35;
+  --foreground: #E8F0FE;
+  --card: #132240;
+  --card-foreground: #E8F0FE;
+  --popover: #040E1F;
+  --popover-foreground: #E8F0FE;
+  --primary: #4D9EFF;
+  --primary-foreground: #FFFFFF;
+  --secondary: #0F2040;
+  --secondary-foreground: #E8F0FE;
+  --muted: #102038;
+  --muted-foreground: #8BA3C7;
+  --accent: #1E3254;
+  --accent-foreground: #E8F0FE;
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: rgb(255 255 255 / 10%);
+  --input: #162434;
+  --ring: #4D9EFF;
 }
 
 @layer base {
@@ -83,28 +107,61 @@
   }
 }
 
-// Auth pages: dark theme matching the landing page design system
+// Tables always use card background
+[data-slot="table-container"] {
+  background-color: var(--card);
+}
+
+:root.dark [data-slot="input"],
+:root.dark [data-slot="select-trigger"],
+:root.dark [data-slot="textarea"],
+.auth-dark [data-slot="input"],
+.page-dark [data-slot="input"],
+.page-dark [data-slot="select-trigger"],
+.page-dark [data-slot="textarea"] {
+  background-color: #162434;
+  border-color: rgb(255 255 255 / 10%);
+  color: #E8F0FE;
+}
+
+:root.dark [data-slot="select-trigger"]:hover,
+.page-dark [data-slot="select-trigger"]:hover {
+  background-color: var(--accent);
+}
+
+:root.dark [data-slot="input"]:focus-visible,
+:root.dark [data-slot="textarea"]:focus-visible,
+.auth-dark [data-slot="input"]:focus-visible,
+.page-dark [data-slot="input"]:focus-visible,
+.page-dark [data-slot="textarea"]:focus-visible {
+  border-color: #4D9EFF;
+  box-shadow: 0 0 0 3px rgb(77 158 255 / 20%);
+}
+
+:root.dark [data-slot="input"]::placeholder,
+:root.dark [data-slot="textarea"]::placeholder,
+.auth-dark [data-slot="input"]::placeholder,
+.page-dark [data-slot="input"]::placeholder,
+.page-dark [data-slot="textarea"]::placeholder {
+  color: #8BA3C7;
+}
+
+// Normalize outline button in dark mode — overrides dark:bg-input/30 and dark:border-input from Spartan
+:root.dark [data-slot="button"][class*="dark:bg-input"] {
+  background-color: #162434;
+  border-color: rgb(255 255 255 / 10%);
+}
+
+:root.dark [data-slot="button"][class*="dark:bg-input"]:hover {
+  background-color: var(--accent);
+}
+
 .auth-dark [data-slot="card"] {
   background-color: #0A1829;
   border-radius: 1rem;
   border: 1px solid rgb(255 255 255 / 10%);
   box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.5);
   outline: none;
-}
-
-.auth-dark [data-slot="input"] {
-  background-color: #162434;
-  border-color: rgb(255 255 255 / 10%);
-  color: #E8F0FE;
-}
-
-.auth-dark [data-slot="input"]:focus-visible {
-  border-color: #4D9EFF;
-  box-shadow: 0 0 0 3px rgb(77 158 255 / 20%);
-}
-
-.auth-dark [data-slot="input"]::placeholder {
-  color: #8BA3C7;
 }
 
 @theme inline {
