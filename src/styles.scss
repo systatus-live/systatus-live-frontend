@@ -83,6 +83,30 @@
   }
 }
 
+// Auth pages: dark theme matching the landing page design system
+.auth-dark [data-slot="card"] {
+  background-color: #0A1829;
+  border-radius: 1rem;
+  border: 1px solid rgb(255 255 255 / 10%);
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.5);
+  outline: none;
+}
+
+.auth-dark [data-slot="input"] {
+  background-color: #162434;
+  border-color: rgb(255 255 255 / 10%);
+  color: #E8F0FE;
+}
+
+.auth-dark [data-slot="input"]:focus-visible {
+  border-color: #4D9EFF;
+  box-shadow: 0 0 0 3px rgb(77 158 255 / 20%);
+}
+
+.auth-dark [data-slot="input"]::placeholder {
+  color: #8BA3C7;
+}
+
 @theme inline {
   --animate-indeterminate: indeterminate 1.5s ease-in-out infinite;
   --animate-fade-in-up: fade-in-up 0.6s ease-out both;

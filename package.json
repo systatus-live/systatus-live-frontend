@@ -31,7 +31,6 @@
     "cowsay": "^1.6.0",
     "express": "^5.1.0",
     "my-ua-parser": "^2.0.4",
-    "ng-recaptcha-2": "^21.0.1",
     "ngx-permissions": "^19.0.0",
     "rxjs": "~7.8.0",
     "tailwind-merge": "^3.5.0",

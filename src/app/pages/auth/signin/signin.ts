@@ -3,7 +3,6 @@ import { isPlatformBrowser } from "@angular/common";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { RouterLink, Router } from "@angular/router";
 import { DOCUMENT } from "@angular/common";
-import { RecaptchaModule } from "ng-recaptcha-2";
 import { HlmButton } from "../../../components/button/src";
 import { HlmInput } from "../../../components/input/src";
 import { HlmLabel } from "../../../components/label/src";
@@ -22,7 +21,6 @@ import { firstValueFrom } from "rxjs";
   imports: [
     ReactiveFormsModule,
     RouterLink,
-    RecaptchaModule,
     HlmButton,
     HlmInput,
     HlmLabel,
@@ -42,13 +40,11 @@ export class Signin implements OnInit {
   private readonly document = inject(DOCUMENT);
 
   public readonly isBrowser = isPlatformBrowser(this.platformId);
-  public readonly googleCaptchaSiteKey = environment.googleCaptchaSiteKey;
 
   public readonly form = this.fb.group({
     email: ["", [Validators.required, Validators.email]],
     password: ["", Validators.required],
-    keepConected: [false],
-    captcha: [""],
+    keepConected: [false]
   });
 
   ngOnInit() {
@@ -94,14 +90,12 @@ export class Signin implements OnInit {
     });
   }
 
-  private async submit(payload: any, captcha: string | null) {
+  private async submit(payload: any) {
     this.appState.loading.set(true);
 
     try {
       const response: any = await firstValueFrom(
-        this.authService.signIn(payload, {
-          captcha: captcha ?? ""
-        }),
+        this.authService.signIn(payload)
       );
 
       if (response.data.signUpSignInFlow) {
@@ -124,17 +118,12 @@ export class Signin implements OnInit {
   }
 
   public async onSubmit() {
-    if (!this.form.controls.captcha.value) {
-      Alert.info("Não sou um robô", "Resolva o reCAPTCHA para continuar.");
-      return;
-    }
-
     await this.submit({
       email: this.form.controls.email.value!,
       password: this.form.controls.password.value!,
       type: SignInTypeEnum.EMAIL_PASSWORD,
       keepConected: this.form.controls.keepConected.value!,
-    }, this.form.controls.captcha.value);
+    });
   }
 
   public async onSubmitGoogle(credential: any) {
@@ -142,6 +131,6 @@ export class Signin implements OnInit {
       google: credential,
       type: SignInTypeEnum.GOOGLE,
       keepConected: this.form.controls.keepConected.value!,
-    }, null);
+    });
   }
 }

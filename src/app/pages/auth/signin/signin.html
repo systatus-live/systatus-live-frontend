@@ -1,8 +1,8 @@
-<div class="min-h-screen bg-muted/40 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
   <div class="mx-auto w-full max-w-md">
     <section hlmCard>
       <div hlmCardHeader class="items-center text-center">
-        <app-logo />
+        <app-logo [inverted]="true" />
         <h2 class="mt-2 text-xl font-semibold leading-none">Entrar</h2>
       </div>
       <div hlmCardContent>
@@ -23,18 +23,13 @@
               <hlm-checkbox formControlName="keepConected" id="keepConected" />
               <label for="keepConected" class="text-sm text-muted-foreground cursor-pointer">Manter conectado</label>
             </div>
-            @if (isBrowser) {
-              <div class="flex justify-center">
-                <re-captcha [siteKey]="googleCaptchaSiteKey" (resolved)="form.controls.captcha.setValue($event ?? '')"></re-captcha>
-              </div>
-            }
             <button hlmBtn type="submit" class="w-full">Entrar</button>
           </form>
           <div class="relative">
             <div class="border-t"></div>
             <span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-2 text-xs text-muted-foreground">ou</span>
           </div>
-          <div class="flex justify-center">
+          <div class="flex justify-center" style="color-scheme: light">
             @if (isBrowser) {
               <div id="google-signin"></div>
             }

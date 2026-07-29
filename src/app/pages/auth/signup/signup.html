@@ -1,8 +1,8 @@
-<div class="min-h-screen bg-muted/40 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
   <div class="mx-auto w-full max-w-md">
     <section hlmCard>
       <div hlmCardHeader class="items-center text-center">
-        <app-logo />
+        <app-logo [inverted]="true" />
         <h2 class="mt-3 text-xl font-semibold leading-none">Criar Conta</h2>
         <p hlmCardDescription>Quase lá... preencha os dados abaixo para começar</p>
       </div>
@@ -44,11 +44,6 @@
               </ng-template>
             </div>
           </div>
-          @if (isBrowser) {
-            <div class="flex justify-center mt-3">
-              <re-captcha [siteKey]="googleCaptchaSiteKey" (resolved)="form.controls.captcha.setValue($event ?? '')"></re-captcha>
-            </div>
-          }
           <div class="flex items-start gap-2 my-4">
             <hlm-checkbox formControlName="acceptTerms" id="acceptTerms" />
             <label for="acceptTerms" class="text-sm text-muted-foreground cursor-pointer leading-snug">

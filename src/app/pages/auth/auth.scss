@@ -1,0 +1,23 @@
+.auth-dark {
+  color-scheme: dark;
+
+  --background: #071428;
+  --foreground: #E8F0FE;
+  --card: #0A1829;
+  --card-foreground: #E8F0FE;
+  --popover: #0A1829;
+  --popover-foreground: #E8F0FE;
+  --primary: #4D9EFF;
+  --primary-foreground: #ffffff;
+  --secondary: #071120;
+  --secondary-foreground: #E8F0FE;
+  --muted: #071120;
+  --muted-foreground: #8BA3C7;
+  --accent: #071120;
+  --accent-foreground: #E8F0FE;
+  --border: rgb(255 255 255 / 10%);
+  --input: rgb(255 255 255 / 10%);
+  --ring: #4D9EFF;
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: #ffffff;
+}

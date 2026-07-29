@@ -2,7 +2,6 @@ import { Component, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, Router, ActivatedRoute } from '@angular/router';
-import { RecaptchaModule } from 'ng-recaptcha-2';
 import { HlmButton } from '../../../components/button/src';
 import { HlmInput } from '../../../components/input/src';
 import { HlmLabel } from '../../../components/label/src';
@@ -21,7 +20,6 @@ import { firstValueFrom } from 'rxjs';
   imports: [
     ReactiveFormsModule,
     RouterLink,
-    RecaptchaModule,
     HlmButton,
     HlmInput,
     HlmLabel,
@@ -42,7 +40,6 @@ export class Signup implements OnInit {
   private readonly platformId = inject(PLATFORM_ID);
 
   public readonly isBrowser = isPlatformBrowser(this.platformId);
-  public readonly googleCaptchaSiteKey = environment.googleCaptchaSiteKey;
   public readonly authFlow = signal<any>(null);
 
   public readonly discoveryList = [
@@ -62,8 +59,7 @@ export class Signup implements OnInit {
     password: ["", Validators.required],
     confirmPassword: ["", Validators.required],
     acceptTerms: [false],
-    discovery: [null as string | null],
-    captcha: [""],
+    discovery: [null as string | null]
   });
 
   private get authFlowId(): string | undefined {
@@ -85,9 +81,9 @@ export class Signup implements OnInit {
 
     try {
       const response: any = await firstValueFrom(this.authService.getAuthFlowId(this.authFlowId!));
-      
+
       this.authFlow.set(response);
-      
+
       this.form.patchValue({
         name: response.name,
         email: response.email
@@ -105,11 +101,6 @@ export class Signup implements OnInit {
       return;
     }
 
-    if (!this.form.controls.captcha.value) {
-      Alert.info("Não sou um robô", "Resolva o reCAPTCHA para continuar.");
-      return;
-    }
-
     this.appState.loading.set(true);
 
     try {
@@ -119,10 +110,7 @@ export class Signup implements OnInit {
         password: this.form.controls.password.value!,
         acceptTerms: this.form.controls.acceptTerms.value!,
         discovery: this.form.controls.discovery.value,
-      }, {
-        captcha: this.form.controls.captcha.value!
-      },
-      ));
+      }));
 
       this.router.navigate(["/auth/verify-account"], {
         queryParams: {
