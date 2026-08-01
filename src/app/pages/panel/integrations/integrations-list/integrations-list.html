@@ -1,7 +1,13 @@
 <div class="flex flex-col gap-4">
-  <div class="flex items-center justify-between">
-    <h1 class="text-base font-semibold">Integrações</h1>
-    <button hlmBtn routerLink="/panel/integrations/new">Nova Integração</button>
+  <div class="flex items-center justify-between gap-4">
+    <h1 class="text-base font-semibold shrink-0">Integrações</h1>
+    <div class="flex items-center gap-2 flex-1 justify-end">
+      <form (ngSubmit)="onSubmitSearch()" [formGroup]="form" class="flex gap-2 w-full max-w-sm">
+        <input hlmInput formControlName="search" placeholder="Pesquisar por nome ou endereço" class="flex-1" />
+        <button hlmBtn type="submit" variant="outline">Buscar</button>
+      </form>
+      <button hlmBtn routerLink="/panel/integrations/new">Nova Integração</button>
+    </div>
   </div>
 
   <div hlmTableContainer class="rounded-md border">
@@ -57,4 +63,21 @@
       </tbody>
     </table>
   </div>
+
+  @if (pagination().total > 0) {
+    <div class="flex items-center justify-between">
+      <small class="text-muted-foreground">{{ pagination().total }} integrações</small>
+      @if (totalPages > 1) {
+        <div class="flex items-center gap-2">
+          <button hlmBtn variant="outline" size="sm" (click)="fetchPage(page() - 1, form.controls.search.value ?? '')" [disabled]="page() === 0">
+            Anterior
+          </button>
+          <small class="text-muted-foreground">{{ page() + 1 }} / {{ totalPages }}</small>
+          <button hlmBtn variant="outline" size="sm" (click)="fetchPage(page() + 1, form.controls.search.value ?? '')" [disabled]="page() + 1 >= totalPages">
+            Próxima
+          </button>
+        </div>
+      }
+    </div>
+  }
 </div>

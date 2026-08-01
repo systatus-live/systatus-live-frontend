@@ -1,7 +1,13 @@
 <div class="flex flex-col gap-4">
-  <div class="flex items-center justify-between">
-    <h1 class="text-base font-semibold">Monitores</h1>
-    <button hlmBtn routerLink="/panel/monitors/create">Novo Monitor</button>
+  <div class="flex items-center justify-between gap-4">
+    <h1 class="text-base font-semibold shrink-0">Monitores</h1>
+    <div class="flex items-center gap-2 flex-1 justify-end">
+      <form (ngSubmit)="onSubmitSearch()" [formGroup]="form" class="flex gap-2 w-full max-w-sm">
+        <input hlmInput formControlName="search" placeholder="Pesquisar por nome ou endereço" class="flex-1" />
+        <button hlmBtn type="submit" variant="outline">Buscar</button>
+      </form>
+      <button hlmBtn routerLink="/panel/monitors/create">Novo Monitor</button>
+    </div>
   </div>
 
   <div hlmTableContainer class="rounded-md border">
@@ -10,8 +16,8 @@
         <tr hlmTr>
           <th hlmTh>Monitor</th>
           <th hlmTh>Status</th>
-          <th hlmTh>Verificado em</th>
           <th hlmTh>Latência</th>
+          <th hlmTh>Intervalo</th>
           <th hlmTh>Histórico (30 dias)</th>
           <th hlmTh></th>
         </tr>
@@ -42,20 +48,19 @@
               </span>
             </td>
             <td hlmTd>
-              <div class="flex flex-col">
-                <span>{{ monitor.lastCheck }}</span>
-                <span class="text-muted-foreground text-xs">Intervalo {{ monitor.interval }}</span>
-              </div>
-            </td>
-            <td hlmTd>
               @if (!monitor.lastDuration) {
                 <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
                   <ng-icon [name]="getStatusIcon(monitor)" [class]="getStatusIconColor(monitor)" class="size-3.5" />
-                    Pendente
-                  </span>
+                  Pendente
+                </span>
               } @else {
                 <span>{{ monitor.lastDuration }}ms</span>
               }
+            </td>
+            <td hlmTd>
+              <div class="flex flex-col">
+                <span class="text-muted-foreground text-xs">{{ monitor.interval }}</span>
+              </div>
             </td>
             <td hlmTd>
               <div class="flex items-center gap-x-1">
@@ -90,4 +95,21 @@
       </tbody>
     </table>
   </div>
+
+  @if (pagination().total > 0) {
+    <div class="flex items-center justify-between">
+      <small class="text-muted-foreground">{{ pagination().total }} monitores</small>
+      @if (totalPages > 1) {
+        <div class="flex items-center gap-2">
+          <button hlmBtn variant="outline" size="sm" (click)="fetchPage(page() - 1, form.controls.search.value ?? '')" [disabled]="page() === 0">
+            Anterior
+          </button>
+          <small class="text-muted-foreground">{{ page() + 1 }} / {{ totalPages }}</small>
+          <button hlmBtn variant="outline" size="sm" (click)="fetchPage(page() + 1, form.controls.search.value ?? '')" [disabled]="page() + 1 >= totalPages">
+            Próxima
+          </button>
+        </div>
+      }
+    </div>
+  }
 </div>

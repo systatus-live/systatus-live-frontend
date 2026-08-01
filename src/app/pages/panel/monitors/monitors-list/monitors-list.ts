@@ -9,17 +9,21 @@ import { Alert } from "../../../../lib/alert";
 import { MonitorTypeLabelEnum } from "../../../../types/monitor-type.enum";
 import { HttpStatusCodeLabel, getHttpStatusKey } from "../../../../types/http-status-code";
 import { HlmButton } from "../../../../components/button/src";
+import { HlmInput } from "../../../../components/input/src";
 import { HlmBadgeImports } from "../../../../components/badge/src";
 import { HlmTableImports } from "../../../../components/table/src";
 import { HlmDropdownMenuImports } from "../../../../components/dropdown-menu/src";
 import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
+import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
 
 @Component({
   selector: "app-monitors-list",
   imports: [
+    ReactiveFormsModule,
     RouterLink,
     NgIcon,
     HlmButton,
+    HlmInput,
     ...HlmBadgeImports,
     ...HlmTableImports,
     ...HlmDropdownMenuImports,
@@ -35,8 +39,20 @@ export class MonitorsList implements OnInit {
   private readonly monitorService = inject(MonitorService);
   private readonly appState = inject(AppStateService);
   public readonly router = inject(Router);
+  private readonly fb = inject(FormBuilder);
 
   public readonly monitorList = signal<any[]>([]);
+  public readonly page = signal(0);
+  public readonly pagination = signal({ rows: 0, total: 0 });
+
+  public readonly form = this.fb.group({
+    search: [""],
+  });
+
+  public get totalPages(): number {
+    const { rows, total } = this.pagination();
+    return rows > 0 ? Math.ceil(total / rows) : 1;
+  }
 
   public getMonitorTypeLabel(type: string): string {
     return MonitorTypeLabelEnum[type as keyof typeof MonitorTypeLabelEnum] ?? type;
@@ -49,6 +65,7 @@ export class MonitorsList implements OnInit {
         this.monitorService.getMonitorList(new URLSearchParams({ page: "0" })),
       );
       this.monitorList.set(response.data);
+      this.pagination.set({ rows: response.pagination.rows, total: response.pagination.total });
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
@@ -115,5 +132,29 @@ export class MonitorsList implements OnInit {
       await navigator.clipboard.writeText(address);
       Alert.success("", "Copiado para área de transferência");
     } catch { }
+  }
+
+  public async fetchPage(p: number, search?: string) {
+    this.appState.loading.set(true);
+
+    const params = new URLSearchParams({ page: p.toString() });
+    if (search) {
+      params.set("search", search);
+    }
+
+    try {
+      const response: any = await firstValueFrom(this.monitorService.getMonitorList(params));
+      this.monitorList.set(response.data);
+      this.pagination.set({ rows: response.pagination.rows, total: response.pagination.total });
+      this.page.set(p);
+    } catch (error: any) {
+      Alert.error("", error.message);
+    } finally {
+      this.appState.loading.set(false);
+    }
+  }
+
+  public async onSubmitSearch() {
+    await this.fetchPage(0, this.form.controls.search.value ?? "");
   }
 }

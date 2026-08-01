@@ -78,15 +78,11 @@
       <small class="text-muted-foreground">{{ pagination().total }} incidentes</small>
       @if (totalPages > 1) {
         <div class="flex items-center gap-2">
-          <button hlmBtn variant="outline" size="sm"
-            (click)="fetchPage(page() - 1, form.controls.search.value ?? '')"
-            [disabled]="page() === 0">
+          <button hlmBtn variant="outline" size="sm" (click)="fetchPage(page() - 1, form.controls.search.value ?? '')" [disabled]="page() === 0">
             Anterior
           </button>
           <small class="text-muted-foreground">{{ page() + 1 }} / {{ totalPages }}</small>
-          <button hlmBtn variant="outline" size="sm"
-            (click)="fetchPage(page() + 1, form.controls.search.value ?? '')"
-            [disabled]="page() + 1 >= totalPages">
+          <button hlmBtn variant="outline" size="sm" (click)="fetchPage(page() + 1, form.controls.search.value ?? '')" [disabled]="page() + 1 >= totalPages">
             Próxima
           </button>
         </div>
