@@ -57,7 +57,7 @@ export class MonitorsEdit implements OnInit {
   }));
 
   public readonly form = this.fb.group({
-    name: ["", [Validators.required, Validators.maxLength(30)]],
+    name: ["", [Validators.required, Validators.maxLength(128)]],
     type: ["", Validators.required],
     address: ["", [Validators.required, Validators.maxLength(1000)]],
     active: [true],

@@ -17,9 +17,9 @@
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div class="sm:col-span-2 flex flex-col gap-1">
               <label hlmLabel>Nome <span class="text-destructive">*</span></label>
-              <input hlmInput formControlName="name" maxlength="30" placeholder="Ex.: API de pagamentos" />
+              <input hlmInput formControlName="name" maxlength="128" placeholder="Ex.: API de pagamentos" />
               <p class="text-xs text-muted-foreground text-right">
-                {{ form.controls.name.value?.length ?? 0 }}/30
+                {{ form.controls.name.value?.length ?? 0 }}/128
               </p>
             </div>
             <div class="flex flex-col gap-1">

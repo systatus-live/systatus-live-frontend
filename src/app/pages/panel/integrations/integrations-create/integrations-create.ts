@@ -40,7 +40,7 @@ export class IntegrationsCreate implements OnInit {
   }
 
   public readonly form = this.fb.group({
-    name: ["", [Validators.required, Validators.maxLength(30)]],
+    name: ["", [Validators.required, Validators.maxLength(128)]],
     chatPlatformId: ["", Validators.required],
     address: ["", [Validators.required, Validators.maxLength(1000)]],
   });
