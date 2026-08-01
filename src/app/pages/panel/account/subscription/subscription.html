@@ -252,7 +252,7 @@
               <button hlmBtn variant="outline" class="w-full" size="sm" disabled>Plano atual</button>
             } @else {
               <div class="space-y-1.5">
-                <button hlmBtn [variant]="plan.mostPopular ? 'default' : 'outline'" class="w-full" size="sm"
+                <button hlmBtn variant="default" class="w-full" size="sm"
                   type="button" (click)="handleSubscribe(plan.id)">
                   {{ plan.bta }}
                 </button>
@@ -295,7 +295,7 @@
           }
           @for (invoice of invoiceList(); track invoice.id) {
             <tr hlmTr>
-              <td hlmTd class="font-medium text-sm font-mono">{{ invoice.id }}</td>
+              <td hlmTd class="font-medium text-sm font-mono">#{{ invoice.iid }}</td>
               <td hlmTd class="text-sm">
                 <div class="flex items-center gap-x-2">
                   <img [src]="invoice.image" alt="Plano" class="h-5 w-5 object-contain shrink-0" />
@@ -313,7 +313,7 @@
                 }
               </td>
               <td hlmTd>
-                <button hlmBtn variant="ghost" size="icon" class="h-7 w-7" type="button" title="Baixar PDF"
+                <button hlmBtn variant="ghost" size="icon" class="h-7 w-7" type="button" hlmTooltip="Baixar PDF"
                   (click)="getInvoicePDF(invoice.id)">
                   <ng-icon name="lucideDownload" class="h-3.5 w-3.5" />
                 </button>

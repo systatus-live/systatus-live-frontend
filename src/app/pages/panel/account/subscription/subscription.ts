@@ -6,17 +6,7 @@ import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { formatMoney } from "../../../../utils/format-money";
 import { firstValueFrom } from "rxjs";
 import { NgIcon, provideIcons } from "@ng-icons/core";
-import {
-  lucideCreditCard,
-  lucideMapPin,
-  lucidePencil,
-  lucideSparkles,
-  lucideReceipt,
-  lucideShieldCheck,
-  lucideCheck,
-  lucideX,
-  lucideDownload,
-} from "@ng-icons/lucide";
+import { lucideCreditCard, lucideMapPin, lucidePencil, lucideSparkles, lucideReceipt, lucideShieldCheck, lucideCheck, lucideX, lucideDownload } from "@ng-icons/lucide";
 import { AppStateService } from "../../../../state/app-state.service";
 import { User } from "../../../../services/user";
 import { Invoice } from "../../../../services/invoice";
@@ -33,6 +23,7 @@ import { HlmTableImports } from "../../../../components/table/src";
 import { HlmBadgeImports } from "../../../../components/badge/src";
 import { HlmSeparatorImports } from "../../../../components/separator/src";
 import { HlmSelectImports } from "../../../../components/select/src";
+import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
 
 function maskCpf(value: string): string {
   return value
@@ -81,6 +72,7 @@ export const invoiceStatusVariantMap: Record<InvoiceStatusEnum, { label: string;
     ...HlmBadgeImports,
     ...HlmSeparatorImports,
     ...HlmSelectImports,
+    HlmTooltipImports
   ],
   providers: [
     provideIcons({

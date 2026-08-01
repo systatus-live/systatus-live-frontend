@@ -2,10 +2,15 @@ import { Component, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { LucideArrowUp } from '@lucide/angular';
 import { LogoComponent } from '../../../../components/logo/logo.component';
+import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 
 @Component({
   selector: 'app-footer',
-  imports: [LucideArrowUp, LogoComponent],
+  imports: [
+    LucideArrowUp,
+    LogoComponent,
+    HlmTooltipImports
+  ],
   templateUrl: './footer.component.html',
 })
 export class FooterComponent {

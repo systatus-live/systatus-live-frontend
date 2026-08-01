@@ -12,6 +12,7 @@ import { HlmButton } from "../../../../components/button/src";
 import { HlmBadgeImports } from "../../../../components/badge/src";
 import { HlmTableImports } from "../../../../components/table/src";
 import { HlmDropdownMenuImports } from "../../../../components/dropdown-menu/src";
+import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 
 @Component({
   selector: "app-monitors-list",
@@ -22,6 +23,7 @@ import { HlmDropdownMenuImports } from "../../../../components/dropdown-menu/src
     ...HlmBadgeImports,
     ...HlmTableImports,
     ...HlmDropdownMenuImports,
+    HlmTooltipImports
   ],
   providers: [
     provideIcons({ lucidePause, lucideClock, lucideBadgeCheck, lucideEllipsis, lucideCircleAlert }),

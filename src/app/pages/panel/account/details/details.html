@@ -33,12 +33,12 @@
                   accept="image/jpg,image/jpeg,image/png"
                   (change)="onUploadAvatar($event)"
                 />
-                <button hlmBtn type="button" variant="outline" size="icon" class="h-7 w-7" title="Enviar foto"
+                <button hlmBtn type="button" variant="outline" size="icon" class="h-7 w-7" hlmTooltip="Enviar foto"
                   (click)="triggerFileInput()">
                   <ng-icon name="lucideUpload" class="h-3.5 w-3.5" />
                 </button>
                 @if (getAvatarSrc() !== "/images/avatar.jpg") {
-                  <button hlmBtn type="button" variant="outline" size="icon" class="h-7 w-7" title="Remover foto"
+                  <button hlmBtn type="button" variant="outline" size="icon" class="h-7 w-7" hlmTooltip="Remover foto"
                     (click)="onDeleteAvatar()">
                     <ng-icon name="lucideTrash2" class="h-3.5 w-3.5" />
                   </button>
@@ -142,7 +142,7 @@
   <section>
     <div class="flex items-center gap-2 mb-4">
       <ng-icon name="lucideMonitor" class="h-4 w-4 text-muted-foreground" />
-      <h2 class="text-sm font-semibold tracking-wide uppercase text-muted-foreground">Histórico de acesso</h2>
+      <h2 class="text-sm font-semibold tracking-wide uppercase text-muted-foreground">Histórico de login</h2>
     </div>
     <div hlmSeparator class="mb-6"></div>
 
@@ -151,9 +151,9 @@
         <thead hlmTHead>
           <tr hlmTr>
             <th hlmTh>Data</th>
+            <th hlmTh>Dispositivo</th>
             <th hlmTh>Localização</th>
             <th hlmTh>IP</th>
-            <th hlmTh>Dispositivo</th>
           </tr>
         </thead>
         <tbody hlmTBody>
@@ -167,6 +167,7 @@
               <td hlmTd class="text-sm font-medium whitespace-nowrap">
                 {{ item.created_at | date:'dd/MM/yyyy HH:mm' }}
               </td>
+              <td hlmTd class="text-sm text-muted-foreground">{{ getDevice(item.user_agent) }}</td>
               <td hlmTd class="text-sm">
                 @if (item.location_json) {
                   {{ item.location_json.city }} • {{ item.location_json.state }} • {{ item.location_json.country }} {{ item.location_json.flag }}
@@ -175,7 +176,6 @@
                 }
               </td>
               <td hlmTd class="text-sm font-mono">{{ item.ip }}</td>
-              <td hlmTd class="text-sm text-muted-foreground">{{ getDevice(item.user_agent) }}</td>
             </tr>
           }
         </tbody>

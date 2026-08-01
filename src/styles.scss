@@ -146,6 +146,12 @@
   color: #8BA3C7;
 }
 
+// Normalize checkbox unchecked state in dark mode — overrides dark:bg-input/30 and border-input from Spartan
+:root.dark [data-slot="checkbox"] [data-state="unchecked"] {
+  background-color: #162434;
+  border-color: rgb(255 255 255 / 10%);
+}
+
 // Normalize outline button in dark mode — overrides dark:bg-input/30 and dark:border-input from Spartan
 :root.dark [data-slot="button"][class*="dark:bg-input"] {
   background-color: #162434;

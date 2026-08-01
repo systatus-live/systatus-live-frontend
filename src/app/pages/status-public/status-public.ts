@@ -106,7 +106,7 @@ export class StatusPublic implements OnInit, OnDestroy {
       return null;
     }
     const label = HttpStatusCodeLabel[getHttpStatusKey(monitor.lastStatus) as keyof typeof HttpStatusCodeLabel];
-    return monitor.lastIncident ? `${label} a ${monitor.lastIncident} • Latência: ${monitor.lastDuration / 1000}s` : label;
+    return monitor.lastIncident ? `${label} a ${monitor.lastIncident} • Latência: ${monitor.lastDuration}ms` : label;
   }
 
   private async fetchData() {

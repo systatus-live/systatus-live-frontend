@@ -25,6 +25,7 @@ import { HlmLabel } from "../../../../components/label/src";
 import { HlmTableImports } from "../../../../components/table/src";
 import { HlmBadgeImports } from "../../../../components/badge/src";
 import { HlmSeparatorImports } from "../../../../components/separator/src";
+import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
 
 @Component({
   selector: "app-details",
@@ -38,6 +39,7 @@ import { HlmSeparatorImports } from "../../../../components/separator/src";
     ...HlmTableImports,
     ...HlmBadgeImports,
     ...HlmSeparatorImports,
+    HlmTooltipImports
   ],
   providers: [
     provideIcons({
