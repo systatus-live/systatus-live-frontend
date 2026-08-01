@@ -152,7 +152,6 @@
           <tr hlmTr>
             <th hlmTh>Data</th>
             <th hlmTh>Dispositivo</th>
-            <th hlmTh>Localização</th>
             <th hlmTh>IP</th>
           </tr>
         </thead>
@@ -168,13 +167,6 @@
                 {{ item.created_at | date:'dd/MM/yyyy HH:mm' }}
               </td>
               <td hlmTd class="text-sm text-muted-foreground">{{ getDevice(item.user_agent) }}</td>
-              <td hlmTd class="text-sm">
-                @if (item.location_json) {
-                  {{ item.location_json.city }} • {{ item.location_json.state }} • {{ item.location_json.country }} {{ item.location_json.flag }}
-                } @else {
-                  <span class="text-muted-foreground">Desconhecida</span>
-                }
-              </td>
               <td hlmTd class="text-sm font-mono">{{ item.ip }}</td>
             </tr>
           }

@@ -216,14 +216,16 @@
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         @for (plan of planList(); track plan.id) {
-          <div class="relative flex flex-col rounded-lg border bg-card p-6"
-            [class.border-primary]="plan.mostPopular"
-            [class.shadow-md]="plan.mostPopular">
+          <div class="relative flex flex-col rounded-lg border bg-card p-6" [class.border-primary]="plan.mostPopular" [class.shadow-md]="plan.mostPopular">
             @if (plan.mostPopular) {
               <div class="absolute -top-3 left-1/2 -translate-x-1/2">
                 <span hlmBadge class="px-3 py-0.5 text-xs">Mais Popular</span>
               </div>
-            }
+            } @else if (subscription()?.id === plan.id && subscription().status !== SubscriptionStatusEnum.TRIAL) {
+              <div class="absolute -top-3 left-1/2 -translate-x-1/2">
+                <span hlmBadge class="bg-green-600 text-white dark:bg-green-800 dark:text-white">Plano Atual</span>
+              </div>
+            } 
             <div class="flex flex-col items-center gap-2 mb-4">
               <img [src]="plan.image" alt="Plano" class="h-12 w-12 object-contain" />
               <p class="font-semibold text-sm">Plano {{ plan.name }}</p>

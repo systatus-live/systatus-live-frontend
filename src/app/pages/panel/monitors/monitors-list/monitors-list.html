@@ -9,8 +9,8 @@
       <thead hlmTHead>
         <tr hlmTr>
           <th hlmTh>Monitor</th>
-          <th hlmTh>Verificado em</th>
           <th hlmTh>Status</th>
+          <th hlmTh>Verificado em</th>
           <th hlmTh>Latência</th>
           <th hlmTh>Histórico (30 dias)</th>
           <th hlmTh></th>
@@ -36,19 +36,26 @@
               </div>
             </td>
             <td hlmTd>
+              <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+                <ng-icon [name]="getStatusIcon(monitor)" [class]="getStatusIconColor(monitor)" class="size-3.5" />
+                {{ getStatusLabel(monitor) }}
+              </span>
+            </td>
+            <td hlmTd>
               <div class="flex flex-col">
                 <span>{{ monitor.lastCheck }}</span>
                 <span class="text-muted-foreground text-xs">Intervalo {{ monitor.interval }}</span>
               </div>
             </td>
             <td hlmTd>
-              <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 text-muted-foreground w-fit">
-                <ng-icon [name]="getStatusIcon(monitor)" [class]="getStatusIconColor(monitor)" class="size-3.5" />
-                {{ getStatusLabel(monitor) }}
-              </span>
-            </td>
-            <td hlmTd>
-              <span>{{ monitor.lastDuration }}ms</span>
+              @if (!monitor.lastDuration) {
+                <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+                  <ng-icon [name]="getStatusIcon(monitor)" [class]="getStatusIconColor(monitor)" class="size-3.5" />
+                    Pendente
+                  </span>
+              } @else {
+                <span>{{ monitor.lastDuration }}ms</span>
+              }
             </td>
             <td hlmTd>
               <div class="flex items-center gap-x-1">
