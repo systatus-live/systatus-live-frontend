@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, input, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LucideCheck, LucideMail, LucideMapPin } from '@lucide/angular';
 import { HlmButton } from '../../../../components/button/src';
@@ -21,8 +21,20 @@ export class ContactForm {
   private readonly http = inject(HttpService);
   private readonly fb = inject(FormBuilder);
 
+  public readonly from = input<{ name: string; email: string } | null>(null);
+
   public readonly isSubmitting = signal(false);
   public readonly isSubmitted = signal(false);
+
+  constructor() {
+    effect(() => {
+      const from = this.from();
+      if (from) {
+        this.form.controls.name.setValue(from.name);
+        this.form.controls.email.setValue(from.email);
+      }
+    });
+  }
 
   public readonly subjectList = [
     { description: "Conta e acesso" },

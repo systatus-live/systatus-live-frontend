@@ -12,7 +12,7 @@
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-16">
             <div class="lg:col-span-1">
               <div class="space-y-8">
-                <div class="flex items-start">
+                <div class="flex lg:mt-8 items-start">
                   <div class="ml-4">
                     <h2 class="text-lg font-medium text-foreground flex items-center gap-x-2">
                       <svg lucideMail></svg>
@@ -47,16 +47,18 @@
                 </div>
               } @else {
                 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-3">
-                  <div class="grid grid-cols-1 gap-y-3 gap-x-4 sm:grid-cols-2">
-                    <div class="flex flex-col gap-1">
-                      <label hlmLabel>Nome <span class="text-red-500">*</span></label>
-                      <input hlmInput type="text" formControlName="name" />
+                  @if (!from()) {
+                    <div class="grid grid-cols-1 gap-y-3 gap-x-4 sm:grid-cols-2">
+                      <div class="flex flex-col gap-1">
+                        <label hlmLabel>Nome <span class="text-red-500">*</span></label>
+                        <input hlmInput type="text" formControlName="name" />
+                      </div>
+                      <div class="flex flex-col gap-1">
+                        <label hlmLabel>E-mail <span class="text-red-500">*</span></label>
+                        <input hlmInput type="email" formControlName="email" />
+                      </div>
                     </div>
-                    <div class="flex flex-col gap-1">
-                      <label hlmLabel>E-mail <span class="text-red-500">*</span></label>
-                      <input hlmInput type="email" formControlName="email" />
-                    </div>
-                  </div>
+                  }
                   <div class="flex flex-col gap-1">
                     <label hlmLabel>Assunto <span class="text-red-500">*</span></label>
                     <div hlmSelect class="w-full"
