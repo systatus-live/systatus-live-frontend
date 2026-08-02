@@ -1,7 +1,6 @@
 import { Component, OnInit, inject, signal } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { firstValueFrom } from "rxjs";
-import { AppStateService } from "../../../state/app-state.service";
 import { StatusPage as StatusPageService } from "../../../services/status-page";
 import { MonitorService } from "../../../services/monitor.service";
 import { Alert } from "../../../lib/alert";
@@ -32,7 +31,6 @@ function normalizeSlug(text: string): string {
   styleUrl: "./status-page.scss",
 })
 export class StatusPage implements OnInit {
-  private readonly appState = inject(AppStateService);
   private readonly statusPageService = inject(StatusPageService);
   private readonly monitorService = inject(MonitorService);
   private readonly fb = inject(FormBuilder);
@@ -69,8 +67,6 @@ export class StatusPage implements OnInit {
   }
 
   async ngOnInit() {
-    this.appState.loading.set(true);
-
     try {
       const results = await Promise.allSettled([
         firstValueFrom(this.statusPageService.getStatusPage()),
@@ -100,17 +96,13 @@ export class StatusPage implements OnInit {
       } else if ((statusPageResult.reason as any)?.status !== 404) {
         Alert.error("", (statusPageResult.reason as any)?.message);
       }
-    } finally {
-      this.appState.loading.set(false);
-    }
+    } catch (error) {}
   }
 
   public async handleSave() {
     if (this.form.invalid) {
       return;
     }
-
-    this.appState.loading.set(true);
 
     try {
       const payload = {
@@ -128,8 +120,6 @@ export class StatusPage implements OnInit {
       this.isEdit.set(true);
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 }

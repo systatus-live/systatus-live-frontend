@@ -4,7 +4,6 @@ import { Router, RouterLink } from "@angular/router";
 import { firstValueFrom } from "rxjs";
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { lucidePencil } from "@ng-icons/lucide";
-import { AppStateService } from "../../../../state/app-state.service";
 import { MonitorService } from "../../../../services/monitor.service";
 import { Interval } from "../../../../services/interval";
 import { Integration } from "../../../../services/integration";
@@ -36,7 +35,6 @@ import { HlmSeparatorImports } from "../../../../components/separator/src";
   styleUrl: "./monitors-create.scss",
 })
 export class MonitorsCreate implements OnInit {
-  private readonly appState = inject(AppStateService);
   private readonly monitorService = inject(MonitorService);
   private readonly intervalService = inject(Interval);
   private readonly integrationService = inject(Integration);
@@ -67,8 +65,6 @@ export class MonitorsCreate implements OnInit {
     this.intervalList().find(i => i.id === id)?.name ?? id;
 
   async ngOnInit() {
-    this.appState.loading.set(true);
-
     try {
       const [intervalRes, integrationRes]: any[] = await Promise.all([
         firstValueFrom(this.intervalService.getIntervalList(new URLSearchParams({ page: "0" }))),
@@ -86,8 +82,6 @@ export class MonitorsCreate implements OnInit {
       });
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 
@@ -109,8 +103,6 @@ export class MonitorsCreate implements OnInit {
       return;
     }
 
-    this.appState.loading.set(true);
-
     try {
       const response: any = await firstValueFrom(
         this.monitorService.createMonitor({
@@ -127,8 +119,6 @@ export class MonitorsCreate implements OnInit {
       this.router.navigate(["/panel/monitors/edit", response.data.id]);
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 }

@@ -13,12 +13,18 @@ import {
 import { StatusPage as StatusPageService } from "../../services/status-page";
 import { HttpStatusCodeLabel, getHttpStatusKey } from "../../types/http-status-code";
 import { LogoComponent } from "../../components/logo/logo.component";
+import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
 
 const REFRESH_INTERVAL = 60;
 
 @Component({
   selector: "app-status-public",
-  imports: [RouterLink, NgIcon, LogoComponent],
+  imports: [
+    RouterLink, 
+    NgIcon, 
+    LogoComponent,
+    HlmTooltipImports
+  ],
   providers: [
     provideIcons({
       lucideBadgeCheck,

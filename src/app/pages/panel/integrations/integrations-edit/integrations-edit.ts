@@ -4,7 +4,6 @@ import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { firstValueFrom } from "rxjs";
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { lucidePencil } from "@ng-icons/lucide";
-import { AppStateService } from "../../../../state/app-state.service";
 import { Integration } from "../../../../services/integration";
 import { ChatPlatform } from "../../../../services/chat-platform";
 import { Alert } from "../../../../lib/alert";
@@ -33,7 +32,6 @@ import { WebhookTutorial } from "../components/webhook-tutorial/webhook-tutorial
   styleUrl: "./integrations-edit.scss",
 })
 export class IntegrationsEdit implements OnInit {
-  private readonly appState = inject(AppStateService);
   private readonly integrationService = inject(Integration);
   private readonly chatPlatformService = inject(ChatPlatform);
   public readonly router = inject(Router);
@@ -101,8 +99,6 @@ export class IntegrationsEdit implements OnInit {
   }
 
   async ngOnInit() {
-    this.appState.loading.set(true);
-
     try {
       const [platformRes, integrationRes]: any[] = await Promise.all([
         firstValueFrom(this.chatPlatformService.getChatPlatformList(new URLSearchParams({ page: "0" }))),
@@ -115,36 +111,26 @@ export class IntegrationsEdit implements OnInit {
       this.patchForm(integrationRes);
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 
   public async handleValidate() {
-    this.appState.loading.set(true);
-
     try {
       const response: any = await firstValueFrom(this.integrationService.validateIntegration(this.id));
       Alert.success("", response.message);
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 
   public handleDelete() {
     Alert.confirm("Excluir integração", "A integração será excluída permanentemente. Continuar?", async () => {
-      this.appState.loading.set(true);
-
       try {
         const response: any = await firstValueFrom(this.integrationService.deleteIntegration(this.id));
         this.router.navigate(["/panel/integrations"]);
         Alert.success("", response.message);
       } catch (error: any) {
         Alert.error("", error.message);
-      } finally {
-        this.appState.loading.set(false);
       }
     });
   }
@@ -167,8 +153,6 @@ export class IntegrationsEdit implements OnInit {
       return;
     }
 
-    this.appState.loading.set(true);
-
     try {
       const response: any = await firstValueFrom(
         this.integrationService.updateIntegration(this.id, {
@@ -189,8 +173,6 @@ export class IntegrationsEdit implements OnInit {
       this.isEditing.set(false);
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 }

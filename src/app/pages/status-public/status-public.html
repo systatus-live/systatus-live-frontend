@@ -105,7 +105,7 @@
                 <div class="flex items-center gap-2">
                   <div class="flex gap-px flex-1">
                     @for (item of monitor.historical; track $index) {
-                      <div class="flex-1 h-6 rounded-sm hover:scale-y-125 transition-transform cursor-default" [style]="getHistoricalStyle(item)" [title]="item.note"></div>
+                      <div class="flex-1 h-6 rounded-sm hover:scale-y-125 transition-transform cursor-default" [style]="getHistoricalStyle(item)" [hlmTooltip]="item.note"></div>
                     }
                   </div>
                   <span class="text-xs text-muted-foreground whitespace-nowrap shrink-0">{{ monitor.percentOnline }}%</span>

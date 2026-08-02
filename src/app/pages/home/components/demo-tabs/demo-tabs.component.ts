@@ -5,6 +5,7 @@ import {
   LucideAlertTriangle,
   LucideCheck,
 } from '@lucide/angular';
+import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 
 type TabId = 'config' | 'notifications' | 'incidents';
 
@@ -16,7 +17,13 @@ interface Incident {
 
 @Component({
   selector: 'app-demo-tabs',
-  imports: [LucideSettings, LucideBell, LucideAlertTriangle, LucideCheck],
+  imports: [
+    LucideSettings, 
+    LucideBell, 
+    LucideAlertTriangle, 
+    LucideCheck,
+    HlmTooltipImports
+  ],
   templateUrl: './demo-tabs.component.html',
 })
 export class DemoTabsComponent {

@@ -6,7 +6,6 @@ import { formatMoney } from "../../../../utils/format-money";
 import { firstValueFrom } from "rxjs";
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { lucideCreditCard, lucideMapPin, lucidePencil, lucideSparkles, lucideReceipt, lucideShieldCheck, lucideCheck, lucideX, lucideDownload } from "@ng-icons/lucide";
-import { AppStateService } from "../../../../state/app-state.service";
 import { User } from "../../../../services/user";
 import { Invoice } from "../../../../services/invoice";
 import { PlanService } from "../../../../services/plan.service";
@@ -90,7 +89,6 @@ export const invoiceStatusVariantMap: Record<InvoiceStatusEnum, { label: string;
   styleUrl: "./subscription.scss",
 })
 export class Subscription implements OnInit {
-  private readonly appState = inject(AppStateService);
   private readonly userService = inject(User);
   private readonly invoiceService = inject(Invoice);
   private readonly planService = inject(PlanService);
@@ -187,8 +185,6 @@ export class Subscription implements OnInit {
     const cep = this.billingForm.controls.zip_code.value?.replace(/\D/g, "") ?? "";
     if (cep.length !== 8) { return; }
 
-    this.appState.loading.set(true);
-
     try {
       const response: any = await firstValueFrom(this.utilsService.getCep(cep));
       this.billingForm.patchValue({
@@ -201,8 +197,6 @@ export class Subscription implements OnInit {
       await this.loadCities(response.state);
     } catch {
       Alert.error("", "CEP não encontrado.");
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 
@@ -266,8 +260,6 @@ export class Subscription implements OnInit {
       return;
     }
 
-    this.appState.loading.set(true);
-
     try {
       const response: any = await firstValueFrom(this.stripeService.createCheckoutSession(planId));
       if (isPlatformBrowser(this.platformId)) {
@@ -275,14 +267,11 @@ export class Subscription implements OnInit {
       }
     } catch (error: any) {
       Alert.error("", error.message ?? "Falha ao iniciar o checkout.");
-      this.appState.loading.set(false);
     }
   }
 
   public async onSubmitBilling() {
     if (this.billingForm.invalid) { return; }
-
-    this.appState.loading.set(true);
 
     try {
       const response: any = await firstValueFrom(
@@ -293,14 +282,10 @@ export class Subscription implements OnInit {
       Alert.success("", response.message);
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 
   public async loadInvoices(page: number) {
-    this.appState.loading.set(true);
-
     try {
       const params = new URLSearchParams({ page: page.toString() });
       const response: any = await firstValueFrom(this.invoiceService.getInvoiceList(params));
@@ -312,14 +297,10 @@ export class Subscription implements OnInit {
       });
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 
   public async getInvoicePDF(id: string) {
-    this.appState.loading.set(true);
-
     try {
       const response = await firstValueFrom(this.invoiceService.getInvoicePDF(id));
       const blob = response.body!;
@@ -354,8 +335,6 @@ export class Subscription implements OnInit {
         message = error.message;
       }
       Alert.error("", message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 
@@ -398,8 +377,6 @@ export class Subscription implements OnInit {
       Alert.info("", "Assinatura cancelada.");
     }
 
-    this.appState.loading.set(true);
-
     try {
       const [subResponse, planResponse]: any[] = await Promise.all([
         firstValueFrom(this.userService.getUserSubscription()),
@@ -409,8 +386,6 @@ export class Subscription implements OnInit {
       this.planList.set(planResponse.data);
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
 
     await Promise.all([

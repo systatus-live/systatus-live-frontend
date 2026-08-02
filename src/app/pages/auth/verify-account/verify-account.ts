@@ -51,21 +51,15 @@ export class VerifyAccount implements OnInit {
   }
 
   private async loadAuthFlow() {
-    this.appState.loading.set(true);
-
     try {
       const response = await firstValueFrom(this.authService.getAuthFlowId(this.authFlowId));
       this.authFlow.set(response);
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 
   async onSubmit() {
-    this.appState.loading.set(true);
-
     try {
       const response: any = await firstValueFrom(
         this.authService.checkCode({
@@ -79,8 +73,6 @@ export class VerifyAccount implements OnInit {
       this.router.navigate(["/panel"]);
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 
@@ -88,8 +80,6 @@ export class VerifyAccount implements OnInit {
     if (this.timer() > 0) {
       return;
     }
-
-    this.appState.loading.set(true);
 
     try {
       const response: any = await firstValueFrom(
@@ -109,8 +99,6 @@ export class VerifyAccount implements OnInit {
       }, 1000);
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 }

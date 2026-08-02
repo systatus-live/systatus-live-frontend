@@ -9,7 +9,6 @@ import { HlmLabel } from "../../../components/label/src";
 import { HlmCardImports } from "../../../components/card/src";
 import { LogoComponent } from "../../../components/logo/logo.component";
 import { AuthService } from "../../../services/auth.service";
-import { AppStateService } from "../../../state/app-state.service";
 import { Alert } from "../../../lib/alert";
 import { firstValueFrom } from "rxjs";
 
@@ -31,7 +30,6 @@ import { firstValueFrom } from "rxjs";
 })
 export class ForgotPassword {
   private readonly authService = inject(AuthService);
-  private readonly appState = inject(AppStateService);
   private readonly fb = inject(FormBuilder);
 
   public readonly isSubmitted = signal(false);
@@ -46,8 +44,6 @@ export class ForgotPassword {
       return;
     }
 
-    this.appState.loading.set(true);
-
     try {
       const response: any = await firstValueFrom(
         this.authService.forgotPassword(this.form.controls.email.value!),
@@ -58,8 +54,6 @@ export class ForgotPassword {
       this.form.reset();
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 }

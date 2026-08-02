@@ -4,7 +4,6 @@ import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { firstValueFrom } from "rxjs";
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { lucidePencil } from "@ng-icons/lucide";
-import { AppStateService } from "../../../../state/app-state.service";
 import { MonitorService } from "../../../../services/monitor.service";
 import { Interval } from "../../../../services/interval";
 import { Integration } from "../../../../services/integration";
@@ -38,7 +37,6 @@ import { HlmSeparatorImports } from "../../../../components/separator/src";
   styleUrl: "./monitors-edit.scss",
 })
 export class MonitorsEdit implements OnInit {
-  private readonly appState = inject(AppStateService);
   private readonly monitorService = inject(MonitorService);
   private readonly intervalService = inject(Interval);
   private readonly integrationService = inject(Integration);
@@ -81,8 +79,6 @@ export class MonitorsEdit implements OnInit {
       return;
     }
 
-    this.appState.loading.set(true);
-
     try {
       const [monitorRes, intervalRes, integrationRes]: any[] = await Promise.all([
         firstValueFrom(this.monitorService.getMonitorById(id)),
@@ -97,8 +93,6 @@ export class MonitorsEdit implements OnInit {
       this.patchForm(monitorRes);
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 
@@ -119,8 +113,6 @@ export class MonitorsEdit implements OnInit {
     if (this.form.invalid) {
       return;
     }
-
-    this.appState.loading.set(true);
 
     try {
       const response: any = await firstValueFrom(
@@ -150,15 +142,11 @@ export class MonitorsEdit implements OnInit {
       Alert.success("", response.message);
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 
   handleDelete() {
     Alert.confirm("Excluir monitor", "O monitor será excluído permanentemente. Continuar?", async () => {
-      this.appState.loading.set(true);
-
       try {
         const response: any = await firstValueFrom(
           this.monitorService.deleteMonitor(this.monitor().id),
@@ -168,8 +156,6 @@ export class MonitorsEdit implements OnInit {
         Alert.success("", response.message);
       } catch (error: any) {
         Alert.error("", error.message);
-      } finally {
-        this.appState.loading.set(false);
       }
     });
   }

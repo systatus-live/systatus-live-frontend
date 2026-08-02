@@ -10,7 +10,6 @@ import { HlmCardImports } from '../../../components/card/src';
 import { HlmSelectImports } from '../../../components/select/src';
 import { LogoComponent } from '../../../components/logo/logo.component';
 import { AuthService } from '../../../services/auth.service';
-import { AppStateService } from '../../../state/app-state.service';
 import { Alert } from '../../../lib/alert';
 import { environment } from '../../../../environments/environment';
 import { firstValueFrom } from 'rxjs';
@@ -33,7 +32,6 @@ import { firstValueFrom } from 'rxjs';
 })
 export class Signup implements OnInit {
   private readonly authService = inject(AuthService);
-  private readonly appState = inject(AppStateService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly fb = inject(FormBuilder);
@@ -77,8 +75,6 @@ export class Signup implements OnInit {
   }
 
   private async loadAuthFlow() {
-    this.appState.loading.set(true);
-
     try {
       const response: any = await firstValueFrom(this.authService.getAuthFlowId(this.authFlowId!));
 
@@ -90,8 +86,6 @@ export class Signup implements OnInit {
       });
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 
@@ -100,8 +94,6 @@ export class Signup implements OnInit {
       Alert.info("Termos", "Aceite os Termos de Uso e a Política de Privacidade para continuar.");
       return;
     }
-
-    this.appState.loading.set(true);
 
     try {
       await firstValueFrom(this.authService.signUp({
@@ -120,8 +112,6 @@ export class Signup implements OnInit {
       });
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 }

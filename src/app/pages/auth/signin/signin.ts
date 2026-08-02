@@ -91,8 +91,6 @@ export class Signin implements OnInit {
   }
 
   private async submit(payload: any) {
-    this.appState.loading.set(true);
-
     try {
       const response: any = await firstValueFrom(
         this.authService.signIn(payload)
@@ -112,8 +110,6 @@ export class Signin implements OnInit {
       }
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 

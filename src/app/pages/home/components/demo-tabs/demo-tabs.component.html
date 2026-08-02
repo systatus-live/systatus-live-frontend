@@ -41,11 +41,10 @@
         <!-- Integration logos -->
         <div class="flex items-center gap-3 pt-4">
           @for (channel of channelList; track channel.name) {
-            <div class="w-9 h-9 rounded-full bg-white/8 border border-white/10 flex items-center justify-center p-1.5" [title]="channel.name">
+            <div class="w-9 h-9 rounded-full bg-white/8 border border-white/10 flex items-center justify-center p-1.5" [hlmTooltip]="channel.name">
               <img [src]="channel.logo" [alt]="channel.name" class="w-full h-full object-contain" />
             </div>
           }
-          <span class="text-xs text-[#8BA3C7] ml-1">e mais</span>
         </div>
       </div>
 

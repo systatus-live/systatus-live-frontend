@@ -2,7 +2,6 @@ import { Component, OnInit, inject, signal } from "@angular/core";
 import { Router } from "@angular/router";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { firstValueFrom } from "rxjs";
-import { AppStateService } from "../../../../state/app-state.service";
 import { Integration } from "../../../../services/integration";
 import { ChatPlatform } from "../../../../services/chat-platform";
 import { Alert } from "../../../../lib/alert";
@@ -27,7 +26,6 @@ import { WebhookTutorial } from "../components/webhook-tutorial/webhook-tutorial
   styleUrl: "./integrations-create.scss",
 })
 export class IntegrationsCreate implements OnInit {
-  private readonly appState = inject(AppStateService);
   private readonly integrationService = inject(Integration);
   private readonly chatPlatformService = inject(ChatPlatform);
   public readonly router = inject(Router);
@@ -88,8 +86,6 @@ export class IntegrationsCreate implements OnInit {
   }
 
   async ngOnInit() {
-    this.appState.loading.set(true);
-
     try {
       const response: any = await firstValueFrom(
         this.chatPlatformService.getChatPlatformList(new URLSearchParams({ page: "0" })),
@@ -98,8 +94,6 @@ export class IntegrationsCreate implements OnInit {
       this.platformList.set(response.data);
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 
@@ -107,8 +101,6 @@ export class IntegrationsCreate implements OnInit {
     if (this.form.invalid) {
       return;
     }
-
-    this.appState.loading.set(true);
 
     try {
       const response: any = await firstValueFrom(
@@ -123,8 +115,6 @@ export class IntegrationsCreate implements OnInit {
       this.router.navigate(["/panel/integrations/edit", response.data.id]);
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 }

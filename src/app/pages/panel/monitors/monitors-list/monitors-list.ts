@@ -3,7 +3,6 @@ import { Router, RouterLink } from "@angular/router";
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { lucidePause, lucideClock, lucideBadgeCheck, lucideEllipsis, lucideCircleAlert } from "@ng-icons/lucide";
 import { firstValueFrom } from "rxjs";
-import { AppStateService } from "../../../../state/app-state.service";
 import { MonitorService } from "../../../../services/monitor.service";
 import { Alert } from "../../../../lib/alert";
 import { MonitorTypeLabelEnum } from "../../../../types/monitor-type.enum";
@@ -37,7 +36,6 @@ import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
 })
 export class MonitorsList implements OnInit {
   private readonly monitorService = inject(MonitorService);
-  private readonly appState = inject(AppStateService);
   public readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
 
@@ -124,8 +122,6 @@ export class MonitorsList implements OnInit {
   }
 
   public async fetchPage(p: number, search?: string) {
-    this.appState.loading.set(true);
-
     const params = new URLSearchParams({ page: p.toString() });
     if (search) {
       params.set("search", search);
@@ -138,8 +134,6 @@ export class MonitorsList implements OnInit {
       this.page.set(p);
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 

@@ -7,7 +7,6 @@ import { HlmLabel } from "../../../components/label/src";
 import { HlmCardImports } from "../../../components/card/src";
 import { LogoComponent } from "../../../components/logo/logo.component";
 import { AuthService } from "../../../services/auth.service";
-import { AppStateService } from "../../../state/app-state.service";
 import { Alert } from "../../../lib/alert";
 import { firstValueFrom } from "rxjs";
 
@@ -27,7 +26,6 @@ import { firstValueFrom } from "rxjs";
 })
 export class ResetPassword {
   private readonly authService = inject(AuthService);
-  private readonly appState = inject(AppStateService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly fb = inject(FormBuilder);
@@ -46,8 +44,6 @@ export class ResetPassword {
       return;
     }
 
-    this.appState.loading.set(true);
-
     try {
       const response: any = await firstValueFrom(
         this.authService.resetPassword(this.form.controls.password.value!, this.token),
@@ -57,8 +53,6 @@ export class ResetPassword {
       this.router.navigate(["/auth/signin"]);
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 }

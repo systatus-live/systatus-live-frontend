@@ -3,7 +3,6 @@ import { Router, RouterLink } from "@angular/router";
 import { firstValueFrom } from "rxjs";
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { lucideEllipsis } from "@ng-icons/lucide";
-import { AppStateService } from "../../../../state/app-state.service";
 import { Integration } from "../../../../services/integration";
 import { Alert } from "../../../../lib/alert";
 import { ChatPlatformDescriptionLogoMap } from "../../../../types/chat-platform.enum";
@@ -31,7 +30,6 @@ import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
   styleUrl: "./integrations-list.scss",
 })
 export class IntegrationsList implements OnInit {
-  private readonly appState = inject(AppStateService);
   private readonly integrationService = inject(Integration);
   public readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
@@ -54,15 +52,11 @@ export class IntegrationsList implements OnInit {
   }
 
   public async handleValidate(id: string) {
-    this.appState.loading.set(true);
-
     try {
       const response: any = await firstValueFrom(this.integrationService.validateIntegration(id));
       Alert.success("", response.message);
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 
@@ -78,8 +72,6 @@ export class IntegrationsList implements OnInit {
   }
 
   public async fetchPage(p: number, search?: string) {
-    this.appState.loading.set(true);
-
     const params = new URLSearchParams({ page: p.toString() });
     if (search) {
       params.set("search", search);
@@ -92,8 +84,6 @@ export class IntegrationsList implements OnInit {
       this.page.set(p);
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 

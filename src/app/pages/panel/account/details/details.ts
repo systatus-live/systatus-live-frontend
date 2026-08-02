@@ -180,8 +180,6 @@ export class Details implements OnInit, OnDestroy {
   }
 
   public async loadAuthHistory(page: number) {
-    this.appState.loading.set(true);
-
     try {
       const response: any = await firstValueFrom(
         this.userService.getAuthHistory(new URLSearchParams({ page: page.toString() })),
@@ -195,8 +193,6 @@ export class Details implements OnInit, OnDestroy {
       });
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 
@@ -204,8 +200,6 @@ export class Details implements OnInit, OnDestroy {
     if (this.detailsForm.invalid) {
       return;
     }
-
-    this.appState.loading.set(true);
 
     try {
       const formData = new FormData();
@@ -239,8 +233,6 @@ export class Details implements OnInit, OnDestroy {
       Alert.success("", response.message);
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 
@@ -248,8 +240,6 @@ export class Details implements OnInit, OnDestroy {
     if (this.passwordForm.invalid) {
       return;
     }
-
-    this.appState.loading.set(true);
 
     try {
       const response: any = await firstValueFrom(
@@ -265,8 +255,6 @@ export class Details implements OnInit, OnDestroy {
       Alert.success("", response.message);
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 

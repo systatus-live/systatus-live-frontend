@@ -5,7 +5,6 @@ import { firstValueFrom } from "rxjs";
 import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip } from "chart.js";
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { lucideCheck } from "@ng-icons/lucide";
-import { AppStateService } from "../../../../state/app-state.service";
 import { Incident } from "../../../../services/incident";
 import { Alert } from "../../../../lib/alert";
 import { HttpStatusCodeLabel, getHttpStatusKey } from "../../../../types/http-status-code";
@@ -32,7 +31,6 @@ Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineEle
   styleUrl: "./incidents-list.scss",
 })
 export class IncidentsList implements OnInit, OnDestroy {
-  private readonly appState = inject(AppStateService);
   private readonly incidentService = inject(Incident);
   private readonly fb = inject(FormBuilder);
   private readonly platformId = inject(PLATFORM_ID);
@@ -58,8 +56,6 @@ export class IncidentsList implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    this.appState.loading.set(true);
-
     try {
       const [historicalRes, incidentRes]: any[] = await Promise.all([
         firstValueFrom(this.incidentService.getHistorical()),
@@ -74,8 +70,6 @@ export class IncidentsList implements OnInit, OnDestroy {
       this.initChart();
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 
@@ -140,8 +134,6 @@ export class IncidentsList implements OnInit, OnDestroy {
   }
 
   public async fetchPage(p: number, search?: string) {
-    this.appState.loading.set(true);
-
     const params = new URLSearchParams({ page: p.toString() });
     if (search) {
       params.set("search", search);
@@ -154,8 +146,6 @@ export class IncidentsList implements OnInit, OnDestroy {
       this.page.set(p);
     } catch (error: any) {
       Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
     }
   }
 
