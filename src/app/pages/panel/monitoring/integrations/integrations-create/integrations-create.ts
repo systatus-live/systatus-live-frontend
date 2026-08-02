@@ -2,14 +2,14 @@ import { Component, OnInit, inject, signal } from "@angular/core";
 import { Router } from "@angular/router";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { firstValueFrom } from "rxjs";
-import { Integration } from "../../../../services/integration";
-import { ChatPlatform } from "../../../../services/chat-platform";
-import { Alert } from "../../../../lib/alert";
-import { ChatPlatformNameLogoMap, ChatPlatformTypeEnum } from "../../../../types/chat-platform.enum";
-import { HlmButton } from "../../../../components/button/src";
-import { HlmInput } from "../../../../components/input/src";
-import { HlmLabel } from "../../../../components/label/src";
-import { HlmSelectImports } from "../../../../components/select/src";
+import { Integration } from "../../../../../services/integration";
+import { ChatPlatform } from "../../../../../services/chat-platform";
+import { Alert } from "../../../../../lib/alert";
+import { ChatPlatformNameLogoMap, ChatPlatformTypeEnum } from "../../../../../types/chat-platform.enum";
+import { HlmButton } from "../../../../../components/button/src";
+import { HlmInput } from "../../../../../components/input/src";
+import { HlmLabel } from "../../../../../components/label/src";
+import { HlmSelectImports } from "../../../../../components/select/src";
 import { WebhookTutorial } from "../components/webhook-tutorial/webhook-tutorial";
 
 @Component({
@@ -112,7 +112,7 @@ export class IntegrationsCreate implements OnInit {
       );
 
       Alert.success("", response.message);
-      this.router.navigate(["/panel/integrations/edit", response.data.id]);
+      this.router.navigate(["/panel/monitoring/integrations/edit", response.data.id]);
     } catch (error: any) {
       Alert.error("", error.message);
     }

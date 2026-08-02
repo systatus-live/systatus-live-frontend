@@ -4,18 +4,18 @@ import { Router, RouterLink } from "@angular/router";
 import { firstValueFrom } from "rxjs";
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { lucidePencil } from "@ng-icons/lucide";
-import { MonitorService } from "../../../../services/monitor.service";
-import { Interval } from "../../../../services/interval";
-import { Integration } from "../../../../services/integration";
-import { Alert } from "../../../../lib/alert";
-import { MonitorTypeEnum, MonitorTypeLabelEnum } from "../../../../types/monitor-type.enum";
-import { HlmButton } from "../../../../components/button/src";
-import { HlmInput } from "../../../../components/input/src";
-import { HlmLabel } from "../../../../components/label/src";
-import { HlmSelectImports } from "../../../../components/select/src";
-import { HlmCheckboxImports } from "../../../../components/checkbox/src";
-import { HlmSwitchImports } from "../../../../components/switch/src";
-import { HlmSeparatorImports } from "../../../../components/separator/src";
+import { MonitorService } from "../../../../../services/monitor.service";
+import { Interval } from "../../../../../services/interval";
+import { Integration } from "../../../../../services/integration";
+import { Alert } from "../../../../../lib/alert";
+import { MonitorTypeEnum, MonitorTypeLabelEnum } from "../../../../../types/monitor-type.enum";
+import { HlmButton } from "../../../../../components/button/src";
+import { HlmInput } from "../../../../../components/input/src";
+import { HlmLabel } from "../../../../../components/label/src";
+import { HlmSelectImports } from "../../../../../components/select/src";
+import { HlmCheckboxImports } from "../../../../../components/checkbox/src";
+import { HlmSwitchImports } from "../../../../../components/switch/src";
+import { HlmSeparatorImports } from "../../../../../components/separator/src";
 
 @Component({
   selector: "app-monitors-create",
@@ -116,7 +116,7 @@ export class MonitorsCreate implements OnInit {
       );
 
       Alert.success("", response.message);
-      this.router.navigate(["/panel/monitors/edit", response.data.id]);
+      this.router.navigate(["/panel/monitoring/monitors/edit", response.data.id]);
     } catch (error: any) {
       Alert.error("", error.message);
     }

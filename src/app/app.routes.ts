@@ -73,31 +73,56 @@ export const routes: Routes = [
     children: [
       {
         path: "",
-        redirectTo: "monitors",
+        redirectTo: "monitoring/monitors",
         pathMatch: "full",
       },
       {
-        path: "incidents",
-        title: "Incidentes • Systatus.Live",
-        loadComponent: () => import("./pages/panel/incidents/incidents-list/incidents-list").then(m => m.IncidentsList),
-      },
-      {
-        path: "integrations",
+        path: "monitoring",
         children: [
           {
-            path: "",
-            title: "Integrações • Systatus.Live",
-            loadComponent: () => import("./pages/panel/integrations/integrations-list/integrations-list").then(m => m.IntegrationsList),
+            path: "monitors",
+            children: [
+              {
+                path: "",
+                title: "Monitores • Systatus.Live",
+                loadComponent: () => import("./pages/panel/monitoring/monitors/monitors-list/monitors-list").then(m => m.MonitorsList),
+              },
+              {
+                path: "new",
+                title: "Novo Monitor • Systatus.Live",
+                loadComponent: () => import("./pages/panel/monitoring/monitors/monitors-create/monitors-create").then(m => m.MonitorsCreate),
+              },
+              {
+                path: "edit/:id",
+                title: "Monitor • Systatus.Live",
+                loadComponent: () => import("./pages/panel/monitoring/monitors/monitors-edit/monitors-edit").then(m => m.MonitorsEdit),
+              },
+            ],
           },
           {
-            path: "new",
-            title: "Nova Integração • Systatus.Live",
-            loadComponent: () => import("./pages/panel/integrations/integrations-create/integrations-create").then(m => m.IntegrationsCreate),
+            path: "incidents",
+            title: "Incidentes • Systatus.Live",
+            loadComponent: () => import("./pages/panel/monitoring/incidents/incidents-list/incidents-list").then(m => m.IncidentsList),
           },
           {
-            path: "edit/:id",
-            title: "Integração • Systatus.Live",
-            loadComponent: () => import("./pages/panel/integrations/integrations-edit/integrations-edit").then(m => m.IntegrationsEdit),
+            path: "integrations",
+            children: [
+              {
+                path: "",
+                title: "Integrações • Systatus.Live",
+                loadComponent: () => import("./pages/panel/monitoring/integrations/integrations-list/integrations-list").then(m => m.IntegrationsList),
+              },
+              {
+                path: "new",
+                title: "Nova Integração • Systatus.Live",
+                loadComponent: () => import("./pages/panel/monitoring/integrations/integrations-create/integrations-create").then(m => m.IntegrationsCreate),
+              },
+              {
+                path: "edit/:id",
+                title: "Integração • Systatus.Live",
+                loadComponent: () => import("./pages/panel/monitoring/integrations/integrations-edit/integrations-edit").then(m => m.IntegrationsEdit),
+              },
+            ],
           },
         ],
       },
@@ -119,13 +144,13 @@ export const routes: Routes = [
         children: [
           {
             path: "",
-            redirectTo: "details",
+            redirectTo: "profile",
             pathMatch: "full",
           },
           {
-            path: "details",
-            title: "Conta • Systatus.Live",
-            loadComponent: () => import("./pages/panel/account/details/details").then(m => m.Details),
+            path: "profile",
+            title: "Perfil • Systatus.Live",
+            loadComponent: () => import("./pages/panel/account/profile/profile").then(m => m.Profile),
           },
           {
             path: "subscription",
@@ -135,27 +160,12 @@ export const routes: Routes = [
         ],
       },
       {
-        path: "help",
-        title: "Ajuda • Systatus.Live",
-        loadComponent: () => import("./pages/panel/help/help").then(m => m.Help),
-      },
-      {
-        path: "monitors",
+        path: "support",
         children: [
           {
-            path: "",
-            title: "Monitores • Systatus.Live",
-            loadComponent: () => import("./pages/panel/monitors/monitors-list/monitors-list").then(m => m.MonitorsList),
-          },
-          {
-            path: "new",
-            title: "Novo Monitor • Systatus.Live",
-            loadComponent: () => import("./pages/panel/monitors/monitors-create/monitors-create").then(m => m.MonitorsCreate),
-          },
-          {
-            path: "edit/:id",
-            title: "Monitor • Systatus.Live",
-            loadComponent: () => import("./pages/panel/monitors/monitors-edit/monitors-edit").then(m => m.MonitorsEdit),
+            path: "help",
+            title: "Ajuda • Systatus.Live",
+            loadComponent: () => import("./pages/panel/support/help/help").then(m => m.Help),
           },
         ],
       },

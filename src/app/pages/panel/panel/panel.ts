@@ -119,23 +119,23 @@ export class Panel implements OnInit, OnDestroy {
     {
       title: "Monitoramento",
       items: [
-        { icon: "lucideRadar", title: "Monitores", url: "/panel/monitors" },
-        { icon: "lucideSiren", title: "Incidentes", url: "/panel/incidents" },
-        { icon: "lucideWaypoints", title: "Integrações", url: "/panel/integrations" },
+        { icon: "lucideRadar", title: "Monitores", url: "/panel/monitoring/monitors" },
+        { icon: "lucideSiren", title: "Incidentes", url: "/panel/monitoring/incidents" },
+        { icon: "lucideWaypoints", title: "Integrações", url: "/panel/monitoring/integrations" },
         ...(this.appState.permissionList().includes(PermissionEnum.STATUS_PAGE) ? [{ icon: "lucideGlobe", title: "Página de Status", url: "/panel/status-page" }] : []),
       ],
     },
     {
       title: "Conta",
       items: [
-        { icon: "lucideBadgeCheck", title: "Detalhes", url: "/panel/account/details" },
+        { icon: "lucideBadgeCheck", title: "Perfil", url: "/panel/account/profile" },
         { icon: "lucideCreditCard", title: "Assinatura", url: "/panel/account/subscription" },
       ],
     },
     {
       title: "Suporte",
       items: [
-        { icon: "lucideCircleHelp", title: "Ajuda", url: "/panel/help" },
+        { icon: "lucideCircleHelp", title: "Ajuda", url: "/panel/support/help" },
       ],
     },
   ]);

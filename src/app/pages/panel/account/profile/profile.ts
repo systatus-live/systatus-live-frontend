@@ -27,7 +27,7 @@ import { HlmSeparatorImports } from "../../../../components/separator/src";
 import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
 
 @Component({
-  selector: "app-details",
+  selector: "app-profile",
   imports: [
     ReactiveFormsModule,
     DatePipe,
@@ -52,10 +52,10 @@ import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
       lucideCalendar,
     }),
   ],
-  templateUrl: "./details.html",
-  styleUrl: "./details.scss",
+  templateUrl: "./profile.html",
+  styleUrl: "./profile.scss",
 })
-export class Details implements OnInit, OnDestroy {
+export class Profile implements OnInit, OnDestroy {
   public readonly appState = inject(AppStateService);
   private readonly userService = inject(User);
   private readonly fb = inject(FormBuilder);

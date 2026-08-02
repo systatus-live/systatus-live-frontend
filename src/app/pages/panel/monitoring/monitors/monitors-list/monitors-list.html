@@ -6,7 +6,7 @@
         <input hlmInput formControlName="search" placeholder="Pesquisar por nome ou endereço" class="flex-1" />
         <button hlmBtn type="submit" variant="outline">Buscar</button>
       </form>
-      <button hlmBtn routerLink="/panel/monitors/new">Novo Monitor</button>
+      <button hlmBtn routerLink="/panel/monitoring/monitors/new">Novo Monitor</button>
     </div>
   </div>
 
@@ -29,7 +29,7 @@
         </tr>
         }
         @for (monitor of monitorList(); track monitor.id) {
-          <tr hlmTr class="cursor-pointer" (click)="router.navigate(['/panel/monitors/edit', monitor.id])">
+          <tr hlmTr class="cursor-pointer" (click)="router.navigate(['/panel/monitoring/monitors/edit', monitor.id])">
             <td hlmTd>
               <div class="flex items-center gap-x-2">
                 <img [src]="getFaviconUrl(monitor.address)" width="16" height="16" class="rounded shrink-0" alt="" (error)="hideFavicon($event)" />
@@ -110,7 +110,7 @@
                 <ng-template #actionsMenu>
                   <div hlmDropdownMenu>
                     <div hlmDropdownMenuLabel>Ações</div>
-                    <button hlmDropdownMenuItem (triggered)="router.navigate(['/panel/monitors/edit', monitor.id])">
+                    <button hlmDropdownMenuItem (triggered)="router.navigate(['/panel/monitoring/monitors/edit', monitor.id])">
                       Editar
                     </button>
                     <button hlmDropdownMenuItem (triggered)="copyAddress(monitor.address)">

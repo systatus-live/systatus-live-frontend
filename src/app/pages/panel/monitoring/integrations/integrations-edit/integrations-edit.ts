@@ -4,15 +4,15 @@ import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { firstValueFrom } from "rxjs";
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { lucidePencil } from "@ng-icons/lucide";
-import { Integration } from "../../../../services/integration";
-import { ChatPlatform } from "../../../../services/chat-platform";
-import { Alert } from "../../../../lib/alert";
-import { ChatPlatformNameLogoMap, ChatPlatformTypeEnum } from "../../../../types/chat-platform.enum";
-import { HlmButton } from "../../../../components/button/src";
-import { HlmInput } from "../../../../components/input/src";
-import { HlmLabel } from "../../../../components/label/src";
-import { HlmSelectImports } from "../../../../components/select/src";
-import { HlmSeparatorImports } from "../../../../components/separator/src";
+import { Integration } from "../../../../../services/integration";
+import { ChatPlatform } from "../../../../../services/chat-platform";
+import { Alert } from "../../../../../lib/alert";
+import { ChatPlatformNameLogoMap, ChatPlatformTypeEnum } from "../../../../../types/chat-platform.enum";
+import { HlmButton } from "../../../../../components/button/src";
+import { HlmInput } from "../../../../../components/input/src";
+import { HlmLabel } from "../../../../../components/label/src";
+import { HlmSelectImports } from "../../../../../components/select/src";
+import { HlmSeparatorImports } from "../../../../../components/separator/src";
 import { WebhookTutorial } from "../components/webhook-tutorial/webhook-tutorial";
 
 @Component({
@@ -127,7 +127,7 @@ export class IntegrationsEdit implements OnInit {
     Alert.confirm("Excluir integração", "A integração será excluída permanentemente. Continuar?", async () => {
       try {
         const response: any = await firstValueFrom(this.integrationService.deleteIntegration(this.id));
-        this.router.navigate(["/panel/integrations"]);
+        this.router.navigate(["/panel/monitoring/integrations"]);
         Alert.success("", response.message);
       } catch (error: any) {
         Alert.error("", error.message);

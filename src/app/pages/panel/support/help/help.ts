@@ -1,6 +1,6 @@
 import { Component, computed, inject } from "@angular/core";
-import { ContactForm } from "../../../pages/contact/components/contact-form/contact-form";
-import { AppStateService } from "../../../state/app-state.service";
+import { ContactForm } from "../../../../pages/contact/components/contact-form/contact-form";
+import { AppStateService } from "../../../../state/app-state.service";
 
 @Component({
   selector: "app-help",

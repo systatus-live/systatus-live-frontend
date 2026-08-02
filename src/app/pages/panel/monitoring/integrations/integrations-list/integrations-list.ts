@@ -3,14 +3,14 @@ import { Router, RouterLink } from "@angular/router";
 import { firstValueFrom } from "rxjs";
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { lucideEllipsis } from "@ng-icons/lucide";
-import { Integration } from "../../../../services/integration";
-import { Alert } from "../../../../lib/alert";
-import { ChatPlatformDescriptionLogoMap } from "../../../../types/chat-platform.enum";
-import { HlmButton } from "../../../../components/button/src";
-import { HlmTableImports } from "../../../../components/table/src";
-import { HlmDropdownMenuImports } from "../../../../components/dropdown-menu/src";
+import { Integration } from "../../../../../services/integration";
+import { Alert } from "../../../../../lib/alert";
+import { ChatPlatformDescriptionLogoMap } from "../../../../../types/chat-platform.enum";
+import { HlmButton } from "../../../../../components/button/src";
+import { HlmTableImports } from "../../../../../components/table/src";
+import { HlmDropdownMenuImports } from "../../../../../components/dropdown-menu/src";
 import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
-import { HlmInput } from "../../../../components/input/src";
+import { HlmInput } from "../../../../../components/input/src";
 import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
 
 @Component({
