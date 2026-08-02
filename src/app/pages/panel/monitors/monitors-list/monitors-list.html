@@ -6,7 +6,7 @@
         <input hlmInput formControlName="search" placeholder="Pesquisar por nome ou endereço" class="flex-1" />
         <button hlmBtn type="submit" variant="outline">Buscar</button>
       </form>
-      <button hlmBtn routerLink="/panel/monitors/create">Novo Monitor</button>
+      <button hlmBtn routerLink="/panel/monitors/new">Novo Monitor</button>
     </div>
   </div>
 
@@ -17,7 +17,7 @@
           <th hlmTh>Monitor</th>
           <th hlmTh>Status</th>
           <th hlmTh>Latência</th>
-          <th hlmTh>Intervalo</th>
+          <th hlmTh>Verificado em</th>
           <th hlmTh>Histórico (30 dias)</th>
           <th hlmTh></th>
         </tr>
@@ -42,25 +42,55 @@
               </div>
             </td>
             <td hlmTd>
-              <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
-                <ng-icon [name]="getStatusIcon(monitor)" [class]="getStatusIconColor(monitor)" class="size-3.5" />
-                {{ getStatusLabel(monitor) }}
-              </span>
-            </td>
-            <td hlmTd>
-              @if (!monitor.lastDuration) {
+              @if (!monitor.active) {
                 <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
-                  <ng-icon [name]="getStatusIcon(monitor)" [class]="getStatusIconColor(monitor)" class="size-3.5" />
+                  <ng-icon name="lucidePause" class="size-3" />
+                  Pausado
+                </span>
+              } @else if (monitor.lastStatus == null) {
+                <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+                  <ng-icon name="lucideClock" class="size-3" />
                   Pendente
                 </span>
+              } @else if (monitor.lastStatus?.startsWith('2')) {
+                <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+                  <span class="relative flex h-1.5 w-1.5 shrink-0">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                  </span>
+                  {{ getStatusLabel(monitor) }}
+                </span>
               } @else {
-                <span>{{ monitor.lastDuration }}ms</span>
+                <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+                  <span class="relative flex h-1.5 w-1.5 shrink-0">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500"></span>
+                  </span>
+                  {{ getStatusLabel(monitor) }}
+                </span>
               }
             </td>
             <td hlmTd>
-              <div class="flex flex-col">
-                <span class="text-muted-foreground text-xs">{{ monitor.interval }}</span>
-              </div>
+              <span class="text-xs text-muted-foreground">
+                @if (!monitor.lastDuration) {
+                  Pendente
+                } @else {
+                  {{ monitor.lastDuration }}ms
+                }
+              </span>
+            </td>
+            <td hlmTd>
+              <span class="flex flex items-center gap-x-2 text-xs text-muted-foreground">
+                @if (!monitor.lastCheck) {
+                  Pendente
+                } @else {
+                  <span>{{ monitor.lastCheck }}</span>
+                  <span hlmTooltip="Intervalo" class="flex items-center gap-x-1">
+                    <ng-icon name="lucideClock"></ng-icon>
+                    <span>{{ monitor.interval }}</span>
+                  </span>
+                }
+              </span>
             </td>
             <td hlmTd>
               <div class="flex items-center gap-x-1">

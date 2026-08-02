@@ -59,18 +59,7 @@ export class MonitorsList implements OnInit {
   }
 
   async ngOnInit() {
-    this.appState.loading.set(true);
-    try {
-      const response: any = await firstValueFrom(
-        this.monitorService.getMonitorList(new URLSearchParams({ page: "0" })),
-      );
-      this.monitorList.set(response.data);
-      this.pagination.set({ rows: response.pagination.rows, total: response.pagination.total });
-    } catch (error: any) {
-      Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
-    }
+    await this.fetchPage(0);
   }
 
   public getFaviconUrl(address: string): string {

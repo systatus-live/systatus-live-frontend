@@ -94,14 +94,7 @@ export class MonitorsEdit implements OnInit {
       this.intervalList.set(intervalRes.data);
       this.integrationList.set(integrationRes.data);
 
-      this.form.patchValue({
-        name: monitorRes.name,
-        type: monitorRes.type,
-        address: monitorRes.address,
-        active: monitorRes.active,
-        integrationList: monitorRes.integrationList.map((i: any) => i.id),
-        intervalId: monitorRes.interval_id,
-      });
+      this.patchForm(monitorRes);
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
@@ -182,15 +175,18 @@ export class MonitorsEdit implements OnInit {
   }
 
   handleCancel() {
-    const m = this.monitor();
-    this.form.patchValue({
-      name: m.name,
-      type: m.type,
-      address: m.address,
-      active: m.active,
-      integrationList: m.integrationList.map((i: any) => i.id),
-      intervalId: m.interval_id,
-    });
+    this.patchForm(this.monitor());
     this.isEditing.set(false);
+  }
+
+  private patchForm(monitor: any) {
+    this.form.patchValue({
+      name: monitor.name,
+      type: monitor.type,
+      address: monitor.address,
+      active: monitor.active,
+      integrationList: monitor.integrationList.map((i: any) => i.id),
+      intervalId: monitor.interval_id,
+    });
   }
 }

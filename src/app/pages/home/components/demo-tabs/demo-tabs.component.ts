@@ -12,7 +12,6 @@ interface Incident {
   title: string;
   status: 'investigating' | 'resolved';
   info: string;
-  ago: string;
 }
 
 @Component({
@@ -41,20 +40,17 @@ export class DemoTabsComponent {
     {
       title: 'Lentidão em api.service.com',
       status: 'investigating',
-      info: 'Iniciado há 14 min · Afeta 1 monitor',
-      ago: 'agora',
+      info: 'Iniciado há 14 min',
     },
     {
       title: 'Timeout em payments.service.io',
       status: 'resolved',
       info: 'Duração: 23 min',
-      ago: 'há 2 dias',
     },
     {
       title: 'Indisponibilidade em website.com',
       status: 'resolved',
       info: 'Duração: 7 min',
-      ago: 'há 5 dias',
     },
   ];
 

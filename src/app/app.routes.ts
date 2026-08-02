@@ -148,7 +148,7 @@ export const routes: Routes = [
             loadComponent: () => import("./pages/panel/monitors/monitors-list/monitors-list").then(m => m.MonitorsList),
           },
           {
-            path: "create",
+            path: "new",
             title: "Novo Monitor • Systatus.Live",
             loadComponent: () => import("./pages/panel/monitors/monitors-create/monitors-create").then(m => m.MonitorsCreate),
           },

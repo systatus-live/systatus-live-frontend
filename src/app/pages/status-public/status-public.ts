@@ -5,7 +5,6 @@ import { firstValueFrom } from "rxjs";
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import {
   lucideBadgeCheck,
-  lucideBadgeAlert,
   lucideClock,
   lucideCircleAlert,
   lucideAlertTriangle,
@@ -23,7 +22,6 @@ const REFRESH_INTERVAL = 60;
   providers: [
     provideIcons({
       lucideBadgeCheck,
-      lucideBadgeAlert,
       lucideClock,
       lucideCircleAlert,
       lucideAlertTriangle,

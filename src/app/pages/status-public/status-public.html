@@ -85,12 +85,18 @@
                       </span>
                     } @else if (monitor.lastStatus.startsWith('2')) {
                       <span class="inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs text-muted-foreground">
-                        <ng-icon name="lucideBadgeCheck" size="12" class="text-[#05DF72]" />
+                        <span class="relative flex h-1.5 w-1.5 shrink-0">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                        </span>
                         Operacional
                       </span>
                     } @else {
                       <span class="inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs text-muted-foreground">
-                        <ng-icon name="lucideBadgeAlert" size="12" class="text-[#FF6467]" />
+                        <span class="relative flex h-1.5 w-1.5 shrink-0">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500"></span>
+                        </span>
                         Indisponível
                       </span>
                     }

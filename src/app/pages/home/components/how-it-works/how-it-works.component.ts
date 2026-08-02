@@ -26,7 +26,7 @@ export class HowItWorksComponent {
       color: 'bg-blue-500',
       step: '01',
       title: 'Cadastre seu endpoint',
-      description: 'Informe a URL do seu site, API ou servidor. Nenhum agente para instalar — só cole o endereço e pronto.',
+      description: 'Informe a URL do seu site, API ou servidor. Nenhum agente para instalar, só cole o endereço e pronto.',
     },
     {
       icon: LucideShieldCheck,

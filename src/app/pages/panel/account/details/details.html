@@ -158,7 +158,7 @@
         <tbody hlmTBody>
           @if (authHistory().length === 0) {
             <tr hlmTr>
-              <td hlmTd colspan="4" class="h-24 text-center text-muted-foreground">Nenhum registro encontrado.</td>
+              <td hlmTd colspan="3" class="h-24 text-center text-muted-foreground">Nenhum registro encontrado.</td>
             </tr>
           }
           @for (item of authHistory(); track item.id) {
@@ -166,8 +166,16 @@
               <td hlmTd class="text-sm font-medium whitespace-nowrap">
                 {{ item.created_at | date:'dd/MM/yyyy HH:mm' }}
               </td>
-              <td hlmTd class="text-sm text-muted-foreground">{{ getDevice(item.user_agent) }}</td>
-              <td hlmTd class="text-sm font-mono">{{ item.ip }}</td>
+              <td hlmTd>
+                <span class="text-xs text-muted-foreground">
+                  {{ getDevice(item.user_agent) }}
+                </span>
+              </td>
+              <td hlmTd>
+                <span class="text-xs text-muted-foreground">
+                  {{ item.ip }}
+                </span>
+              </td>
             </tr>
           }
         </tbody>

@@ -45,20 +45,7 @@ export class IntegrationsList implements OnInit {
   });
 
   async ngOnInit() {
-    this.appState.loading.set(true);
-
-    try {
-      const response: any = await firstValueFrom(
-        this.integrationService.getIntegrationList(new URLSearchParams({ page: "0" })),
-      );
-
-      this.integrationList.set(response.data);
-      this.pagination.set({ rows: response.pagination.rows, total: response.pagination.total });
-    } catch (error: any) {
-      Alert.error("", error.message);
-    } finally {
-      this.appState.loading.set(false);
-    }
+    await this.fetchPage(0);
   }
 
   public get totalPages(): number {

@@ -1,7 +1,6 @@
 import { Component, OnInit, inject, signal, PLATFORM_ID } from "@angular/core";
-import { isPlatformBrowser } from "@angular/common";
+import { isPlatformBrowser, DatePipe } from "@angular/common";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
-import { DatePipe } from "@angular/common";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { formatMoney } from "../../../../utils/format-money";
 import { firstValueFrom } from "rxjs";
@@ -234,7 +233,30 @@ export class Subscription implements OnInit {
   }
 
   public toggleBilling() {
+    if (this.billingExpanded()) {
+      this.patchBillingForm(this.billingData());
+    }
     this.billingExpanded.update(v => !v);
+  }
+
+  private patchBillingForm(data: any) {
+    if (!data?.person_type) {
+      return;
+    }
+    this.billingForm.patchValue({
+      billing_name: data.billing_name ?? "",
+      billing_email: data.billing_email ?? "",
+      person_type: data.person_type,
+      document: data.document ?? "",
+      zip_code: data.zip_code ?? "",
+      address: data.address ?? "",
+      number: data.number ?? "",
+      complement: data.complement ?? "",
+      neighborhood: data.neighborhood ?? "",
+      state: data.state ?? "",
+      city: data.city ?? "",
+    });
+    this.citySearch.set(data.city ?? "");
   }
 
   public async handleSubscribe(planId: string) {
@@ -359,26 +381,10 @@ export class Subscription implements OnInit {
     try {
       const response: any = await firstValueFrom(this.userService.getUserBillingData());
       this.billingData.set(response);
+      this.patchBillingForm(response);
 
-      if (response?.person_type) {
-        this.billingForm.patchValue({
-          billing_name: response.billing_name ?? "",
-          billing_email: response.billing_email ?? "",
-          person_type: response.person_type,
-          document: response.document ?? "",
-          zip_code: response.zip_code ?? "",
-          address: response.address ?? "",
-          number: response.number ?? "",
-          complement: response.complement ?? "",
-          neighborhood: response.neighborhood ?? "",
-          state: response.state ?? "",
-          city: response.city ?? "",
-        });
-        this.citySearch.set(response.city ?? "");
-
-        if (response.state) {
-          await this.loadCities(response.state);
-        }
+      if (response?.state) {
+        await this.loadCities(response.state);
       }
     } catch { }
   }

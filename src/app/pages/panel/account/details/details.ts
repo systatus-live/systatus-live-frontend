@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, inject, signal, PLATFORM_ID, ElementRef, ViewChild } from "@angular/core";
-import { isPlatformBrowser } from "@angular/common";
+import { isPlatformBrowser, DatePipe } from "@angular/common";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
-import { DatePipe } from "@angular/common";
 import { firstValueFrom } from "rxjs";
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import {
@@ -157,15 +156,20 @@ export class Details implements OnInit, OnDestroy {
 
   public toggleDetails() {
     if (this.detailsExpanded()) {
-      this.detailsForm.patchValue({
-        name: this.appState.user()?.name ?? "",
-        email: this.appState.user()?.email ?? "",
-      });
+      this.patchDetailsForm();
       this.revokePreview();
       this.avatarPreview.set(null);
       this.isChangedAvatar.set(false);
     }
     this.detailsExpanded.update(v => !v);
+  }
+
+  private patchDetailsForm() {
+    const user = this.appState.user();
+    this.detailsForm.patchValue({
+      name: user?.name ?? "",
+      email: user?.email ?? "",
+    });
   }
 
   public togglePassword() {
@@ -274,12 +278,7 @@ export class Details implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    const user = this.appState.user();
-    this.detailsForm.patchValue({
-      name: user?.name ?? "",
-      email: user?.email ?? "",
-    });
-
+    this.patchDetailsForm();
     await this.loadAuthHistory(0);
   }
 

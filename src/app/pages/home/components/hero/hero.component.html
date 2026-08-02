@@ -72,7 +72,7 @@
                 <span class="w-3 h-3 rounded-full bg-amber-500/60"></span>
                 <span class="w-3 h-3 rounded-full bg-emerald-500/60"></span>
               </div>
-              <span class="ml-2 text-xs text-[#4D9EFF] font-mono">systatus.live — Monitores</span>
+              <span class="ml-2 text-xs text-[#4D9EFF] font-mono">systatus.live - Monitores</span>
             </div>
 
             <!-- Monitor rows -->
@@ -82,7 +82,7 @@
                 <span>Monitor</span>
                 <div class="flex items-center gap-8">
                   <span>Latência</span>
-                  <span>90 dias</span>
+                  <span>30 dias</span>
                   <span>Uptime</span>
                 </div>
               </div>
@@ -92,10 +92,10 @@
                   <!-- Status dot + name -->
                   <div class="flex items-center gap-2 flex-1 min-w-0">
                     <span class="relative flex h-2.5 w-2.5 flex-shrink-0">
-                      @if (monitor.status === 'up') {
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-60" [class]="getStatusDotClass(monitor.status)"></span>
+                      @if (monitor.status !== 'degraded') {
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-60" [class]="getBarClass(monitor.status)"></span>
                       }
-                      <span class="relative inline-flex rounded-full h-2.5 w-2.5" [class]="getStatusDotClass(monitor.status)"></span>
+                      <span class="relative inline-flex rounded-full h-2.5 w-2.5" [class]="getBarClass(monitor.status)"></span>
                     </span>
                     <span class="text-sm font-medium text-[#E8F0FE] truncate">{{ monitor.name }}</span>
                   </div>
@@ -108,11 +108,11 @@
                     {{ monitor.latency }}
                   </span>
 
-                  <!-- Uptime bars (90 days) -->
-                  <div class="flex items-end gap-px flex-shrink-0">
+                  <!-- Uptime bars (30 days) -->
+                  <div class="flex items-end gap-0.5 flex-shrink-0">
                     @for (bar of monitor.bars; track $index) {
                       <div
-                        class="w-[3px] h-6 rounded-[1px] opacity-90 transition-opacity hover:opacity-100"
+                        class="w-[4px] h-6 rounded-[1px] opacity-90 transition-opacity hover:opacity-100"
                         [class]="getBarClass(bar)"
                       ></div>
                     }
@@ -128,7 +128,7 @@
               <!-- Incident alert -->
               <div class="mt-2 flex items-center gap-2 p-2.5 rounded-lg bg-red-500/10 border border-red-500/20">
                 <span class="h-2 w-2 rounded-full bg-red-500 animate-pulse flex-shrink-0"></span>
-                <span class="text-xs text-red-300">Incidente detectado em <strong>api.service.com</strong> — alerta enviado há 2min</span>
+                <span class="text-xs text-red-300">Incidente detectado em <strong>api.service.com</strong>. Alerta enviado há 2min</span>
               </div>
             </div>
 

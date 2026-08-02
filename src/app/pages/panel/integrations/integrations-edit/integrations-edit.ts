@@ -112,11 +112,7 @@ export class IntegrationsEdit implements OnInit {
       this.platformList.set(platformRes.data);
       this.integration.set(integrationRes);
 
-      this.form.patchValue({
-        name: integrationRes.name,
-        chatPlatformId: integrationRes.chat_platform_id,
-        address: integrationRes.address,
-      });
+      this.patchForm(integrationRes);
     } catch (error: any) {
       Alert.error("", error.message);
     } finally {
@@ -154,13 +150,16 @@ export class IntegrationsEdit implements OnInit {
   }
 
   public handleCancel() {
-    const data = this.integration();
-    this.form.patchValue({
-      name: data.name,
-      chatPlatformId: data.chat_platform_id,
-      address: data.address,
-    });
+    this.patchForm(this.integration());
     this.isEditing.set(false);
+  }
+
+  private patchForm(integration: any) {
+    this.form.patchValue({
+      name: integration.name,
+      chatPlatformId: integration.chat_platform_id,
+      address: integration.address,
+    });
   }
 
   public async handleSave() {

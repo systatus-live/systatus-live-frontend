@@ -1,6 +1,17 @@
 <div class="flex flex-col gap-4">
   <div class="flex items-center justify-between gap-4">
-    <h1 class="text-base font-semibold shrink-0">Incidentes</h1>
+    <div class="flex items-center gap-x-2">
+      <h1 class="text-base font-semibold shrink-0">Incidentes</h1>
+      @if (extras().totalNotResolved > 0) {
+        <span hlmBadge variant="destructive" class="flex items-center gap-1.5 px-1.5 w-fit">
+          <span class="relative flex h-1.5 w-1.5 shrink-0">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500"></span>
+          </span>
+          {{ extras().totalNotResolved }} em andamento
+        </span>
+      }
+    </div>
     <form (ngSubmit)="onSubmitSearch()" [formGroup]="form" class="flex gap-2 w-full max-w-sm">
       <input hlmInput formControlName="search" placeholder="Pesquisar por nome ou endereço" class="flex-1" />
       <button hlmBtn type="submit" variant="outline">Buscar</button>
@@ -18,7 +29,7 @@
 
   <div class="overflow-hidden rounded-md border bg-card">
     <table hlmTable>
-      <thead hlmThead>
+      <thead hlmTHead>
         <tr hlmTr>
           <th hlmTh>Status</th>
           <th hlmTh>Monitor</th>
@@ -28,7 +39,7 @@
           <th hlmTh>Duração</th>
         </tr>
       </thead>
-      <tbody hlmTbody>
+      <tbody hlmTBody>
         @if (incidentList().length === 0) {
           <tr hlmTr>
             <td hlmTd colspan="6" class="h-24 text-center text-muted-foreground">
@@ -40,15 +51,18 @@
           <tr hlmTr>
             <td hlmTd>
               @if (incident.ended_at) {
-                <div class="flex items-center gap-1.5">
-                  <ng-icon name="lucideBadgeCheck" class="h-4 w-4 text-[#05DF72]" />
-                  <span class="text-sm">Resolvido</span>
-                </div>
+                <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+                  <ng-icon name="lucideCheck" class="size-3 text-emerald-500" />
+                  Resolvido
+                </span>
               } @else {
-                <div class="flex items-center gap-1.5">
-                  <ng-icon name="lucideBadgeAlert" class="h-4 w-4 text-[#FF6467] animate-pulse" />
-                  <span class="text-sm">Não Resolvido</span>
-                </div>
+                <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+                  <span class="relative flex h-1.5 w-1.5 shrink-0">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500"></span>
+                  </span>
+                  Em andamento
+                </span>
               }
             </td>
             <td hlmTd>
@@ -57,16 +71,28 @@
                 <small class="text-muted-foreground">{{ incident.address }}</small>
               </div>
             </td>
-            <td hlmTd>{{ getIncidentLabel(incident.lastError) }}</td>
-            <td hlmTd>{{ incident.created_at | date:'dd/MM/yyyy HH:mm' }}</td>
             <td hlmTd>
-              @if (incident.ended_at) {
-                {{ incident.ended_at | date:'dd/MM/yyyy HH:mm' }}
-              } @else {
-                <span class="text-sm text-muted-foreground">Em andamento</span>
-              }
+              {{ getIncidentLabel(incident.lastError) }}
             </td>
-            <td hlmTd>{{ incident.duration || '—' }}</td>
+            <td hlmTd>
+              <span class="text-xs text-muted-foreground">
+                {{ incident.created_at | date:'dd/MM/yyyy HH:mm' }}
+              </span>
+            </td>
+            <td hlmTd>
+              <span class="text-xs text-muted-foreground">
+                @if (incident.ended_at) {
+                  {{ incident.ended_at | date:'dd/MM/yyyy HH:mm' }}
+                } @else {
+                  Não resolvido
+                }
+              </span>
+            </td>
+            <td hlmTd>
+              <span class="text-xs text-muted-foreground">
+                {{ incident.duration || '-' }}
+              </span>
+            </td>
           </tr>
         }
       </tbody>

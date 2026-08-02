@@ -4,13 +4,14 @@ import { ReactiveFormsModule, FormBuilder } from "@angular/forms";
 import { firstValueFrom } from "rxjs";
 import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip } from "chart.js";
 import { NgIcon, provideIcons } from "@ng-icons/core";
-import { lucideBadgeCheck, lucideBadgeAlert } from "@ng-icons/lucide";
+import { lucideCheck } from "@ng-icons/lucide";
 import { AppStateService } from "../../../../state/app-state.service";
 import { Incident } from "../../../../services/incident";
 import { Alert } from "../../../../lib/alert";
 import { HttpStatusCodeLabel, getHttpStatusKey } from "../../../../types/http-status-code";
 import { HlmButton } from "../../../../components/button/src";
 import { HlmInput } from "../../../../components/input/src";
+import { HlmBadgeImports } from "../../../../components/badge/src";
 import { HlmTableImports } from "../../../../components/table/src";
 
 Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip);
@@ -23,9 +24,10 @@ Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineEle
     NgIcon,
     HlmButton,
     HlmInput,
+    ...HlmBadgeImports,
     ...HlmTableImports,
   ],
-  providers: [provideIcons({ lucideBadgeCheck, lucideBadgeAlert })],
+  providers: [provideIcons({ lucideCheck })],
   templateUrl: "./incidents-list.html",
   styleUrl: "./incidents-list.scss",
 })
@@ -42,6 +44,7 @@ export class IncidentsList implements OnInit, OnDestroy {
 
   public readonly historical = signal<any[]>([]);
   public readonly incidentList = signal<any[]>([]);
+  public readonly extras = signal<any>({});
   public readonly page = signal(0);
   public readonly pagination = signal({ rows: 0, total: 0 });
 
@@ -66,6 +69,7 @@ export class IncidentsList implements OnInit, OnDestroy {
       this.historical.set(historicalRes.data);
       this.incidentList.set(incidentRes.data);
       this.pagination.set({ rows: incidentRes.pagination.rows, total: incidentRes.pagination.total });
+      this.extras.set(incidentRes.extras);
 
       this.initChart();
     } catch (error: any) {
