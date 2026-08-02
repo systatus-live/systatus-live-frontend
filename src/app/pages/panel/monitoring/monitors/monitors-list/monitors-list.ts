@@ -77,7 +77,7 @@ export class MonitorsList implements OnInit {
       return "Pausado";
     }
     const label = HttpStatusCodeLabel[getHttpStatusKey(monitor.lastStatus) as keyof typeof HttpStatusCodeLabel];
-    return monitor.lastIncident ? `${label} ${monitor.lastIncident}` : (label ?? monitor.lastStatus);
+    return monitor.lastIncident ? `${label} • ${monitor.lastIncident}` : (label ?? monitor.lastStatus);
   }
 
   public getStatusIcon(monitor: any): string {
