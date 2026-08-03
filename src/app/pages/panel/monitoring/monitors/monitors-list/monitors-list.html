@@ -1,13 +1,11 @@
 <div class="flex flex-col gap-4">
   <div class="flex items-center justify-between gap-4">
-    <h1 class="text-base font-semibold shrink-0">Monitores</h1>
-    <div class="flex items-center gap-2 flex-1 justify-end">
-      <form (ngSubmit)="onSubmitSearch()" [formGroup]="form" class="flex gap-2 w-full max-w-sm">
-        <input hlmInput formControlName="search" placeholder="Pesquisar por nome ou endereço" class="flex-1" />
-        <button hlmBtn type="submit" variant="outline">Buscar</button>
-      </form>
-      <button hlmBtn routerLink="/panel/monitoring/monitors/new">Novo Monitor</button>
-    </div>
+    <h1 class="text-base font-semibold">Monitores</h1>
+    <form (ngSubmit)="onSubmitSearch()" [formGroup]="form" class="flex gap-2 w-full max-w-sm">
+      <input hlmInput formControlName="search" placeholder="Pesquisar por nome ou endereço" class="flex-1" />
+      <button hlmBtn type="submit" variant="outline">Buscar</button>
+    </form>
+    <button hlmBtn routerLink="/panel/monitoring/monitors/new">Novo Monitor</button>
   </div>
 
   <div hlmTableContainer class="rounded-md border">
@@ -116,6 +114,8 @@
                     <button hlmDropdownMenuItem (triggered)="copyAddress(monitor.address)">
                       Copiar URL
                     </button>
+                    <hlm-dropdown-menu-separator />
+				            <button hlmDropdownMenuItem variant="destructive" (triggered)="handleDelete(monitor.id)">Excluir</button>
                   </div>
                 </ng-template>
               </div>

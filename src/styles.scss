@@ -106,7 +106,16 @@
   }
 }
 
-[data-slot="table-container"] {
+div[hlmtablecontainer] {
+  background-color: var(--card);
+  max-height: 80vh;
+  overflow: auto;
+}
+
+div[hlmtablecontainer] thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   background-color: var(--card);
 }
 

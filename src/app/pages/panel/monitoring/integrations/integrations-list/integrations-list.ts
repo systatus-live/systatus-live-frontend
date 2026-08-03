@@ -90,4 +90,18 @@ export class IntegrationsList implements OnInit {
   public async onSubmitSearch() {
     await this.fetchPage(0, this.form.controls.search.value ?? "");
   }
+
+  public handleDelete(id: string) {
+    Alert.confirm("Excluir integração", "A integração será excluída permanentemente. Continuar?", async () => {
+      try {
+        const response: any = await firstValueFrom(this.integrationService.deleteIntegration(id));
+
+        await this.fetchPage(this.page(), this.form.controls.search.value ?? "");
+
+        Alert.success("", response.message);
+      } catch (error: any) {
+        Alert.error("", error.message);
+      }
+    });
+  }
 }
