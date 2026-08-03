@@ -34,9 +34,9 @@
     <table hlmTable>
       <thead hlmTHead>
         <tr hlmTr>
-          <th hlmTh>Status</th>
+          <th hlmTh>Situação</th>
           <th hlmTh>Monitor</th>
-          <th hlmTh>Incidente</th>
+          <th hlmTh>Causa raiz</th>
           <th hlmTh>Iniciado</th>
           <th hlmTh>Resolvido</th>
           <th hlmTh>Duração</th>
@@ -51,7 +51,7 @@
           </tr>
         }
         @for (incident of incidentList(); track incident.id) {
-          <tr hlmTr>
+          <tr hlmTr class="cursor-pointer" (click)="router.navigate(['/panel/monitoring/incidents/view', incident.id])">
             <td hlmTd>
               @if (incident.ended_at) {
                 <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
@@ -75,7 +75,13 @@
               </div>
             </td>
             <td hlmTd>
-              {{ getIncidentLabel(incident.lastError) }}
+              @if (incident.firstError) {
+                <span hlmBadge variant="outline" class="w-fit">
+                  {{ getStatusLabel(incident.firstError) }}
+                </span>
+              } @else {
+                —
+              }
             </td>
             <td hlmTd>
               <span class="text-xs text-muted-foreground">

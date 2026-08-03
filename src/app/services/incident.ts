@@ -13,4 +13,12 @@ export class Incident {
   getHistorical() {
     return this.http.get(`${environment.apiUrl}/v1/incidents/historical`);
   }
+
+  getIncidentById(id: string) {
+    return this.http.get(`${environment.apiUrl}/v1/incidents/${id}`);
+  }
+
+  getIncidentHistorical(id: string, page: number) {
+    return this.http.get(`${environment.apiUrl}/v1/incidents/${id}/historical?page=${page}`);
+  }
 }

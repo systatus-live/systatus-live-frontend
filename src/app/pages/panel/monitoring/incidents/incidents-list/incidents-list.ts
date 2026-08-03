@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, inject, signal, PLATFORM_ID } from "@angular/core";
 import { isPlatformBrowser, DatePipe } from "@angular/common";
 import { ReactiveFormsModule, FormBuilder } from "@angular/forms";
+import { Router } from "@angular/router";
 import { firstValueFrom } from "rxjs";
 import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip } from "chart.js";
 import { NgIcon, provideIcons } from "@ng-icons/core";
@@ -34,6 +35,7 @@ export class IncidentsList implements OnInit, OnDestroy {
   private readonly incidentService = inject(Incident);
   private readonly fb = inject(FormBuilder);
   private readonly platformId = inject(PLATFORM_ID);
+  public readonly router = inject(Router);
 
   public readonly isBrowser = isPlatformBrowser(this.platformId);
 
@@ -153,7 +155,7 @@ export class IncidentsList implements OnInit, OnDestroy {
     await this.fetchPage(0, this.form.controls.search.value ?? "");
   }
 
-  public getIncidentLabel(lastError: string): string {
-    return HttpStatusCodeLabel[getHttpStatusKey(lastError) as keyof typeof HttpStatusCodeLabel] ?? lastError;
+  public getStatusLabel(status: string): string {
+    return HttpStatusCodeLabel[getHttpStatusKey(status) as keyof typeof HttpStatusCodeLabel] ?? status;
   }
 }

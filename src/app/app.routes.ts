@@ -101,8 +101,18 @@ export const routes: Routes = [
           },
           {
             path: "incidents",
-            title: "Incidentes • Systatus.Live",
-            loadComponent: () => import("./pages/panel/monitoring/incidents/incidents-list/incidents-list").then(m => m.IncidentsList),
+            children: [
+              {
+                path: "",
+                title: "Incidentes • Systatus.Live",
+                loadComponent: () => import("./pages/panel/monitoring/incidents/incidents-list/incidents-list").then(m => m.IncidentsList),
+              },
+              {
+                path: "view/:id",
+                title: "Incidente • Systatus.Live",
+                loadComponent: () => import("./pages/panel/monitoring/incidents/incidents-view/incidents-view").then(m => m.IncidentsView),
+              },
+            ],
           },
           {
             path: "integrations",
