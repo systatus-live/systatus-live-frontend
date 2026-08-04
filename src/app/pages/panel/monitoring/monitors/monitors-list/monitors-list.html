@@ -8,138 +8,111 @@
     <button hlmBtn routerLink="/panel/monitoring/monitors/new">Novo Monitor</button>
   </div>
 
-  <div hlmTableContainer class="rounded-md border">
-    <table hlmTable>
-      <thead hlmTHead>
-        <tr hlmTr>
-          <th hlmTh>Monitor</th>
-          <th hlmTh>Status</th>
-          <th hlmTh>Latência</th>
-          <th hlmTh>Verificado em</th>
-          <th hlmTh>Histórico (30 dias)</th>
-          <th hlmTh></th>
-        </tr>
-      </thead>
-      <tbody hlmTBody>
-        @if (monitorList().length === 0) {
-        <tr hlmTr>
-          <td hlmTd colspan="6" class="h-24 text-center text-muted-foreground">Nenhum monitor encontrado.</td>
-        </tr>
-        }
-        @for (monitor of monitorList(); track monitor.id) {
-          <tr hlmTr class="cursor-pointer" (click)="router.navigate(['/panel/monitoring/monitors/edit', monitor.id])">
-            <td hlmTd>
-              <div class="flex items-center gap-x-2">
-                <img [src]="getFaviconUrl(monitor.address)" width="16" height="16" class="rounded shrink-0" alt="" (error)="hideFavicon($event)" />
-                <div class="flex flex-col justify-center overflow-hidden">
-                  <span class="font-medium">{{ monitor.name }}</span>
-                  <small class="text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis">
-                    {{ getMonitorTypeLabel(monitor.type) }} • {{ monitor.address }}
-                  </small>
-                </div>
-              </div>
-            </td>
-            <td hlmTd>
-              @if (!monitor.active) {
-                <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
-                  <ng-icon name="lucidePause" class="size-3" />
-                  Pausado
-                </span>
-              } @else if (monitor.lastStatus == null) {
-                <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
-                  <ng-icon name="lucideClock" class="size-3" />
-                  Pendente
-                </span>
-              } @else if (monitor.lastStatus?.startsWith('2')) {
-                <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
-                  <span class="relative flex h-1.5 w-1.5 shrink-0">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
-                  </span>
-                  {{ getStatusLabel(monitor) }}
-                </span>
-              } @else {
-                <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
-                  <span class="relative flex h-1.5 w-1.5 shrink-0">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500"></span>
-                  </span>
-                  {{ getStatusLabel(monitor) }}
-                </span>
+  <app-table
+    [columns]="['Monitor', 'Status', 'Latência', 'Verificado em', 'Histórico (30 dias)', '']"
+    [rows]="monitorList()"
+    emptyMessage="Nenhum monitor encontrado."
+    [total]="pagination().total"
+    [page]="page()"
+    [totalPages]="totalPages"
+    totalLabel="monitores"
+    (pageChange)="fetchPage($event, form.controls.search.value ?? '')"
+  >
+    <ng-template #rowTemplate let-monitor>
+      <tr hlmTr class="cursor-pointer" (click)="router.navigate(['/panel/monitoring/monitors/edit', monitor.id])">
+        <td hlmTd>
+          <div class="flex items-center gap-x-2">
+            <img [src]="getFaviconUrl(monitor.address)" width="16" height="16" class="rounded shrink-0" alt="" (error)="hideFavicon($event)" />
+            <div class="flex flex-col justify-center overflow-hidden">
+              <span class="font-medium">{{ monitor.name }}</span>
+              <small class="text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis">
+                {{ getMonitorTypeLabel(monitor.type) }} • {{ monitor.address }}
+              </small>
+            </div>
+          </div>
+        </td>
+        <td hlmTd>
+          @if (!monitor.active) {
+            <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+              <ng-icon name="lucidePause" class="size-3" />
+              Pausado
+            </span>
+          } @else if (monitor.lastStatus == null) {
+            <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+              <ng-icon name="lucideClock" class="size-3" />
+              Pendente
+            </span>
+          } @else if (monitor.lastStatus?.startsWith('2')) {
+            <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+              <span class="relative flex h-1.5 w-1.5 shrink-0">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+              </span>
+              {{ getStatusLabel(monitor) }}
+            </span>
+          } @else {
+            <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+              <span class="relative flex h-1.5 w-1.5 shrink-0">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500"></span>
+              </span>
+              {{ getStatusLabel(monitor) }}
+            </span>
+          }
+        </td>
+        <td hlmTd>
+          <span class="text-xs text-muted-foreground">
+            @if (!monitor.lastDuration) {
+              Pendente
+            } @else {
+              {{ monitor.lastDuration }}ms
+            }
+          </span>
+        </td>
+        <td hlmTd>
+          <span class="flex flex items-center gap-x-2 text-xs text-muted-foreground">
+            @if (!monitor.lastCheck) {
+              Pendente
+            } @else {
+              <span>{{ monitor.lastCheck }}</span>
+              <span hlmTooltip="Intervalo" class="flex items-center gap-x-1">
+                <ng-icon name="lucideClock"></ng-icon>
+                <span>{{ monitor.interval }}</span>
+              </span>
+            }
+          </span>
+        </td>
+        <td hlmTd>
+          <div class="flex items-center gap-x-1">
+            <div class="flex gap-x-1">
+              @for (item of monitor.historical; track $index) {
+                <div [style]="getHistoricalStyle(item)" class="w-1.5 h-5 rounded-lg hover:scale-125 transition-transform" [hlmTooltip]="item.note"></div>
               }
-            </td>
-            <td hlmTd>
-              <span class="text-xs text-muted-foreground">
-                @if (!monitor.lastDuration) {
-                  Pendente
-                } @else {
-                  {{ monitor.lastDuration }}ms
-                }
-              </span>
-            </td>
-            <td hlmTd>
-              <span class="flex flex items-center gap-x-2 text-xs text-muted-foreground">
-                @if (!monitor.lastCheck) {
-                  Pendente
-                } @else {
-                  <span>{{ monitor.lastCheck }}</span>
-                  <span hlmTooltip="Intervalo" class="flex items-center gap-x-1">
-                    <ng-icon name="lucideClock"></ng-icon>
-                    <span>{{ monitor.interval }}</span>
-                  </span>
-                }
-              </span>
-            </td>
-            <td hlmTd>
-              <div class="flex items-center gap-x-1">
-                <div class="flex gap-x-1">
-                  @for (item of monitor.historical; track $index) {
-                    <div [style]="getHistoricalStyle(item)"class="w-1.5 h-5 rounded-lg hover:scale-125 transition-transform" [hlmTooltip]="item.note"></div>
-                  }
-                </div>
-                <small class="text-muted-foreground">{{ monitor.percentOnline }}%</small>
-              </div>
-            </td>
-            <td hlmTd>
-              <div class="flex justify-end" (click)="$event.stopPropagation()">
-                <button hlmBtn variant="ghost" class="h-8 w-8 p-0" [hlmDropdownMenuTrigger]="actionsMenu">
-                  <ng-icon name="lucideEllipsis" class="size-4" />
+            </div>
+            <small class="text-muted-foreground">{{ monitor.percentOnline }}%</small>
+          </div>
+        </td>
+        <td hlmTd>
+          <div class="flex justify-end" (click)="$event.stopPropagation()">
+            <button hlmBtn variant="ghost" class="h-8 w-8 p-0" [hlmDropdownMenuTrigger]="actionsMenu">
+              <ng-icon name="lucideEllipsis" class="size-4" />
+            </button>
+            <ng-template #actionsMenu>
+              <div hlmDropdownMenu>
+                <div hlmDropdownMenuLabel>Ações</div>
+                <button hlmDropdownMenuItem (triggered)="router.navigate(['/panel/monitoring/monitors/edit', monitor.id])">
+                  Editar
                 </button>
-                <ng-template #actionsMenu>
-                  <div hlmDropdownMenu>
-                    <div hlmDropdownMenuLabel>Ações</div>
-                    <button hlmDropdownMenuItem (triggered)="router.navigate(['/panel/monitoring/monitors/edit', monitor.id])">
-                      Editar
-                    </button>
-                    <button hlmDropdownMenuItem (triggered)="copyAddress(monitor.address)">
-                      Copiar URL
-                    </button>
-                    <hlm-dropdown-menu-separator />
-				            <button hlmDropdownMenuItem variant="destructive" (triggered)="handleDelete(monitor.id)">Excluir</button>
-                  </div>
-                </ng-template>
+                <button hlmDropdownMenuItem (triggered)="copyAddress(monitor.address)">
+                  Copiar URL
+                </button>
+                <hlm-dropdown-menu-separator />
+                <button hlmDropdownMenuItem variant="destructive" (triggered)="handleDelete(monitor.id)">Excluir</button>
               </div>
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  </div>
-
-  @if (pagination().total > 0) {
-    <div class="flex items-center justify-between">
-      <small class="text-muted-foreground">{{ pagination().total }} monitores</small>
-      @if (totalPages > 1) {
-        <div class="flex items-center gap-2">
-          <button hlmBtn variant="outline" size="sm" (click)="fetchPage(page() - 1, form.controls.search.value ?? '')" [disabled]="page() === 0">
-            Anterior
-          </button>
-          <small class="text-muted-foreground">{{ page() + 1 }} / {{ totalPages }}</small>
-          <button hlmBtn variant="outline" size="sm" (click)="fetchPage(page() + 1, form.controls.search.value ?? '')" [disabled]="page() + 1 >= totalPages">
-            Próxima
-          </button>
-        </div>
-      }
-    </div>
-  }
+            </ng-template>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </app-table>
 </div>

@@ -30,98 +30,69 @@
     </form>
   </div>
 
-  <div hlmTableContainer class="rounded-md border">
-    <table hlmTable>
-      <thead hlmTHead>
-        <tr hlmTr>
-          <th hlmTh>Situação</th>
-          <th hlmTh>Monitor</th>
-          <th hlmTh>Causa raiz</th>
-          <th hlmTh>Iniciado</th>
-          <th hlmTh>Resolvido</th>
-          <th hlmTh>Duração</th>
-        </tr>
-      </thead>
-      <tbody hlmTBody>
-        @if (incidentList().length === 0) {
-          <tr hlmTr>
-            <td hlmTd colspan="6" class="h-24 text-center text-muted-foreground">
-              Nenhum incidente encontrado.
-            </td>
-          </tr>
-        }
-        @for (incident of incidentList(); track incident.id) {
-          <tr hlmTr class="cursor-pointer" (click)="router.navigate(['/panel/monitoring/incidents/view', incident.id])">
-            <td hlmTd>
-              @if (incident.ended_at) {
-                <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
-                  <ng-icon name="lucideCheck" class="size-3 text-emerald-500" />
-                  Resolvido
-                </span>
-              } @else {
-                <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
-                  <span class="relative flex h-1.5 w-1.5 shrink-0">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500"></span>
-                  </span>
-                  Em andamento
-                </span>
-              }
-            </td>
-            <td hlmTd>
-              <div class="flex flex-col justify-center">
-                <span class="font-medium">{{ incident.name }}</span>
-                <small class="text-muted-foreground">{{ incident.address }}</small>
-              </div>
-            </td>
-            <td hlmTd>
-              @if (incident.firstError) {
-                <span hlmBadge variant="outline" class="w-fit">
-                  {{ getStatusLabel(incident.firstError) }}
-                </span>
-              } @else {
-                —
-              }
-            </td>
-            <td hlmTd>
-              <span class="text-xs text-muted-foreground">
-                {{ incident.created_at | date:'dd/MM/yyyy HH:mm' }}
+  <app-table
+    [columns]="['Situação', 'Monitor', 'Causa raiz', 'Iniciado', 'Resolvido', 'Duração']"
+    [rows]="incidentList()"
+    emptyMessage="Nenhum incidente encontrado."
+    [total]="pagination().total"
+    [page]="page()"
+    [totalPages]="totalPages"
+    totalLabel="incidentes"
+    (pageChange)="fetchPage($event, form.controls.search.value ?? '')"
+  >
+    <ng-template #rowTemplate let-incident>
+      <tr hlmTr class="cursor-pointer" (click)="router.navigate(['/panel/monitoring/incidents/view', incident.id])">
+        <td hlmTd>
+          @if (incident.ended_at) {
+            <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+              <ng-icon name="lucideCheck" class="size-3 text-emerald-500" />
+              Resolvido
+            </span>
+          } @else {
+            <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+              <span class="relative flex h-1.5 w-1.5 shrink-0">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500"></span>
               </span>
-            </td>
-            <td hlmTd>
-              <span class="text-xs text-muted-foreground">
-                @if (incident.ended_at) {
-                  {{ incident.ended_at | date:'dd/MM/yyyy HH:mm' }}
-                } @else {
-                  Não resolvido
-                }
-              </span>
-            </td>
-            <td hlmTd>
-              <span class="text-xs text-muted-foreground">
-                {{ incident.duration || '-' }}
-              </span>
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  </div>
-
-  @if (pagination().total > 0) {
-    <div class="flex items-center justify-between">
-      <small class="text-muted-foreground">{{ pagination().total }} incidentes</small>
-      @if (totalPages > 1) {
-        <div class="flex items-center gap-2">
-          <button hlmBtn variant="outline" size="sm" (click)="fetchPage(page() - 1, form.controls.search.value ?? '')" [disabled]="page() === 0">
-            Anterior
-          </button>
-          <small class="text-muted-foreground">{{ page() + 1 }} / {{ totalPages }}</small>
-          <button hlmBtn variant="outline" size="sm" (click)="fetchPage(page() + 1, form.controls.search.value ?? '')" [disabled]="page() + 1 >= totalPages">
-            Próxima
-          </button>
-        </div>
-      }
-    </div>
-  }
+              Em andamento
+            </span>
+          }
+        </td>
+        <td hlmTd>
+          <div class="flex flex-col justify-center">
+            <span class="font-medium">{{ incident.name }}</span>
+            <small class="text-muted-foreground">{{ incident.address }}</small>
+          </div>
+        </td>
+        <td hlmTd>
+          @if (incident.firstError) {
+            <span hlmBadge variant="outline" class="w-fit">
+              {{ getStatusLabel(incident.firstError) }}
+            </span>
+          } @else {
+            —
+          }
+        </td>
+        <td hlmTd>
+          <span class="text-xs text-muted-foreground">
+            {{ incident.created_at | date:'dd/MM/yyyy HH:mm' }}
+          </span>
+        </td>
+        <td hlmTd>
+          <span class="text-xs text-muted-foreground">
+            @if (incident.ended_at) {
+              {{ incident.ended_at | date:'dd/MM/yyyy HH:mm' }}
+            } @else {
+              Não resolvido
+            }
+          </span>
+        </td>
+        <td hlmTd>
+          <span class="text-xs text-muted-foreground">
+            {{ incident.duration || '-' }}
+          </span>
+        </td>
+      </tr>
+    </ng-template>
+  </app-table>
 </div>

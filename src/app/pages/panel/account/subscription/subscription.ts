@@ -22,6 +22,7 @@ import { HlmBadgeImports } from "../../../../components/badge/src";
 import { HlmSeparatorImports } from "../../../../components/separator/src";
 import { HlmSelectImports } from "../../../../components/select/src";
 import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
+import { AppTable } from "../../../../components/app-table/app-table";
 
 function maskCpf(value: string): string {
   return value
@@ -70,7 +71,8 @@ export const invoiceStatusVariantMap: Record<InvoiceStatusEnum, { label: string;
     ...HlmBadgeImports,
     ...HlmSeparatorImports,
     ...HlmSelectImports,
-    HlmTooltipImports
+    HlmTooltipImports,
+    AppTable,
   ],
   providers: [
     provideIcons({

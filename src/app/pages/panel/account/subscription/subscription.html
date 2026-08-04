@@ -276,75 +276,43 @@
     </div>
     <div hlmSeparator class="mb-6"></div>
 
-    <div hlmTableContainer class="rounded-md border">
-      <table hlmTable>
-        <thead hlmTHead>
-          <tr hlmTr>
-            <th hlmTh>Fatura</th>
-            <th hlmTh>Plano</th>
-            <th hlmTh>Emissão</th>
-            <th hlmTh>Vencimento</th>
-            <th hlmTh>Valor</th>
-            <th hlmTh>Status</th>
-            <th hlmTh class="w-10"></th>
-          </tr>
-        </thead>
-        <tbody hlmTBody>
-          @if (invoiceList().length === 0) {
-            <tr hlmTr>
-              <td hlmTd colspan="7" class="h-24 text-center text-muted-foreground">Nenhuma fatura encontrada.</td>
-            </tr>
-          }
-          @for (invoice of invoiceList(); track invoice.id) {
-            <tr hlmTr>
-              <td hlmTd class="font-medium text-sm font-mono">#{{ invoice.iid }}</td>
-              <td hlmTd class="text-sm">
-                <div class="flex items-center gap-x-2">
-                  <img [src]="invoice.image" alt="Plano" class="h-5 w-5 object-contain shrink-0" />
-                  <span>{{ invoice.plan }}</span>
-                </div>
-              </td>
-              <td hlmTd class="text-sm whitespace-nowrap">{{ invoice.issue_date | date:'dd/MM/yyyy' }}</td>
-              <td hlmTd class="text-sm whitespace-nowrap">{{ invoice.due_date | date:'dd/MM/yyyy' }}</td>
-              <td hlmTd class="text-sm">{{ formatMoney(invoice.amount) }}</td>
-              <td hlmTd>
-                @if (getInvoiceStatus(invoice.status); as status) {
-                  <span hlmBadge variant="outline" class="text-xs" [class]="status.className">
-                    {{ status.label }}
-                  </span>
-                }
-              </td>
-              <td hlmTd>
-                <button hlmBtn variant="ghost" size="icon" class="h-7 w-7" type="button" hlmTooltip="Baixar PDF"
-                  (click)="getInvoicePDF(invoice.id)">
-                  <ng-icon name="lucideDownload" class="h-3.5 w-3.5" />
-                </button>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-
-    @if (pagination().total > 0) {
-      <div class="flex items-center justify-between pt-3 text-sm text-muted-foreground">
-        <span>{{ pagination().total }} faturas</span>
-        <div class="flex items-center gap-2">
-          <button hlmBtn variant="outline" size="sm" type="button"
-            [disabled]="pagination().page === 0"
-            (click)="loadInvoices(pagination().page - 1)">
-            Anterior
-          </button>
-          <span hlmBadge variant="outline" class="font-normal">
-            {{ pagination().page + 1 }} / {{ totalPages || 1 }}
-          </span>
-          <button hlmBtn variant="outline" size="sm" type="button"
-            [disabled]="pagination().page + 1 >= totalPages"
-            (click)="loadInvoices(pagination().page + 1)">
-            Próximo
-          </button>
-        </div>
-      </div>
-    }
+    <app-table
+      [columns]="['Fatura', 'Plano', 'Emissão', 'Vencimento', 'Valor', 'Status', 'Download']"
+      [rows]="invoiceList()"
+      emptyMessage="Nenhuma fatura encontrada."
+      [total]="pagination().total"
+      [page]="pagination().page"
+      [totalPages]="totalPages"
+      totalLabel="faturas"
+      (pageChange)="loadInvoices($event)"
+    >
+      <ng-template #rowTemplate let-invoice>
+        <tr hlmTr>
+          <td hlmTd class="font-medium text-sm font-mono">#{{ invoice.iid }}</td>
+          <td hlmTd class="text-sm">
+            <div class="flex items-center gap-x-2">
+              <img [src]="invoice.image" alt="Plano" class="h-5 w-5 object-contain shrink-0" />
+              <span>{{ invoice.plan }}</span>
+            </div>
+          </td>
+          <td hlmTd class="text-sm whitespace-nowrap">{{ invoice.issue_date | date:'dd/MM/yyyy' }}</td>
+          <td hlmTd class="text-sm whitespace-nowrap">{{ invoice.due_date | date:'dd/MM/yyyy' }}</td>
+          <td hlmTd class="text-sm">{{ formatMoney(invoice.amount) }}</td>
+          <td hlmTd>
+            @if (getInvoiceStatus(invoice.status); as status) {
+              <span hlmBadge variant="outline" class="text-xs" [class]="status.className">
+                {{ status.label }}
+              </span>
+            }
+          </td>
+          <td hlmTd>
+            <button hlmBtn variant="ghost" size="icon" class="h-7 w-7" type="button" hlmTooltip="Baixar PDF"
+              (click)="getInvoicePDF(invoice.id)">
+              <ng-icon name="lucideDownload" class="h-3.5 w-3.5" />
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+    </app-table>
   </section>
 </div>

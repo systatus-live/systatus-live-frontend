@@ -13,6 +13,7 @@ import { HlmButton } from "../../../../../components/button/src";
 import { HlmInput } from "../../../../../components/input/src";
 import { HlmBadgeImports } from "../../../../../components/badge/src";
 import { HlmTableImports } from "../../../../../components/table/src";
+import { AppTable } from "../../../../../components/app-table/app-table";
 
 Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip);
 
@@ -26,6 +27,7 @@ Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineEle
     HlmInput,
     ...HlmBadgeImports,
     ...HlmTableImports,
+    AppTable,
   ],
   providers: [provideIcons({ lucideCheck })],
   templateUrl: "./incidents-list.html",

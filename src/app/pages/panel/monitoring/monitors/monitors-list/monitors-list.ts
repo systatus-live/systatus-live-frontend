@@ -12,7 +12,8 @@ import { HlmInput } from "../../../../../components/input/src";
 import { HlmBadgeImports } from "../../../../../components/badge/src";
 import { HlmTableImports } from "../../../../../components/table/src";
 import { HlmDropdownMenuImports } from "../../../../../components/dropdown-menu/src";
-import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
+import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
+import { AppTable } from "../../../../../components/app-table/app-table";
 import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
 
 @Component({
@@ -26,7 +27,8 @@ import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
     ...HlmBadgeImports,
     ...HlmTableImports,
     ...HlmDropdownMenuImports,
-    HlmTooltipImports
+    HlmTooltipImports,
+    AppTable,
   ],
   providers: [
     provideIcons({ lucidePause, lucideClock, lucideBadgeCheck, lucideEllipsis, lucideCircleAlert }),

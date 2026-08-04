@@ -45,75 +45,46 @@
 
         <div class="rounded-xl border bg-card p-6 space-y-4">
           <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Atividades</p>
-          <div hlmTableContainer class="rounded-md border">
-            <table hlmTable>
-              <thead hlmTHead>
-                <tr hlmTr>
-                  <th hlmTh>Status</th>
-                  <th hlmTh>Data</th>
-                  <th hlmTh>Latência</th>
-                </tr>
-              </thead>
-              <tbody hlmTBody>
-                @if (historicalItems().length === 0) {
-                  <tr hlmTr>
-                    <td hlmTd colspan="3" class="h-24 text-center text-muted-foreground">
-                      Nenhuma atividade encontrada.
-                    </td>
-                  </tr>
-                }
-                @for (item of historicalItems(); track item.id) {
-                  <tr hlmTr>
-                    <td hlmTd>
-                      @if (item.status?.startsWith('2')) {
-                        <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
-                          <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0"></span>
-                          {{ getStatusLabel(item.status) }}
-                        </span>
-                      } @else {
-                        <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
-                          <span class="h-1.5 w-1.5 rounded-full bg-red-500 shrink-0"></span>
-                          {{ getStatusLabel(item.status) }}
-                        </span>
-                      }
-                    </td>
-                    <td hlmTd>
-                      <span class="text-xs text-muted-foreground">{{ item.created_at | date:'dd/MM/yyyy HH:mm' }}</span>
-                    </td>
-                    <td hlmTd>
-                      <span class="text-xs text-muted-foreground">
-                        @if (item.duration != null) {
-                          {{ item.duration }}ms
-                        } @else {
-                          —
-                        }
-                      </span>
-                    </td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          </div>
-          @if (historicalPagination().total > 0) {
-            <div class="flex items-center justify-between">
-              <small class="text-muted-foreground">{{ historicalPagination().total }} registros</small>
-              @if (historicalTotalPages > 1) {
-                <div class="flex items-center gap-2">
-                  <button hlmBtn variant="outline" size="sm"
-                    (click)="fetchHistoricalPage(historicalPage() - 1)"
-                    [disabled]="historicalPage() === 0">
-                    Anterior
-                  </button>
-                  <small class="text-muted-foreground">{{ historicalPage() + 1 }} / {{ historicalTotalPages }}</small>
-                  <button hlmBtn variant="outline" size="sm"
-                    (click)="fetchHistoricalPage(historicalPage() + 1)"
-                    [disabled]="historicalPage() + 1 >= historicalTotalPages">
-                    Próxima
-                  </button>
-                </div>
-              }
-            </div>
-          }
+          <app-table
+            [columns]="['Status', 'Data', 'Latência']"
+            [rows]="historicalItems()"
+            emptyMessage="Nenhuma atividade encontrada."
+            [total]="historicalPagination().total"
+            [page]="historicalPage()"
+            [totalPages]="historicalTotalPages"
+            totalLabel="registros"
+            (pageChange)="fetchHistoricalPage($event)"
+          >
+            <ng-template #rowTemplate let-item>
+              <tr hlmTr>
+                <td hlmTd>
+                  @if (item.status?.startsWith('2')) {
+                    <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+                      <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+                      {{ getStatusLabel(item.status) }}
+                    </span>
+                  } @else {
+                    <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+                      <span class="h-1.5 w-1.5 rounded-full bg-red-500 shrink-0"></span>
+                      {{ getStatusLabel(item.status) }}
+                    </span>
+                  }
+                </td>
+                <td hlmTd>
+                  <span class="text-xs text-muted-foreground">{{ item.created_at | date:'dd/MM/yyyy HH:mm' }}</span>
+                </td>
+                <td hlmTd>
+                  <span class="text-xs text-muted-foreground">
+                    @if (item.duration != null) {
+                      {{ item.duration }}ms
+                    } @else {
+                      —
+                    }
+                  </span>
+                </td>
+              </tr>
+            </ng-template>
+          </app-table>
         </div>
 
       </div>

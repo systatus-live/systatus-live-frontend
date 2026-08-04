@@ -1,0 +1,43 @@
+<div hlmTableContainer class="rounded-md border">
+  <table hlmTable>
+    <thead hlmTHead>
+      <tr hlmTr>
+        @for (col of columns(); track $index) {
+          <th hlmTh>{{ col }}</th>
+        }
+      </tr>
+    </thead>
+    <tbody hlmTBody>
+      @if (rows().length === 0) {
+        <tr hlmTr>
+          <td hlmTd [attr.colspan]="columns().length" class="h-24 text-center text-muted-foreground">
+            {{ emptyMessage() }}
+          </td>
+        </tr>
+      }
+      @for (row of rows(); track $index) {
+        <ng-container
+          [ngTemplateOutlet]="rowTemplate()!"
+          [ngTemplateOutletContext]="{ $implicit: row }"
+        ></ng-container>
+      }
+    </tbody>
+  </table>
+</div>
+
+@if (total() > 0) {
+  <div class="flex items-center justify-between">
+    <small class="text-muted-foreground">{{ total() }} {{ totalLabel() }}</small>
+    @if (totalPages() > 1) {
+      <div class="flex items-center gap-2">
+        <button hlmBtn variant="outline" size="sm" (click)="pageChange.emit(page() - 1)" [disabled]="page() === 0">
+          Anterior
+        </button>
+        <small class="text-muted-foreground">{{ page() + 1 }} / {{ totalPages() }}</small>
+        <button hlmBtn variant="outline" size="sm" (click)="pageChange.emit(page() + 1)" [disabled]="page() + 1 >= totalPages()">
+          Próxima
+        </button>
+      </div>
+    }
+  </div>
+}

@@ -11,6 +11,7 @@ import { MonitorTypeLabelEnum } from "../../../../../types/monitor-type.enum";
 import { HlmButton } from "../../../../../components/button/src";
 import { HlmBadgeImports } from "../../../../../components/badge/src";
 import { HlmTableImports } from "../../../../../components/table/src";
+import { AppTable } from "../../../../../components/app-table/app-table";
 
 @Component({
   selector: "app-incidents-view",
@@ -20,6 +21,7 @@ import { HlmTableImports } from "../../../../../components/table/src";
     HlmButton,
     ...HlmBadgeImports,
     ...HlmTableImports,
+    AppTable,
   ],
   providers: [provideIcons({ lucideCheck })],
   templateUrl: "./incidents-view.html",

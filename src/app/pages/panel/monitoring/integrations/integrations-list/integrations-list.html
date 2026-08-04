@@ -8,78 +8,55 @@
     <button hlmBtn routerLink="/panel/monitoring/integrations/new">Nova Integração</button>
   </div>
 
-  <div hlmTableContainer class="rounded-md border">
-    <table hlmTable>
-      <thead hlmTHead>
-        <tr hlmTr>
-          <th hlmTh>Integração</th>
-          <th hlmTh></th>
-        </tr>
-      </thead>
-      <tbody hlmTBody>
-        @if (integrationList().length === 0) {
-          <tr hlmTr>
-            <td hlmTd colspan="2" class="h-24 text-center text-muted-foreground">Nenhuma integração encontrada.</td>
-          </tr>
-        }
-        @for (integration of integrationList(); track integration.id) {
-          <tr hlmTr class="cursor-pointer" (click)="router.navigate(['/panel/monitoring/integrations/edit', integration.id])">
-            <td hlmTd>
-              <div class="flex items-center gap-2.5">
-                <img [src]="getPlatformLogo(integration.chatPlatform)" alt="" width="16" height="16" class="shrink-0" />
-                <div class="flex flex-col justify-center overflow-hidden">
-                  <span class="font-medium">{{ integration.name }}</span>
-                  <small class="text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis">
-                    {{ integration.chatPlatform }} • {{ integration.address }}
-                  </small>
-                </div>
-              </div>
-            </td>
-            <td hlmTd>
-              <div class="flex justify-end" (click)="$event.stopPropagation()">
-                <button hlmBtn variant="ghost" class="h-8 w-8 p-0" [hlmDropdownMenuTrigger]="actionsMenu">
-                  <ng-icon name="lucideEllipsis" class="size-4" />
+  <app-table
+    [columns]="['Integração', '']"
+    [rows]="integrationList()"
+    emptyMessage="Nenhuma integração encontrada."
+    [total]="pagination().total"
+    [page]="page()"
+    [totalPages]="totalPages"
+    totalLabel="integrações"
+    (pageChange)="fetchPage($event, form.controls.search.value ?? '')"
+  >
+    <ng-template #rowTemplate let-integration>
+      <tr hlmTr class="cursor-pointer" (click)="router.navigate(['/panel/monitoring/integrations/edit', integration.id])">
+        <td hlmTd>
+          <div class="flex items-center gap-2.5">
+            <img [src]="getPlatformLogo(integration.chatPlatform)" alt="" width="16" height="16" class="shrink-0" />
+            <div class="flex flex-col justify-center overflow-hidden">
+              <span class="font-medium">{{ integration.name }}</span>
+              <small class="text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis">
+                {{ integration.chatPlatform }} • {{ integration.address }}
+              </small>
+            </div>
+          </div>
+        </td>
+        <td hlmTd>
+          <div class="flex justify-end" (click)="$event.stopPropagation()">
+            <button hlmBtn variant="ghost" class="h-8 w-8 p-0" [hlmDropdownMenuTrigger]="actionsMenu">
+              <ng-icon name="lucideEllipsis" class="size-4" />
+            </button>
+            <ng-template #actionsMenu>
+              <div hlmDropdownMenu>
+                <div hlmDropdownMenuLabel>Ações</div>
+                <button hlmDropdownMenuItem (triggered)="router.navigate(['/panel/monitoring/integrations/edit', integration.id])">
+                  Editar
                 </button>
-                <ng-template #actionsMenu>
-                  <div hlmDropdownMenu>
-                    <div hlmDropdownMenuLabel>Ações</div>
-                    <button hlmDropdownMenuItem (triggered)="router.navigate(['/panel/monitoring/integrations/edit', integration.id])">
-                      Editar
-                    </button>
-                    <button hlmDropdownMenuItem (triggered)="handleValidate(integration.id)">
-                      Testar integração
-                    </button>
-                    <button hlmDropdownMenuItem (triggered)="copyToClipboard(integration.address)">
-                      Copiar URL
-                    </button>
-                    <hlm-dropdown-menu-separator />
-                    <button hlmDropdownMenuItem class="text-destructive focus:text-destructive" (triggered)="handleDelete(integration.id)">
-                      Excluir
-                    </button>
-                  </div>
-                </ng-template>
+                <button hlmDropdownMenuItem (triggered)="handleValidate(integration.id)">
+                  Testar integração
+                </button>
+                <button hlmDropdownMenuItem (triggered)="copyToClipboard(integration.address)">
+                  Copiar URL
+                </button>
+                <hlm-dropdown-menu-separator />
+                <button hlmDropdownMenuItem class="text-destructive focus:text-destructive" (triggered)="handleDelete(integration.id)">
+                  Excluir
+                </button>
               </div>
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  </div>
-
-  @if (pagination().total > 0) {
-    <div class="flex items-center justify-between">
-      <small class="text-muted-foreground">{{ pagination().total }} integrações</small>
-      @if (totalPages > 1) {
-        <div class="flex items-center gap-2">
-          <button hlmBtn variant="outline" size="sm" (click)="fetchPage(page() - 1, form.controls.search.value ?? '')" [disabled]="page() === 0">
-            Anterior
-          </button>
-          <small class="text-muted-foreground">{{ page() + 1 }} / {{ totalPages }}</small>
-          <button hlmBtn variant="outline" size="sm" (click)="fetchPage(page() + 1, form.controls.search.value ?? '')" [disabled]="page() + 1 >= totalPages">
-            Próxima
-          </button>
-        </div>
-      }
-    </div>
-  }
+            </ng-template>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </app-table>
 </div>

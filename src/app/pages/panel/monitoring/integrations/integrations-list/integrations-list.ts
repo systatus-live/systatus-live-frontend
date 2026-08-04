@@ -12,6 +12,7 @@ import { HlmDropdownMenuImports } from "../../../../../components/dropdown-menu/
 import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
 import { HlmInput } from "../../../../../components/input/src";
 import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
+import { AppTable } from "../../../../../components/app-table/app-table";
 
 @Component({
   selector: "app-integrations-list",
@@ -23,7 +24,8 @@ import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
     HlmInput,
     ...HlmTableImports,
     ...HlmDropdownMenuImports,
-    HlmTooltipImports
+    HlmTooltipImports,
+    AppTable,
   ],
   providers: [provideIcons({ lucideEllipsis })],
   templateUrl: "./integrations-list.html",
