@@ -49,6 +49,11 @@ export class MonitorsList implements OnInit {
     search: [""],
   });
 
+
+  async ngOnInit() {
+    await this.fetchPage(0);
+  }
+
   public get totalPages(): number {
     const { rows, total } = this.pagination();
     return rows > 0 ? Math.ceil(total / rows) : 1;
@@ -56,19 +61,6 @@ export class MonitorsList implements OnInit {
 
   public getMonitorTypeLabel(type: string): string {
     return MonitorTypeLabelEnum[type as keyof typeof MonitorTypeLabelEnum] ?? type;
-  }
-
-  async ngOnInit() {
-    await this.fetchPage(0);
-  }
-
-  public getFaviconUrl(address: string): string {
-    try {
-      const url = new URL(address);
-      return `https://www.google.com/s2/favicons?domain=${url.hostname}&sz=16`;
-    } catch {
-      return "https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&size=16";
-    }
   }
 
   public getStatusLabel(monitor: any): string {
@@ -112,8 +104,20 @@ export class MonitorsList implements OnInit {
     return "background:#FF6467";
   }
 
+  public getFaviconUrl(address: string): string {
+    try {
+      const url = new URL(address);
+      return `${url.origin}/favicon.ico`;
+    } catch {
+      return "/images/globe.svg";
+    }
+  }
+
   public hideFavicon(event: Event) {
-    (event.target as HTMLImageElement).style.display = "none";
+    const img = event.target as HTMLImageElement;
+    if (!img.src.endsWith("/images/globe.svg")) {
+      img.src = "/images/globe.svg";
+    }
   }
 
   public async copyAddress(address: string) {
