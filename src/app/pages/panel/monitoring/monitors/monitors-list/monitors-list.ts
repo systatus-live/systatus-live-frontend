@@ -15,6 +15,7 @@ import { HlmDropdownMenuImports } from "../../../../../components/dropdown-menu/
 import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
 import { AppTable } from "../../../../../components/app-table/app-table";
 import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
+import { environment } from "../../../../../../environments/environment";
 
 @Component({
   selector: "app-monitors-list",
@@ -48,7 +49,6 @@ export class MonitorsList implements OnInit {
   public readonly form = this.fb.group({
     search: [""],
   });
-
 
   async ngOnInit() {
     await this.fetchPage(0);
@@ -105,12 +105,7 @@ export class MonitorsList implements OnInit {
   }
 
   public getFaviconUrl(address: string): string {
-    try {
-      const url = new URL(address);
-      return `${url.origin}/favicon.ico`;
-    } catch {
-      return "/images/globe.svg";
-    }
+    return `${environment.apiUrl}/v1/utils/favicon?url=${encodeURIComponent(address)}`;
   }
 
   public hideFavicon(event: Event) {
