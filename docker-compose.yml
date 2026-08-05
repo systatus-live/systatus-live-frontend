@@ -10,4 +10,9 @@ services:
     environment:
       NODE_ENV: production
       PORT: 4000
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "1"
     restart: unless-stopped
