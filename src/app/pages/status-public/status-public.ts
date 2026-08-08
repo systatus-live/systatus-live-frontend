@@ -10,6 +10,7 @@ import {
   lucideAlertTriangle,
   lucideInfo,
 } from "@ng-icons/lucide";
+import { environment } from "../../../environments/environment";
 import { StatusPage as StatusPageService } from "../../services/status-page";
 import { HttpStatusCodeLabel, getHttpStatusKey } from "../../types/http-status-code";
 import { LogoComponent } from "../../components/logo/logo.component";
@@ -93,16 +94,14 @@ export class StatusPublic implements OnInit, OnDestroy {
   }
 
   public getFaviconUrl(address: string): string {
-    try {
-      const url = new URL(address);
-      return `https://www.google.com/s2/favicons?domain=${url.hostname}&sz=16`;
-    } catch {
-      return "https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&size=16";
-    }
+    return `${environment.apiUrl}/v1/utils/favicon?url=${encodeURIComponent(address)}`;
   }
 
   public hideFavicon(event: Event) {
-    (event.target as HTMLImageElement).style.display = "none";
+    const img = event.target as HTMLImageElement;
+    if (!img.src.endsWith("/images/globe.svg")) {
+      img.src = "/images/globe.svg";
+    }
   }
 
   public getStatusLabel(monitor: any): string | null {

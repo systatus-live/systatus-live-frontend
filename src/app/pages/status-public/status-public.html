@@ -10,8 +10,7 @@
       <div class="max-w-3xl mx-auto px-4 py-5 flex items-center justify-between">
         <div>
           @if (data()) {
-            <h1 class="text-lg font-semibold">{{ data().title }}</h1>
-            <small class="text-sm text-muted-foreground">{{ data().owner }}</small>
+            <h1 class="text-lg font-semibold" [hlmTooltip]="data().owner">{{ data().title }}</h1>
           } @else {
             <div class="h-6 w-48 bg-muted animate-pulse rounded"></div>
           }
@@ -136,7 +135,8 @@
 
     <footer class="border-t border-border">
       <div class="px-4 py-4 flex items-center justify-center text-xs text-muted-foreground">
-        <a routerLink="/" class="hover:text-foreground transition-colors">Monitorado por Systatus.Live</a>
+        <a routerLink="/" class="hover:text-foreground transition-colors mr-2">Monitorado por </a>
+        <app-logo size="small" />
       </div>
     </footer>
   </div>

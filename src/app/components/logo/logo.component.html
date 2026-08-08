@@ -2,15 +2,15 @@
   routerLink="/"
   hlmTooltip="Systatus.Live"
   class="flex items-center justify-center"
-  [class]="inverted() ? 'font-semibold text-xl text-[#FDFCFD]' : 'font-semibold text-xl text-[#113455]'"
+  [class]="inverted() ? textClass + ' text-[#FDFCFD]' : textClass + ' text-[#113455]'"
 >
   <img
     [src]="inverted() ? '/logos/systatus-live-white.png' : '/logos/systatus-live.png'"
     alt="Logo"
-    width="26"
-    height="26"
+    [width]="imgSize"
+    [height]="imgSize"
   />
   @if (!iconOnly()) {
-    <span class="ml-2 hidden sm:inline">Systatus<span class="text-emerald-500">.Live</span></span>
+    <span class="ml-1 hidden sm:inline">Systatus<span class="text-emerald-500">.Live</span></span>
   }
 </a>
