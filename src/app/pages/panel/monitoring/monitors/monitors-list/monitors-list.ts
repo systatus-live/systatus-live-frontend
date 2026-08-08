@@ -45,6 +45,7 @@ export class MonitorsList implements OnInit {
   public readonly monitorList = signal<any[]>([]);
   public readonly page = signal(0);
   public readonly pagination = signal({ rows: 0, total: 0 });
+  public readonly extras = signal<any>({});
 
   public readonly form = this.fb.group({
     search: [""],
@@ -132,6 +133,7 @@ export class MonitorsList implements OnInit {
       const response: any = await firstValueFrom(this.monitorService.getMonitorList(params));
       this.monitorList.set(response.data);
       this.pagination.set({ rows: response.pagination.rows, total: response.pagination.total });
+      this.extras.set(response.extras ?? {});
       this.page.set(p);
     } catch (error: any) {
       Alert.error("", error.message);
