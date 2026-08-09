@@ -3,7 +3,7 @@ import { Router, RouterLink } from "@angular/router";
 import { firstValueFrom } from "rxjs";
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { lucideEllipsis } from "@ng-icons/lucide";
-import { Integration } from "../../../../../services/integration";
+import { Integration } from "../../../../../services/integration.service";
 import { Alert } from "../../../../../lib/alert";
 import { ChatPlatformDescriptionLogoMap } from "../../../../../types/chat-platform.enum";
 import { HlmButton } from "../../../../../components/button/src";

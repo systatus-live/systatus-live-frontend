@@ -3,7 +3,7 @@ import { inject, PLATFORM_ID } from "@angular/core";
 import { isPlatformBrowser } from "@angular/common";
 import { AppStateService } from "../state/app-state.service";
 import { environment } from "../../environments/environment";
-import { Utils } from "../services/utils";
+import { Utils } from "../services/utils.service";
 
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
   const platformId = inject(PLATFORM_ID);

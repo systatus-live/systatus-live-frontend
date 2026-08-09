@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from "@angular/core";
 import { HlmButton } from "../button/src";
-import { Confirm } from "../../services/confirm";
+import { Confirm } from "../../services/confirm.service";
 import { registerAlertConfirm } from "../../lib/alert";
 
 @Component({

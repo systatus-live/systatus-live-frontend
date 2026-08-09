@@ -6,7 +6,7 @@ import { firstValueFrom } from "rxjs";
 import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip } from "chart.js";
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { lucideCheck } from "@ng-icons/lucide";
-import { Incident } from "../../../../../services/incident";
+import { Incident } from "../../../../../services/incident.service";
 import { Alert } from "../../../../../lib/alert";
 import { HttpStatusCodeLabel, getHttpStatusKey } from "../../../../../types/http-status-code";
 import { HlmButton } from "../../../../../components/button/src";

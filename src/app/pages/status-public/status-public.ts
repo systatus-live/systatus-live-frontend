@@ -11,7 +11,7 @@ import {
   lucideInfo,
 } from "@ng-icons/lucide";
 import { environment } from "../../../environments/environment";
-import { StatusPage as StatusPageService } from "../../services/status-page";
+import { StatusPage as StatusPageService } from "../../services/status-page.service";
 import { HttpStatusCodeLabel, getHttpStatusKey } from "../../types/http-status-code";
 import { LogoComponent } from "../../components/logo/logo.component";
 import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";

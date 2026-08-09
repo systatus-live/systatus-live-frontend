@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { firstValueFrom } from "rxjs";
-import { StatusPage as StatusPageService } from "../../../services/status-page";
+import { StatusPage as StatusPageService } from "../../../services/status-page.service";
 import { MonitorService } from "../../../services/monitor.service";
 import { Alert } from "../../../lib/alert";
 import { environment } from "../../../../environments/environment";

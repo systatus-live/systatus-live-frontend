@@ -3,19 +3,10 @@ import { isPlatformBrowser, DatePipe } from "@angular/common";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { firstValueFrom } from "rxjs";
 import { NgIcon, provideIcons } from "@ng-icons/core";
-import {
-  lucideUser,
-  lucideShield,
-  lucideMonitor,
-  lucideKeyRound,
-  lucidePencil,
-  lucideUpload,
-  lucideTrash2,
-  lucideCalendar,
-} from "@ng-icons/lucide";
-import UAParser from "my-ua-parser";
+import { lucideUser, lucideShield, lucideMonitor, lucideKeyRound, lucidePencil, lucideUpload, lucideTrash2, lucideCalendar, } from "@ng-icons/lucide";
+import * as UAParserLib from "ua-parser-js";
 import { AppStateService } from "../../../../state/app-state.service";
-import { User } from "../../../../services/user";
+import { User } from "../../../../services/user.service";
 import { Alert } from "../../../../lib/alert";
 import { SignInTypeEnum } from "../../../../types/sign-in-type.enum";
 import { HlmButton } from "../../../../components/button/src";
@@ -109,8 +100,7 @@ export class Profile implements OnInit, OnDestroy {
   }
 
   public getDevice(userAgent: string): string {
-    const parser = new UAParser(userAgent);
-    const result = parser.getResult();
+    const result = new UAParserLib.UAParser(userAgent).getResult();
     if (result.browser.name) {
       return `${result.os.name} • ${result.browser.name} ${result.browser.version}`;
     }
