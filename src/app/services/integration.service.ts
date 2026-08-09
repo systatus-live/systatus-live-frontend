@@ -29,4 +29,8 @@ export class Integration {
   validateIntegration(id: string) {
     return this.http.post(`${environment.apiUrl}/v1/integrations/validates`, { id });
   }
+
+  getTemplateDefaults() {
+    return this.http.get(`${environment.apiUrl}/v1/integrations/templates/defaults`);
+  }
 }

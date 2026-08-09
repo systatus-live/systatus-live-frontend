@@ -37,7 +37,7 @@
                   <p class="font-medium">{{ monitorTypeList.find(t => t.id === monitor().type)?.description }}</p>
                 </div>
                 <div>
-                  <p class="text-xs text-muted-foreground mb-0.5">URL ou IP</p>
+                  <p class="text-xs text-muted-foreground mb-0.5">Endereço</p>
                   <p class="font-medium break-all">{{ monitor().address }}</p>
                 </div>
               </div>
@@ -70,7 +70,7 @@
                 </div>
               </div>
               <div class="flex flex-col gap-1">
-                <label hlmLabel>URL ou IP <span class="text-destructive">*</span></label>
+                <label hlmLabel>Endereço <span class="text-destructive">*</span></label>
                 <input hlmInput formControlName="address" maxlength="1000" placeholder="https://exemplo.com" />
                 <p class="text-xs text-muted-foreground text-right">
                   {{ form.controls.address.value?.length ?? 0 }}/1000
