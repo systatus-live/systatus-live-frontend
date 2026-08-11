@@ -35,7 +35,7 @@
         <!-- CTA -->
         <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
           <button hlmBtn routerLink="/auth/signup" class="bg-[#4D9EFF] hover:bg-[#3A85E8] text-white border-0 text-base px-8 py-3 h-auto">
-            Iniciar Trial Gratuito
+            Criar conta grátis
           </button>
           <button hlmBtn variant="outline" (click)="scrollToFeatures()" class="bg-white/5 border-white/15 text-[#8BA3C7] hover:bg-[#4D9EFF]/12 hover:border-[#4D9EFF]/30 hover:text-[#A8C4E8] text-base px-8 py-3 h-auto">
             Ver Funcionalidades
@@ -47,7 +47,7 @@
           @for (pill of [
             { text: 'Verificação a cada 60s' },
             { text: 'Alerta em menos de 30s' },
-            { text: 'Trial de 14 dias grátis' }
+            { text: 'Plano gratuito disponível' }
           ]; track pill.text) {
             <div class="flex items-center gap-1.5 text-sm text-[#8BA3C7]">
               <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 inline-block"></span>

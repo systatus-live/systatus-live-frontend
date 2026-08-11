@@ -63,9 +63,6 @@
             <app-theme-toggle [isDark]="isDark()" (toggle)="handleThemeToggle($event)" />
           </div>
         </div>
-        @if (appState.subscription()?.status === SubscriptionStatusEnum.TRIAL && appState.subscription()?.endDate) {
-          <app-trial-banner [endDate]="appState.subscription()!.endDate" />
-        }
       </header>
 
       <div class="flex flex-1 flex-col gap-4 p-4 pt-0">

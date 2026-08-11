@@ -10,9 +10,7 @@ import { AppStateService } from "../../../state/app-state.service";
 import { HlmSidebarService } from "../../../components/sidebar/src/lib/hlm-sidebar.service";
 import { Alert } from "../../../lib/alert";
 import { PermissionEnum } from "../../../types/permission.enum";
-import { SubscriptionStatusEnum } from "../../../types/subscription-status.enum";
 import { ThemeToggle } from "../../../components/theme-toggle/theme-toggle";
-import { TrialBanner } from "../../../components/trial-banner/trial-banner";
 import { LogoComponent } from "../../../components/logo/logo.component";
 import { HlmSidebar } from "../../../components/sidebar/src/lib/hlm-sidebar";
 import { HlmSidebarContent } from "../../../components/sidebar/src/lib/hlm-sidebar-content";
@@ -49,7 +47,6 @@ import { NgxPermissionsService } from "ngx-permissions";
     RouterLink,
     NgIcon,
     ThemeToggle,
-    TrialBanner,
     LogoComponent,
     HlmSidebar,
     HlmSidebarContent,
@@ -103,7 +100,6 @@ export class Panel implements OnInit, OnDestroy {
   private readonly ngxPermissionsService = inject(NgxPermissionsService);
 
   public readonly isDark = signal(false);
-  public readonly SubscriptionStatusEnum = SubscriptionStatusEnum;
 
   public readonly currentUrl = toSignal(
     this.router.events.pipe(

@@ -16,14 +16,12 @@
               <p class="text-sm text-muted-foreground">{{ subscription().nextBilling }}</p>
             </div>
           </div>
-          @if (subscription().status === SubscriptionStatusEnum.TRIAL) {
-            <span class="text-3xl font-bold">Trial</span>
-          } @else {
-            <div class="flex items-baseline gap-1">
-              <span class="text-3xl font-bold">{{ formatMoney(subscription().price) }}</span>
+          <div class="flex items-baseline gap-1">
+            <span class="text-3xl font-bold">{{ subscription().price === 0 ? 'Grátis' : formatMoney(subscription().price) }}</span>
+            @if (subscription().price > 0 && subscription().period) {
               <span class="text-sm text-muted-foreground">{{ subscription().period }}</span>
-            </div>
-          }
+            }
+          </div>
         </div>
 
         <div class="rounded-lg border bg-card p-5">
@@ -217,7 +215,7 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         @for (plan of planList(); track plan.id) {
           <div class="relative flex flex-col rounded-lg border bg-card p-6" [class.border-primary]="plan.mostPopular" [class.shadow-md]="plan.mostPopular">
-            @if (subscription()?.id === plan.id && subscription().status !== SubscriptionStatusEnum.TRIAL) {
+            @if (subscription()?.id === plan.id) {
               <div class="absolute -top-3 left-1/2 -translate-x-1/2">
                 <span hlmBadge class="bg-green-600 text-white dark:bg-green-800 dark:text-white">Plano Atual</span>
               </div>
@@ -230,8 +228,8 @@
               <img [src]="plan.image" alt="Plano" class="h-12 w-12 object-contain" />
               <p class="font-semibold text-sm">Plano {{ plan.name }}</p>
               <div class="flex items-baseline gap-1">
-                <span class="text-3xl font-bold">{{ formatMoney(plan.price) }}</span>
-                @if (plan.period) {
+                <span class="text-3xl font-bold">{{ plan.price === 0 ? 'Grátis' : formatMoney(plan.price) }}</span>
+                @if (plan.price > 0 && plan.period) {
                   <span class="text-sm text-muted-foreground">{{ plan.period }}</span>
                 }
               </div>
@@ -247,10 +245,13 @@
                     <ng-icon name="lucideX" class="h-4 w-4 shrink-0 text-muted-foreground/40" />
                     <span class="text-muted-foreground">{{ feature.label }}</span>
                   }
+                  @if (feature.hint) {
+                    <ng-icon name="lucideInfo" class="h-3.5 w-3.5 shrink-0 text-muted-foreground cursor-default" [hlmTooltip]="feature.hint" />
+                  }
                 </li>
               }
             </ul>
-            @if (subscription()?.id === plan.id && subscription().status !== SubscriptionStatusEnum.TRIAL) {
+            @if (subscription()?.id === plan.id) {
               <button hlmBtn variant="outline" class="w-full" size="sm" disabled>Plano atual</button>
             } @else {
               <div class="space-y-1.5">

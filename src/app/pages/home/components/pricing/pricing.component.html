@@ -52,15 +52,18 @@
             <!-- Features list -->
             <ul class="space-y-3 flex-1">
               @for (feature of plan.features; track feature.label) {
-                <li class="flex items-start gap-3">
+                <li class="flex items-center gap-3">
                   @if (feature.enabled) {
-                    <svg lucideCheck class="flex-shrink-0 h-4 w-4 text-emerald-400 mt-0.5"></svg>
+                    <svg lucideCheck class="flex-shrink-0 h-4 w-4 text-emerald-400"></svg>
                   } @else {
-                    <svg lucideX class="flex-shrink-0 h-4 w-4 text-white/20 mt-0.5"></svg>
+                    <svg lucideX class="flex-shrink-0 h-4 w-4 text-white/20"></svg>
                   }
                   <span class="text-sm" [class]="feature.enabled ? 'text-[#E8F0FE]' : 'text-white/30'">
                     {{ feature.label }}
                   </span>
+                  @if (feature.hint) {
+                    <svg lucideInfo class="flex-shrink-0 h-3.5 w-3.5 text-white/40 cursor-default" [hlmTooltip]="feature.hint"></svg>
+                  }
                 </li>
               }
             </ul>

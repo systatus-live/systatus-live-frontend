@@ -5,14 +5,13 @@ import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { formatMoney } from "../../../../utils/format-money";
 import { firstValueFrom } from "rxjs";
 import { NgIcon, provideIcons } from "@ng-icons/core";
-import { lucideCreditCard, lucideMapPin, lucidePencil, lucideSparkles, lucideReceipt, lucideShieldCheck, lucideCheck, lucideX, lucideDownload } from "@ng-icons/lucide";
+import { lucideCreditCard, lucideMapPin, lucidePencil, lucideSparkles, lucideReceipt, lucideShieldCheck, lucideCheck, lucideX, lucideDownload, lucideInfo } from "@ng-icons/lucide";
 import { User } from "../../../../services/user.service";
 import { Invoice } from "../../../../services/invoice.service";
 import { PlanService } from "../../../../services/plan.service";
 import { Stripe } from "../../../../services/stripe.service";
 import { Utils } from "../../../../services/utils.service";
 import { Alert } from "../../../../lib/alert";
-import { SubscriptionStatusEnum } from "../../../../types/subscription-status.enum";
 import { InvoiceStatusEnum, InvoiceStatusLabelEnum } from "../../../../types/invoice-status.enum";
 import { HlmButton } from "../../../../components/button/src";
 import { HlmInput } from "../../../../components/input/src";
@@ -85,6 +84,7 @@ export const invoiceStatusVariantMap: Record<InvoiceStatusEnum, { label: string;
       lucideCheck,
       lucideX,
       lucideDownload,
+      lucideInfo,
     }),
   ],
   templateUrl: "./subscription.html",
@@ -101,7 +101,6 @@ export class Subscription implements OnInit {
   private readonly router = inject(Router);
   private readonly platformId = inject(PLATFORM_ID);
 
-  public readonly SubscriptionStatusEnum = SubscriptionStatusEnum;
   public readonly invoiceStatusVariantMap = invoiceStatusVariantMap;
 
   public readonly subscription = signal<any>(null);
