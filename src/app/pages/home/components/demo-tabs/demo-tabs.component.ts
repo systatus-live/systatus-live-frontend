@@ -45,7 +45,7 @@ export class DemoTabsComponent {
 
   public readonly incidentList: Incident[] = [
     {
-      title: 'Lentidão em api.service.com',
+      title: 'Não encontrado api.service.com',
       status: 'investigating',
       info: 'Iniciado há 14 min',
     },
