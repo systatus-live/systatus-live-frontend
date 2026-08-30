@@ -25,4 +25,8 @@ export class MonitorService {
   deleteMonitor(id: string) {
     return this.http.delete(`${environment.apiUrl}/v1/monitors/${id}`);
   }
+
+  getMonitorHistorical(id: string) {
+    return this.http.get(`${environment.apiUrl}/v1/monitors/${id}/historical`);
+  }
 }

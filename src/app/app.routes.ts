@@ -97,6 +97,11 @@ export const routes: Routes = [
                 title: "Monitor • Systatus.Live",
                 loadComponent: () => import("./pages/panel/monitoring/monitors/monitors-edit/monitors-edit").then(m => m.MonitorsEdit),
               },
+              {
+                path: "view/:id",
+                title: "Monitor • Systatus.Live",
+                loadComponent: () => import("./pages/panel/monitoring/monitors/monitors-view/monitors-view").then(m => m.MonitorsView),
+              },
             ],
           },
           {

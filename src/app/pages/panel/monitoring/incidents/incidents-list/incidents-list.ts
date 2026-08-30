@@ -98,7 +98,10 @@ export class IncidentsList implements OnInit, OnDestroy {
     this.chart = new Chart(this.chartCanvas.nativeElement, {
       type: "line",
       data: {
-        labels: data.map(d => d.date),
+        labels: data.map(d => {
+          const parts = String(d.date).split("-");
+          return parts.length === 3 ? `${parts[2]}/${parts[1]}` : d.date;
+        }),
         datasets: [{
           data: data.map(d => Number(d.total)),
           borderColor: "#FDC700",
@@ -106,7 +109,8 @@ export class IncidentsList implements OnInit, OnDestroy {
           borderWidth: 2,
           fill: true,
           tension: 0.4,
-          pointRadius: 0,
+          pointRadius: data.map(d => Number(d.total) > 0 ? 3 : 0) as any,
+          pointBackgroundColor: "#FDC700",
         }],
       },
       options: {
@@ -126,14 +130,31 @@ export class IncidentsList implements OnInit, OnDestroy {
           },
         },
         scales: {
-          x: { display: false },
+          x: {
+            display: true,
+            ticks: {
+              font: { size: 10 },
+              color: "#888",
+              maxRotation: 0,
+              autoSkip: true,
+              maxTicksLimit: 8
+            },
+            grid: { display: false }
+          },
           y: {
-            display: false,
+            display: true,
             min: 0,
             suggestedMax: 1,
+            ticks: {
+              font: { size: 10 },
+              color: "#888",
+              precision: 0
+            },
+            grid: { color: "rgba(0,0,0,0.05)" }
           },
         },
       },
+      plugins: [],
     });
   }
 

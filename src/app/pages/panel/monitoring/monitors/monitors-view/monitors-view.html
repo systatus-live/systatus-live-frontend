@@ -1,0 +1,192 @@
+@if (monitor()) {
+  <div class="flex flex-col gap-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-base font-semibold leading-tight">{{ monitor().name }}</h1>
+        <p class="text-xs text-muted-foreground mt-0.5">
+          {{ getMonitorTypeLabel(monitor().type) }} • {{ monitor().address }}
+        </p>
+      </div>
+      <button hlmBtn type="button" (click)="router.navigate(['/panel/monitoring/monitors/edit', monitor().id])">
+        <ng-icon name="lucidePencil" class="h-3.5 w-3.5 mr-1" />
+        Editar
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="rounded-xl border bg-card p-6 space-y-5">
+        <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Monitor</p>
+        <div class="space-y-3 text-sm">
+          <div>
+            <p class="text-xs text-muted-foreground mb-0.5">Tipo</p>
+            <p class="font-medium">{{ getMonitorTypeLabel(monitor().type) }}</p>
+          </div>
+          <div>
+            <p class="text-xs text-muted-foreground mb-0.5">Endereço</p>
+            <p class="font-medium break-all">{{ monitor().address }}</p>
+          </div>
+          <div>
+            <p class="text-xs text-muted-foreground mb-0.5">Situação</p>
+            @if (!monitor().active) {
+              <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+                <ng-icon name="lucidePause" class="size-3" />
+                Pausado
+              </span>
+            } @else if (lastCheck()?.lastStatus == null) {
+              <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+                <ng-icon name="lucideClock" class="size-3" />
+                Pendente
+              </span>
+            } @else if (lastCheck()?.lastStatus?.startsWith('2')) {
+              <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+                <span class="relative flex h-1.5 w-1.5 shrink-0">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                </span>
+                {{ getStatusLabel(lastCheck()?.lastStatus) }}
+              </span>
+            } @else {
+              <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+                <span class="relative flex h-1.5 w-1.5 shrink-0">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500"></span>
+                </span>
+                {{ getStatusLabel(lastCheck()?.lastStatus) }}
+              </span>
+            }
+          </div>
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <p class="text-xs text-muted-foreground">Disponibilidade 30 dias</p>
+              <small class="text-muted-foreground shrink-0">{{ percentOnline() }}%</small>
+            </div>
+            <div class="flex gap-x-0.5 w-full">
+              @for (item of historicalDays(); track $index) {
+                <div [style]="getHistoricalStyle(item)" class="flex-1 h-1.5 rounded-sm" [hlmTooltip]="item.note"></div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-xl border bg-card p-6 space-y-5">
+        <div class="flex items-center justify-between">
+          <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Última verificação</p>
+          @if (lastCheck()?.lastCheckedAt) {
+            <p class="text-xs">{{ lastCheck().lastCheckedAt }}</p>
+          }
+        </div>
+        <div class="space-y-3">
+          @for (phase of waterfallPhases; track phase.label) {
+            <div class="flex items-center gap-3">
+              <span class="flex items-center gap-1 text-xs text-muted-foreground w-10 shrink-0">
+                <ng-icon name="lucideInfo" class="size-3 cursor-help shrink-0" [hlmTooltip]="phase.hint" />
+                {{ phase.label }}
+              </span>
+              <div class="flex-1 rounded-full bg-muted h-2">
+                <div class="h-2 rounded-full transition-all" [style.width.%]="phase.widthPct" [style.backgroundColor]="phase.color"></div>
+              </div>
+              <span class="text-xs text-right w-16 shrink-0">{{ phase.ms != null ? phase.ms + 'ms' : '—' }}</span>
+            </div>
+          }
+          <p class="text-xs pt-1">Total: {{ lastCheck()?.lastDuration != null ? lastCheck().lastDuration + 'ms' : '—' }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="rounded-xl border bg-card p-6 space-y-4">
+        <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Tempo de resposta médio (24h)</p>
+        <div class="h-[140px] w-full">
+          <canvas #responseTimeChart></canvas>
+        </div>
+      </div>
+
+      @if (avgMetrics()) {
+        <div class="rounded-xl border bg-card p-6 space-y-4">
+          <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Médias (30 dias)</p>
+          <div class="grid grid-cols-3 gap-2">
+            <div class="rounded-lg bg-muted p-3 text-center">
+              <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">DNS</p>
+              <p class="font-semibold text-sm">{{ avgMetrics().avgDns != null ? avgMetrics().avgDns + 'ms' : '—' }}</p>
+            </div>
+            <div class="rounded-lg bg-muted p-3 text-center">
+              <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">TCP</p>
+              <p class="font-semibold text-sm">{{ avgMetrics().avgTcp != null ? avgMetrics().avgTcp + 'ms' : '—' }}</p>
+            </div>
+            <div class="rounded-lg bg-muted p-3 text-center">
+              <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">TLS</p>
+              <p class="font-semibold text-sm">{{ avgMetrics().avgTls != null ? avgMetrics().avgTls + 'ms' : '—' }}</p>
+            </div>
+            <div class="rounded-lg bg-muted p-3 text-center">
+              <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">TTFB</p>
+              <p class="font-semibold text-sm">{{ avgMetrics().avgTtfb != null ? avgMetrics().avgTtfb + 'ms' : '—' }}</p>
+            </div>
+            <div class="rounded-lg bg-muted p-3 text-center col-span-2">
+              <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">TOTAL</p>
+              <p class="font-semibold text-sm">{{ avgMetrics().avgTotal != null ? avgMetrics().avgTotal + 'ms' : '—' }}</p>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="rounded-xl border bg-card p-6 space-y-3">
+      <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Incidentes</p>
+      <app-table
+        [columns]="['Situação', 'Causa raiz', 'Iniciado', 'Resolvido', 'Duração']"
+        [rows]="recentIncidents()"
+        emptyMessage="Nenhum incidente registrado."
+        [total]="recentIncidents().length"
+        [page]="0"
+        [totalPages]="1"
+      >
+        <ng-template #rowTemplate let-incident>
+          <tr hlmTr class="cursor-pointer" (click)="router.navigate(['/panel/monitoring/incidents/view', incident.id])">
+            <td hlmTd>
+              @if (incident.ended_at) {
+                <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+                  <ng-icon name="lucideCheck" class="size-3 text-emerald-500" />
+                  Resolvido
+                </span>
+              } @else {
+                <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+                  <span class="relative flex h-1.5 w-1.5 shrink-0">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500"></span>
+                  </span>
+                  Em andamento
+                </span>
+              }
+            </td>
+            <td hlmTd>
+              @if (incident.firstError) {
+                <span hlmBadge variant="outline" class="w-fit">
+                  {{ getStatusLabel(incident.firstError) }}
+                </span>
+              } @else {
+                —
+              }
+            </td>
+            <td hlmTd>
+              <span class="text-xs text-muted-foreground">{{ incident.created_at | date:'dd/MM/yyyy HH:mm' }}</span>
+            </td>
+            <td hlmTd>
+              <span class="text-xs text-muted-foreground">
+                @if (incident.ended_at) {
+                  {{ incident.ended_at | date:'dd/MM/yyyy HH:mm' }}
+                } @else {
+                  Não resolvido
+                }
+              </span>
+            </td>
+            <td hlmTd>
+              <span class="text-xs text-muted-foreground">{{ incident.duration || '-' }}</span>
+            </td>
+          </tr>
+        </ng-template>
+      </app-table>
+    </div>
+
+  </div>
+}

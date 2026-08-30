@@ -44,7 +44,7 @@
         </div>
 
         <div class="rounded-xl border bg-card p-6 space-y-4">
-          <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Atividades</p>
+          <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Histórico</p>
           <app-table
             [columns]="['Status', 'Data', 'Latência']"
             [rows]="historicalItems()"
@@ -75,8 +75,8 @@
                 </td>
                 <td hlmTd>
                   <span class="text-xs text-muted-foreground">
-                    @if (item.duration != null) {
-                      {{ item.duration }}ms
+                    @if (item.total_ms != null) {
+                      {{ item.total_ms }}ms
                     } @else {
                       —
                     }

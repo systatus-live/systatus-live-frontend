@@ -11,7 +11,7 @@
   <div class="flex gap-4 items-start">
     <div class="flex-1 min-w-0">
       <app-table
-        [columns]="['Monitor', 'Status', 'Latência', 'Verificado em', 'Histórico (30 dias)', '']"
+        [columns]="['Monitor', 'Status', 'Latência', 'Verificado em', 'Disponibilidade (30 dias)', '']"
         [rows]="monitorList()"
         emptyMessage="Nenhum monitor encontrado."
         [total]="pagination().total"
@@ -21,7 +21,7 @@
         (pageChange)="fetchPage($event, form.controls.search.value ?? '')"
       >
         <ng-template #rowTemplate let-monitor>
-          <tr hlmTr class="cursor-pointer" (click)="router.navigate(['/panel/monitoring/monitors/edit', monitor.id])">
+          <tr hlmTr class="cursor-pointer" (click)="router.navigate(['/panel/monitoring/monitors/view', monitor.id])">
             <td hlmTd>
               <div class="flex items-center gap-x-2">
                 <img [src]="getFaviconUrl(monitor.address)" width="16" height="16" class="rounded shrink-0" alt="" (error)="hideFavicon($event)" />
