@@ -33,7 +33,7 @@ export class HowItWorksComponent {
       color: 'bg-indigo-500',
       step: '02',
       title: 'Monitoramos continuamente',
-      description: 'Verificamos sua aplicação a cada 60 segundos a partir de múltiplas regiões para eliminar falsos positivos.',
+      description: 'Verificamos suas aplicações 24/7 nos intervalores disponíveis em cada plano.',
     },
     {
       icon: LucideBellRing,
