@@ -77,21 +77,42 @@
           }
         </div>
         <div class="space-y-3">
-          @for (phase of waterfallPhases; track phase.label) {
-            <div class="flex items-center gap-3">
-              <span class="flex items-center gap-1 text-xs text-muted-foreground w-10 shrink-0" [hlmTooltip]="phase.hint">
-                {{ phase.label }}
-              </span>
-              <div class="flex-1 rounded-full bg-muted h-2">
-                <div class="h-2 rounded-full transition-all" [style.width.%]="phase.widthPct" [style.backgroundColor]="phase.color"></div>
+          @if (monitor().type === 'PING') {
+            <div class="grid grid-cols-3 gap-2">
+              <div class="rounded-lg bg-muted p-3 text-center">
+                <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">RTT Mín</p>
+                <p class="font-semibold text-sm">{{ lastCheck()?.lastMinMs != null ? (lastCheck().lastMinMs | number:'1.0-1') + 'ms' : '—' }}</p>
               </div>
-              <span class="text-xs text-right w-16 shrink-0">{{ phase.ms != null ? phase.ms + 'ms' : '—' }}</span>
+              <div class="rounded-lg bg-muted p-3 text-center">
+                <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">RTT Avg</p>
+                <p class="font-semibold text-sm">{{ lastCheck()?.lastAvgMs != null ? (lastCheck().lastAvgMs | number:'1.0-1') + 'ms' : '—' }}</p>
+              </div>
+              <div class="rounded-lg bg-muted p-3 text-center">
+                <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">RTT Máx</p>
+                <p class="font-semibold text-sm">{{ lastCheck()?.lastMaxMs != null ? (lastCheck().lastMaxMs | number:'1.0-1') + 'ms' : '—' }}</p>
+              </div>
             </div>
-          }
-          @if (lastCheck()?.lastDuration != null) {
-            <p class="text-xs pt-1">Total: {{ lastCheck().lastDuration + 'ms' }} <span class="text-xs text-muted-foreground">~ valores arredondados</span></p>
+            <div class="rounded-lg bg-muted p-3 text-center">
+              <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Perda de pacotes</p>
+              <p class="font-semibold text-sm">{{ lastCheck()?.lastPacketLoss != null ? (lastCheck().lastPacketLoss | number:'1.0-1') + '%' : '—' }}</p>
+            </div>
           } @else {
-            <p class="text-xs pt-1">Total: —</p>
+            @for (phase of waterfallPhases; track phase.label) {
+              <div class="flex items-center gap-3">
+                <span class="flex items-center gap-1 text-xs text-muted-foreground w-10 shrink-0" [hlmTooltip]="phase.hint">
+                  {{ phase.label }}
+                </span>
+                <div class="flex-1 rounded-full bg-muted h-2">
+                  <div class="h-2 rounded-full transition-all" [style.width.%]="phase.widthPct" [style.backgroundColor]="phase.color"></div>
+                </div>
+                <span class="text-xs text-right w-16 shrink-0">{{ phase.ms != null ? (phase.ms | number:'1.0-1') + 'ms' : '—' }}</span>
+              </div>
+            }
+            @if (lastCheck()?.lastDuration != null) {
+              <p class="text-xs pt-1"><span class="text-muted-foreground">Latência Total:</span> {{ lastCheck().lastDuration | number:'1.0-1' }}ms</p>
+            } @else {
+              <p class="text-xs pt-1">Total: —</p>
+            }
           }
         </div>
       </div>
@@ -108,28 +129,49 @@
       @if (avgMetrics()) {
         <div class="rounded-xl border bg-card p-6 space-y-4">
           <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Médias (30 dias)</p>
-          <div class="grid grid-cols-3 gap-2">
-            <div class="rounded-lg bg-muted p-3 text-center">
-              <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">DNS</p>
-              <p class="font-semibold text-sm">{{ avgMetrics().avgDns != null ? avgMetrics().avgDns + 'ms' : '—' }}</p>
+          @if (monitor().type === 'PING') {
+            <div class="grid grid-cols-2 gap-2">
+              <div class="rounded-lg bg-muted p-3 text-center">
+                <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">RTT Mín</p>
+                <p class="font-semibold text-sm">{{ avgMetrics().avgMinMs != null ? (avgMetrics().avgMinMs | number:'1.0-1') + 'ms' : '—' }}</p>
+              </div>
+              <div class="rounded-lg bg-muted p-3 text-center">
+                <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">RTT Avg</p>
+                <p class="font-semibold text-sm">{{ avgMetrics().avgMs != null ? (avgMetrics().avgMs | number:'1.0-1') + 'ms' : '—' }}</p>
+              </div>
+              <div class="rounded-lg bg-muted p-3 text-center">
+                <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">RTT Máx</p>
+                <p class="font-semibold text-sm">{{ avgMetrics().avgMaxMs != null ? (avgMetrics().avgMaxMs | number:'1.0-1') + 'ms' : '—' }}</p>
+              </div>
+              <div class="rounded-lg bg-muted p-3 text-center">
+                <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Perda</p>
+                <p class="font-semibold text-sm">{{ avgMetrics().avgPacketLoss != null ? (avgMetrics().avgPacketLoss | number:'1.0-1') + '%' : '—' }}</p>
+              </div>
             </div>
-            <div class="rounded-lg bg-muted p-3 text-center">
-              <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">TCP</p>
-              <p class="font-semibold text-sm">{{ avgMetrics().avgTcp != null ? avgMetrics().avgTcp + 'ms' : '—' }}</p>
+          } @else {
+            <div class="grid grid-cols-3 gap-2">
+              <div class="rounded-lg bg-muted p-3 text-center">
+                <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">DNS</p>
+                <p class="font-semibold text-sm">{{ avgMetrics().avgDns != null ? (avgMetrics().avgDns | number:'1.0-1') + 'ms' : '—' }}</p>
+              </div>
+              <div class="rounded-lg bg-muted p-3 text-center">
+                <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">TCP</p>
+                <p class="font-semibold text-sm">{{ avgMetrics().avgTcp != null ? (avgMetrics().avgTcp | number:'1.0-1') + 'ms' : '—' }}</p>
+              </div>
+              <div class="rounded-lg bg-muted p-3 text-center">
+                <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">TLS</p>
+                <p class="font-semibold text-sm">{{ avgMetrics().avgTls != null ? (avgMetrics().avgTls | number:'1.0-1') + 'ms' : '—' }}</p>
+              </div>
+              <div class="rounded-lg bg-muted p-3 text-center">
+                <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">TTFB</p>
+                <p class="font-semibold text-sm">{{ avgMetrics().avgTtfb != null ? (avgMetrics().avgTtfb | number:'1.0-1') + 'ms' : '—' }}</p>
+              </div>
+              <div class="rounded-lg bg-muted p-3 text-center col-span-2">
+                <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">TOTAL</p>
+                <p class="font-semibold text-sm">{{ avgMetrics().avgTotal != null ? (avgMetrics().avgTotal | number:'1.0-1') + 'ms' : '—' }}</p>
+              </div>
             </div>
-            <div class="rounded-lg bg-muted p-3 text-center">
-              <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">TLS</p>
-              <p class="font-semibold text-sm">{{ avgMetrics().avgTls != null ? avgMetrics().avgTls + 'ms' : '—' }}</p>
-            </div>
-            <div class="rounded-lg bg-muted p-3 text-center">
-              <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">TTFB</p>
-              <p class="font-semibold text-sm">{{ avgMetrics().avgTtfb != null ? avgMetrics().avgTtfb + 'ms' : '—' }}</p>
-            </div>
-            <div class="rounded-lg bg-muted p-3 text-center col-span-2">
-              <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">TOTAL</p>
-              <p class="font-semibold text-sm">{{ avgMetrics().avgTotal != null ? avgMetrics().avgTotal + 'ms' : '—' }}</p>
-            </div>
-          </div>
+          }
         </div>
       }
     </div>

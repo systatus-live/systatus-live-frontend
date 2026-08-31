@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, AfterViewChecked, ViewChild, ElementRef, PLATFORM_ID, inject, signal } from "@angular/core";
-import { isPlatformBrowser, DatePipe } from "@angular/common";
+import { isPlatformBrowser, DatePipe, DecimalPipe } from "@angular/common";
 import { ActivatedRoute, Router } from "@angular/router";
 import { firstValueFrom } from "rxjs";
 import { NgIcon, provideIcons } from "@ng-icons/core";
@@ -21,6 +21,7 @@ Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineEle
   selector: "app-monitors-view",
   imports: [
     DatePipe,
+    DecimalPipe,
     NgIcon,
     HlmButton,
     ...HlmBadgeImports,

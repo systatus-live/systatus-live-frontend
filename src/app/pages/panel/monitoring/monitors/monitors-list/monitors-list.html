@@ -67,7 +67,7 @@
                 @if (!monitor.lastDuration) {
                   Pendente
                 } @else {
-                  {{ monitor.lastDuration }}ms
+                  {{ monitor.lastDuration | number:'1.0-1' }}ms
                 }
               </span>
             </td>

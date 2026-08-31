@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, signal } from "@angular/core";
-import { DatePipe } from "@angular/common";
+import { DatePipe, DecimalPipe } from "@angular/common";
 import { ActivatedRoute, Router } from "@angular/router";
 import { firstValueFrom } from "rxjs";
 import { NgIcon, provideIcons } from "@ng-icons/core";
@@ -17,6 +17,7 @@ import { AppTable } from "../../../../../components/app-table/app-table";
   selector: "app-incidents-view",
   imports: [
     DatePipe,
+    DecimalPipe,
     NgIcon,
     HlmButton,
     ...HlmBadgeImports,
