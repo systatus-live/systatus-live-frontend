@@ -79,8 +79,7 @@
         <div class="space-y-3">
           @for (phase of waterfallPhases; track phase.label) {
             <div class="flex items-center gap-3">
-              <span class="flex items-center gap-1 text-xs text-muted-foreground w-10 shrink-0">
-                <ng-icon name="lucideInfo" class="size-3 cursor-help shrink-0" [hlmTooltip]="phase.hint" />
+              <span class="flex items-center gap-1 text-xs text-muted-foreground w-10 shrink-0" [hlmTooltip]="phase.hint">
                 {{ phase.label }}
               </span>
               <div class="flex-1 rounded-full bg-muted h-2">
@@ -89,7 +88,11 @@
               <span class="text-xs text-right w-16 shrink-0">{{ phase.ms != null ? phase.ms + 'ms' : '—' }}</span>
             </div>
           }
-          <p class="text-xs pt-1">Total: {{ lastCheck()?.lastDuration != null ? lastCheck().lastDuration + 'ms' : '—' }}</p>
+          @if (lastCheck()?.lastDuration != null) {
+            <p class="text-xs pt-1">Total: {{ lastCheck().lastDuration + 'ms' }} <span class="text-xs text-muted-foreground">~ valores arredondados</span></p>
+          } @else {
+            <p class="text-xs pt-1">Total: —</p>
+          }
         </div>
       </div>
     </div>

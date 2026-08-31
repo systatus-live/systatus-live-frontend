@@ -7,15 +7,8 @@
           (click)="handleDelete()">
           Excluir
         </button>
-        @if (isEditing()) {
-          <button hlmBtn variant="ghost" (click)="handleCancel()">Cancelar</button>
-          <button hlmBtn type="button" (click)="handleSave()">Salvar alterações</button>
-        } @else {
-          <button hlmBtn type="button" (click)="isEditing.set(true)">
-            <ng-icon name="lucidePencil" class="h-3.5 w-3.5 mr-1" />
-            Editar
-          </button>
-        }
+        <button hlmBtn variant="ghost" (click)="handleCancel()">Cancelar</button>
+        <button hlmBtn type="button" (click)="handleSave()">Salvar alterações</button>
       </div>
     </div>
 
@@ -26,98 +19,66 @@
             <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Configurações básicas
             </p>
-            @if (!isEditing()) {
-              <div class="space-y-3 text-sm">
-                <div>
-                  <p class="text-xs text-muted-foreground mb-0.5">Nome</p>
-                  <p class="font-medium">{{ monitor().name }}</p>
-                </div>
-                <div>
-                  <p class="text-xs text-muted-foreground mb-0.5">Tipo</p>
-                  <p class="font-medium">{{ monitorTypeList.find(t => t.id === monitor().type)?.description }}</p>
-                </div>
-                <div>
-                  <p class="text-xs text-muted-foreground mb-0.5">Endereço</p>
-                  <p class="font-medium break-all">{{ monitor().address }}</p>
-                </div>
-              </div>
-            } @else {
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="sm:col-span-2 flex flex-col gap-1">
-                  <label hlmLabel>Nome <span class="text-destructive">*</span></label>
-                  <input hlmInput formControlName="name" maxlength="128" placeholder="Ex.: API de pagamentos" />
-                  <p class="text-xs text-muted-foreground text-right">
-                    {{ form.controls.name.value?.length ?? 0 }}/128
-                  </p>
-                </div>
-                <div class="flex flex-col gap-1">
-                  <label hlmLabel>Tipo <span class="text-destructive">*</span></label>
-                  <div hlmSelect class="w-full"
-                    [value]="form.controls.type.value ?? ''"
-                    [itemToString]="typeItemToString"
-                    (valueChange)="form.controls.type.setValue($event ?? null)">
-                    <hlm-select-trigger class="w-full">
-                      <hlm-select-value placeholder="Selecione" />
-                    </hlm-select-trigger>
-                    <ng-template hlmSelectPortal>
-                      <hlm-select-content>
-                        @for (type of monitorTypeList; track type.id) {
-                          <hlm-select-item [value]="type.id">{{ type.description }}</hlm-select-item>
-                        }
-                      </hlm-select-content>
-                    </ng-template>
-                  </div>
-                </div>
-              </div>
-              <div class="flex flex-col gap-1">
-                <label hlmLabel>Endereço <span class="text-destructive">*</span></label>
-                <input hlmInput formControlName="address" maxlength="1000" placeholder="https://exemplo.com" />
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div class="sm:col-span-2 flex flex-col gap-1">
+                <label hlmLabel>Nome <span class="text-destructive">*</span></label>
+                <input hlmInput formControlName="name" maxlength="128" placeholder="Ex.: API de pagamentos" />
                 <p class="text-xs text-muted-foreground text-right">
-                  {{ form.controls.address.value?.length ?? 0 }}/1000
+                  {{ form.controls.name.value?.length ?? 0 }}/128
                 </p>
               </div>
-            }
+              <div class="flex flex-col gap-1">
+                <label hlmLabel>Tipo <span class="text-destructive">*</span></label>
+                <div hlmSelect class="w-full"
+                  [value]="form.controls.type.value ?? ''"
+                  [itemToString]="typeItemToString"
+                  (valueChange)="form.controls.type.setValue($event ?? null)">
+                  <hlm-select-trigger class="w-full">
+                    <hlm-select-value placeholder="Selecione" />
+                  </hlm-select-trigger>
+                  <ng-template hlmSelectPortal>
+                    <hlm-select-content>
+                      @for (type of monitorTypeList; track type.id) {
+                        <hlm-select-item [value]="type.id">{{ type.description }}</hlm-select-item>
+                      }
+                    </hlm-select-content>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1">
+              <label hlmLabel>Endereço <span class="text-destructive">*</span></label>
+              <input hlmInput formControlName="address" maxlength="1000" placeholder="https://exemplo.com" />
+              <p class="text-xs text-muted-foreground text-right">
+                {{ form.controls.address.value?.length ?? 0 }}/1000
+              </p>
+            </div>
           </div>
 
           <div class="rounded-xl border bg-card p-6 space-y-4">
             <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Integrações
             </p>
-            @if (!isEditing()) {
-              <div class="rounded-lg border divide-y">
-                @if (monitor().integrationList?.length === 0) {
-                  <p class="text-sm text-muted-foreground px-3 py-3">Nenhuma integração vinculada.</p>
-                } @else {
-                  @for (integration of monitor().integrationList; track integration.id) {
-                    <div class="flex items-center gap-3 px-4 py-3">
-                      <img [src]="getPlatformLogo(integration.chatPlatform)" alt="" width="16" height="16" class="shrink-0" />
-                      <span class="text-sm font-medium">{{ integration.name }}</span>
-                    </div>
-                  }
-                }
-              </div>
-            } @else {
-              <div class="rounded-lg border divide-y max-h-56 overflow-y-auto">
-                @if (integrationList().length === 0) {
-                  <p class="text-sm text-muted-foreground px-3 py-3">
-                    Nenhuma integração disponível.
-                    <a routerLink="/panel/monitoring/integrations/new" class="text-primary underline underline-offset-4">
-                      Criar integração
-                    </a>
-                  </p>
-                }
-                @for (integration of integrationList(); track integration.id) {
-                  <label class="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-muted/50 transition-colors">
-                    <hlm-checkbox
-                      [checked]="isIntegrationSelected(integration.id)"
-                      (checkedChange)="toggleIntegration(integration.id, $event)"
-                    />
-                    <img [src]="getPlatformLogo(integration.chatPlatform)" alt="" width="16" height="16" class="shrink-0" />
-                    <span class="text-sm font-medium">{{ integration.name }}</span>
-                  </label>
-                }
-              </div>
-            }
+            <div class="rounded-lg border divide-y max-h-56 overflow-y-auto">
+              @if (integrationList().length === 0) {
+                <p class="text-sm text-muted-foreground px-3 py-3">
+                  Nenhuma integração disponível.
+                  <a routerLink="/panel/monitoring/integrations/new" class="text-primary underline underline-offset-4">
+                    Criar integração
+                  </a>
+                </p>
+              }
+              @for (integration of integrationList(); track integration.id) {
+                <label class="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-muted/50 transition-colors">
+                  <hlm-checkbox
+                    [checked]="isIntegrationSelected(integration.id)"
+                    (checkedChange)="toggleIntegration(integration.id, $event)"
+                  />
+                  <img [src]="getPlatformLogo(integration.chatPlatform)" alt="" width="16" height="16" class="shrink-0" />
+                  <span class="text-sm font-medium">{{ integration.name }}</span>
+                </label>
+              }
+            </div>
           </div>
         </div>
 
@@ -126,61 +87,36 @@
             <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Monitoramento
             </p>
-            @if (!isEditing()) {
-              <div class="space-y-4">
-                <div>
-                  <p class="text-xs text-muted-foreground mb-0.5">Intervalo</p>
-                  <p class="text-sm font-medium">
-                    {{ intervalList().find(i => i.id === monitor().interval_id)?.name }}
-                  </p>
-                  <p class="text-xs text-muted-foreground mt-0.5">Timeout: 10 segundos</p>
-                </div>
-                <div hlmSeparator></div>
-                <div class="flex items-center gap-3">
-                  <div class="h-2 w-2 rounded-full shrink-0"
-                    [class]="monitor().active ? 'bg-green-500' : 'bg-muted-foreground'"></div>
-                  <div>
-                    <p class="text-sm font-medium">
-                      Monitoramento {{ monitor().active ? "habilitado" : "pausado" }}
-                    </p>
-                    <p class="text-xs text-muted-foreground">
-                      Verificações automáticas {{ monitor().active ? "ativas" : "pausadas" }}.
-                    </p>
-                  </div>
-                </div>
+            <div class="flex flex-col gap-1">
+              <label hlmLabel>Intervalo <span class="text-destructive">*</span></label>
+              <div hlmSelect class="w-full"
+                [value]="form.controls.intervalId.value ?? ''"
+                [itemToString]="intervalItemToString"
+                (valueChange)="form.controls.intervalId.setValue($event ?? null)">
+                <hlm-select-trigger class="w-full">
+                  <hlm-select-value placeholder="Selecione" />
+                </hlm-select-trigger>
+                <ng-template hlmSelectPortal>
+                  <hlm-select-content>
+                    @for (interval of intervalList(); track interval.id) {
+                      <hlm-select-item [value]="interval.id">{{ interval.name }}</hlm-select-item>
+                    }
+                  </hlm-select-content>
+                </ng-template>
               </div>
-            } @else {
-              <div class="flex flex-col gap-1">
-                <label hlmLabel>Intervalo <span class="text-destructive">*</span></label>
-                <div hlmSelect class="w-full"
-                  [value]="form.controls.intervalId.value ?? ''"
-                  [itemToString]="intervalItemToString"
-                  (valueChange)="form.controls.intervalId.setValue($event ?? null)">
-                  <hlm-select-trigger class="w-full">
-                    <hlm-select-value placeholder="Selecione" />
-                  </hlm-select-trigger>
-                  <ng-template hlmSelectPortal>
-                    <hlm-select-content>
-                      @for (interval of intervalList(); track interval.id) {
-                        <hlm-select-item [value]="interval.id">{{ interval.name }}</hlm-select-item>
-                      }
-                    </hlm-select-content>
-                  </ng-template>
-                </div>
-                <p class="text-xs text-muted-foreground">Timeout: 10 segundos</p>
+              <p class="text-xs text-muted-foreground">Timeout: 10 segundos</p>
+            </div>
+            <div hlmSeparator></div>
+            <label class="flex items-center gap-3 cursor-pointer">
+              <hlm-switch
+                [checked]="form.controls.active.value!"
+                (checkedChange)="form.controls.active.setValue($event)"
+              />
+              <div>
+                <span class="text-sm font-medium">Habilitar monitoramento</span>
+                <p class="text-xs text-muted-foreground">Ativa ou pausa as verificações automáticas.</p>
               </div>
-              <div hlmSeparator></div>
-              <label class="flex items-center gap-3 cursor-pointer">
-                <hlm-switch
-                  [checked]="form.controls.active.value!"
-                  (checkedChange)="form.controls.active.setValue($event)"
-                />
-                <div>
-                  <span class="text-sm font-medium">Habilitar monitoramento</span>
-                  <p class="text-xs text-muted-foreground">Ativa ou pausa as verificações automáticas.</p>
-                </div>
-              </label>
-            }
+            </label>
           </div>
         </div>
       </div>

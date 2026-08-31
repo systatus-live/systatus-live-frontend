@@ -2,8 +2,6 @@ import { Component, inject, OnInit, signal } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { firstValueFrom } from "rxjs";
-import { NgIcon, provideIcons } from "@ng-icons/core";
-import { lucidePencil } from "@ng-icons/lucide";
 import { MonitorService } from "../../../../../services/monitor.service";
 import { Interval } from "../../../../../services/interval.service";
 import { Integration } from "../../../../../services/integration.service";
@@ -23,7 +21,6 @@ import { HlmSeparatorImports } from "../../../../../components/separator/src";
   imports: [
     ReactiveFormsModule,
     RouterLink,
-    NgIcon,
     HlmButton,
     HlmInput,
     HlmLabel,
@@ -32,7 +29,7 @@ import { HlmSeparatorImports } from "../../../../../components/separator/src";
     ...HlmSwitchImports,
     ...HlmSeparatorImports,
   ],
-  providers: [provideIcons({ lucidePencil })],
+  providers: [],
   templateUrl: "./monitors-edit.html",
   styleUrl: "./monitors-edit.scss",
 })
@@ -47,7 +44,6 @@ export class MonitorsEdit implements OnInit {
   public readonly monitor = signal<any>(null);
   public readonly intervalList = signal<any[]>([]);
   public readonly integrationList = signal<any[]>([]);
-  public readonly isEditing = signal(false);
 
   public readonly monitorTypeList = Object.entries(MonitorTypeEnum).map(([key]) => ({
     id: key,
@@ -126,20 +122,8 @@ export class MonitorsEdit implements OnInit {
         }),
       );
 
-      this.monitor.set({
-        ...this.monitor(),
-        name: this.form.controls.name.value,
-        type: this.form.controls.type.value,
-        address: this.form.controls.address.value,
-        active: this.form.controls.active.value,
-        interval_id: this.form.controls.intervalId.value,
-        integrationList: this.integrationList().filter(i =>
-          (this.form.controls.integrationList.value as string[]).includes(i.id),
-        ),
-      });
-
-      this.isEditing.set(false);
       Alert.success("", response.message);
+      this.router.navigate(["/panel/monitoring/monitors/view", this.monitor().id]);
     } catch (error: any) {
       Alert.error("", error.message);
     }
@@ -161,8 +145,7 @@ export class MonitorsEdit implements OnInit {
   }
 
   handleCancel() {
-    this.patchForm(this.monitor());
-    this.isEditing.set(false);
+    this.router.navigate(["/panel/monitoring/monitors/view", this.monitor().id]);
   }
 
   private patchForm(monitor: any) {

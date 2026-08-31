@@ -56,10 +56,10 @@ export class MonitorsView implements OnInit, OnDestroy, AfterViewChecked {
     const hasData = lc != null && lc.lastTcp != null && lc.lastTtfb != null;
 
     const phases = [
-      { label: "DNS",  hint: "Tempo para resolver o domínio em endereço IP",         ms: hasData ? (lc.lastDns  ?? 0) : null, color: "#6366f1" },
-      { label: "TCP",  hint: "Tempo para estabelecer a conexão TCP com o servidor",   ms: hasData ? (lc.lastTcp  ?? 0) : null, color: "#0ea5e9" },
-      { label: "TLS",  hint: "Tempo do handshake SSL/TLS (apenas HTTPS)",             ms: hasData ? (lc.lastTls  ?? 0) : null, color: "#f59e0b" },
-      { label: "TTFB", hint: "Tempo até o primeiro byte da resposta chegar",          ms: hasData ? (lc.lastTtfb ?? 0) : null, color: "#10b981" }
+      { label: "DNS", hint: "Tempo para resolver o domínio em endereço IP", ms: hasData ? (lc.lastDns ?? 0) : null, color: "#6366f1" },
+      { label: "TCP", hint: "Tempo para estabelecer a conexão TCP com o servidor", ms: hasData ? (lc.lastTcp ?? 0) : null, color: "#0ea5e9" },
+      { label: "TLS", hint: "Tempo do handshake SSL/TLS (apenas HTTPS)", ms: hasData ? (lc.lastTls ?? 0) : null, color: "#f59e0b" },
+      { label: "TTFB", hint: "Tempo até o primeiro byte da resposta chegar", ms: hasData ? (lc.lastTtfb ?? 0) : null, color: "#10b981" }
     ];
 
     return phases.map(p => ({
