@@ -120,7 +120,7 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <div class="rounded-xl border bg-card p-6 space-y-4">
-        <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Tempo de resposta médio (24h)</p>
+        <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Latência nas últimas 24h</p>
         <div class="h-[140px] w-full">
           <canvas #responseTimeChart></canvas>
         </div>
@@ -128,7 +128,7 @@
 
       @if (avgMetrics()) {
         <div class="rounded-xl border bg-card p-6 space-y-4">
-          <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Médias (30 dias)</p>
+          <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Desempenho nos últimos 7 dias</p>
           @if (monitor().type === 'PING') {
             <div class="grid grid-cols-2 gap-2">
               <div class="rounded-lg bg-muted p-3 text-center">
@@ -177,7 +177,7 @@
     </div>
 
     <div class="rounded-xl border bg-card p-6 space-y-3">
-      <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Incidentes</p>
+      <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Últimos incidentes</p>
       <app-table
         [columns]="['Situação', 'Causa raiz', 'Iniciado', 'Resolvido', 'Duração']"
         [rows]="recentIncidents()"

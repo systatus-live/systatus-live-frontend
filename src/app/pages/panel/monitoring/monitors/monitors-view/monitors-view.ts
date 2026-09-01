@@ -54,18 +54,17 @@ export class MonitorsView implements OnInit, OnDestroy, AfterViewChecked {
   public get waterfallPhases(): Array<{ label: string; hint: string; ms: number | null; color: string; widthPct: number }> {
     const lc = this.lastCheck();
     const total = lc?.lastDuration ?? 0;
-    const hasData = lc != null && lc.lastTcp != null && lc.lastTtfb != null;
 
     const phases = [
-      { label: "DNS", hint: "Tempo para resolver o domínio em endereço IP", ms: hasData ? (lc.lastDns ?? 0) : null, color: "#6366f1" },
-      { label: "TCP", hint: "Tempo para estabelecer a conexão TCP com o servidor", ms: hasData ? (lc.lastTcp ?? 0) : null, color: "#0ea5e9" },
-      { label: "TLS", hint: "Tempo do handshake SSL/TLS (apenas HTTPS)", ms: hasData ? (lc.lastTls ?? 0) : null, color: "#f59e0b" },
-      { label: "TTFB", hint: "Tempo até o primeiro byte da resposta chegar", ms: hasData ? (lc.lastTtfb ?? 0) : null, color: "#10b981" }
+      { label: "DNS", hint: "Tempo para resolver o domínio em endereço IP", ms: lc?.lastDns ?? null, color: "#6366f1" },
+      { label: "TCP", hint: "Tempo para estabelecer a conexão TCP com o servidor", ms: lc?.lastTcp ?? null, color: "#0ea5e9" },
+      { label: "TLS", hint: "Tempo do handshake SSL/TLS (apenas HTTPS)", ms: lc?.lastTls ?? null, color: "#f59e0b" },
+      { label: "TTFB", hint: "Tempo até o primeiro byte da resposta chegar", ms: lc?.lastTtfb ?? null, color: "#10b981" }
     ];
 
     return phases.map(p => ({
       ...p,
-      widthPct: hasData && total > 0 && p.ms != null ? Math.min(100, (p.ms / total) * 100) : 0
+      widthPct: total > 0 && p.ms != null ? Math.min(100, (p.ms / total) * 100) : 0
     }));
   }
 
