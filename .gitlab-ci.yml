@@ -10,13 +10,13 @@ deploy-systatus-web:
     - systatus-runner
   script:
     - ssh-keyscan $DEPLOY_HOST >> /home/gitlab-runner/.ssh/known_hosts
-    - docker build -f Dockerfile.hml -t systatus-live-web-hml:latest .
-    - docker save systatus-live-web-hml:latest | gzip | ssh $DEPLOY_USER@$DEPLOY_HOST "docker load"
+    - docker build -f Dockerfile.prod -t systatus-live-web:latest .
+    - docker save systatus-live-web:latest | gzip | ssh $DEPLOY_USER@$DEPLOY_HOST "docker load"
     - |
-      ssh $DEPLOY_USER@$DEPLOY_HOST "cat > $HML_DEPLOY_DIR/.env << 'EOF'
+      ssh $DEPLOY_USER@$DEPLOY_HOST "cat > $DEPLOY_DIR/.env << 'EOF'
       NODE_ENV=$NODE_ENV
       EOF"
-    - ssh $DEPLOY_USER@$DEPLOY_HOST "cd $HML_DEPLOY_DIR && docker compose up -d web-hml"
+    - ssh $DEPLOY_USER@$DEPLOY_HOST "cd $DEPLOY_DIR && docker compose up -d systatus-live-web"
     - docker image prune -f
   only:
     - master
@@ -28,9 +28,9 @@ deploy-systatus-web-hml:
   tags:
     - systatus-runner
   script:
-    - docker compose build --no-cache web
-    - docker compose down web
-    - docker compose up -d web
+    - docker compose build --no-cache systatus-live-web-hml
+    - docker compose down systatus-live-web-hml
+    - docker compose up -d systatus-live-web-hml
     - docker image prune -f
   only:
     - homolog
