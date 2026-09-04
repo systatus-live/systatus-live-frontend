@@ -1,5 +1,5 @@
 services:
-  web:
+  systatus-live-web:
     image: systatus-live-web:latest
     container_name: systatus-live-web
     build:
@@ -16,7 +16,7 @@ services:
         max-file: "1"
     restart: unless-stopped
 
-  web-hml:
+  systatus-live-web-hml:
     image: systatus-live-web-hml:latest
     container_name: systatus-live-web-hml
     build:
