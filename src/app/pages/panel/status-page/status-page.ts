@@ -46,6 +46,21 @@ export class StatusPage implements OnInit {
     monitorIdList: [[] as string[]],
   });
 
+  public get allSelected(): boolean {
+    const ids = this.form.controls.monitorIdList.value as string[];
+    return this.monitorList().length > 0 && ids.length === this.monitorList().length;
+  }
+
+  public get someSelected(): boolean {
+    const ids = this.form.controls.monitorIdList.value as string[];
+    return ids.length > 0 && ids.length < this.monitorList().length;
+  }
+
+  public toggleAll(checked: boolean) {
+    const allIds = this.monitorList().map(m => m.id);
+    this.form.controls.monitorIdList.setValue(checked ? allIds : []);
+  }
+
   public isMonitorSelected(id: string): boolean {
     return (this.form.controls.monitorIdList.value as string[]).includes(id);
   }

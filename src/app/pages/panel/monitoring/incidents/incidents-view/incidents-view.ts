@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from "@angular/core";
+import { Component, OnInit, inject, signal, computed } from "@angular/core";
 import { DatePipe, DecimalPipe } from "@angular/common";
 import { ActivatedRoute, Router } from "@angular/router";
 import { firstValueFrom } from "rxjs";
@@ -35,13 +35,12 @@ export class IncidentsView implements OnInit {
 
   public readonly incident = signal<any>(null);
   public readonly historicalItems = signal<any[]>([]);
-  public readonly historicalPage = signal(0);
+  private readonly historicalPage = signal(0);
   public readonly historicalPagination = signal({ rows: 0, total: 0 });
 
-  public get historicalTotalPages(): number {
-    const { rows, total } = this.historicalPagination();
-    return rows > 0 ? Math.ceil(total / rows) : 1;
-  }
+  public readonly historicalHasMore = computed(() => this.historicalItems().length < this.historicalPagination().total);
+
+  private loadingMoreHistorical = false;
 
   public getStatusLabel(status: string): string {
     return HttpStatusCodeLabel[getHttpStatusKey(status) as keyof typeof HttpStatusCodeLabel] ?? status ?? "—";
@@ -118,12 +117,26 @@ export class IncidentsView implements OnInit {
     try {
       const historicalRes: any = await firstValueFrom(this.incidentService.getIncidentHistorical(id, p));
 
-      this.historicalItems.set(historicalRes.data);
+      if (p === 0) {
+        this.historicalItems.set(historicalRes.data);
+      } else {
+        this.historicalItems.update(prev => [...prev, ...historicalRes.data]);
+      }
+
       this.historicalPagination.set({ rows: historicalRes.pagination.rows, total: historicalRes.pagination.total });
       this.historicalPage.set(p);
     } catch (error: any) {
       Alert.error("", error.message);
     }
+  }
+
+  public async onLoadMoreHistorical() {
+    if (this.loadingMoreHistorical || !this.historicalHasMore()) {
+      return;
+    }
+    this.loadingMoreHistorical = true;
+    await this.fetchHistoricalPage(this.historicalPage() + 1);
+    this.loadingMoreHistorical = false;
   }
 
 }

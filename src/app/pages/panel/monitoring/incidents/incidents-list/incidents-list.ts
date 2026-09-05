@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, inject, signal, PLATFORM_ID } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, inject, signal, computed, PLATFORM_ID } from "@angular/core";
 import { isPlatformBrowser, DatePipe } from "@angular/common";
 import { ReactiveFormsModule, FormBuilder } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -47,17 +47,16 @@ export class IncidentsList implements OnInit, OnDestroy {
   public readonly historical = signal<any[]>([]);
   public readonly incidentList = signal<any[]>([]);
   public readonly extras = signal<any>({});
-  public readonly page = signal(0);
+  private readonly page = signal(0);
   public readonly pagination = signal({ rows: 0, total: 0 });
+
+  public readonly hasMore = computed(() => this.incidentList().length < this.pagination().total);
+
+  private loadingMore = false;
 
   public readonly form = this.fb.group({
     search: [""],
   });
-
-  public get totalPages(): number {
-    const { rows, total } = this.pagination();
-    return rows > 0 ? Math.ceil(total / rows) : 1;
-  }
 
   async ngOnInit() {
     try {
@@ -166,12 +165,27 @@ export class IncidentsList implements OnInit, OnDestroy {
 
     try {
       const response: any = await firstValueFrom(this.incidentService.getIncidentList(params));
-      this.incidentList.set(response.data);
+
+      if (p === 0) {
+        this.incidentList.set(response.data);
+      } else {
+        this.incidentList.update(prev => [...prev, ...response.data]);
+      }
+
       this.pagination.set({ rows: response.pagination.rows, total: response.pagination.total });
       this.page.set(p);
     } catch (error: any) {
       Alert.error("", error.message);
     }
+  }
+
+  public async onLoadMore() {
+    if (this.loadingMore || !this.hasMore()) {
+      return;
+    }
+    this.loadingMore = true;
+    await this.fetchPage(this.page() + 1, this.form.controls.search.value ?? "");
+    this.loadingMore = false;
   }
 
   public async onSubmitSearch() {

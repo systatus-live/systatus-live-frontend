@@ -282,10 +282,9 @@
       [rows]="invoiceList()"
       emptyMessage="Nenhuma fatura encontrada."
       [total]="pagination().total"
-      [page]="pagination().page"
-      [totalPages]="totalPages"
+      [hasMore]="invoiceHasMore()"
       totalLabel="faturas"
-      (pageChange)="loadInvoices($event)"
+      (loadMore)="onLoadMoreInvoices()"
     >
       <ng-template #rowTemplate let-invoice>
         <tr hlmTr>

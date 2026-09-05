@@ -50,10 +50,9 @@
             [rows]="historicalItems()"
             emptyMessage="Nenhuma atividade encontrada."
             [total]="historicalPagination().total"
-            [page]="historicalPage()"
-            [totalPages]="historicalTotalPages"
+            [hasMore]="historicalHasMore()"
             totalLabel="registros"
-            (pageChange)="fetchHistoricalPage($event)"
+            (loadMore)="onLoadMoreHistorical()"
           >
             <ng-template #rowTemplate let-item>
               <tr hlmTr>

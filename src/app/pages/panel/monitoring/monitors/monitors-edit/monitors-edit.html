@@ -59,7 +59,7 @@
             <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Integrações
             </p>
-            <div class="rounded-lg border divide-y max-h-56 overflow-y-auto">
+            <div class="rounded-lg border divide-y">
               @if (integrationList().length === 0) {
                 <p class="text-sm text-muted-foreground px-3 py-3">
                   Nenhuma integração disponível.
@@ -67,16 +67,27 @@
                     Criar integração
                   </a>
                 </p>
-              }
-              @for (integration of integrationList(); track integration.id) {
+              } @else {
                 <label class="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-muted/50 transition-colors">
                   <hlm-checkbox
-                    [checked]="isIntegrationSelected(integration.id)"
-                    (checkedChange)="toggleIntegration(integration.id, $event)"
+                    [checked]="allIntegrationsSelected"
+                    [indeterminate]="someIntegrationsSelected"
+                    (checkedChange)="toggleAllIntegrations($event)"
                   />
-                  <img [src]="getPlatformLogo(integration.chatPlatform)" alt="" width="16" height="16" class="shrink-0" />
-                  <span class="text-sm font-medium">{{ integration.name }}</span>
+                  <span class="text-sm font-medium text-muted-foreground">Selecionar todos</span>
                 </label>
+                <div class="divide-y max-h-48 overflow-y-auto">
+                  @for (integration of integrationList(); track integration.id) {
+                    <label class="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-muted/50 transition-colors">
+                      <hlm-checkbox
+                        [checked]="isIntegrationSelected(integration.id)"
+                        (checkedChange)="toggleIntegration(integration.id, $event)"
+                      />
+                      <img [src]="getPlatformLogo(integration.chatPlatform)" alt="" width="16" height="16" class="shrink-0" />
+                      <span class="text-sm font-medium">{{ integration.name }}</span>
+                    </label>
+                  }
+                </div>
               }
             </div>
           </div>

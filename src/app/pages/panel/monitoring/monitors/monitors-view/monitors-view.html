@@ -183,8 +183,6 @@
         [rows]="recentIncidents()"
         emptyMessage="Nenhum incidente registrado."
         [total]="recentIncidents().length"
-        [page]="0"
-        [totalPages]="1"
       >
         <ng-template #rowTemplate let-incident>
           <tr hlmTr class="cursor-pointer" (click)="router.navigate(['/panel/monitoring/incidents/view', incident.id])">

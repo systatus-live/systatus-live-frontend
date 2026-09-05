@@ -15,10 +15,9 @@
         [rows]="monitorList()"
         emptyMessage="Nenhum monitor encontrado."
         [total]="pagination().total"
-        [page]="page()"
-        [totalPages]="totalPages"
+        [hasMore]="hasMore()"
         totalLabel="monitores"
-        (pageChange)="fetchPage($event, form.controls.search.value ?? '')"
+        (loadMore)="onLoadMore()"
       >
         <ng-template #rowTemplate let-monitor>
           <tr hlmTr class="cursor-pointer" (click)="router.navigate(['/panel/monitoring/monitors/view', monitor.id])">

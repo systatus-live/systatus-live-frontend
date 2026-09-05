@@ -92,6 +92,21 @@ export class MonitorsEdit implements OnInit {
     }
   }
 
+  public get allIntegrationsSelected(): boolean {
+    const ids = this.form.controls.integrationList.value as string[];
+    return this.integrationList().length > 0 && ids.length === this.integrationList().length;
+  }
+
+  public get someIntegrationsSelected(): boolean {
+    const ids = this.form.controls.integrationList.value as string[];
+    return ids.length > 0 && ids.length < this.integrationList().length;
+  }
+
+  public toggleAllIntegrations(checked: boolean) {
+    const allIds = this.integrationList().map(i => i.id);
+    this.form.controls.integrationList.setValue(checked ? allIds : []);
+  }
+
   public isIntegrationSelected(id: string): boolean {
     return (this.form.controls.integrationList.value as string[]).includes(id);
   }

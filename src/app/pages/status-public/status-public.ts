@@ -3,13 +3,7 @@ import { isPlatformBrowser } from "@angular/common";
 import { ActivatedRoute, RouterLink } from "@angular/router";
 import { firstValueFrom } from "rxjs";
 import { NgIcon, provideIcons } from "@ng-icons/core";
-import {
-  lucideBadgeCheck,
-  lucideClock,
-  lucideCircleAlert,
-  lucideAlertTriangle,
-  lucideInfo,
-} from "@ng-icons/lucide";
+import { lucideBadgeCheck, lucideClock, lucideCircleAlert, lucideAlertTriangle, lucideInfo, } from "@ng-icons/lucide";
 import { environment } from "../../../environments/environment";
 import { StatusPage as StatusPageService } from "../../services/status-page.service";
 import { HttpStatusCodeLabel, getHttpStatusKey } from "../../types/http-status-code";

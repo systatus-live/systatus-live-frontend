@@ -35,10 +35,9 @@
     [rows]="incidentList()"
     emptyMessage="Nenhum incidente encontrado."
     [total]="pagination().total"
-    [page]="page()"
-    [totalPages]="totalPages"
+    [hasMore]="hasMore()"
     totalLabel="incidentes"
-    (pageChange)="fetchPage($event, form.controls.search.value ?? '')"
+    (loadMore)="onLoadMore()"
   >
     <ng-template #rowTemplate let-incident>
       <tr hlmTr class="cursor-pointer" (click)="router.navigate(['/panel/monitoring/incidents/view', incident.id])">

@@ -13,10 +13,9 @@
     [rows]="integrationList()"
     emptyMessage="Nenhuma integração encontrada."
     [total]="pagination().total"
-    [page]="page()"
-    [totalPages]="totalPages"
+    [hasMore]="hasMore()"
     totalLabel="integrações"
-    (pageChange)="fetchPage($event, form.controls.search.value ?? '')"
+    (loadMore)="onLoadMore()"
   >
     <ng-template #rowTemplate let-integration>
       <tr hlmTr class="cursor-pointer" (click)="router.navigate(['/panel/monitoring/integrations/edit', integration.id])">

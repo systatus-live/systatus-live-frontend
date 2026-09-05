@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, PLATFORM_ID } from "@angular/core";
+import { Component, OnInit, inject, signal, computed, PLATFORM_ID } from "@angular/core";
 import { isPlatformBrowser, DatePipe } from "@angular/common";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
@@ -108,16 +108,14 @@ export class Subscription implements OnInit {
   public readonly invoiceList = signal<any[]>([]);
   public readonly pagination = signal({ page: 0, rows: 0, total: 0 });
   public readonly billingData = signal<any>(null);
+
+  public readonly invoiceHasMore = computed(() => this.invoiceList().length < this.pagination().total);
+  private loadingMoreInvoices = false;
   public readonly billingExpanded = signal(false);
   public readonly states = signal<{ code: string; name: string }[]>([]);
   public readonly cities = signal<string[]>([]);
   public readonly citySearch = signal("");
   public readonly cityDropdownOpen = signal(false);
-
-  public get totalPages(): number {
-    const { total, rows } = this.pagination();
-    return rows > 0 ? Math.ceil(total / rows) : 1;
-  }
 
   public get billingAddressLine(): string {
     const b = this.billingData();
@@ -290,7 +288,13 @@ export class Subscription implements OnInit {
     try {
       const params = new URLSearchParams({ page: page.toString() });
       const response: any = await firstValueFrom(this.invoiceService.getInvoiceList(params));
-      this.invoiceList.set(response.data);
+
+      if (page === 0) {
+        this.invoiceList.set(response.data);
+      } else {
+        this.invoiceList.update(prev => [...prev, ...response.data]);
+      }
+
       this.pagination.set({
         page,
         rows: response.pagination.rows,
@@ -299,6 +303,15 @@ export class Subscription implements OnInit {
     } catch (error: any) {
       Alert.error("", error.message);
     }
+  }
+
+  public async onLoadMoreInvoices() {
+    if (this.loadingMoreInvoices || !this.invoiceHasMore()) {
+      return;
+    }
+    this.loadingMoreInvoices = true;
+    await this.loadInvoices(this.pagination().page + 1);
+    this.loadingMoreInvoices = false;
   }
 
   public async getInvoicePDF(id: string) {

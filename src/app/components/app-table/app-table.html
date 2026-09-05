@@ -26,18 +26,9 @@
 </div>
 
 @if (total() > 0) {
-  <div class="flex items-center justify-between">
+  <div class="flex items-center justify-between py-2">
     <small class="text-muted-foreground">{{ total() }} {{ totalLabel() }}</small>
-    @if (totalPages() > 1) {
-      <div class="flex items-center gap-2">
-        <button hlmBtn variant="outline" size="sm" (click)="pageChange.emit(page() - 1)" [disabled]="page() === 0">
-          Anterior
-        </button>
-        <small class="text-muted-foreground">{{ page() + 1 }} / {{ totalPages() }}</small>
-        <button hlmBtn variant="outline" size="sm" (click)="pageChange.emit(page() + 1)" [disabled]="page() + 1 >= totalPages()">
-          Próxima
-        </button>
-      </div>
-    }
   </div>
 }
+
+<div #sentinel class="h-1"></div>

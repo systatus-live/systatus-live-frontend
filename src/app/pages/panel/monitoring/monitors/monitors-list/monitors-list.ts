@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from "@angular/core";
+import { Component, OnInit, inject, signal, computed } from "@angular/core";
 import { DecimalPipe } from "@angular/common";
 import { Router, RouterLink } from "@angular/router";
 import { NgIcon, provideIcons } from "@ng-icons/core";
@@ -45,9 +45,13 @@ export class MonitorsList implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   public readonly monitorList = signal<any[]>([]);
-  public readonly page = signal(0);
+  private readonly page = signal(0);
   public readonly pagination = signal({ rows: 0, total: 0 });
   public readonly extras = signal<any>({});
+
+  public readonly hasMore = computed(() => this.monitorList().length < this.pagination().total);
+
+  private loadingMore = false;
 
   public readonly form = this.fb.group({
     search: [""],
@@ -55,11 +59,6 @@ export class MonitorsList implements OnInit {
 
   async ngOnInit() {
     await this.fetchPage(0);
-  }
-
-  public get totalPages(): number {
-    const { rows, total } = this.pagination();
-    return rows > 0 ? Math.ceil(total / rows) : 1;
   }
 
   public getMonitorTypeLabel(type: string): string {
@@ -133,13 +132,28 @@ export class MonitorsList implements OnInit {
 
     try {
       const response: any = await firstValueFrom(this.monitorService.getMonitorList(params));
-      this.monitorList.set(response.data);
+
+      if (p === 0) {
+        this.monitorList.set(response.data);
+      } else {
+        this.monitorList.update(prev => [...prev, ...response.data]);
+      }
+
       this.pagination.set({ rows: response.pagination.rows, total: response.pagination.total });
       this.extras.set(response.extras ?? {});
       this.page.set(p);
     } catch (error: any) {
       Alert.error("", error.message);
     }
+  }
+
+  public async onLoadMore() {
+    if (this.loadingMore || !this.hasMore()) {
+      return;
+    }
+    this.loadingMore = true;
+    await this.fetchPage(this.page() + 1, this.form.controls.search.value ?? "");
+    this.loadingMore = false;
   }
 
   public async onSubmitSearch() {
