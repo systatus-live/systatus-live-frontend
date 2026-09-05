@@ -18,6 +18,7 @@ import { AppStateService } from "../../../../../state/app-state.service";
 import { ChatPlatformNameLogoMap, ChatPlatformTypeEnum } from "../../../../../types/chat-platform.enum";
 import { PermissionEnum } from "../../../../../types/permission.enum";
 import { WebhookTutorial } from "../components/webhook-tutorial/webhook-tutorial";
+import { HlmSkeleton } from "../../../../../components/skeleton/src";
 
 @Component({
   selector: "app-integrations-edit",
@@ -31,7 +32,8 @@ import { WebhookTutorial } from "../components/webhook-tutorial/webhook-tutorial
     ...HlmSelectImports,
     ...HlmSeparatorImports,
     WebhookTutorial,
-    HlmTooltipImports
+    HlmTooltipImports,
+    HlmSkeleton,
   ],
   providers: [provideIcons({ lucidePencil })],
   templateUrl: "./integrations-edit.html",

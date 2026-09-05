@@ -12,6 +12,7 @@ import { HlmButton } from "../../../../../components/button/src";
 import { HlmBadgeImports } from "../../../../../components/badge/src";
 import { HlmTableImports } from "../../../../../components/table/src";
 import { AppTable } from "../../../../../components/app-table/app-table";
+import { HlmSkeleton } from "../../../../../components/skeleton/src";
 
 @Component({
   selector: "app-incidents-view",
@@ -23,6 +24,7 @@ import { AppTable } from "../../../../../components/app-table/app-table";
     ...HlmBadgeImports,
     ...HlmTableImports,
     AppTable,
+    HlmSkeleton,
   ],
   providers: [provideIcons({ lucideCheck })],
   templateUrl: "./incidents-view.html",

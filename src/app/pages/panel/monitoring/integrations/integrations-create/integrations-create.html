@@ -4,7 +4,10 @@
       <h1 class="text-base font-semibold leading-tight">Nova Integração</h1>
       <p class="text-sm text-muted-foreground">Configure um canal de notificação</p>
     </div>
-    <button hlmBtn type="button" (click)="handleSave()">Salvar</button>
+    <div class="flex items-center gap-2">
+      <button hlmBtn variant="ghost" type="button" routerLink="/panel/monitoring/integrations">Cancelar</button>
+      <button hlmBtn type="button" (click)="handleSave()">Salvar</button>
+    </div>
   </div>
 
   <form [formGroup]="form">

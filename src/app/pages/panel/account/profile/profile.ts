@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, signal, ElementRef, ViewChild } from "@angular/core";
+import { Component, OnInit, OnDestroy, inject, signal, computed, ElementRef, ViewChild } from "@angular/core";
 import { DatePipe } from "@angular/common";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { firstValueFrom } from "rxjs";
@@ -13,6 +13,7 @@ import { HlmButton } from "../../../../components/button/src";
 import { HlmInput } from "../../../../components/input/src";
 import { HlmLabel } from "../../../../components/label/src";
 import { HlmTableImports } from "../../../../components/table/src";
+import { AppTable } from "../../../../components/app-table/app-table";
 import { HlmBadgeImports } from "../../../../components/badge/src";
 import { HlmSeparatorImports } from "../../../../components/separator/src";
 import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
@@ -28,6 +29,7 @@ import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
     HlmLabel,
     ...HlmTableImports,
     ...HlmBadgeImports,
+    AppTable,
     ...HlmSeparatorImports,
     HlmTooltipImports
   ],
@@ -60,12 +62,10 @@ export class Profile implements OnInit, OnDestroy {
   public readonly avatarPreview = signal<string | null>(null);
   public readonly isChangedAvatar = signal(false);
   public readonly authHistory = signal<any[]>([]);
-  public readonly pagination = signal({ page: 0, rows: 0, total: 0 });
-
-  public get totalPages(): number {
-    const { total, rows } = this.pagination();
-    return rows > 0 ? Math.ceil(total / rows) : 1;
-  }
+  public readonly pagination = signal({ rows: 0, total: 0 });
+  private readonly page = signal(0);
+  public readonly hasMore = computed(() => this.authHistory().length < this.pagination().total);
+  private loadingMore = false;
 
   public readonly detailsForm = this.fb.group({
     name: ["", [Validators.required, Validators.maxLength(50)]],
@@ -166,21 +166,30 @@ export class Profile implements OnInit, OnDestroy {
     this.passwordExpanded.update(v => !v);
   }
 
-  public async loadAuthHistory(page: number) {
+  public async loadAuthHistory(p: number) {
     try {
       const response: any = await firstValueFrom(
-        this.userService.getAuthHistory(new URLSearchParams({ page: page.toString() })),
+        this.userService.getAuthHistory(new URLSearchParams({ page: p.toString() })),
       );
 
-      this.authHistory.set(response.data);
-      this.pagination.set({
-        page,
-        rows: response.pagination.rows,
-        total: response.pagination.total,
-      });
+      if (p === 0) {
+        this.authHistory.set(response.data);
+      } else {
+        this.authHistory.update(prev => [...prev, ...response.data]);
+      }
+
+      this.pagination.set({ rows: response.pagination.rows, total: response.pagination.total });
+      this.page.set(p);
     } catch (error: any) {
       Alert.error("", error.message);
     }
+  }
+
+  public async onLoadMore() {
+    if (this.loadingMore || !this.hasMore()) { return; }
+    this.loadingMore = true;
+    await this.loadAuthHistory(this.page() + 1);
+    this.loadingMore = false;
   }
 
   public async onSubmitDetails() {

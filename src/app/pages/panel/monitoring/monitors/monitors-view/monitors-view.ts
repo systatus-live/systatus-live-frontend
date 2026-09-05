@@ -14,6 +14,7 @@ import { HlmButton } from "../../../../../components/button/src";
 import { HlmBadgeImports } from "../../../../../components/badge/src";
 import { HlmTableImports } from "../../../../../components/table/src";
 import { AppTable } from "../../../../../components/app-table/app-table";
+import { HlmSkeleton } from "../../../../../components/skeleton/src";
 
 Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip);
 
@@ -27,7 +28,8 @@ Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineEle
     ...HlmBadgeImports,
     ...HlmTableImports,
     HlmTooltipImports,
-    AppTable
+    AppTable,
+    HlmSkeleton,
   ],
   providers: [provideIcons({ lucidePencil, lucidePause, lucideClock, lucideCheck, lucideInfo })],
   templateUrl: "./monitors-view.html",

@@ -73,7 +73,7 @@
               </div>
 
               <div class="flex items-center pt-2">
-                <button hlmBtn type="submit" size="sm">Salvar alterações</button>
+                <button hlmBtn type="submit" size="sm">Salvar</button>
               </div>
             </div>
           </div>
@@ -146,61 +146,28 @@
     </div>
     <div hlmSeparator class="mb-6"></div>
 
-    <div hlmTableContainer class="rounded-md border">
-      <table hlmTable>
-        <thead hlmTHead>
-          <tr hlmTr>
-            <th hlmTh>Data</th>
-            <th hlmTh>Dispositivo</th>
-            <th hlmTh>IP</th>
-          </tr>
-        </thead>
-        <tbody hlmTBody>
-          @if (authHistory().length === 0) {
-            <tr hlmTr>
-              <td hlmTd colspan="3" class="h-24 text-center text-muted-foreground">Nenhum registro encontrado.</td>
-            </tr>
-          }
-          @for (item of authHistory(); track item.id) {
-            <tr hlmTr>
-              <td hlmTd class="text-sm font-medium whitespace-nowrap">
-                {{ item.created_at | date:'dd/MM/yyyy HH:mm' }}
-              </td>
-              <td hlmTd>
-                <span class="text-xs text-muted-foreground">
-                  {{ getDevice(item.user_agent) }}
-                </span>
-              </td>
-              <td hlmTd>
-                <span class="text-xs text-muted-foreground">
-                  {{ item.ip }}
-                </span>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-
-    @if (pagination().total > 0) {
-      <div class="flex items-center justify-between pt-3 text-sm text-muted-foreground">
-        <span>{{ pagination().total }} entradas</span>
-        <div class="flex items-center gap-2">
-          <button hlmBtn variant="outline" size="sm" type="button"
-            [disabled]="pagination().page === 0"
-            (click)="loadAuthHistory(pagination().page - 1)">
-            Anterior
-          </button>
-          <span hlmBadge variant="outline" class="font-normal">
-            {{ pagination().page + 1 }} / {{ totalPages || 1 }}
-          </span>
-          <button hlmBtn variant="outline" size="sm" type="button"
-            [disabled]="pagination().page + 1 >= totalPages"
-            (click)="loadAuthHistory(pagination().page + 1)">
-            Próximo
-          </button>
-        </div>
-      </div>
-    }
+    <app-table
+      [columns]="['Data', 'Dispositivo', 'IP']"
+      [rows]="authHistory()"
+      emptyMessage="Nenhum registro encontrado."
+      [total]="pagination().total"
+      [hasMore]="hasMore()"
+      totalLabel="entradas"
+      (loadMore)="onLoadMore()"
+    >
+      <ng-template #rowTemplate let-item>
+        <tr hlmTr>
+          <td hlmTd class="text-sm font-medium whitespace-nowrap">
+            {{ item.created_at | date:'dd/MM/yyyy HH:mm' }}
+          </td>
+          <td hlmTd>
+            <span class="text-xs text-muted-foreground">{{ getDevice(item.user_agent) }}</span>
+          </td>
+          <td hlmTd>
+            <span class="text-xs text-muted-foreground">{{ item.ip }}</span>
+          </td>
+        </tr>
+      </ng-template>
+    </app-table>
   </section>
 </div>

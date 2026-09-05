@@ -15,6 +15,7 @@ import { HlmSelectImports } from "../../../../../components/select/src";
 import { HlmCheckboxImports } from "../../../../../components/checkbox/src";
 import { HlmSwitchImports } from "../../../../../components/switch/src";
 import { HlmSeparatorImports } from "../../../../../components/separator/src";
+import { HlmSkeleton } from "../../../../../components/skeleton/src";
 
 @Component({
   selector: "app-monitors-edit",
@@ -28,6 +29,7 @@ import { HlmSeparatorImports } from "../../../../../components/separator/src";
     ...HlmCheckboxImports,
     ...HlmSwitchImports,
     ...HlmSeparatorImports,
+    HlmSkeleton,
   ],
   providers: [],
   templateUrl: "./monitors-edit.html",

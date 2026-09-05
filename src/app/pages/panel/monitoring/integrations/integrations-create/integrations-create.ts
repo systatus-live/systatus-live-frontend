@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
 import { firstValueFrom } from "rxjs";
 import { HlmButton } from "../../../../../components/button/src";
@@ -20,6 +20,7 @@ import { WebhookTutorial } from "../components/webhook-tutorial/webhook-tutorial
   selector: "app-integrations-create",
   imports: [
     ReactiveFormsModule,
+    RouterLink,
     HlmButton,
     HlmInput,
     HlmLabel,

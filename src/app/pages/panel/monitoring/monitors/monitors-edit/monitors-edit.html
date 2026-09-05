@@ -8,7 +8,7 @@
           Excluir
         </button>
         <button hlmBtn variant="ghost" (click)="handleCancel()">Cancelar</button>
-        <button hlmBtn type="button" (click)="handleSave()">Salvar alterações</button>
+        <button hlmBtn type="button" (click)="handleSave()">Salvar</button>
       </div>
     </div>
 
@@ -132,5 +132,42 @@
         </div>
       </div>
     </form>
+  </div>
+} @else {
+  <div class="flex flex-col gap-4">
+    <div class="flex items-center justify-between">
+      <div hlmSkeleton class="h-5 w-24"></div>
+      <div class="flex items-center gap-2">
+        <div hlmSkeleton class="h-9 w-16"></div>
+        <div hlmSkeleton class="h-9 w-20"></div>
+        <div hlmSkeleton class="h-9 w-20"></div>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2 space-y-6">
+        <div class="rounded-xl border bg-card p-6 space-y-5">
+          <div hlmSkeleton class="h-3 w-32"></div>
+          <div class="space-y-4">
+            <div class="grid grid-cols-3 gap-4">
+              <div hlmSkeleton class="col-span-2 h-9"></div>
+              <div hlmSkeleton class="h-9"></div>
+            </div>
+            <div hlmSkeleton class="h-9 w-full"></div>
+          </div>
+        </div>
+        <div class="rounded-xl border bg-card p-6 space-y-4">
+          <div hlmSkeleton class="h-3 w-24"></div>
+          <div hlmSkeleton class="h-20 w-full"></div>
+        </div>
+      </div>
+      <div class="space-y-6">
+        <div class="rounded-xl border bg-card p-6 space-y-5">
+          <div hlmSkeleton class="h-3 w-28"></div>
+          <div hlmSkeleton class="h-9 w-full"></div>
+          <div hlmSkeleton class="h-px w-full"></div>
+          <div hlmSkeleton class="h-6 w-full"></div>
+        </div>
+      </div>
+    </div>
   </div>
 }
