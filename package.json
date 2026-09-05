@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build && node scripts/generate-sitemap.mjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:systatus-live-frontend": "node dist/systatus-live-frontend/server/server.mjs"

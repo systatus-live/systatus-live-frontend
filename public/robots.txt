@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Disallow: /panel/
+Disallow: /auth/
+
+Sitemap: https://systatus.live/sitemap.xml
