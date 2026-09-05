@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, inject, signal, computed, PLATFORM_ID } from "@angular/core";
-import { isPlatformBrowser, DatePipe } from "@angular/common";
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, inject, signal, computed } from "@angular/core";
+import { DatePipe } from "@angular/common";
 import { ReactiveFormsModule, FormBuilder } from "@angular/forms";
 import { Router } from "@angular/router";
 import { firstValueFrom } from "rxjs";
@@ -36,10 +36,7 @@ Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineEle
 export class IncidentsList implements OnInit, OnDestroy {
   private readonly incidentService = inject(Incident);
   private readonly fb = inject(FormBuilder);
-  private readonly platformId = inject(PLATFORM_ID);
   public readonly router = inject(Router);
-
-  public readonly isBrowser = isPlatformBrowser(this.platformId);
 
   @ViewChild("chartCanvas", { static: true }) chartCanvas!: ElementRef<HTMLCanvasElement>;
   private chart: Chart | null = null;
@@ -81,7 +78,7 @@ export class IncidentsList implements OnInit, OnDestroy {
   }
 
   private initChart() {
-    if (!this.isBrowser || !this.chartCanvas) {
+    if (!this.chartCanvas) {
       return;
     }
 

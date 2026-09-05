@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, inject, signal, PLATFORM_ID, ElementRef, ViewChild } from "@angular/core";
-import { isPlatformBrowser, DatePipe } from "@angular/common";
+import { Component, OnInit, OnDestroy, inject, signal, ElementRef, ViewChild } from "@angular/core";
+import { DatePipe } from "@angular/common";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { firstValueFrom } from "rxjs";
 import { NgIcon, provideIcons } from "@ng-icons/core";
@@ -50,7 +50,6 @@ export class Profile implements OnInit, OnDestroy {
   public readonly appState = inject(AppStateService);
   private readonly userService = inject(User);
   private readonly fb = inject(FormBuilder);
-  private readonly platformId = inject(PLATFORM_ID);
 
   @ViewChild("fileInput") fileInputRef!: ElementRef<HTMLInputElement>;
   private avatarFile: File | null = null;
@@ -126,9 +125,7 @@ export class Profile implements OnInit, OnDestroy {
     this.revokePreview();
     this.avatarFile = file;
 
-    if (isPlatformBrowser(this.platformId)) {
-      this.avatarPreview.set(URL.createObjectURL(file));
-    }
+    this.avatarPreview.set(URL.createObjectURL(file));
 
     this.isChangedAvatar.set(true);
     input.value = "";
@@ -250,7 +247,7 @@ export class Profile implements OnInit, OnDestroy {
 
   private revokePreview() {
     const preview = this.avatarPreview();
-    if (preview && isPlatformBrowser(this.platformId)) {
+    if (preview) {
       URL.revokeObjectURL(preview);
     }
   }

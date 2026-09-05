@@ -52,6 +52,7 @@
             [total]="historicalPagination().total"
             [hasMore]="historicalHasMore()"
             totalLabel="registros"
+            maxHeight="400px"
             (loadMore)="onLoadMoreHistorical()"
           >
             <ng-template #rowTemplate let-item>

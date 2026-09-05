@@ -1,4 +1,4 @@
-<div hlmTableContainer class="rounded-md border">
+<div #tableContainer hlmTableContainer class="rounded-md border overflow-y-auto" [style.max-height]="maxHeight()">
   <table hlmTable>
     <thead hlmTHead>
       <tr hlmTr>
@@ -23,6 +23,7 @@
       }
     </tbody>
   </table>
+  <div #sentinel class="h-1"></div>
 </div>
 
 @if (total() > 0) {
@@ -30,5 +31,3 @@
     <small class="text-muted-foreground">{{ total() }} {{ totalLabel() }}</small>
   </div>
 }
-
-<div #sentinel class="h-1"></div>

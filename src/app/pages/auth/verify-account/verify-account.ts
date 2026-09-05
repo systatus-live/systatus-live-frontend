@@ -1,5 +1,4 @@
-import { Component, inject, OnInit, PLATFORM_ID, signal } from "@angular/core";
-import { isPlatformBrowser } from "@angular/common";
+import { Component, inject, OnInit, signal } from "@angular/core";
 import { RouterLink, Router, ActivatedRoute } from "@angular/router";
 import { BrnInputOtp } from "@spartan-ng/brain/input-otp";
 import { HlmButton } from "../../../components/button/src";
@@ -29,9 +28,7 @@ export class VerifyAccount implements OnInit {
   private readonly appState = inject(AppStateService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-  private readonly platformId = inject(PLATFORM_ID);
 
-  public readonly isBrowser = isPlatformBrowser(this.platformId);
   public readonly otp = signal("");
   public readonly authFlow = signal<any>(null);
   public readonly timer = signal(0);

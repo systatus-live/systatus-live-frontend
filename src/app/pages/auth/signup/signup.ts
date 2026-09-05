@@ -1,5 +1,4 @@
-import { Component, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { HlmButton } from '../../../components/button/src';
@@ -35,9 +34,7 @@ export class Signup implements OnInit {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly fb = inject(FormBuilder);
-  private readonly platformId = inject(PLATFORM_ID);
 
-  public readonly isBrowser = isPlatformBrowser(this.platformId);
   public readonly authFlow = signal<any>(null);
 
   public readonly discoveryList = [

@@ -1,5 +1,5 @@
-import { Component, OnInit, inject, signal, computed, PLATFORM_ID } from "@angular/core";
-import { isPlatformBrowser, DatePipe } from "@angular/common";
+import { Component, OnInit, inject, signal, computed } from "@angular/core";
+import { DatePipe } from "@angular/common";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { formatMoney } from "../../../../utils/format-money";
@@ -99,7 +99,6 @@ export class Subscription implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  private readonly platformId = inject(PLATFORM_ID);
 
   public readonly invoiceStatusVariantMap = invoiceStatusVariantMap;
 
@@ -261,9 +260,7 @@ export class Subscription implements OnInit {
 
     try {
       const response: any = await firstValueFrom(this.stripeService.createCheckoutSession(planId));
-      if (isPlatformBrowser(this.platformId)) {
-        window.location.href = response.url;
-      }
+      window.location.href = response.url;
     } catch (error: any) {
       Alert.error("", error.message ?? "Falha ao iniciar o checkout.");
     }
@@ -326,17 +323,15 @@ export class Subscription implements OnInit {
         if (match?.[1]) { filename = match[1]; }
       }
 
-      if (isPlatformBrowser(this.platformId)) {
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = filename;
-        link.target = "_blank";
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        setTimeout(() => { URL.revokeObjectURL(url); }, 1000);
-      }
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      link.target = "_blank";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => { URL.revokeObjectURL(url); }, 1000);
     } catch (error: any) {
       let message = "Falha ao gerar o PDF";
       if (error?.error instanceof Blob) {

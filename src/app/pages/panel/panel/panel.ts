@@ -1,5 +1,4 @@
-import { Component, OnInit, OnDestroy, computed, inject, signal, PLATFORM_ID } from "@angular/core";
-import { isPlatformBrowser } from "@angular/common";
+import { Component, OnInit, OnDestroy, computed, inject, signal } from "@angular/core";
 import { Router, RouterLink, RouterOutlet, NavigationEnd } from "@angular/router";
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { lucideRadar, lucideSiren, lucideWaypoints, lucideGlobe, lucideBadgeCheck, lucideCreditCard, lucideCircleHelp, lucideChevronsUpDown, lucideLogOut, } from "@ng-icons/lucide";
@@ -93,7 +92,6 @@ import { NgxPermissionsService } from "ngx-permissions";
 })
 export class Panel implements OnInit, OnDestroy {
   private readonly authService = inject(AuthService);
-  private readonly platformId = inject(PLATFORM_ID);
   public readonly appState = inject(AppStateService);
   public readonly router = inject(Router);
   public readonly sidebarService = inject(HlmSidebarService);
@@ -151,8 +149,6 @@ export class Panel implements OnInit, OnDestroy {
   }
 
   private initTheme() {
-    if (!isPlatformBrowser(this.platformId)) { return; }
-
     const saved = localStorage.getItem("panel-theme");
     const dark = !saved || saved === "dark";
     this.isDark.set(dark);
@@ -178,16 +174,12 @@ export class Panel implements OnInit, OnDestroy {
 
   public handleThemeToggle(dark: boolean) {
     this.isDark.set(dark);
-    if (isPlatformBrowser(this.platformId)) {
-      document.documentElement.classList.toggle("dark", dark);
-      localStorage.setItem("panel-theme", dark ? "dark" : "light");
-    }
+    document.documentElement.classList.toggle("dark", dark);
+    localStorage.setItem("panel-theme", dark ? "dark" : "light");
   }
 
   ngOnDestroy() {
-    if (isPlatformBrowser(this.platformId)) {
-      document.documentElement.classList.remove("dark");
-    }
+    document.documentElement.classList.remove("dark");
   }
 
   signOut() {

@@ -1,5 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavbarComponent } from '../home/components/navbar/navbar.component';
 import { FooterComponent } from '../home/components/footer/footer.component';
 import { ContactForm } from './components/contact-form/contact-form';
@@ -11,17 +10,11 @@ import { ContactForm } from './components/contact-form/contact-form';
   styleUrl: './contact.scss',
 })
 export class Contact implements OnInit, OnDestroy {
-  private readonly platformId = inject(PLATFORM_ID);
-
   ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      document.documentElement.classList.add("dark");
-    }
+    document.documentElement.classList.add("dark");
   }
 
   ngOnDestroy() {
-    if (isPlatformBrowser(this.platformId)) {
-      document.documentElement.classList.remove("dark");
-    }
+    document.documentElement.classList.remove("dark");
   }
 }

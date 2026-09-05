@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, AfterViewChecked, ViewChild, ElementRef, PLATFORM_ID, inject, signal } from "@angular/core";
-import { isPlatformBrowser, DatePipe, DecimalPipe } from "@angular/common";
+import { Component, OnInit, OnDestroy, AfterViewChecked, ViewChild, ElementRef, inject, signal } from "@angular/core";
+import { DatePipe, DecimalPipe } from "@angular/common";
 import { ActivatedRoute, Router } from "@angular/router";
 import { firstValueFrom } from "rxjs";
 import { NgIcon, provideIcons } from "@ng-icons/core";
@@ -37,7 +37,6 @@ export class MonitorsView implements OnInit, OnDestroy, AfterViewChecked {
   private readonly monitorService = inject(MonitorService);
   public readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-  private readonly platformId = inject(PLATFORM_ID);
 
   @ViewChild("responseTimeChart") responseTimeChartRef?: ElementRef<HTMLCanvasElement>;
   private responseTimeChart: Chart | null = null;
@@ -128,7 +127,7 @@ export class MonitorsView implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   private initResponseTimeChart() {
-    if (!isPlatformBrowser(this.platformId) || !this.responseTimeChartRef) {
+    if (!this.responseTimeChartRef) {
       return;
     }
 

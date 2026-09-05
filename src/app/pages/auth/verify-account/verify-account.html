@@ -15,20 +15,18 @@
       </div>
       <div hlmCardContent>
         <div class="space-y-3">
-          @if (isBrowser) {
-            <div class="flex justify-center">
-              <brn-input-otp hlmInputOtp [maxLength]="6" [value]="otp()" (valueChange)="otp.set($event)">
-                <hlm-input-otp-group>
-                  <hlm-input-otp-slot [index]="0" />
-                  <hlm-input-otp-slot [index]="1" />
-                  <hlm-input-otp-slot [index]="2" />
-                  <hlm-input-otp-slot [index]="3" />
-                  <hlm-input-otp-slot [index]="4" />
-                  <hlm-input-otp-slot [index]="5" />
-                </hlm-input-otp-group>
-              </brn-input-otp>
-            </div>
-          }
+          <div class="flex justify-center">
+            <brn-input-otp hlmInputOtp [maxLength]="6" [value]="otp()" (valueChange)="otp.set($event)">
+              <hlm-input-otp-group>
+                <hlm-input-otp-slot [index]="0" />
+                <hlm-input-otp-slot [index]="1" />
+                <hlm-input-otp-slot [index]="2" />
+                <hlm-input-otp-slot [index]="3" />
+                <hlm-input-otp-slot [index]="4" />
+                <hlm-input-otp-slot [index]="5" />
+              </hlm-input-otp-group>
+            </brn-input-otp>
+          </div>
           <p class="text-left text-sm leading-normal font-normal text-muted-foreground">
             Verifique o spam ou lixeira, ou
             <span

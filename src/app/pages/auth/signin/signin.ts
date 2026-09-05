@@ -1,5 +1,4 @@
-import { Component, inject, OnInit, PLATFORM_ID } from "@angular/core";
-import { isPlatformBrowser } from "@angular/common";
+import { Component, inject, OnInit } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { RouterLink, Router } from "@angular/router";
 import { DOCUMENT } from "@angular/common";
@@ -36,10 +35,7 @@ export class Signin implements OnInit {
   private readonly appState = inject(AppStateService);
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
-  private readonly platformId = inject(PLATFORM_ID);
   private readonly document = inject(DOCUMENT);
-
-  public readonly isBrowser = isPlatformBrowser(this.platformId);
 
   public readonly form = this.fb.group({
     email: ["", [Validators.required, Validators.email]],
@@ -48,9 +44,7 @@ export class Signin implements OnInit {
   });
 
   ngOnInit() {
-    if (this.isBrowser) {
-      this.loadGsiScript();
-    }
+    this.loadGsiScript();
   }
 
   private loadGsiScript() {

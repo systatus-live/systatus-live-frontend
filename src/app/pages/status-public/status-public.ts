@@ -1,5 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, signal, PLATFORM_ID } from "@angular/core";
-import { isPlatformBrowser } from "@angular/common";
+import { Component, OnInit, OnDestroy, inject, signal } from "@angular/core";
 import { ActivatedRoute, RouterLink } from "@angular/router";
 import { firstValueFrom } from "rxjs";
 import { NgIcon, provideIcons } from "@ng-icons/core";
@@ -35,8 +34,6 @@ const REFRESH_INTERVAL = 60;
 export class StatusPublic implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly statusPageService = inject(StatusPageService);
-  private readonly platformId = inject(PLATFORM_ID);
-
   public readonly data = signal<any>(null);
   public readonly notFound = signal(false);
   public readonly lastUpdated = signal<Date | null>(null);
@@ -142,7 +139,7 @@ export class StatusPublic implements OnInit, OnDestroy {
   async ngOnInit() {
     await this.fetchData();
 
-    if (isPlatformBrowser(this.platformId) && !this.notFound()) {
+    if (!this.notFound()) {
       this.startTimer();
     }
   }

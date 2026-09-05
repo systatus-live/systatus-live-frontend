@@ -183,6 +183,7 @@
         [rows]="recentIncidents()"
         emptyMessage="Nenhum incidente registrado."
         [total]="recentIncidents().length"
+        maxHeight="400px"
       >
         <ng-template #rowTemplate let-incident>
           <tr hlmTr class="cursor-pointer" (click)="router.navigate(['/panel/monitoring/incidents/view', incident.id])">
