@@ -12,10 +12,20 @@
           <ng-icon name="lucideUser" class="h-4 w-4 text-muted-foreground" />
           <span class="text-sm font-medium">Dados do perfil</span>
         </div>
-        <button hlmBtn variant="ghost" size="sm" type="button" (click)="toggleDetails()">
-          <ng-icon name="lucidePencil" class="h-3.5 w-3.5 mr-1" />
-          {{ detailsExpanded() ? "Cancelar" : "Editar" }}
-        </button>
+        @if (detailsExpanded()) {
+          <div class="flex items-center gap-2">
+            <button hlmBtn size="icon" variant="outline" type="button" (click)="toggleDetails()" hlmTooltip="Cancelar">
+              <ng-icon name="lucideRefreshCcw" />
+            </button>
+            <button hlmBtn size="icon" variant="outline" type="button" (click)="onSubmitDetails()" hlmTooltip="Salvar">
+              <ng-icon name="lucideCheck" />
+            </button>
+          </div>
+        } @else {
+          <button hlmBtn size="icon" variant="outline" type="button" (click)="toggleDetails()" hlmTooltip="Editar">
+            <ng-icon name="lucidePencil" />
+          </button>
+        }
       </div>
 
       @if (detailsExpanded()) {
@@ -72,9 +82,6 @@
                 <input hlmInput disabled [value]="appState.user()?.createdAt ? formatMemberSince(appState.user().createdAt) : ''" />
               </div>
 
-              <div class="flex items-center pt-2">
-                <button hlmBtn type="submit" size="sm">Salvar</button>
-              </div>
             </div>
           </div>
         </form>
@@ -105,10 +112,20 @@
           <ng-icon name="lucideKeyRound" class="h-4 w-4 text-muted-foreground" />
           <span class="text-sm font-medium">Alterar senha</span>
         </div>
-        <button hlmBtn variant="ghost" size="sm" type="button" (click)="togglePassword()">
-          <ng-icon name="lucidePencil" class="h-3.5 w-3.5 mr-1" />
-          {{ passwordExpanded() ? "Cancelar" : "Editar" }}
-        </button>
+        @if (passwordExpanded()) {
+          <div class="flex items-center gap-2">
+            <button hlmBtn size="icon" variant="outline" type="button" (click)="togglePassword()" hlmTooltip="Cancelar">
+              <ng-icon name="lucideRefreshCcw" />
+            </button>
+            <button hlmBtn size="icon" variant="outline" type="button" (click)="onSubmitPassword()" hlmTooltip="Salvar">
+              <ng-icon name="lucideCheck" />
+            </button>
+          </div>
+        } @else {
+          <button hlmBtn size="icon" variant="outline" type="button" (click)="togglePassword()" hlmTooltip="Editar">
+            <ng-icon name="lucidePencil" />
+          </button>
+        }
       </div>
 
       @if (passwordExpanded()) {
@@ -127,9 +144,6 @@
             <div class="flex flex-col gap-1">
               <label hlmLabel for="confirmPassword">Confirmar senha <span class="text-destructive">*</span></label>
               <input hlmInput id="confirmPassword" type="password" formControlName="confirmPassword" placeholder="••••••••" />
-            </div>
-            <div class="pt-2">
-              <button hlmBtn type="submit" size="sm">Atualizar senha</button>
             </div>
           </div>
         </form>

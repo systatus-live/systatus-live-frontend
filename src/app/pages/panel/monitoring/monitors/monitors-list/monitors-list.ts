@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, signal, computed } from "@angular/core";
-import { DecimalPipe } from "@angular/common";
+import { AppDecimalPipe } from "../../../../../pipes/app-decimal-pipe";
 import { Router, RouterLink } from "@angular/router";
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { lucidePause, lucideClock, lucideBadgeCheck, lucideEllipsis, lucideCircleAlert } from "@ng-icons/lucide";
@@ -22,7 +22,7 @@ import { environment } from "../../../../../../environments/environment";
 @Component({
   selector: "app-monitors-list",
   imports: [
-    DecimalPipe,
+    AppDecimalPipe,
     ReactiveFormsModule,
     RouterLink,
     NgIcon,

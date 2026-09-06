@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewChecked, ViewChild, ElementRef, inject, signal } from "@angular/core";
-import { DatePipe, DecimalPipe } from "@angular/common";
+import { DatePipe } from "@angular/common";
+import { AppDecimalPipe } from "../../../../../pipes/app-decimal-pipe";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { firstValueFrom, Subscription } from "rxjs";
 import { map, filter, distinctUntilChanged } from "rxjs/operators";
@@ -24,7 +25,7 @@ Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineEle
   selector: "app-monitors-view",
   imports: [
     DatePipe,
-    DecimalPipe,
+    AppDecimalPipe,
     RouterLink,
     NgIcon,
     HlmButton,

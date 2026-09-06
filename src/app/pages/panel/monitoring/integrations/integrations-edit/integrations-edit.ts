@@ -124,7 +124,7 @@ export class IntegrationsEdit implements OnInit, OnDestroy {
       case ChatPlatformTypeEnum.EMAIL:
         return "E-mail";
       case ChatPlatformTypeEnum.PHONE:
-        return "Telefone";
+        return "WhatsApp (DDD + 9 dígitos)";
       default:
         return "URL Webhook";
     }

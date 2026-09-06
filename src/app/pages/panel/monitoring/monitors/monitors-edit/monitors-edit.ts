@@ -1,25 +1,26 @@
-import { Component, inject, OnInit, signal } from "@angular/core";
+import { Component, computed, inject, OnInit, signal } from "@angular/core";
+import { toSignal } from "@angular/core/rxjs-interop";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { lucideCheck, lucideList, lucideRefreshCcw } from "@ng-icons/lucide";
+import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
 import { firstValueFrom } from "rxjs";
-import { MonitorService } from "../../../../../services/monitor.service";
-import { Interval } from "../../../../../services/interval.service";
-import { Integration } from "../../../../../services/integration.service";
-import { Alert } from "../../../../../lib/alert";
-import { MonitorTypeEnum, MonitorTypeLabelEnum } from "../../../../../types/monitor-type.enum";
-import { ChatPlatformDescriptionLogoMap } from "../../../../../types/chat-platform.enum";
+import { AppNavigator } from "../../../../../components/app-navigator/app-navigator";
 import { HlmButton } from "../../../../../components/button/src";
+import { HlmCheckboxImports } from "../../../../../components/checkbox/src";
 import { HlmInput } from "../../../../../components/input/src";
 import { HlmLabel } from "../../../../../components/label/src";
 import { HlmSelectImports } from "../../../../../components/select/src";
-import { HlmCheckboxImports } from "../../../../../components/checkbox/src";
-import { HlmSwitchImports } from "../../../../../components/switch/src";
 import { HlmSeparatorImports } from "../../../../../components/separator/src";
 import { HlmSkeleton } from "../../../../../components/skeleton/src";
-import { AppNavigator } from "../../../../../components/app-navigator/app-navigator";
-import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
+import { HlmSwitchImports } from "../../../../../components/switch/src";
+import { Alert } from "../../../../../lib/alert";
+import { Integration } from "../../../../../services/integration.service";
+import { Interval } from "../../../../../services/interval.service";
+import { MonitorService } from "../../../../../services/monitor.service";
+import { ChatPlatformDescriptionLogoMap } from "../../../../../types/chat-platform.enum";
+import { MonitorTypeEnum, MonitorTypeLabelEnum } from "../../../../../types/monitor-type.enum";
 
 @Component({
   selector: "app-monitors-edit",
@@ -68,12 +69,22 @@ export class MonitorsEdit implements OnInit {
     intervalId: ["", Validators.required],
   });
 
-  public readonly typeItemToString = (id: string) =>
-    this.monitorTypeList.find(t => t.id === id)?.description ?? id;
+  public readonly typeItemToString = (id: string) => this.monitorTypeList.find(t => t.id === id)?.description ?? id;
+  public readonly intervalItemToString = (id: string) => this.intervalList().find(i => i.id === id)?.name ?? id;
 
-  public readonly intervalItemToString = (id: string) =>
-    this.intervalList().find(i => i.id === id)?.name ?? id;
+  private readonly selectedType = toSignal(this.form.controls.type.valueChanges, { 
+    initialValue: this.form.controls.type.value 
+  });
 
+  public readonly addressPlaceholder = computed(() => {
+    switch (this.selectedType()) {
+      case MonitorTypeEnum.PING:
+        return "IPv4 ou IPv6";
+      default:
+        return "https://exemplo.com";
+    }
+  });
+  
   public getPlatformLogo(chatPlatform: string): string {
     return ChatPlatformDescriptionLogoMap[chatPlatform] ?? "/logos/mail.svg";
   }
@@ -91,11 +102,11 @@ export class MonitorsEdit implements OnInit {
         firstValueFrom(this.integrationService.getIntegrationList(new URLSearchParams({ page: "0" }))),
       ]);
 
+      this.patchForm(monitorRes);
+
       this.monitor.set(monitorRes);
       this.intervalList.set(intervalRes.data);
       this.integrationList.set(integrationRes.data);
-
-      this.patchForm(monitorRes);
     } catch (error: any) {
       Alert.error("", error.message);
     }

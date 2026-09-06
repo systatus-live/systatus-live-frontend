@@ -30,10 +30,20 @@
               <ng-icon name="lucideMapPin" class="h-4 w-4 text-muted-foreground" />
               <span class="text-sm font-medium">Dados de cobrança</span>
             </div>
-            <button hlmBtn variant="ghost" size="sm" type="button" (click)="toggleBilling()">
-              <ng-icon name="lucidePencil" class="h-3.5 w-3.5 mr-1" />
-              {{ billingExpanded() ? "Cancelar" : "Editar" }}
-            </button>
+            @if (billingExpanded()) {
+              <div class="flex items-center gap-2">
+                <button hlmBtn size="icon" variant="outline" type="button" (click)="toggleBilling()" hlmTooltip="Cancelar">
+                  <ng-icon name="lucideRefreshCcw" />
+                </button>
+                <button hlmBtn size="icon" variant="outline" type="button" (click)="onSubmitBilling()" hlmTooltip="Salvar">
+                  <ng-icon name="lucideCheck" />
+                </button>
+              </div>
+            } @else {
+              <button hlmBtn size="icon" variant="outline" type="button" (click)="toggleBilling()" hlmTooltip="Editar">
+                <ng-icon name="lucidePencil" />
+              </button>
+            }
           </div>
 
           @if (billingExpanded()) {
@@ -156,9 +166,6 @@
                   </div>
                 </div>
 
-                <div class="flex items-end pb-0.5">
-                  <button hlmBtn type="submit" size="sm">Salvar</button>
-                </div>
               </div>
 
               <div class="mt-4 rounded-lg border p-4 flex gap-3 text-sm">

@@ -3,7 +3,7 @@ import { DatePipe } from "@angular/common";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { firstValueFrom } from "rxjs";
 import { NgIcon, provideIcons } from "@ng-icons/core";
-import { lucideUser, lucideShield, lucideMonitor, lucideKeyRound, lucidePencil, lucideUpload, lucideTrash2, lucideCalendar, } from "@ng-icons/lucide";
+import { lucideUser, lucideShield, lucideMonitor, lucideKeyRound, lucidePencil, lucideUpload, lucideTrash2, lucideCalendar, lucideRefreshCcw, lucideCheck } from "@ng-icons/lucide";
 import * as UAParserLib from "ua-parser-js";
 import { AppStateService } from "../../../../state/app-state.service";
 import { User } from "../../../../services/user.service";
@@ -43,6 +43,8 @@ import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
       lucideUpload,
       lucideTrash2,
       lucideCalendar,
+      lucideRefreshCcw,
+      lucideCheck,
     }),
   ],
   templateUrl: "./profile.html",

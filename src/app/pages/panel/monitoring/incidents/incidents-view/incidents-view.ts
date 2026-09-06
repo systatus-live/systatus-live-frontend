@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, inject, signal, computed } from "@angular/core";
-import { DatePipe, DecimalPipe } from "@angular/common";
+import { DatePipe } from "@angular/common";
+import { AppDecimalPipe } from "../../../../../pipes/app-decimal-pipe";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { firstValueFrom, Subscription } from "rxjs";
 import { map, filter, distinctUntilChanged } from "rxjs/operators";
@@ -21,7 +22,7 @@ import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
   selector: "app-incidents-view",
   imports: [
     DatePipe,
-    DecimalPipe,
+    AppDecimalPipe,
     NgIcon,
     HlmButton,
     ...HlmBadgeImports,

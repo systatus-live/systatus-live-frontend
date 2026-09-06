@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { formatMoney } from "../../../../utils/format-money";
 import { firstValueFrom } from "rxjs";
 import { NgIcon, provideIcons } from "@ng-icons/core";
-import { lucideCreditCard, lucideMapPin, lucidePencil, lucideSparkles, lucideReceipt, lucideShieldCheck, lucideCheck, lucideX, lucideDownload, lucideInfo } from "@ng-icons/lucide";
+import { lucideCreditCard, lucideMapPin, lucidePencil, lucideSparkles, lucideReceipt, lucideShieldCheck, lucideCheck, lucideX, lucideDownload, lucideInfo, lucideRefreshCcw } from "@ng-icons/lucide";
 import { User } from "../../../../services/user.service";
 import { Invoice } from "../../../../services/invoice.service";
 import { PlanService } from "../../../../services/plan.service";
@@ -85,6 +85,7 @@ export const invoiceStatusVariantMap: Record<InvoiceStatusEnum, { label: string;
       lucideX,
       lucideDownload,
       lucideInfo,
+      lucideRefreshCcw,
     }),
   ],
   templateUrl: "./subscription.html",
