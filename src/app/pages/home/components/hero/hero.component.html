@@ -134,10 +134,13 @@
 
             <!-- Footer bar -->
             <div class="px-5 py-3 bg-[#071120] border-t border-white/10 flex items-center justify-between">
-              <span class="text-xs text-[#8BA3C7]">Última verificação: agora mesmo</span>
-              <div class="flex items-center gap-1.5 text-xs text-emerald-400">
-                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                Monitorando
+              <!-- Integration logos -->
+              <div class="flex items-center gap-3">
+                @for (channel of channelList; track channel.name) {
+                  <div class="w-7 h-7 rounded-full bg-white/8 border border-white/10 flex items-center justify-center p-1" [hlmTooltip]="channel.name">
+                    <img [src]="channel.logo" [alt]="channel.name" class="w-full h-full object-contain" />
+                  </div>
+                }
               </div>
             </div>
           </div>

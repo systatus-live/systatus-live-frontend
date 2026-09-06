@@ -43,7 +43,7 @@
                   <ng-icon name="lucideClock" class="size-3" />
                   Pendente
                 </span>
-              } @else if (monitor.lastStatus?.startsWith('2')) {
+              } @else if (monitor.lastStatus === 'S') {
                 <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
                   <span class="relative flex h-1.5 w-1.5 shrink-0">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>

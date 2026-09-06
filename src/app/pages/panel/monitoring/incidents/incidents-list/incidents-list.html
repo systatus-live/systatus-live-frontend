@@ -64,9 +64,9 @@
           </div>
         </td>
         <td hlmTd>
-          @if (incident.firstError) {
+          @if (incident.firstHttpError) {
             <span hlmBadge variant="outline" class="w-fit">
-              {{ getStatusLabel(incident.firstError) }}
+              {{ getStatusLabel(incident.firstHttpError) }}
             </span>
           } @else {
             —

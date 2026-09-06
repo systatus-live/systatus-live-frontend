@@ -2,6 +2,7 @@ import { Component, PLATFORM_ID, inject } from "@angular/core";
 import { isPlatformBrowser } from "@angular/common";
 import { RouterLink } from "@angular/router";
 import { HlmButton } from "../../../../components/button/src";
+import { HlmTooltip } from "@spartan-ng/helm/tooltip";
 
 type BarStatus = "up" | "down" | "degraded";
 
@@ -15,7 +16,11 @@ interface MonitorCard {
 
 @Component({
   selector: "app-hero",
-  imports: [RouterLink, HlmButton],
+  imports: [
+    RouterLink, 
+    HlmButton,
+    HlmTooltip
+  ],
   templateUrl: "./hero.component.html",
 })
 export class HeroComponent {
@@ -44,6 +49,14 @@ export class HeroComponent {
       { name: "app.dashboard.io", status: "up", latency: "89ms", uptime: "100%", bars: bars3 },
     ];
   }
+
+  public readonly channelList = [
+    { name: 'Slack', logo: '/logos/slack.svg', status: 'Conectado', active: true },
+    { name: 'WhatsApp', logo: '/logos/whatsapp.svg', status: 'Conectado', active: true },
+    { name: 'Discord', logo: '/logos/discord.svg', status: 'Conectado', active: true },
+    { name: 'E-mail', logo: '/logos/mail.svg', status: '', active: false },
+    { name: 'Google Chat', logo: '/logos/google-chat.svg', status: '', active: false },
+  ];
 
   public getBarClass(status: BarStatus): string {
     if (status === "up") {

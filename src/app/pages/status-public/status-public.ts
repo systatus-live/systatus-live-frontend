@@ -56,7 +56,7 @@ export class StatusPublic implements OnInit, OnDestroy {
       return "empty";
     }
 
-    const down = withStatus.filter((m: any) => !m.lastStatus.startsWith("2"));
+    const down = withStatus.filter((m: any) => m.lastStatus !== 'S');
     if (down.length === 0) {
       return "operational";
     }
@@ -99,7 +99,7 @@ export class StatusPublic implements OnInit, OnDestroy {
     if (monitor.lastStatus === null) {
       return null;
     }
-    const label = HttpStatusCodeLabel[getHttpStatusKey(monitor.lastStatus) as keyof typeof HttpStatusCodeLabel];
+    const label = HttpStatusCodeLabel[getHttpStatusKey(monitor.lastHttpStatus) as keyof typeof HttpStatusCodeLabel];
     return monitor.lastIncident ? `${label} a ${monitor.lastIncident} • Latência: ${monitor.lastDuration}ms` : label;
   }
 

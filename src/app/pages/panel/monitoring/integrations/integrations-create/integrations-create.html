@@ -58,7 +58,7 @@
           <input hlmInput formControlName="address" maxlength="1000" [placeholder]="addressPlaceholder" />
           <div class="flex items-center justify-between">
             <p class="text-xs text-muted-foreground">
-              {{ form.controls.address.value?.length ?? 0 }}/1000
+              {{ form.controls.address.value?.length ?? 0 }}
             </p>
             @if (isWebhookType) {
               <app-webhook-tutorial />

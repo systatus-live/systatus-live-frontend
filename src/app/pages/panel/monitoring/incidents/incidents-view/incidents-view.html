@@ -24,11 +24,11 @@
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <p class="text-xs text-muted-foreground mb-0.5">Causa raiz</p>
-                <p class="font-medium">{{ getStatusLabel(incident().firstError) }}</p>
+                <p class="font-medium">{{ getStatusLabel(incident().firstHttpError) }}</p>
               </div>
               <div>
                 <p class="text-xs text-muted-foreground mb-0.5">Último Status</p>
-                <p class="font-medium">{{ getStatusLabel(incident().status) }}</p>
+                <p class="font-medium">{{ getStatusLabel(incident().lastHttpStatus) }}</p>
               </div>
             </div>
             <div>
@@ -66,15 +66,15 @@
             <ng-template #rowTemplate let-item>
               <tr hlmTr>
                 <td hlmTd>
-                  @if (item.status?.startsWith('2')) {
+                  @if (item.status === 'S') {
                     <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
                       <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0"></span>
-                      {{ getStatusLabel(item.status) }}
+                      {{ getStatusLabel(item.http_status) }}
                     </span>
                   } @else {
                     <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
                       <span class="h-1.5 w-1.5 rounded-full bg-red-500 shrink-0"></span>
-                      {{ getStatusLabel(item.status) }}
+                      {{ getStatusLabel(item.http_status) }}
                     </span>
                   }
                 </td>

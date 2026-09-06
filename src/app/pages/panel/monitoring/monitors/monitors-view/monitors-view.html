@@ -45,13 +45,13 @@
                 <ng-icon name="lucideClock" class="size-3" />
                 Pendente
               </span>
-            } @else if (lastCheck()?.lastStatus?.startsWith('2')) {
+            } @else if (lastCheck()?.lastStatus === 'S') {
               <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
                 <span class="relative flex h-1.5 w-1.5 shrink-0">
                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
                   <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
                 </span>
-                {{ getStatusLabel(lastCheck()?.lastStatus) }}
+                {{ getStatusLabel(lastCheck()?.lastHttpStatus) }}
               </span>
             } @else {
               <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
@@ -59,7 +59,7 @@
                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
                   <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500"></span>
                 </span>
-                {{ getStatusLabel(lastCheck()?.lastStatus) }}
+                {{ getStatusLabel(lastCheck()?.lastHttpStatus) }}
               </span>
             }
           </div>

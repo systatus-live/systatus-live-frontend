@@ -74,8 +74,8 @@ export class MonitorsList implements OnInit {
     if (!monitor.active) {
       return "Pausado";
     }
-    const label = HttpStatusCodeLabel[getHttpStatusKey(monitor.lastStatus) as keyof typeof HttpStatusCodeLabel];
-    return monitor.lastIncident ? `${label} • ${monitor.lastIncident}` : (label ?? monitor.lastStatus);
+    const label = HttpStatusCodeLabel[getHttpStatusKey(monitor.lastHttpStatus) as keyof typeof HttpStatusCodeLabel];
+    return monitor.lastIncident ? `${label} • ${monitor.lastIncident}` : (label ?? monitor.lastHttpStatus);
   }
 
   public getStatusIcon(monitor: any): string {
@@ -85,14 +85,14 @@ export class MonitorsList implements OnInit {
     if (monitor.lastStatus == null) {
       return "lucideClock";
     }
-    return monitor.lastStatus?.startsWith("2") ? "lucideBadgeCheck" : "lucideCircleAlert";
+    return monitor.lastStatus === 'S' ? "lucideBadgeCheck" : "lucideCircleAlert";
   }
 
   public getStatusIconColor(monitor: any): string {
     if (!monitor.active || monitor.lastStatus == null) {
       return "text-gray-400";
     }
-    return monitor.lastStatus?.startsWith("2") ? "text-[#05DF72]" : "text-[#FF6467]";
+    return monitor.lastStatus === 'S' ? "text-[#05DF72]" : "text-[#FF6467]";
   }
 
   public getHistoricalStyle(item: any): string {

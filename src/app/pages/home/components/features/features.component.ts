@@ -41,7 +41,7 @@ export class FeaturesComponent {
       glowClass: 'group-hover:shadow-red-500/20',
     },
     {
-      name: 'Histórico de 30 Dias',
+      name: 'Histórico de monitoramento',
       description: 'Identifique padrões de instabilidade e chegue em reuniões com dados.',
       icon: LucideClock,
       colorClass: 'bg-emerald-500/15 text-emerald-400',

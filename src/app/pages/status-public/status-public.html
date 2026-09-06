@@ -82,7 +82,7 @@
                         <ng-icon name="lucideClock" size="12" />
                         Pendente
                       </span>
-                    } @else if (monitor.lastStatus.startsWith('2')) {
+                    } @else if (monitor.lastStatus === 'S') {
                       <span class="inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs text-muted-foreground">
                         <span class="relative flex h-1.5 w-1.5 shrink-0">
                           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>

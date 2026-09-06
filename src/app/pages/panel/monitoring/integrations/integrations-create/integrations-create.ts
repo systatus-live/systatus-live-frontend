@@ -111,7 +111,7 @@ export class IntegrationsCreate implements OnInit {
       case ChatPlatformTypeEnum.EMAIL:
         return "E-mail";
       case ChatPlatformTypeEnum.PHONE:
-        return "Telefone";
+        return "WhatsApp (DDD + 9 dígitos)";
       default:
         return "URL Webhook";
     }
@@ -126,7 +126,7 @@ export class IntegrationsCreate implements OnInit {
       case ChatPlatformTypeEnum.EMAIL:
         return "destinatario@email.com";
       case ChatPlatformTypeEnum.PHONE:
-        return "WhatsApp (com DDD)";
+        return "34988887777";
       default:
         return "https://hooks.example.com/...";
     }
