@@ -19,7 +19,6 @@ import { Alert } from "../../../../../lib/alert";
 import { Integration } from "../../../../../services/integration.service";
 import { Interval } from "../../../../../services/interval.service";
 import { MonitorService } from "../../../../../services/monitor.service";
-import { ChatPlatformDescriptionLogoMap } from "../../../../../types/chat-platform.enum";
 import { MonitorTypeEnum, MonitorTypeLabelEnum } from "../../../../../types/monitor-type.enum";
 
 @Component({
@@ -84,10 +83,6 @@ export class MonitorsEdit implements OnInit {
         return "https://exemplo.com";
     }
   });
-  
-  public getPlatformLogo(chatPlatform: string): string {
-    return ChatPlatformDescriptionLogoMap[chatPlatform] ?? "/logos/mail.svg";
-  }
 
   async ngOnInit() {
     const id = this.route.snapshot.paramMap.get("id");

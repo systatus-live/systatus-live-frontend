@@ -31,10 +31,8 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.seo.update({
       title: "Systatus.Live | Monitore sites, APIs e servidores 24/7",
-      description:
-        "Monitoramento contínuo de sites, APIs e servidores com alertas instantâneos via Slack, WhatsApp, Discord, e-mail e Google Chat. Saiba antes dos seus clientes quando algo cai.",
-      keywords:
-        "uptime, monitoramento de servidores, monitoramento de sites, monitoramento de APIs, cron job, alertas de indisponibilidade, status page, gestão de incidentes",
+      description: "Monitoramento contínuo de sites, APIs e servidores com alertas instantâneos nas principais plataformas de mensagens (Slack, WhatsApp, Discord, Google Chat, e mais). Saiba antes dos seus clientes quando algo cai.",
+      keywords: "uptime, monitoramento de servidores, monitoramento de sites, monitoramento de APIs, cron job, alertas de indisponibilidade, status page, gestão de incidentes",
       canonical: "https://systatus.live",
       structuredData: {
         "@context": "https://schema.org",
@@ -42,8 +40,7 @@ export class HomeComponent implements OnInit {
         "name": "Systatus.Live",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web",
-        "description":
-          "Monitoramento contínuo de sites, APIs e servidores com alertas instantâneos. Saiba antes dos seus clientes quando algo cai.",
+        "description": "Monitoramento contínuo de sites, APIs e servidores com alertas instantâneos. Saiba antes dos seus clientes quando algo cai.",
         "url": "https://systatus.live",
         "inLanguage": "pt-BR",
         "offers": [

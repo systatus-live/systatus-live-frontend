@@ -14,9 +14,9 @@ import { Alert } from "../../../../../lib/alert";
 import { ChatPlatform } from "../../../../../services/chat-platform.service";
 import { Integration } from "../../../../../services/integration.service";
 import { AppStateService } from "../../../../../state/app-state.service";
-import { ChatPlatformNameLogoMap, ChatPlatformTypeEnum } from "../../../../../types/chat-platform.enum";
 import { PermissionEnum } from "../../../../../types/permission.enum";
 import { WebhookTutorial } from "../components/webhook-tutorial/webhook-tutorial";
+import { ChatPlatformTypeEnum } from "../../../../../types/chat-platform.enum";
 
 @Component({
   selector: "app-integrations-create",
@@ -56,10 +56,6 @@ export class IntegrationsCreate implements OnInit {
     { label: "{{datetime}}", description: "Data e hora do monitor" },
   ];
 
-  public getPlatformLogo(platformName: string): string {
-    return ChatPlatformNameLogoMap[platformName] ?? "/logos/mail.svg";
-  }
-
   public get hasCustomNotification(): boolean {
     return this.appState.permissionList().includes(PermissionEnum.CUSTOM_NOTIFICATION);
   }
@@ -94,8 +90,7 @@ export class IntegrationsCreate implements OnInit {
     upTemplate: ["", Validators.maxLength(250)],
   });
 
-  public readonly platformItemToString = (id: string) =>
-    this.platformList().find(p => p.id === id)?.description ?? id;
+  public readonly platformItemToString = (id: string) => this.platformList().find(p => p.id === id)?.description ?? id;
 
   public get selectedPlatform(): any {
     const id = this.form.controls.chatPlatformId.value;
@@ -145,7 +140,7 @@ export class IntegrationsCreate implements OnInit {
 
       this.platformList.set(platformRes.data);
       this.templateDefaults.set(defaultsRes);
-      
+
       this.form.patchValue({
         downTemplate: defaultsRes.downTemplate,
         upTemplate: defaultsRes.upTemplate,

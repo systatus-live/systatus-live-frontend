@@ -16,7 +16,7 @@ import { Alert } from "../../../../../lib/alert";
 import { ChatPlatform } from "../../../../../services/chat-platform.service";
 import { Integration } from "../../../../../services/integration.service";
 import { AppStateService } from "../../../../../state/app-state.service";
-import { ChatPlatformNameLogoMap, ChatPlatformTypeEnum } from "../../../../../types/chat-platform.enum";
+import { ChatPlatformTypeEnum } from "../../../../../types/chat-platform.enum";
 import { PermissionEnum } from "../../../../../types/permission.enum";
 import { WebhookTutorial } from "../components/webhook-tutorial/webhook-tutorial";
 import { HlmSkeleton } from "../../../../../components/skeleton/src";
@@ -68,10 +68,6 @@ export class IntegrationsEdit implements OnInit, OnDestroy {
     { label: "{{downtime}}", description: "Tempo indisponível" },
     { label: "{{datetime}}", description: "Data e hora do monitor" },
   ];
-
-  public getPlatformLogo(platformName: string): string {
-    return ChatPlatformNameLogoMap[platformName] ?? "/logos/mail.svg";
-  }
 
   public get hasCustomNotification(): boolean {
     return this.appState.permissionList().includes(PermissionEnum.CUSTOM_NOTIFICATION);

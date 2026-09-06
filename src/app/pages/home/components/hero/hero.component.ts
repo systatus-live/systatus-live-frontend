@@ -51,11 +51,12 @@ export class HeroComponent {
   }
 
   public readonly channelList = [
-    { name: 'Slack', logo: '/logos/slack.svg', status: 'Conectado', active: true },
-    { name: 'WhatsApp', logo: '/logos/whatsapp.svg', status: 'Conectado', active: true },
-    { name: 'Discord', logo: '/logos/discord.svg', status: 'Conectado', active: true },
-    { name: 'E-mail', logo: '/logos/mail.svg', status: '', active: false },
-    { name: 'Google Chat', logo: '/logos/google-chat.svg', status: '', active: false },
+    { name: 'Slack', logo: '/logos/slack.svg' },
+    { name: 'WhatsApp', logo: '/logos/whatsapp.svg' },
+    { name: 'Discord', logo: '/logos/discord.svg' },
+    { name: 'E-mail', logo: '/logos/mail.svg' },
+    { name: 'Google Chat', logo: '/logos/google-chat.svg' },
+    { name: 'Mattermost', logo: '/logos/mattermost.svg' },
   ];
 
   public getBarClass(status: BarStatus): string {

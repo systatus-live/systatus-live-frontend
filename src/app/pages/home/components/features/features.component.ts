@@ -35,7 +35,7 @@ export class FeaturesComponent {
     },
     {
       name: 'Alertas Instantâneos',
-      description: 'A notificação chega no Slack, WhatsApp, Discord, e-mail e Google Chat. Sem precisar abrir dashboard para saber se está tudo bem.',
+      description: 'A notificação chega no canal integrado (Slack, WhatsApp, Discord, e mais). Sem precisar abrir dashboard para saber se está tudo bem.',
       icon: LucideBell,
       colorClass: 'bg-red-500/15 text-red-400',
       glowClass: 'group-hover:shadow-red-500/20',

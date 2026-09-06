@@ -43,7 +43,7 @@
                   @for (platform of platformList(); track platform.id) {
                     <hlm-select-item [value]="platform.id">
                       <div class="flex items-center gap-2">
-                        <img [src]="getPlatformLogo(platform.name)" alt="" width="14" height="14" />
+                        <img [src]="platform.icon_url" alt="" width="14" height="14" />
                         {{ platform.description }}
                       </div>
                     </hlm-select-item>
@@ -57,9 +57,6 @@
           <label hlmLabel>{{ addressLabel }} <span class="text-destructive">*</span></label>
           <input hlmInput formControlName="address" maxlength="1000" [placeholder]="addressPlaceholder" />
           <div class="flex items-center justify-between">
-            <p class="text-xs text-muted-foreground">
-              {{ form.controls.address.value?.length ?? 0 }}
-            </p>
             @if (isWebhookType) {
               <app-webhook-tutorial />
             }

@@ -6,7 +6,6 @@ import { lucideEllipsis } from "@ng-icons/lucide";
 import { Integration } from "../../../../../services/integration.service";
 import { Alert } from "../../../../../lib/alert";
 import { NavigatorState } from "../../../../../services/navigator-state";
-import { ChatPlatformDescriptionLogoMap } from "../../../../../types/chat-platform.enum";
 import { HlmButton } from "../../../../../components/button/src";
 import { HlmTableImports } from "../../../../../components/table/src";
 import { HlmDropdownMenuImports } from "../../../../../components/dropdown-menu/src";
@@ -61,10 +60,6 @@ export class IntegrationsList implements OnInit {
     } catch (error: any) {
       Alert.error("", error.message);
     }
-  }
-
-  public getPlatformLogo(chatPlatform: string): string {
-    return ChatPlatformDescriptionLogoMap[chatPlatform] ?? "/logos/mail.svg";
   }
 
   public async copyToClipboard(text: string) {

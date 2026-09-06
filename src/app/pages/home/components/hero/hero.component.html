@@ -28,8 +28,7 @@
 
         <!-- Subtitle -->
         <p class="mt-6 text-lg text-[#8BA3C7] max-w-xl mx-auto lg:mx-0 leading-relaxed">
-          Monitoramento contínuo de sites, APIs e servidores com alertas instantâneos
-          via Slack, WhatsApp, Discord, e-mail e Google Chat, antes que o cliente perceba.
+          Monitoramento contínuo de sites, APIs e servidores com alertas instantâneos nas principais plataformas de mensagens ao detectar qualquer indisponibilidade.
         </p>
 
         <!-- CTA -->
@@ -136,6 +135,9 @@
             <div class="px-5 py-3 bg-[#071120] border-t border-white/10 flex items-center justify-between">
               <!-- Integration logos -->
               <div class="flex items-center gap-3">
+                <div>
+                  <span class="text-xs text-[#8BA3C7]">Integra com</span>
+                </div>
                 @for (channel of channelList; track channel.name) {
                   <div class="w-7 h-7 rounded-full bg-white/8 border border-white/10 flex items-center justify-center p-1" [hlmTooltip]="channel.name">
                     <img [src]="channel.logo" [alt]="channel.name" class="w-full h-full object-contain" />
