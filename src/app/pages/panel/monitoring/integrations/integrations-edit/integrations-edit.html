@@ -1,19 +1,28 @@
 @if (integration()) {
   <div class="flex flex-col gap-4">
     <div class="flex items-center justify-between">
-      <h1 class="text-base font-semibold leading-tight">Integração</h1>
+      <div>
+        <h1 class="text-base font-semibold leading-tight">{{ integration().name }}</h1>
+        <p class="text-xs text-muted-foreground mt-0.5">{{ integration().address }}</p>
+      </div>
       <div class="flex items-center gap-2">
-        <button hlmBtn variant="ghost" class="text-destructive hover:text-destructive hover:bg-destructive/10"
-          type="button" (click)="handleDelete()">
-          Excluir
+        <button hlmBtn size="icon" variant="outline" type="button" routerLink="/panel/monitoring/integrations" hlmTooltip="Integrações">
+          <ng-icon name="lucideList" />
         </button>
+        <app-navigator [currentId]="integration().id" routeBase="/panel/monitoring/integrations/edit" />
         @if (isEditing()) {
-          <button hlmBtn variant="ghost" type="button" (click)="handleCancel()">Cancelar</button>
-          <button hlmBtn type="button" (click)="handleSave()">Salvar</button>
+          <button hlmBtn size="icon" variant="outline" type="button" (click)="handleCancel()" hlmTooltip="Cancelar">
+            <ng-icon name="lucideRefreshCcw" />
+          </button>
+          <button hlmBtn size="icon" variant="outline" type="button" (click)="handleSave()" hlmTooltip="Salvar">
+            <ng-icon name="lucideCheck" />
+          </button>
         } @else {
-          <button hlmBtn type="button" (click)="isEditing.set(true)">
-            <ng-icon name="lucidePencil" class="h-3.5 w-3.5 mr-1" />
-            Editar
+          <button hlmBtn size="icon" variant="outline" type="button" (click)="isEditing.set(true)" hlmTooltip="Editar">
+            <ng-icon name="lucidePencil" />
+          </button>
+          <button hlmBtn size="icon" variant="outline" type="button" class="text-destructive hover:text-destructive hover:bg-destructive/10" (click)="handleDelete()" hlmTooltip="Excluir">
+            <ng-icon name="lucideTrash2" />
           </button>
         }
       </div>
@@ -174,8 +183,15 @@
 } @else {
   <div class="flex flex-col gap-4">
     <div class="flex items-center justify-between">
-      <div hlmSkeleton class="h-5 w-28"></div>
-      <div hlmSkeleton class="h-9 w-20"></div>
+      <div class="space-y-1.5">
+        <div hlmSkeleton class="h-5 w-40"></div>
+        <div hlmSkeleton class="h-3 w-64"></div>
+      </div>
+      <div class="flex items-center gap-2">
+        <div hlmSkeleton class="h-9 w-9 rounded-md"></div>
+        <div hlmSkeleton class="h-9 w-9 rounded-md"></div>
+        <div hlmSkeleton class="h-9 w-9 rounded-md"></div>
+      </div>
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div class="lg:col-span-2 space-y-6">

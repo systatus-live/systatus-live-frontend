@@ -7,10 +7,18 @@
           {{ getMonitorTypeLabel(monitor().type) }} • {{ monitor().address }}
         </p>
       </div>
-      <button hlmBtn type="button" (click)="router.navigate(['/panel/monitoring/monitors/edit', monitor().id])">
-        <ng-icon name="lucidePencil" class="h-3.5 w-3.5 mr-1" />
-        Editar
-      </button>
+      <div class="flex items-center gap-2">
+        <button hlmBtn size="icon" variant="outline" type="button" routerLink="/panel/monitoring/monitors" hlmTooltip="Monitores">
+          <ng-icon name="lucideList" />
+        </button>
+        <app-navigator [currentId]="monitor().id" routeBase="/panel/monitoring/monitors/view" />
+        <button hlmBtn size="icon" variant="outline" type="button" (click)="router.navigate(['/panel/monitoring/monitors/edit', monitor().id])" hlmTooltip="Editar">
+          <ng-icon name="lucidePencil" />
+        </button>
+        <button hlmBtn size="icon" variant="outline" class="text-destructive hover:text-destructive hover:bg-destructive/10" type="button" (click)="handleDelete()" hlmTooltip="Excluir">
+          <ng-icon name="lucideTrash2" />
+        </button>
+      </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">

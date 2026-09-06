@@ -1,0 +1,16 @@
+@if (isVisible) {
+  <div class="flex items-center gap-1">
+    <button hlmBtn size="icon" variant="outline" type="button" [disabled]="!hasPrev" (click)="first()" hlmTooltip="Primeiro">
+      <ng-icon name="lucideChevronsLeft" />
+    </button>
+    <button hlmBtn size="icon" variant="outline" type="button" [disabled]="!hasPrev" (click)="prev()" hlmTooltip="Anterior">
+      <ng-icon name="lucideChevronLeft" />
+    </button>
+    <button hlmBtn size="icon" variant="outline" type="button" [disabled]="!hasNext" (click)="next()" hlmTooltip="Próximo">
+      <ng-icon name="lucideChevronRight" />
+    </button>
+    <button hlmBtn size="icon" variant="outline" type="button" [disabled]="!hasNext" (click)="last()" hlmTooltip="Último">
+      <ng-icon name="lucideChevronsRight" />
+    </button>
+  </div>
+}

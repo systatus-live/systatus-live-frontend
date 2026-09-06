@@ -14,6 +14,7 @@ import { HlmInput } from "../../../../../components/input/src";
 import { HlmBadgeImports } from "../../../../../components/badge/src";
 import { HlmTableImports } from "../../../../../components/table/src";
 import { AppTable } from "../../../../../components/app-table/app-table";
+import { NavigatorState } from "../../../../../services/navigator-state";
 
 Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip);
 
@@ -35,6 +36,7 @@ Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineEle
 })
 export class IncidentsList implements OnInit, OnDestroy {
   private readonly incidentService = inject(Incident);
+  private readonly navigatorState = inject(NavigatorState);
   private readonly fb = inject(FormBuilder);
   public readonly router = inject(Router);
 
@@ -64,6 +66,7 @@ export class IncidentsList implements OnInit, OnDestroy {
 
       this.historical.set(historicalRes.data);
       this.incidentList.set(incidentRes.data);
+      this.navigatorState.set(incidentRes.data.map((i: any) => String(i.id)), "/panel/monitoring/incidents/view");
       this.pagination.set({ rows: incidentRes.pagination.rows, total: incidentRes.pagination.total });
       this.extras.set(incidentRes.extras);
 
@@ -165,8 +168,10 @@ export class IncidentsList implements OnInit, OnDestroy {
 
       if (p === 0) {
         this.incidentList.set(response.data);
+        this.navigatorState.set(response.data.map((i: any) => String(i.id)), "/panel/monitoring/incidents/view");
       } else {
         this.incidentList.update(prev => [...prev, ...response.data]);
+        this.navigatorState.append(response.data.map((i: any) => String(i.id)));
       }
 
       this.pagination.set({ rows: response.pagination.rows, total: response.pagination.total });

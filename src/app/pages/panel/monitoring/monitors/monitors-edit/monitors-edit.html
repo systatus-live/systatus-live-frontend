@@ -3,12 +3,16 @@
     <div class="flex items-center justify-between">
       <h1 class="text-base font-semibold leading-tight">Monitor</h1>
       <div class="flex items-center gap-2">
-        <button hlmBtn variant="ghost" class="text-destructive hover:text-destructive hover:bg-destructive/10"
-          (click)="handleDelete()">
-          Excluir
+        <button hlmBtn size="icon" variant="outline" type="button" routerLink="/panel/monitoring/monitors" hlmTooltip="Monitores">
+          <ng-icon name="lucideList" />
         </button>
-        <button hlmBtn variant="ghost" (click)="handleCancel()">Cancelar</button>
-        <button hlmBtn type="button" (click)="handleSave()">Salvar</button>
+        <app-navigator [currentId]="monitor().id" routeBase="/panel/monitoring/monitors/view" />
+        <button hlmBtn size="icon" variant="outline" type="button" (click)="handleCancel()" hlmTooltip="Cancelar">
+          <ng-icon name="lucideRefreshCcw" />
+        </button>
+        <button hlmBtn size="icon" variant="outline" type="button" (click)="handleSave()" hlmTooltip="Salvar">
+          <ng-icon name="lucideCheck" />
+        </button>
       </div>
     </div>
 

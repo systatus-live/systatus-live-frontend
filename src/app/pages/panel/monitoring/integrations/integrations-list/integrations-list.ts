@@ -5,6 +5,7 @@ import { NgIcon, provideIcons } from "@ng-icons/core";
 import { lucideEllipsis } from "@ng-icons/lucide";
 import { Integration } from "../../../../../services/integration.service";
 import { Alert } from "../../../../../lib/alert";
+import { NavigatorState } from "../../../../../services/navigator-state";
 import { ChatPlatformDescriptionLogoMap } from "../../../../../types/chat-platform.enum";
 import { HlmButton } from "../../../../../components/button/src";
 import { HlmTableImports } from "../../../../../components/table/src";
@@ -33,6 +34,7 @@ import { AppTable } from "../../../../../components/app-table/app-table";
 })
 export class IntegrationsList implements OnInit {
   private readonly integrationService = inject(Integration);
+  private readonly navigatorState = inject(NavigatorState);
   public readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
 
@@ -83,8 +85,10 @@ export class IntegrationsList implements OnInit {
 
       if (p === 0) {
         this.integrationList.set(response.data);
+        this.navigatorState.set(response.data.map((i: any) => String(i.id)), "/panel/monitoring/integrations/edit");
       } else {
         this.integrationList.update(prev => [...prev, ...response.data]);
+        this.navigatorState.append(response.data.map((i: any) => String(i.id)));
       }
 
       this.pagination.set({ rows: response.pagination.rows, total: response.pagination.total });

@@ -1,6 +1,8 @@
 import { Component, OnInit, inject, signal } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
+import { NgIcon, provideIcons } from "@ng-icons/core";
+import { lucideCheck, lucideList } from "@ng-icons/lucide";
 import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
 import { firstValueFrom } from "rxjs";
 import { HlmButton } from "../../../../../components/button/src";
@@ -21,14 +23,16 @@ import { WebhookTutorial } from "../components/webhook-tutorial/webhook-tutorial
   imports: [
     ReactiveFormsModule,
     RouterLink,
+    NgIcon,
     HlmButton,
     HlmInput,
     HlmLabel,
     HlmTextarea,
     ...HlmSelectImports,
     WebhookTutorial,
-    HlmTooltipImports
+    HlmTooltipImports,
   ],
+  providers: [provideIcons({ lucideCheck, lucideList })],
   templateUrl: "./integrations-create.html",
   styleUrl: "./integrations-create.scss",
 })

@@ -1,10 +1,18 @@
 @if (incident()) {
   <div class="flex flex-col gap-4">
-    <div>
-      <h1 class="text-base font-semibold leading-tight">Incidente em {{ incident().monitor.name }}</h1>
-      <p class="text-xs text-muted-foreground mt-0.5">
-        {{ getMonitorTypeLabel(incident().monitor.type) }} • {{ incident().monitor.address }}
-      </p>
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-base font-semibold leading-tight">Incidente em {{ incident().monitor.name }}</h1>
+        <p class="text-xs text-muted-foreground mt-0.5">
+          {{ getMonitorTypeLabel(incident().monitor.type) }} • {{ incident().monitor.address }}
+        </p>
+      </div>
+      <div class="flex items-center gap-2">
+        <button hlmBtn size="icon" variant="outline" type="button" routerLink="/panel/monitoring/incidents" hlmTooltip="Incidentes">
+          <ng-icon name="lucideList" />
+        </button>
+        <app-navigator [currentId]="incident().id" routeBase="/panel/monitoring/incidents/view" />
+      </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">

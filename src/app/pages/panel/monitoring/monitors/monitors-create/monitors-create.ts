@@ -3,7 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import { firstValueFrom } from "rxjs";
 import { NgIcon, provideIcons } from "@ng-icons/core";
-import { lucidePencil } from "@ng-icons/lucide";
+import { lucideCheck, lucideList } from "@ng-icons/lucide";
 import { MonitorService } from "../../../../../services/monitor.service";
 import { Interval } from "../../../../../services/interval.service";
 import { Integration } from "../../../../../services/integration.service";
@@ -16,12 +16,14 @@ import { HlmSelectImports } from "../../../../../components/select/src";
 import { HlmCheckboxImports } from "../../../../../components/checkbox/src";
 import { HlmSwitchImports } from "../../../../../components/switch/src";
 import { HlmSeparatorImports } from "../../../../../components/separator/src";
+import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
 
 @Component({
   selector: "app-monitors-create",
   imports: [
     ReactiveFormsModule,
     RouterLink,
+    NgIcon,
     HlmButton,
     HlmInput,
     HlmLabel,
@@ -29,8 +31,9 @@ import { HlmSeparatorImports } from "../../../../../components/separator/src";
     ...HlmCheckboxImports,
     ...HlmSwitchImports,
     ...HlmSeparatorImports,
+    HlmTooltipImports,
   ],
-  providers: [provideIcons({ lucidePencil })],
+  providers: [provideIcons({ lucideCheck, lucideList })],
   templateUrl: "./monitors-create.html",
   styleUrl: "./monitors-create.scss",
 })

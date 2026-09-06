@@ -5,8 +5,12 @@
       <p class="text-sm text-muted-foreground">Configure um canal de notificação</p>
     </div>
     <div class="flex items-center gap-2">
-      <button hlmBtn variant="ghost" type="button" routerLink="/panel/monitoring/integrations">Cancelar</button>
-      <button hlmBtn type="button" (click)="handleSave()">Salvar</button>
+      <button hlmBtn size="icon" variant="outline" type="button" routerLink="/panel/monitoring/integrations" hlmTooltip="Integrações">
+        <ng-icon name="lucideList" />
+      </button>
+      <button hlmBtn size="icon" variant="outline" type="button" (click)="handleSave()" hlmTooltip="Salvar">
+        <ng-icon name="lucideCheck" />
+      </button>
     </div>
   </div>
 

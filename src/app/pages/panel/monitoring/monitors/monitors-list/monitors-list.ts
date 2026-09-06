@@ -15,6 +15,7 @@ import { HlmTableImports } from "../../../../../components/table/src";
 import { HlmDropdownMenuImports } from "../../../../../components/dropdown-menu/src";
 import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
 import { AppTable } from "../../../../../components/app-table/app-table";
+import { NavigatorState } from "../../../../../services/navigator-state";
 import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
 import { environment } from "../../../../../../environments/environment";
 
@@ -41,6 +42,7 @@ import { environment } from "../../../../../../environments/environment";
 })
 export class MonitorsList implements OnInit {
   private readonly monitorService = inject(MonitorService);
+  private readonly navigatorState = inject(NavigatorState);
   public readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
 
@@ -135,8 +137,10 @@ export class MonitorsList implements OnInit {
 
       if (p === 0) {
         this.monitorList.set(response.data);
+        this.navigatorState.set(response.data.map((m: any) => String(m.id)), "/panel/monitoring/monitors/view");
       } else {
         this.monitorList.update(prev => [...prev, ...response.data]);
+        this.navigatorState.append(response.data.map((m: any) => String(m.id)));
       }
 
       this.pagination.set({ rows: response.pagination.rows, total: response.pagination.total });

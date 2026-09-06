@@ -1,10 +1,11 @@
-import { Component, OnInit, inject, signal } from "@angular/core";
+import { Component, OnInit, OnDestroy, inject, signal } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { NgIcon, provideIcons } from "@ng-icons/core";
-import { lucidePencil } from "@ng-icons/lucide";
+import { lucidePencil, lucideCheck, lucideRefreshCcw, lucideList, lucideTrash2 } from "@ng-icons/lucide";
 import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
-import { firstValueFrom } from "rxjs";
+import { firstValueFrom, Subscription } from "rxjs";
+import { map, filter, distinctUntilChanged } from "rxjs/operators";
 import { HlmButton } from "../../../../../components/button/src";
 import { HlmInput } from "../../../../../components/input/src";
 import { HlmLabel } from "../../../../../components/label/src";
@@ -19,11 +20,13 @@ import { ChatPlatformNameLogoMap, ChatPlatformTypeEnum } from "../../../../../ty
 import { PermissionEnum } from "../../../../../types/permission.enum";
 import { WebhookTutorial } from "../components/webhook-tutorial/webhook-tutorial";
 import { HlmSkeleton } from "../../../../../components/skeleton/src";
+import { AppNavigator } from "../../../../../components/app-navigator/app-navigator";
 
 @Component({
   selector: "app-integrations-edit",
   imports: [
     ReactiveFormsModule,
+    RouterLink,
     NgIcon,
     HlmButton,
     HlmInput,
@@ -34,18 +37,22 @@ import { HlmSkeleton } from "../../../../../components/skeleton/src";
     WebhookTutorial,
     HlmTooltipImports,
     HlmSkeleton,
+    AppNavigator,
   ],
-  providers: [provideIcons({ lucidePencil })],
+  providers: [provideIcons({ lucidePencil, lucideCheck, lucideRefreshCcw, lucideList, lucideTrash2 })],
   templateUrl: "./integrations-edit.html",
   styleUrl: "./integrations-edit.scss",
 })
-export class IntegrationsEdit implements OnInit {
+export class IntegrationsEdit implements OnInit, OnDestroy {
   private readonly integrationService = inject(Integration);
   private readonly chatPlatformService = inject(ChatPlatform);
   private readonly appState = inject(AppStateService);
   public readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly fb = inject(FormBuilder);
+
+  private routeSub: Subscription | null = null;
+  private routeId = "";
 
   public readonly platformList = signal<any[]>([]);
   public readonly integration = signal<any>(null);
@@ -103,10 +110,6 @@ export class IntegrationsEdit implements OnInit {
   public readonly platformItemToString = (id: string) =>
     this.platformList().find(p => p.id === id)?.description ?? id;
 
-  private get id(): string {
-    return this.route.snapshot.paramMap.get("id") ?? "";
-  }
-
   public get selectedPlatform(): any {
     const id = this.form.controls.chatPlatformId.value;
     return this.platformList().find(p => p.id === id) ?? null;
@@ -146,11 +149,29 @@ export class IntegrationsEdit implements OnInit {
     return this.selectedPlatform?.type === ChatPlatformTypeEnum.WEBHOOK;
   }
 
-  async ngOnInit() {
+  ngOnInit() {
+    this.routeSub = this.route.paramMap.pipe(
+      map(params => params.get("id")),
+      filter(id => !!id),
+      distinctUntilChanged(),
+    ).subscribe(id => {
+      this.routeId = id!;
+      this.loadData(id!);
+    });
+  }
+
+  ngOnDestroy() {
+    this.routeSub?.unsubscribe();
+  }
+
+  private async loadData(id: string) {
+    this.integration.set(null);
+    this.isEditing.set(false);
+
     try {
       const [platformRes, integrationRes, defaultsRes]: any[] = await Promise.all([
         firstValueFrom(this.chatPlatformService.getChatPlatformList(new URLSearchParams({ page: "0" }))),
-        firstValueFrom(this.integrationService.getIntegrationById(this.id)),
+        firstValueFrom(this.integrationService.getIntegrationById(id)),
         firstValueFrom(this.integrationService.getTemplateDefaults()),
       ]);
 
@@ -166,7 +187,7 @@ export class IntegrationsEdit implements OnInit {
 
   public async handleValidate() {
     try {
-      const response: any = await firstValueFrom(this.integrationService.validateIntegration(this.id));
+      const response: any = await firstValueFrom(this.integrationService.validateIntegration(this.routeId));
       Alert.success("", response.message);
     } catch (error: any) {
       Alert.error("", error.message);
@@ -176,7 +197,7 @@ export class IntegrationsEdit implements OnInit {
   public handleDelete() {
     Alert.confirm("Excluir integração", "A integração será excluída permanentemente. Continuar?", async () => {
       try {
-        const response: any = await firstValueFrom(this.integrationService.deleteIntegration(this.id));
+        const response: any = await firstValueFrom(this.integrationService.deleteIntegration(this.routeId));
         this.router.navigate(["/panel/monitoring/integrations"]);
         Alert.success("", response.message);
       } catch (error: any) {
@@ -207,7 +228,7 @@ export class IntegrationsEdit implements OnInit {
 
     try {
       const response: any = await firstValueFrom(
-        this.integrationService.updateIntegration(this.id, {
+        this.integrationService.updateIntegration(this.routeId, {
           chatPlatformId: this.form.controls.chatPlatformId.value,
           name: this.form.controls.name.value,
           address: this.form.controls.address.value,

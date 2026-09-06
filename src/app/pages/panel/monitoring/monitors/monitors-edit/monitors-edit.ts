@@ -1,6 +1,8 @@
 import { Component, inject, OnInit, signal } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import { NgIcon, provideIcons } from "@ng-icons/core";
+import { lucideCheck, lucideList, lucideRefreshCcw } from "@ng-icons/lucide";
 import { firstValueFrom } from "rxjs";
 import { MonitorService } from "../../../../../services/monitor.service";
 import { Interval } from "../../../../../services/interval.service";
@@ -16,12 +18,15 @@ import { HlmCheckboxImports } from "../../../../../components/checkbox/src";
 import { HlmSwitchImports } from "../../../../../components/switch/src";
 import { HlmSeparatorImports } from "../../../../../components/separator/src";
 import { HlmSkeleton } from "../../../../../components/skeleton/src";
+import { AppNavigator } from "../../../../../components/app-navigator/app-navigator";
+import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
 
 @Component({
   selector: "app-monitors-edit",
   imports: [
     ReactiveFormsModule,
     RouterLink,
+    NgIcon,
     HlmButton,
     HlmInput,
     HlmLabel,
@@ -30,8 +35,10 @@ import { HlmSkeleton } from "../../../../../components/skeleton/src";
     ...HlmSwitchImports,
     ...HlmSeparatorImports,
     HlmSkeleton,
+    AppNavigator,
+    HlmTooltipImports,
   ],
-  providers: [],
+  providers: [provideIcons({ lucideCheck, lucideRefreshCcw, lucideList })],
   templateUrl: "./monitors-edit.html",
   styleUrl: "./monitors-edit.scss",
 })

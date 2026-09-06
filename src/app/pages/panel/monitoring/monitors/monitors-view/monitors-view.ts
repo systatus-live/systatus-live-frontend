@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy, AfterViewChecked, ViewChild, ElementRef, inject, signal } from "@angular/core";
 import { DatePipe, DecimalPipe } from "@angular/common";
-import { ActivatedRoute, Router } from "@angular/router";
-import { firstValueFrom } from "rxjs";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import { firstValueFrom, Subscription } from "rxjs";
+import { map, filter, distinctUntilChanged } from "rxjs/operators";
 import { NgIcon, provideIcons } from "@ng-icons/core";
-import { lucidePencil, lucidePause, lucideClock, lucideCheck, lucideInfo } from "@ng-icons/lucide";
+import { lucidePencil, lucidePause, lucideClock, lucideCheck, lucideInfo, lucideTrash2, lucideList } from "@ng-icons/lucide";
 import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
 import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip } from "chart.js";
 import { MonitorService } from "../../../../../services/monitor.service";
@@ -14,6 +15,7 @@ import { HlmButton } from "../../../../../components/button/src";
 import { HlmBadgeImports } from "../../../../../components/badge/src";
 import { HlmTableImports } from "../../../../../components/table/src";
 import { AppTable } from "../../../../../components/app-table/app-table";
+import { AppNavigator } from "../../../../../components/app-navigator/app-navigator";
 import { HlmSkeleton } from "../../../../../components/skeleton/src";
 
 Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip);
@@ -23,15 +25,17 @@ Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineEle
   imports: [
     DatePipe,
     DecimalPipe,
+    RouterLink,
     NgIcon,
     HlmButton,
     ...HlmBadgeImports,
     ...HlmTableImports,
     HlmTooltipImports,
     AppTable,
+    AppNavigator,
     HlmSkeleton,
   ],
-  providers: [provideIcons({ lucidePencil, lucidePause, lucideClock, lucideCheck, lucideInfo })],
+  providers: [provideIcons({ lucidePencil, lucidePause, lucideClock, lucideCheck, lucideInfo, lucideTrash2, lucideList })],
   templateUrl: "./monitors-view.html",
   styleUrl: "./monitors-view.scss",
 })
@@ -43,6 +47,7 @@ export class MonitorsView implements OnInit, OnDestroy, AfterViewChecked {
   @ViewChild("responseTimeChart") responseTimeChartRef?: ElementRef<HTMLCanvasElement>;
   private responseTimeChart: Chart | null = null;
   private chartNeedsInit = false;
+  private routeSub: Subscription | null = null;
 
   public readonly monitor = signal<any>(null);
   public readonly lastCheck = signal<any>(null);
@@ -90,13 +95,39 @@ export class MonitorsView implements OnInit, OnDestroy, AfterViewChecked {
     return MonitorTypeLabelEnum[type as keyof typeof MonitorTypeLabelEnum] ?? type;
   }
 
-  async ngOnInit() {
-    const id = this.route.snapshot.paramMap.get("id");
+  public handleDelete() {
+    Alert.confirm("Excluir monitor", "O monitor será excluído permanentemente. Continuar?", async () => {
+      try {
+        const response: any = await firstValueFrom(this.monitorService.deleteMonitor(this.monitor().id));
 
-    if (!id) {
-      this.router.navigate(["/panel/monitoring/monitors"]);
-      return;
-    }
+        Alert.success("", response.message);
+        this.router.navigate(["/panel/monitoring/monitors"]);
+      } catch (error: any) {
+        Alert.error("", error.message);
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.routeSub = this.route.paramMap.pipe(
+      map(params => params.get("id")),
+      filter(id => !!id),
+      distinctUntilChanged(),
+    ).subscribe(id => {
+      this.loadData(id!);
+    });
+  }
+
+  ngOnDestroy() {
+    this.routeSub?.unsubscribe();
+    this.responseTimeChart?.destroy();
+  }
+
+  private async loadData(id: string) {
+    this.monitor.set(null);
+    
+    this.responseTimeChart?.destroy();
+    this.responseTimeChart = null;
 
     try {
       const [monitorRes, historicalRes]: any[] = await Promise.all([
@@ -115,10 +146,6 @@ export class MonitorsView implements OnInit, OnDestroy, AfterViewChecked {
     } catch (error: any) {
       Alert.error("", error.message);
     }
-  }
-
-  ngOnDestroy() {
-    this.responseTimeChart?.destroy();
   }
 
   ngAfterViewChecked() {

@@ -1,9 +1,10 @@
-import { Component, OnInit, inject, signal, computed } from "@angular/core";
+import { Component, OnInit, OnDestroy, inject, signal, computed } from "@angular/core";
 import { DatePipe, DecimalPipe } from "@angular/common";
-import { ActivatedRoute, Router } from "@angular/router";
-import { firstValueFrom } from "rxjs";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import { firstValueFrom, Subscription } from "rxjs";
+import { map, filter, distinctUntilChanged } from "rxjs/operators";
 import { NgIcon, provideIcons } from "@ng-icons/core";
-import { lucideCheck } from "@ng-icons/lucide";
+import { lucideCheck, lucideList } from "@ng-icons/lucide";
 import { Incident } from "../../../../../services/incident.service";
 import { Alert } from "../../../../../lib/alert";
 import { HttpStatusCodeLabel, getHttpStatusKey } from "../../../../../types/http-status-code";
@@ -12,7 +13,9 @@ import { HlmButton } from "../../../../../components/button/src";
 import { HlmBadgeImports } from "../../../../../components/badge/src";
 import { HlmTableImports } from "../../../../../components/table/src";
 import { AppTable } from "../../../../../components/app-table/app-table";
+import { AppNavigator } from "../../../../../components/app-navigator/app-navigator";
 import { HlmSkeleton } from "../../../../../components/skeleton/src";
+import { HlmTooltipImports } from "@spartan-ng/helm/tooltip";
 
 @Component({
   selector: "app-incidents-view",
@@ -24,16 +27,22 @@ import { HlmSkeleton } from "../../../../../components/skeleton/src";
     ...HlmBadgeImports,
     ...HlmTableImports,
     AppTable,
+    AppNavigator,
     HlmSkeleton,
+    RouterLink,
+    ...HlmTooltipImports,
   ],
-  providers: [provideIcons({ lucideCheck })],
+  providers: [provideIcons({ lucideCheck, lucideList })],
   templateUrl: "./incidents-view.html",
   styleUrl: "./incidents-view.scss",
 })
-export class IncidentsView implements OnInit {
+export class IncidentsView implements OnInit, OnDestroy {
   private readonly incidentService = inject(Incident);
   public readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+
+  private routeSub: Subscription | null = null;
+  private routeId = "";
 
   public readonly incident = signal<any>(null);
   public readonly historicalItems = signal<any[]>([]);
@@ -87,13 +96,28 @@ export class IncidentsView implements OnInit {
     } catch { }
   }
 
-  async ngOnInit() {
-    const id = this.route.snapshot.paramMap.get("id");
+  ngOnInit() {
+    this.routeSub = this.route.paramMap.pipe(
+      map(params => params.get("id")),
+      filter(id => !!id),
+      distinctUntilChanged(),
+    ).subscribe(id => {
+      this.routeId = id!;
+      this.loadData(id!);
+    });
+  }
 
-    if (!id) {
-      this.router.navigate(["/panel/monitoring/incidents"]);
-      return;
-    }
+  ngOnDestroy() {
+    this.routeSub?.unsubscribe();
+  }
+
+  private async loadData(id: string) {
+    this.incident.set(null);
+
+    this.historicalItems.set([]);
+    this.historicalPage.set(0);
+    
+    this.loadingMoreHistorical = false;
 
     try {
       const [incidentRes, historicalRes]: any[] = await Promise.all([
@@ -110,7 +134,7 @@ export class IncidentsView implements OnInit {
   }
 
   public async fetchHistoricalPage(p: number) {
-    const id = this.route.snapshot.paramMap.get("id");
+    const id = this.routeId;
 
     if (!id) {
       return;
