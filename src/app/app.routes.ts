@@ -11,7 +11,7 @@ export const routes: Routes = [
   },
   {
     path: "contact",
-    title: "Contato • Systatus.Live",
+    title: "Contato • Systatus",
     loadComponent: () => import("./pages/contact/contact").then(m => m.Contact),
   },
   {
@@ -20,12 +20,12 @@ export const routes: Routes = [
     children: [
       {
         path: "terms-of-use",
-        title: "Termos de Uso • Systatus.Live",
+        title: "Termos de Uso • Systatus",
         loadComponent: () => import("./pages/agreements/terms-of-use/terms-of-use/terms-of-use").then(m => m.TermsOfUse),
       },
       {
         path: "privacy-policy",
-        title: "Política de Privacidade • Systatus.Live",
+        title: "Política de Privacidade • Systatus",
         loadComponent: () => import("./pages/agreements/privacy-policy/privacy-policy/privacy-policy").then(m => m.PrivacyPolicy),
       },
     ],
@@ -41,27 +41,27 @@ export const routes: Routes = [
     children: [
       {
         path: "signup",
-        title: "Cadastrar • Systatus.Live",
+        title: "Cadastrar • Systatus",
         loadComponent: () => import("./pages/auth/signup/signup").then(m => m.Signup),
       },
       {
         path: "signin",
-        title: "Entrar • Systatus.Live",
+        title: "Entrar • Systatus",
         loadComponent: () => import("./pages/auth/signin/signin").then(m => m.Signin),
       },
       {
         path: "forgot-password",
-        title: "Redefinir Senha • Systatus.Live",
+        title: "Redefinir Senha • Systatus",
         loadComponent: () => import("./pages/auth/forgot-password/forgot-password").then(m => m.ForgotPassword),
       },
       {
         path: "reset-password",
-        title: "Redefinir Senha • Systatus.Live",
+        title: "Redefinir Senha • Systatus",
         loadComponent: () => import("./pages/auth/reset-password/reset-password").then(m => m.ResetPassword),
       },
       {
         path: "verify-account",
-        title: "Verificar Conta • Systatus.Live",
+        title: "Verificar Conta • Systatus",
         loadComponent: () => import("./pages/auth/verify-account/verify-account").then(m => m.VerifyAccount),
       },
     ],
@@ -84,22 +84,22 @@ export const routes: Routes = [
             children: [
               {
                 path: "",
-                title: "Monitores • Systatus.Live",
+                title: "Monitores • Systatus",
                 loadComponent: () => import("./pages/panel/monitoring/monitors/monitors-list/monitors-list").then(m => m.MonitorsList),
               },
               {
                 path: "new",
-                title: "Novo Monitor • Systatus.Live",
+                title: "Novo Monitor • Systatus",
                 loadComponent: () => import("./pages/panel/monitoring/monitors/monitors-create/monitors-create").then(m => m.MonitorsCreate),
               },
               {
                 path: "edit/:id",
-                title: "Monitor • Systatus.Live",
+                title: "Monitor • Systatus",
                 loadComponent: () => import("./pages/panel/monitoring/monitors/monitors-edit/monitors-edit").then(m => m.MonitorsEdit),
               },
               {
                 path: "view/:id",
-                title: "Monitor • Systatus.Live",
+                title: "Monitor • Systatus",
                 loadComponent: () => import("./pages/panel/monitoring/monitors/monitors-view/monitors-view").then(m => m.MonitorsView),
               },
             ],
@@ -109,12 +109,12 @@ export const routes: Routes = [
             children: [
               {
                 path: "",
-                title: "Incidentes • Systatus.Live",
+                title: "Incidentes • Systatus",
                 loadComponent: () => import("./pages/panel/monitoring/incidents/incidents-list/incidents-list").then(m => m.IncidentsList),
               },
               {
                 path: "view/:id",
-                title: "Incidente • Systatus.Live",
+                title: "Incidente • Systatus",
                 loadComponent: () => import("./pages/panel/monitoring/incidents/incidents-view/incidents-view").then(m => m.IncidentsView),
               },
             ],
@@ -124,17 +124,17 @@ export const routes: Routes = [
             children: [
               {
                 path: "",
-                title: "Integrações • Systatus.Live",
+                title: "Integrações • Systatus",
                 loadComponent: () => import("./pages/panel/monitoring/integrations/integrations-list/integrations-list").then(m => m.IntegrationsList),
               },
               {
                 path: "new",
-                title: "Nova Integração • Systatus.Live",
+                title: "Nova Integração • Systatus",
                 loadComponent: () => import("./pages/panel/monitoring/integrations/integrations-create/integrations-create").then(m => m.IntegrationsCreate),
               },
               {
                 path: "edit/:id",
-                title: "Integração • Systatus.Live",
+                title: "Integração • Systatus",
                 loadComponent: () => import("./pages/panel/monitoring/integrations/integrations-edit/integrations-edit").then(m => m.IntegrationsEdit),
               },
             ],
@@ -143,7 +143,7 @@ export const routes: Routes = [
       },
       {
         path: "status-page",
-        title: "Página de Status • Systatus.Live",
+        title: "Página de Status • Systatus",
         loadComponent: () => import("./pages/panel/status-page/status-page").then(m => m.StatusPage),
         canActivate: [ngxPermissionsGuard],
         data: {
@@ -164,12 +164,12 @@ export const routes: Routes = [
           },
           {
             path: "profile",
-            title: "Perfil • Systatus.Live",
+            title: "Perfil • Systatus",
             loadComponent: () => import("./pages/panel/account/profile/profile").then(m => m.Profile),
           },
           {
             path: "subscription",
-            title: "Assinatura • Systatus.Live",
+            title: "Assinatura • Systatus",
             loadComponent: () => import("./pages/panel/account/subscription/subscription").then(m => m.Subscription),
           },
         ],
@@ -179,7 +179,7 @@ export const routes: Routes = [
         children: [
           {
             path: "help",
-            title: "Ajuda • Systatus.Live",
+            title: "Ajuda • Systatus",
             loadComponent: () => import("./pages/panel/support/help/help").then(m => m.Help),
           },
         ],

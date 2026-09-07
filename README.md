@@ -1,4 +1,4 @@
-# Systatus.Live — Front-end
+# Systatus — Front-end
 
 Aplicação web Angular com SSR para monitoramento de serviços, gestão de integrações e exibição de páginas de status públicas.
 
