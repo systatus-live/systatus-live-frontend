@@ -8,10 +8,11 @@ import { PlanService } from '../../../../services/plan.service';
 import { Alert } from '../../../../lib/alert';
 import { formatMoney } from '../../../../utils/format-money';
 import { firstValueFrom } from 'rxjs';
+import { RevealDirective } from '../../../../directives/reveal.directive';
 
 @Component({
   selector: 'app-pricing',
-  imports: [RouterLink, LucideCheck, LucideX, LucideInfo, HlmButton, HlmBadge, ...HlmTooltipImports],
+  imports: [RouterLink, LucideCheck, LucideX, LucideInfo, HlmButton, HlmBadge, ...HlmTooltipImports, RevealDirective],
   templateUrl: './pricing.component.html',
 })
 export class PricingComponent implements OnInit {

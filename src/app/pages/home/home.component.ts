@@ -2,8 +2,6 @@ import { Component, OnInit, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { HeroComponent } from './components/hero/hero.component';
-import { StatsBarComponent } from './components/stats-bar/stats-bar.component';
-import { FeaturesComponent } from './components/features/features.component';
 import { DemoTabsComponent } from './components/demo-tabs/demo-tabs.component';
 import { PricingComponent } from './components/pricing/pricing.component';
 import { CtaBannerComponent } from './components/cta-banner/cta-banner.component';
@@ -15,8 +13,6 @@ import { SeoService } from '../../services/seo.service';
   imports: [
     NavbarComponent,
     HeroComponent,
-    StatsBarComponent,
-    FeaturesComponent,
     DemoTabsComponent,
     PricingComponent,
     CtaBannerComponent,
@@ -31,8 +27,8 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.seo.update({
       title: "Systatus | Monitore sites, APIs e servidores 24/7",
-      description: "Monitoramento contínuo de sites, APIs e servidores com alertas instantâneos nas principais plataformas de mensagens (Slack, WhatsApp, Discord, Google Chat, e mais). Saiba antes dos seus clientes quando algo cai.",
-      keywords: "uptime, monitoramento de servidores, monitoramento de sites, monitoramento de APIs, cron job, alertas de indisponibilidade, status page, gestão de incidentes",
+      description: "Monitoramento contínuo de sites, APIs e servidores com alertas instantâneos nas principais plataformas de mensagens (Slack, WhatsApp, Discord, Google Chat, e mais). Saiba antes dos seus clientes quando algo cair.",
+      keywords: "uptime, monitoramento de servidores, monitoramento de sites, monitoramento de APIs, cron job, alertas de indisponibilidade, status page, gestão de incidentes, free crons, uptime alternatives",
       canonical: "https://systatus.live",
       structuredData: {
         "@context": "https://schema.org",
@@ -40,7 +36,7 @@ export class HomeComponent implements OnInit {
         "name": "Systatus",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web",
-        "description": "Monitoramento contínuo de sites, APIs e servidores com alertas instantâneos. Saiba antes dos seus clientes quando algo cai.",
+        "description": "Monitoramento contínuo de sites, APIs e servidores com alertas instantâneos. Saiba antes dos seus clientes quando algo cair.",
         "url": "https://systatus.live",
         "inLanguage": "pt-BR",
         "offers": [

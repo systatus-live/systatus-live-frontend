@@ -2,22 +2,20 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Section header -->
     <div class="text-center mb-14">
-      <div class="inline-block rounded-full border border-[#4D9EFF]/30 bg-[#4D9EFF]/10 px-4 py-1.5 mb-4">
-        <p class="text-sm font-medium text-[#4D9EFF] tracking-wide uppercase">Preços</p>
-      </div>
       <h2 class="text-3xl font-extrabold tracking-tight text-[#E8F0FE] sm:text-4xl">
         Escolha o plano ideal para você
       </h2>
       <p class="mt-4 max-w-xl mx-auto text-lg text-[#8BA3C7]">
-        Todos os planos incluem monitoramento em tempo real. Sem surpresas na fatura.
+        Sem surpresas na fatura.
       </p>
     </div>
 
     <!-- Plan cards -->
     @if (planList().length > 0) {
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-        @for (plan of planList(); track plan.name) {
+        @for (plan of planList(); track plan.name; let i = $index) {
           <div
+            [appReveal]="i * 100"
             class="relative flex flex-col rounded-2xl border p-6 transition-all duration-300"
             [class]="plan.mostPopular
               ? 'border-[#4D9EFF]/60 bg-[#4D9EFF]/5 shadow-xl shadow-[#4D9EFF]/10'

@@ -23,12 +23,12 @@
         <h1 class="text-4xl font-extrabold tracking-tight text-[#E8F0FE] sm:text-5xl lg:text-6xl leading-tight">
           Saiba antes dos<br />
           seus clientes<br />
-          <span class="text-[#4D9EFF]">quando algo cai</span>
+          <span class="text-[#4D9EFF]">quando algo cair</span>
         </h1>
 
         <!-- Subtitle -->
         <p class="mt-6 text-lg text-[#8BA3C7] max-w-xl mx-auto lg:mx-0 leading-relaxed">
-          Monitoramento contínuo de sites, APIs e servidores com alertas instantâneos nas principais plataformas de mensagens ao detectar qualquer indisponibilidade.
+          Alertas instantâneos no Slack, Discord, WhatsApp e mais, em menos de 30 segundos. Sem instalar nada.
         </p>
 
         <!-- CTA -->
@@ -41,17 +41,13 @@
           </button>
         </div>
 
-        <!-- Trust pills -->
-        <div class="mt-8 flex flex-wrap gap-x-6 gap-y-3 justify-center lg:justify-start">
-          @for (pill of [
-            { text: 'Verificação a cada 60s' },
-            { text: 'Alerta em menos de 30s' },
-            { text: 'Plano gratuito disponível' }
-          ]; track pill.text) {
-            <div class="flex items-center gap-1.5 text-sm text-[#8BA3C7]">
-              <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 inline-block"></span>
-              {{ pill.text }}
-            </div>
+        <!-- Feature pills -->
+        <div class="mt-10 flex flex-wrap gap-2 justify-center lg:justify-start">
+          @for (pill of featurePills; track pill) {
+            <span class="inline-flex items-center gap-1.5 text-xs text-[#8BA3C7] bg-white/5 border border-white/8 rounded-full px-3 py-1.5">
+              <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 flex-shrink-0"></span>
+              {{ pill }}
+            </span>
           }
         </div>
       </div>

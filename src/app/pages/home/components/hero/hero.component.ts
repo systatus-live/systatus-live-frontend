@@ -50,6 +50,15 @@ export class HeroComponent {
     ];
   }
 
+  public readonly featurePills = [
+    "Monitoramento Contínuo",
+    "Alertas Instantâneos",
+    "Histórico de Monitoramento",
+    "Gestão de Incidentes",
+    "Página de Status Pública",
+    "Análise de Desempenho",
+  ];
+
   public readonly channelList = [
     { name: 'Slack', logo: '/logos/slack.svg' },
     { name: 'WhatsApp', logo: '/logos/whatsapp.svg' },
