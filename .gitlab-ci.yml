@@ -10,7 +10,7 @@ deploy-systatus-web:
     - systatus-runner
   script:
     - ssh-keyscan $DEPLOY_HOST >> /home/gitlab-runner/.ssh/known_hosts
-    - docker build -f Dockerfile.prod -t systatus-live-web:latest .
+    - docker build --no-cache -f Dockerfile.prod -t systatus-live-web:latest .
     - docker save systatus-live-web:latest | gzip | ssh $DEPLOY_USER@$DEPLOY_HOST "docker load"
     - |
       ssh $DEPLOY_USER@$DEPLOY_HOST "cat > $DEPLOY_DIR/.env << 'EOF'

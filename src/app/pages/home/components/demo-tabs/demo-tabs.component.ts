@@ -41,7 +41,7 @@ export class DemoTabsComponent {
     { name: 'Discord', logo: '/logos/discord.svg', status: 'Conectado', active: true },
     { name: 'E-mail', logo: '/logos/mail.svg', status: '', active: false },
     { name: 'Google Chat', logo: '/logos/google-chat.svg', status: '', active: false },
-    { name: 'Mattermost', logo: '/logos/mattermost.svg' },
+    { name: 'Mattermost', logo: '/logos/mattermost-white.svg' },
   ];
 
   public readonly incidentList: Incident[] = [

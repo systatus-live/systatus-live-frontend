@@ -56,7 +56,7 @@ export class HeroComponent {
     { name: 'Discord', logo: '/logos/discord.svg' },
     { name: 'E-mail', logo: '/logos/mail.svg' },
     { name: 'Google Chat', logo: '/logos/google-chat.svg' },
-    { name: 'Mattermost', logo: '/logos/mattermost.svg' },
+    { name: 'Mattermost', logo: '/logos/mattermost-white.svg' },
   ];
 
   public getBarClass(status: BarStatus): string {
