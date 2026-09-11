@@ -13,6 +13,7 @@ export class DemoTabsComponent {
     { name: 'Slack', logo: '/logos/slack.svg' },
     { name: 'WhatsApp', logo: '/logos/whatsapp.svg' },
     { name: 'Google Chat', logo: '/logos/google-chat.svg' },
+    { name: 'Microsoft Teams', logo: '/logos/microsoft-teams.svg' },
     { name: 'Discord', logo: '/logos/discord.svg' },
     { name: 'Mattermost', logo: '/logos/mattermost.svg' },
     { name: 'E-mail', logo: '/logos/mail.svg' },

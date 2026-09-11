@@ -244,16 +244,17 @@
             <p class="text-xs text-center text-muted-foreground mb-4">{{ plan.description }}</p>
             <ul class="flex-1 space-y-2.5 mb-6">
               @for (feature of plan.features; track feature.label) {
-                <li class="flex items-center gap-2 text-sm">
+                 <li class="flex items-center gap-3">
                   @if (feature.enabled) {
-                    <ng-icon name="lucideCheck" class="h-4 w-4 shrink-0 text-green-500" />
-                    <span>{{ feature.label }}</span>
+                    <ng-icon name="lucideCheck" class="h-4 w-4 shrink-0 text-green-400" />
                   } @else {
-                    <ng-icon name="lucideX" class="h-4 w-4 shrink-0 text-muted-foreground/40" />
-                    <span class="text-muted-foreground">{{ feature.label }}</span>
+                    <ng-icon name="lucideX" class="h-4 w-4 shrink-0 text-red-400"  />
                   }
+                  <span class="text-sm" [class]="'text-[#E8F0FE]'">
+                    {{ feature.label }}
+                  </span>
                   @if (feature.hint) {
-                    <ng-icon name="lucideInfo" class="h-3.5 w-3.5 shrink-0 text-muted-foreground cursor-default" [hlmTooltip]="feature.hint" />
+                    <svg lucideInfo class="flex-shrink-0 h-3.5 w-3.5 text-white/40 cursor-default" [hlmTooltip]="feature.hint"></svg>
                   }
                 </li>
               }
