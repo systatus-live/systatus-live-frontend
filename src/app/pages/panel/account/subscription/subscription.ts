@@ -105,6 +105,7 @@ export class Subscription implements OnInit {
 
   public readonly subscription = signal<any>(null);
   public readonly planList = signal<any[]>([]);
+  public readonly featureList = signal<any[]>([]);
   public readonly invoiceList = signal<any[]>([]);
   public readonly pagination = signal({ page: 0, rows: 0, total: 0 });
   public readonly billingData = signal<any>(null);
@@ -160,6 +161,25 @@ export class Subscription implements OnInit {
   public readonly stateItemToString = (v: string) => v;
 
   public readonly formatMoney = formatMoney;
+
+  public isHighlighted(plan: any): boolean {
+    const sub = this.subscription();
+    if (sub?.id) { return sub.id === plan.id; }
+    return plan.mostPopular;
+  }
+
+  public isCurrentPlan(plan: any): boolean {
+    return this.subscription()?.id === plan.id;
+  }
+
+  public isBoolean(value: any): boolean {
+    return typeof value === 'boolean';
+  }
+
+  public getDisplayValue(key: string, value: any): string {
+    if (key === 'retention_days') { return `${value} dias`; }
+    return String(value);
+  }
 
   public getInvoiceStatus(status: string) {
     return this.invoiceStatusVariantMap[status as InvoiceStatusEnum] ?? null;
@@ -394,6 +414,7 @@ export class Subscription implements OnInit {
       ]);
       this.subscription.set(subResponse);
       this.planList.set(planResponse.data);
+      this.featureList.set(planResponse.features);
     } catch (error: any) {
       Alert.error("", error.message);
     }

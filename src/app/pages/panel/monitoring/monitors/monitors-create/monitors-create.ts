@@ -72,9 +72,9 @@ export class MonitorsCreate implements OnInit {
   public readonly addressPlaceholder = computed(() => {
     switch (this.selectedType()) {
       case MonitorTypeEnum.PING:
-        return "IPv4 ou IPv6";
+        return "Ex.: 172.67.160.8 ou exemplo.com";
       default:
-        return "https://exemplo.com";
+        return "Ex.: https://exemplo.com";
     }
   });
 

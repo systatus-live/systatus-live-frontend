@@ -119,7 +119,7 @@
               </div>
             }
             @if (lastCheck()?.lastDuration != null) {
-              <p class="text-xs pt-1"><span class="text-muted-foreground">Latência Total:</span> <span class="font-mono">{{ lastCheck().lastDuration | appDecimal:1 }}ms</span></p>
+              <p class="text-xs pt-1"><span class="text-muted-foreground">Latência Total: </span> <span class="font-mono">{{ lastCheck().lastDuration | appDecimal:1 }}ms</span></p>
             } @else {
               <p class="text-xs text-muted-foreground pt-1">Aguardando primeira verificação</p>
             }
