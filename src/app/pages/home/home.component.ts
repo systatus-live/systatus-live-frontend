@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.seo.update({
-      title: "Systatus | Monitore sites, APIs e servidores 24/7",
+      title: "Systatus | Monitore gratuitamente sites, APIs e servidores 24/7",
       description: "Monitoramento contínuo de sites, APIs e servidores com alertas instantâneos nas principais plataformas de mensagens (Slack, WhatsApp, Discord, Google Chat, e mais). Saiba antes dos seus clientes quando algo cair.",
       keywords: "uptime, monitoramento de servidores, monitoramento de sites, monitoramento de APIs, cron job, alertas de indisponibilidade, status page, gestão de incidentes, free crons, uptime alternatives",
       canonical: "https://systatus.live",
