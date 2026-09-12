@@ -1,11 +1,11 @@
 @if (integration()) {
   <div class="flex flex-col gap-4">
-    <div class="flex items-center justify-between">
-      <div>
+    <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
+      <div class="min-w-0">
         <h1 class="text-base font-semibold leading-tight">{{ integration().name }}</h1>
-        <p class="text-xs text-muted-foreground mt-0.5 font-mono">{{ integration().address }}</p>
+        <p class="text-xs text-muted-foreground mt-0.5 font-mono truncate">{{ integration().address }}</p>
       </div>
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 shrink-0">
         <button hlmBtn size="icon" variant="outline" type="button" routerLink="/panel/monitoring/integrations" hlmTooltip="Integrações">
           <ng-icon name="lucideList" />
         </button>
@@ -164,7 +164,7 @@
           }
         </div>
 
-        <div>
+        <div class="space-y-6">
           <div class="rounded-lg border bg-card overflow-hidden">
             <div class="px-4 py-3 bg-secondary border-b">
               <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Diagnóstico</p>
@@ -177,6 +177,24 @@
                 Testar integração
               </button>
             </div>
+          </div>
+
+          <div class="rounded-lg border bg-card overflow-hidden">
+            <div class="px-4 py-3 bg-secondary border-b">
+              <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Em uso nos monitores</p>
+            </div>
+            @if (monitorList().length === 0) {
+              <p class="text-sm text-muted-foreground px-4 py-3">Nenhum monitor utiliza esta integração.</p>
+            } @else {
+              <div class="divide-y max-h-55 overflow-y-auto">
+                @for (monitor of monitorList(); track monitor.id) {
+                  <a [routerLink]="['/panel/monitoring/monitors/view', monitor.id]" class="flex flex-col gap-0.5 px-4 py-3 hover:bg-muted/50 transition-colors">
+                    <span class="text-sm font-medium truncate">{{ monitor.name }}</span>
+                    <span class="text-xs text-muted-foreground font-mono truncate">{{ monitor.address }}</span>
+                  </a>
+                }
+              </div>
+            }
           </div>
         </div>
       </div>
@@ -208,7 +226,22 @@
           </div>
         </div>
       </div>
-      <div>
+      <div class="space-y-6">
+        <div class="rounded-lg border bg-card overflow-hidden">
+          <div class="px-4 py-3 bg-secondary border-b">
+            <div hlmSkeleton class="h-3 w-36"></div>
+          </div>
+          <div class="divide-y">
+            <div class="px-4 py-3 space-y-1.5">
+              <div hlmSkeleton class="h-4 w-3/4"></div>
+              <div hlmSkeleton class="h-3 w-full"></div>
+            </div>
+            <div class="px-4 py-3 space-y-1.5">
+              <div hlmSkeleton class="h-4 w-1/2"></div>
+              <div hlmSkeleton class="h-3 w-4/5"></div>
+            </div>
+          </div>
+        </div>
         <div class="rounded-lg border bg-card overflow-hidden">
           <div class="px-4 py-3 bg-secondary border-b">
             <div hlmSkeleton class="h-3 w-20"></div>

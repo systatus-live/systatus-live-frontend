@@ -33,4 +33,8 @@ export class Integration {
   getTemplateDefaults() {
     return this.http.get(`${environment.apiUrl}/v1/integrations/templates/defaults`);
   }
+
+  getMonitorsByIntegrationId(id: string) {
+    return this.http.get(`${environment.apiUrl}/v1/integrations/${id}/monitors`);
+  }
 }

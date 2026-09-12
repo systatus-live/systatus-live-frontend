@@ -29,4 +29,8 @@ export class MonitorService {
   getMonitorHistorical(id: string) {
     return this.http.get(`${environment.apiUrl}/v1/monitors/${id}/historical`);
   }
+
+  getIntegrationsByMonitorId(id: string) {
+    return this.http.get(`${environment.apiUrl}/v1/monitors/${id}/integrations`);
+  }
 }

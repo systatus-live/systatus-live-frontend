@@ -91,13 +91,14 @@ export class MonitorsEdit implements OnInit {
     }
 
     try {
-      const [monitorRes, intervalRes, integrationRes]: any[] = await Promise.all([
+      const [monitorRes, intervalRes, integrationRes, monitorIntegrationsRes]: any[] = await Promise.all([
         firstValueFrom(this.monitorService.getMonitorById(id)),
         firstValueFrom(this.intervalService.getIntervalList(new URLSearchParams({ page: "0" }))),
         firstValueFrom(this.integrationService.getIntegrationList(new URLSearchParams({ page: "0" }))),
+        firstValueFrom(this.monitorService.getIntegrationsByMonitorId(id)),
       ]);
 
-      this.patchForm(monitorRes);
+      this.patchForm(monitorRes, monitorIntegrationsRes.data ?? []);
 
       this.monitor.set(monitorRes);
       this.intervalList.set(intervalRes.data);
@@ -178,13 +179,13 @@ export class MonitorsEdit implements OnInit {
     this.router.navigate(["/panel/monitoring/monitors/view", this.monitor().id]);
   }
 
-  private patchForm(monitor: any) {
+  private patchForm(monitor: any, selectedIntegrations: any[] = []) {
     this.form.patchValue({
       name: monitor.name,
       type: monitor.type,
       address: monitor.address,
       active: monitor.active,
-      integrationList: monitor.integrationList.map((i: any) => i.id),
+      integrationList: selectedIntegrations.map((i: any) => i.id),
       intervalId: monitor.interval_id,
     });
   }

@@ -56,6 +56,7 @@ export class IntegrationsEdit implements OnInit, OnDestroy {
 
   public readonly platformList = signal<any[]>([]);
   public readonly integration = signal<any>(null);
+  public readonly monitorList = signal<any[]>([]);
   public readonly isEditing = signal(false);
   public readonly templateDefaults = signal<{ downTemplate: string; upTemplate: string } | null>(null);
   public lastFocused: { el: HTMLTextAreaElement; controlName: "downTemplate" | "upTemplate" } | null = null;
@@ -165,15 +166,17 @@ export class IntegrationsEdit implements OnInit, OnDestroy {
     this.isEditing.set(false);
 
     try {
-      const [platformRes, integrationRes, defaultsRes]: any[] = await Promise.all([
+      const [platformRes, integrationRes, defaultsRes, monitorsRes]: any[] = await Promise.all([
         firstValueFrom(this.chatPlatformService.getChatPlatformList(new URLSearchParams({ page: "0" }))),
         firstValueFrom(this.integrationService.getIntegrationById(id)),
         firstValueFrom(this.integrationService.getTemplateDefaults()),
+        firstValueFrom(this.integrationService.getMonitorsByIntegrationId(id)),
       ]);
 
       this.platformList.set(platformRes.data);
       this.integration.set(integrationRes);
       this.templateDefaults.set(defaultsRes);
+      this.monitorList.set(monitorsRes.data ?? monitorsRes);
 
       this.patchForm(integrationRes);
     } catch (error: any) {

@@ -9,7 +9,7 @@
   </div>
 
   <app-table
-    [columns]="['Integração', '']"
+    [columns]="['Integração', 'Monitores', '']"
     [rows]="integrationList()"
     emptyMessage="Nenhuma integração encontrada."
     [total]="pagination().total"
@@ -29,6 +29,11 @@
               </span>
             </div>
           </div>
+        </td>
+        <td hlmTd>
+          <span class="text-sm font-mono">
+            {{ integration.monitorCount }}
+          </span>
         </td>
         <td hlmTd>
           <div class="flex justify-end" (click)="$event.stopPropagation()">

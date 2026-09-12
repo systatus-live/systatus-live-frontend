@@ -1,8 +1,8 @@
 @if (monitor()) {
   <div class="flex flex-col gap-4">
-    <div class="flex items-center justify-between">
-      <h1 class="text-base font-semibold leading-tight">Monitor</h1>
-      <div class="flex items-center gap-2">
+    <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
+      <h1 class="text-base font-semibold leading-tight truncate min-w-0">Monitor</h1>
+      <div class="flex items-center gap-2 shrink-0">
         <button hlmBtn size="icon" variant="outline" type="button" routerLink="/panel/monitoring/monitors" hlmTooltip="Monitores">
           <ng-icon name="lucideList" />
         </button>
