@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between">
       <div>
         <h1 class="text-base font-semibold leading-tight">Incidente em {{ incident().monitor.name }}</h1>
-        <p class="text-xs text-muted-foreground mt-0.5">
+        <p class="text-xs text-muted-foreground font-mono mt-0.5">
           {{ getMonitorTypeLabel(incident().monitor.type) }} • {{ incident().monitor.address }}
         </p>
       </div>
@@ -18,9 +18,11 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div class="lg:col-span-2 space-y-6">
 
-        <div class="rounded-xl border bg-card p-6 space-y-5">
-          <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Situação</p>
-          <div class="space-y-3 text-sm">
+        <div class="rounded-lg border bg-card overflow-hidden">
+          <div class="px-4 py-3 bg-secondary border-b">
+            <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Situação</p>
+          </div>
+          <div class="p-6 space-y-4 text-sm">
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <p class="text-xs text-muted-foreground mb-0.5">Causa raiz</p>
@@ -51,64 +53,70 @@
           </div>
         </div>
 
-        <div class="rounded-xl border bg-card p-6 space-y-4">
-          <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Histórico</p>
-          <app-table
-            [columns]="['Status', 'Data', 'Latência']"
-            [rows]="historicalItems()"
-            emptyMessage="Nenhuma atividade encontrada."
-            [total]="historicalPagination().total"
-            [hasMore]="historicalHasMore()"
-            totalLabel="registros"
-            maxHeight="400px"
-            (loadMore)="onLoadMoreHistorical()"
-          >
-            <ng-template #rowTemplate let-item>
-              <tr hlmTr>
-                <td hlmTd>
-                  @if (item.status === 'S') {
-                    <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
-                      <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0"></span>
-                      {{ getStatusLabel(item.http_status) }}
-                    </span>
-                  } @else {
-                    <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
-                      <span class="h-1.5 w-1.5 rounded-full bg-red-500 shrink-0"></span>
-                      {{ getStatusLabel(item.http_status) }}
-                    </span>
-                  }
-                </td>
-                <td hlmTd>
-                  <span class="text-xs text-muted-foreground">{{ item.created_at | date:'dd/MM/yyyy HH:mm' }}</span>
-                </td>
-                <td hlmTd>
-                  <span class="text-xs text-muted-foreground">
-                    @if (item.total_ms != null) {
-                      {{ item.total_ms | appDecimal:1 }}ms
+        <div class="rounded-lg border bg-card overflow-hidden">
+          <div class="px-4 py-3 bg-secondary border-b">
+            <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Histórico</p>
+          </div>
+          <div class="p-4">
+            <app-table
+              [columns]="['Status', 'Data', 'Latência']"
+              [rows]="historicalItems()"
+              emptyMessage="Nenhuma atividade encontrada."
+              [total]="historicalPagination().total"
+              [hasMore]="historicalHasMore()"
+              totalLabel="registros"
+              maxHeight="400px"
+              (loadMore)="onLoadMoreHistorical()"
+            >
+              <ng-template #rowTemplate let-item>
+                <tr hlmTr>
+                  <td hlmTd>
+                    @if (item.status === 'S') {
+                      <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+                        {{ getStatusLabel(item.http_status) }}
+                      </span>
                     } @else {
-                      —
+                      <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+                        <span class="h-1.5 w-1.5 rounded-full bg-red-500 shrink-0"></span>
+                        {{ getStatusLabel(item.http_status) }}
+                      </span>
                     }
-                  </span>
-                </td>
-              </tr>
-            </ng-template>
-          </app-table>
+                  </td>
+                  <td hlmTd>
+                    <span class="text-xs text-muted-foreground font-mono">{{ item.created_at | date:'dd/MM/yyyy HH:mm' }}</span>
+                  </td>
+                  <td hlmTd>
+                    <span class="text-xs text-muted-foreground font-mono">
+                      @if (item.total_ms != null) {
+                        {{ item.total_ms | appDecimal:1 }}ms
+                      } @else {
+                        Pendente
+                      }
+                    </span>
+                  </td>
+                </tr>
+              </ng-template>
+            </app-table>
+          </div>
         </div>
 
       </div>
 
       <div class="space-y-6">
-        <div class="rounded-xl border bg-card p-6 space-y-5">
-          <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Duração</p>
-          <div class="space-y-3 text-sm">
+        <div class="rounded-lg border bg-card overflow-hidden">
+          <div class="px-4 py-3 bg-secondary border-b">
+            <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Duração</p>
+          </div>
+          <div class="p-6 space-y-4 text-sm">
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <p class="text-xs text-muted-foreground mb-0.5">Início</p>
-                <p class="font-medium">{{ incident().created_at | date:'dd/MM/yyyy HH:mm' }}</p>
+                <p class="font-medium font-mono">{{ incident().created_at | date:'dd/MM/yyyy HH:mm' }}</p>
               </div>
               <div>
                 <p class="text-xs text-muted-foreground mb-0.5">Resolvido em</p>
-                <p class="font-medium">
+                <p class="font-medium font-mono">
                   @if (incident().ended_at) {
                     {{ incident().ended_at | date:'dd/MM/yyyy HH:mm' }}
                   } @else {
@@ -119,37 +127,41 @@
             </div>
             <div>
               <p class="text-xs text-muted-foreground mb-0.5">Duração</p>
-              <p class="font-medium">{{ incident().duration || '-' }}</p>
+              <p class="font-medium font-mono">{{ incident().duration || 'Pendente' }}</p>
             </div>
           </div>
         </div>
 
         @if (requestHeaders) {
-          <div class="rounded-xl border bg-card p-6 space-y-4">
-            <div class="flex items-center justify-between">
+          <div class="rounded-lg border bg-card overflow-hidden">
+            <div class="px-4 py-3 bg-secondary border-b flex items-center justify-between">
               <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Requisição</p>
               <button hlmBtn variant="ghost" size="sm" (click)="copyText(requestHeaders!)">Copiar</button>
             </div>
-            <div class="rounded-lg bg-muted px-4 py-3 flex items-start gap-2 text-xs font-mono">
-              <span class="font-bold text-blue-500 shrink-0">HEAD</span>
-              <span class="break-all">{{ incident().monitor.address }}</span>
-            </div>
-            <div class="space-y-1.5">
-              <p class="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Headers enviados</p>
-              <pre class="rounded-lg bg-muted p-4 text-xs overflow-x-auto whitespace-pre-wrap break-all">{{ requestHeaders }}</pre>
+            <div class="p-4 space-y-4">
+              <div class="rounded-lg bg-muted px-4 py-3 flex items-start gap-2 text-xs font-mono">
+                <span class="font-bold text-blue-500 shrink-0">HEAD</span>
+                <span class="break-all">{{ incident().monitor.address }}</span>
+              </div>
+              <div class="space-y-1.5">
+                <p class="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Headers enviados</p>
+                <pre class="rounded-lg bg-muted p-4 text-xs overflow-x-auto whitespace-pre-wrap break-all">{{ requestHeaders }}</pre>
+              </div>
             </div>
           </div>
         }
 
         @if (responseHeaders) {
-          <div class="rounded-xl border bg-card p-6 space-y-4">
-            <div class="flex items-center justify-between">
+          <div class="rounded-lg border bg-card overflow-hidden">
+            <div class="px-4 py-3 bg-secondary border-b flex items-center justify-between">
               <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Resposta</p>
               <button hlmBtn variant="ghost" size="sm" (click)="copyText(responseHeaders!)">Copiar</button>
             </div>
-            <div class="space-y-1.5">
-              <p class="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Headers recebidos</p>
-              <pre class="rounded-lg bg-muted p-4 text-xs overflow-x-auto whitespace-pre-wrap break-all">{{ responseHeaders }}</pre>
+            <div class="p-4 space-y-4">
+              <div class="space-y-1.5">
+                <p class="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Headers recebidos</p>
+                <pre class="rounded-lg bg-muted p-4 text-xs overflow-x-auto whitespace-pre-wrap break-all">{{ responseHeaders }}</pre>
+              </div>
             </div>
           </div>
         }
@@ -165,23 +177,31 @@
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div class="lg:col-span-2 space-y-6">
-        <div class="rounded-xl border bg-card p-6 space-y-5">
-          <div hlmSkeleton class="h-3 w-20"></div>
-          <div class="space-y-3">
+        <div class="rounded-lg border bg-card overflow-hidden">
+          <div class="px-4 py-3 bg-secondary border-b">
+            <div hlmSkeleton class="h-3 w-20"></div>
+          </div>
+          <div class="p-6 space-y-3">
             <div hlmSkeleton class="h-4 w-full"></div>
             <div hlmSkeleton class="h-4 w-full"></div>
             <div hlmSkeleton class="h-6 w-24"></div>
           </div>
         </div>
-        <div class="rounded-xl border bg-card p-6 space-y-4">
-          <div hlmSkeleton class="h-3 w-20"></div>
-          <div hlmSkeleton class="h-40 w-full"></div>
+        <div class="rounded-lg border bg-card overflow-hidden">
+          <div class="px-4 py-3 bg-secondary border-b">
+            <div hlmSkeleton class="h-3 w-20"></div>
+          </div>
+          <div class="p-4">
+            <div hlmSkeleton class="h-40 w-full"></div>
+          </div>
         </div>
       </div>
       <div class="space-y-6">
-        <div class="rounded-xl border bg-card p-6 space-y-5">
-          <div hlmSkeleton class="h-3 w-20"></div>
-          <div class="space-y-3">
+        <div class="rounded-lg border bg-card overflow-hidden">
+          <div class="px-4 py-3 bg-secondary border-b">
+            <div hlmSkeleton class="h-3 w-20"></div>
+          </div>
+          <div class="p-6 space-y-3">
             <div hlmSkeleton class="h-4 w-full"></div>
             <div hlmSkeleton class="h-4 w-full"></div>
           </div>

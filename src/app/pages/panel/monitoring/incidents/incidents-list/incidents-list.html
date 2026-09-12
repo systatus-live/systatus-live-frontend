@@ -14,12 +14,14 @@
     </div>
   </div>
 
-  <div class="rounded-xl border bg-card p-4 space-y-3" [hidden]="historical().length === 0">
-    <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-      Incidentes (30 dias)
-    </p>
-    <div class="h-[120px] w-full">
-      <canvas #chartCanvas></canvas>
+  <div class="rounded-lg border bg-card overflow-hidden" [hidden]="historical().length === 0">
+    <div class="px-4 py-3 bg-secondary border-b">
+      <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Incidentes (30 dias)</p>
+    </div>
+    <div class="p-4">
+      <div class="h-[120px] w-full">
+        <canvas #chartCanvas></canvas>
+      </div>
     </div>
   </div>
 
@@ -57,10 +59,10 @@
             </span>
           }
         </td>
-        <td hlmTd>
-          <div class="flex flex-col justify-center">
-            <span class="font-medium">{{ incident.name }}</span>
-            <small class="text-muted-foreground">{{ incident.address }}</small>
+        <td hlmTd class="max-w-0 w-full">
+          <div class="flex flex-col justify-center min-w-0">
+            <span class="font-medium truncate">{{ incident.name }}</span>
+            <span class="text-xs text-muted-foreground font-mono truncate">{{ incident.address }}</span>
           </div>
         </td>
         <td hlmTd>
@@ -69,16 +71,16 @@
               {{ getStatusLabel(incident.firstHttpError) }}
             </span>
           } @else {
-            —
+            <span class="text-xs text-muted-foreground">Desconhecido</span>
           }
         </td>
         <td hlmTd>
-          <span class="text-xs text-muted-foreground">
+          <span class="text-xs text-muted-foreground font-mono">
             {{ incident.created_at | date:'dd/MM/yyyy HH:mm' }}
           </span>
         </td>
         <td hlmTd>
-          <span class="text-xs text-muted-foreground">
+          <span class="text-xs text-muted-foreground font-mono">
             @if (incident.ended_at) {
               {{ incident.ended_at | date:'dd/MM/yyyy HH:mm' }}
             } @else {
@@ -87,8 +89,8 @@
           </span>
         </td>
         <td hlmTd>
-          <span class="text-xs text-muted-foreground">
-            {{ incident.duration || '-' }}
+          <span class="text-xs text-muted-foreground font-mono">
+            {{ incident.duration || 'Pendente' }}
           </span>
         </td>
       </tr>

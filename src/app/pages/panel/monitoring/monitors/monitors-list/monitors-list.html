@@ -21,14 +21,14 @@
       >
         <ng-template #rowTemplate let-monitor>
           <tr hlmTr class="cursor-pointer" (click)="router.navigate(['/panel/monitoring/monitors/view', monitor.id])">
-            <td hlmTd>
-              <div class="flex items-center gap-x-2">
+            <td hlmTd class="max-w-0 w-full">
+              <div class="flex items-center gap-x-2 min-w-0">
                 <img [src]="getFaviconUrl(monitor.address)" width="16" height="16" class="rounded shrink-0" alt="" (error)="hideFavicon($event)" />
-                <div class="flex flex-col justify-center overflow-hidden">
-                  <span class="font-medium">{{ monitor.name }}</span>
-                  <small class="text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis">
+                <div class="flex flex-col justify-center min-w-0">
+                  <span class="font-medium truncate">{{ monitor.name }}</span>
+                  <span class="text-xs text-muted-foreground font-mono truncate">
                     {{ getMonitorTypeLabel(monitor.type) }} • {{ monitor.address }}
-                  </small>
+                  </span>
                 </div>
               </div>
             </td>
@@ -62,7 +62,7 @@
               }
             </td>
             <td hlmTd>
-              <span class="text-xs text-muted-foreground">
+              <span class="text-xs text-muted-foreground font-mono">
                 @if (!monitor.lastDuration) {
                   Pendente
                 } @else {
@@ -71,7 +71,7 @@
               </span>
             </td>
             <td hlmTd>
-              <span class="flex flex items-center gap-x-2 text-xs text-muted-foreground">
+              <span class="flex items-center gap-x-2 text-xs text-muted-foreground font-mono">
                 @if (!monitor.lastCheck) {
                   Pendente
                 } @else {
@@ -90,7 +90,7 @@
                     <div [style]="getHistoricalStyle(item)" class="w-1.5 h-5 rounded-lg hover:scale-125 transition-transform" [hlmTooltip]="item.note"></div>
                   }
                 </div>
-                <small class="text-muted-foreground">{{ monitor.percentOnline }}%</small>
+                <span class="text-xs text-muted-foreground font-mono">{{ monitor.percentOnline }}%</span>
               </div>
             </td>
             <td hlmTd>
@@ -118,25 +118,29 @@
       </app-table>
     </div>
 
-    <div class="rounded-xl border bg-card p-4 w-52 shrink-0 space-y-4">
-      <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Status</p>
-      <div class="flex items-start justify-around">
-        <div class="flex flex-col items-center gap-1" hlmTooltip="Operacional">
-          <span class="text-2xl font-bold text-emerald-500">{{ extras().totalUp ?? 0 }}</span>
-          <span class="inline-flex rounded-full h-3 w-3 mt-0.5 bg-emerald-500"></span>
-        </div>
-        <div class="flex flex-col items-center gap-1" hlmTooltip="Indisponível">
-          <span class="text-2xl font-bold text-red-500">{{ extras().totalDown ?? 0 }}</span>
-          <span class="inline-flex rounded-full h-3 w-3 mt-0.5 bg-red-500"></span>
-        </div>
-        <div class="flex flex-col items-center gap-1" hlmTooltip="Pausado">
-          <span class="text-2xl font-bold text-gray-400">{{ extras().totalPaused ?? 0 }}</span>
-          <ng-icon name="lucidePause" class="text-gray-400" />
-        </div>
+    <div class="rounded-lg border bg-card overflow-hidden w-52 shrink-0">
+      <div class="px-4 py-3 bg-secondary border-b">
+        <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Status</p>
       </div>
-      <p class="text-xs text-muted-foreground text-center">
-        Monitorando {{ extras().totalMonitoring ?? 0 }} de {{ extras().totalMonitors ?? 0 }} monitores
-      </p>
+      <div class="p-4 space-y-4">
+        <div class="flex items-start justify-around">
+          <div class="flex flex-col items-center gap-1" hlmTooltip="Operacional">
+            <span class="text-2xl font-bold font-mono text-emerald-500">{{ extras().totalUp ?? 0 }}</span>
+            <span class="inline-flex rounded-full h-3 w-3 mt-0.5 bg-emerald-500"></span>
+          </div>
+          <div class="flex flex-col items-center gap-1" hlmTooltip="Indisponível">
+            <span class="text-2xl font-bold font-mono text-red-500">{{ extras().totalDown ?? 0 }}</span>
+            <span class="inline-flex rounded-full h-3 w-3 mt-0.5 bg-red-500"></span>
+          </div>
+          <div class="flex flex-col items-center gap-1" hlmTooltip="Pausado">
+            <span class="text-2xl font-bold font-mono text-gray-400">{{ extras().totalPaused ?? 0 }}</span>
+            <ng-icon name="lucidePause" class="text-gray-400" />
+          </div>
+        </div>
+        <p class="text-xs text-muted-foreground text-center">
+          Monitorando {{ extras().totalMonitoring ?? 0 }} de {{ extras().totalMonitors ?? 0 }} monitores
+        </p>
+      </div>
     </div>
   </div>
 </div>

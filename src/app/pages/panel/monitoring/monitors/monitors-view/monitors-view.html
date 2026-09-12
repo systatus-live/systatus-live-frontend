@@ -1,9 +1,9 @@
 @if (monitor()) {
-  <div class="flex flex-col gap-6">
+  <div class="flex flex-col gap-4">
     <div class="flex items-center justify-between">
       <div>
         <h1 class="text-base font-semibold leading-tight">{{ monitor().name }}</h1>
-        <p class="text-xs text-muted-foreground mt-0.5">
+        <p class="text-xs text-muted-foreground font-mono mt-0.5">
           {{ getMonitorTypeLabel(monitor().type) }} • {{ monitor().address }}
         </p>
       </div>
@@ -22,16 +22,18 @@
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div class="rounded-xl border bg-card p-6 space-y-5">
-        <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Monitor</p>
-        <div class="space-y-3 text-sm">
+      <div class="rounded-lg border bg-card overflow-hidden">
+        <div class="px-4 py-3 bg-secondary border-b">
+          <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Monitor</p>
+        </div>
+        <div class="p-6 space-y-4 text-sm">
           <div>
             <p class="text-xs text-muted-foreground mb-0.5">Tipo</p>
             <p class="font-medium">{{ getMonitorTypeLabel(monitor().type) }}</p>
           </div>
           <div>
             <p class="text-xs text-muted-foreground mb-0.5">Endereço</p>
-            <p class="font-medium break-all">{{ monitor().address }}</p>
+            <p class="font-medium font-mono break-all">{{ monitor().address }}</p>
           </div>
           <div>
             <p class="text-xs text-muted-foreground mb-0.5">Situação</p>
@@ -66,7 +68,7 @@
           <div>
             <div class="flex items-center justify-between mb-1">
               <p class="text-xs text-muted-foreground">Disponibilidade 30 dias</p>
-              <small class="text-muted-foreground shrink-0">{{ percentOnline() }}%</small>
+              <span class="text-xs text-muted-foreground font-mono shrink-0">{{ percentOnline() }}%</span>
             </div>
             <div class="flex gap-x-0.5 w-full">
               @for (item of historicalDays(); track $index) {
@@ -77,32 +79,32 @@
         </div>
       </div>
 
-      <div class="rounded-xl border bg-card p-6 space-y-5">
-        <div class="flex items-center justify-between">
+      <div class="rounded-lg border bg-card overflow-hidden">
+        <div class="px-4 py-3 bg-secondary border-b flex items-center justify-between">
           <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Última verificação</p>
           @if (lastCheck()?.lastCheckedAt) {
-            <p class="text-xs">{{ lastCheck().lastCheckedAt }}</p>
+            <p class="text-xs font-mono text-muted-foreground">{{ lastCheck().lastCheckedAt }}</p>
           }
         </div>
-        <div class="space-y-3">
+        <div class="p-6 space-y-3">
           @if (monitor().type === 'PING') {
             <div class="grid grid-cols-3 gap-2">
               <div class="rounded-lg bg-muted p-3 text-center">
                 <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">RTT Mín</p>
-                <p class="font-semibold text-sm">{{ lastCheck()?.lastMinMs != null ? (lastCheck().lastMinMs | appDecimal:1) + 'ms' : '—' }}</p>
+                <p class="font-semibold text-sm font-mono">{{ lastCheck()?.lastMinMs != null ? (lastCheck().lastMinMs | appDecimal:1) + 'ms' : 'Pendente' }}</p>
               </div>
               <div class="rounded-lg bg-muted p-3 text-center">
                 <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">RTT Avg</p>
-                <p class="font-semibold text-sm">{{ lastCheck()?.lastAvgMs != null ? (lastCheck().lastAvgMs | appDecimal:1) + 'ms' : '—' }}</p>
+                <p class="font-semibold text-sm font-mono">{{ lastCheck()?.lastAvgMs != null ? (lastCheck().lastAvgMs | appDecimal:1) + 'ms' : 'Pendente' }}</p>
               </div>
               <div class="rounded-lg bg-muted p-3 text-center">
                 <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">RTT Máx</p>
-                <p class="font-semibold text-sm">{{ lastCheck()?.lastMaxMs != null ? (lastCheck().lastMaxMs | appDecimal:1) + 'ms' : '—' }}</p>
+                <p class="font-semibold text-sm font-mono">{{ lastCheck()?.lastMaxMs != null ? (lastCheck().lastMaxMs | appDecimal:1) + 'ms' : 'Pendente' }}</p>
               </div>
             </div>
             <div class="rounded-lg bg-muted p-3 text-center">
               <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Perda de pacotes</p>
-              <p class="font-semibold text-sm">{{ lastCheck()?.lastPacketLoss != null ? (lastCheck().lastPacketLoss | appDecimal:1) + '%' : '—' }}</p>
+              <p class="font-semibold text-sm font-mono">{{ lastCheck()?.lastPacketLoss != null ? (lastCheck().lastPacketLoss | appDecimal:1) + '%' : 'Pendente' }}</p>
             </div>
           } @else {
             @for (phase of waterfallPhases; track phase.label) {
@@ -113,13 +115,13 @@
                 <div class="flex-1 rounded-full bg-muted h-2">
                   <div class="h-2 rounded-full transition-all" [style.width.%]="phase.widthPct" [style.backgroundColor]="phase.color"></div>
                 </div>
-                <span class="text-xs text-right w-16 shrink-0">{{ phase.ms != null ? (phase.ms | appDecimal:1) + 'ms' : '—' }}</span>
+                <span class="text-xs text-right w-16 shrink-0 font-mono">{{ phase.ms != null ? (phase.ms | appDecimal:1) + 'ms' : '—' }}</span>
               </div>
             }
             @if (lastCheck()?.lastDuration != null) {
-              <p class="text-xs pt-1"><span class="text-muted-foreground">Latência Total:</span> {{ lastCheck().lastDuration | appDecimal:1 }}ms</p>
+              <p class="text-xs pt-1"><span class="text-muted-foreground">Latência Total:</span> <span class="font-mono">{{ lastCheck().lastDuration | appDecimal:1 }}ms</span></p>
             } @else {
-              <p class="text-xs pt-1">Total: —</p>
+              <p class="text-xs text-muted-foreground pt-1">Aguardando primeira verificação</p>
             }
           }
         </div>
@@ -127,122 +129,134 @@
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div class="rounded-xl border bg-card p-6 space-y-4">
-        <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Latência nas últimas 24h</p>
-        <div class="h-[140px] w-full">
-          <canvas #responseTimeChart></canvas>
+      <div class="rounded-lg border bg-card overflow-hidden">
+        <div class="px-4 py-3 bg-secondary border-b">
+          <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Latência nas últimas 24h</p>
+        </div>
+        <div class="p-4">
+          <div class="h-[140px] w-full">
+            <canvas #responseTimeChart></canvas>
+          </div>
         </div>
       </div>
 
       @if (avgMetrics()) {
-        <div class="rounded-xl border bg-card p-6 space-y-4">
-          <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Desempenho nos últimos 7 dias</p>
-          @if (monitor().type === 'PING') {
-            <div class="grid grid-cols-2 gap-2">
-              <div class="rounded-lg bg-muted p-3 text-center">
-                <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">RTT Mín</p>
-                <p class="font-semibold text-sm">{{ avgMetrics().avgMinMs != null ? (avgMetrics().avgMinMs | appDecimal:1) + 'ms' : '—' }}</p>
+        <div class="rounded-lg border bg-card overflow-hidden">
+          <div class="px-4 py-3 bg-secondary border-b">
+            <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Desempenho nos últimos 7 dias</p>
+          </div>
+          <div class="p-4">
+            @if (monitor().type === 'PING') {
+              <div class="grid grid-cols-2 gap-2">
+                <div class="rounded-lg bg-muted p-3 text-center">
+                  <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">RTT Mín</p>
+                  <p class="font-semibold text-sm font-mono">{{ avgMetrics().avgMinMs != null ? (avgMetrics().avgMinMs | appDecimal:1) + 'ms' : 'Pendente' }}</p>
+                </div>
+                <div class="rounded-lg bg-muted p-3 text-center">
+                  <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">RTT Avg</p>
+                  <p class="font-semibold text-sm font-mono">{{ avgMetrics().avgMs != null ? (avgMetrics().avgMs | appDecimal:1) + 'ms' : 'Pendente' }}</p>
+                </div>
+                <div class="rounded-lg bg-muted p-3 text-center">
+                  <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">RTT Máx</p>
+                  <p class="font-semibold text-sm font-mono">{{ avgMetrics().avgMaxMs != null ? (avgMetrics().avgMaxMs | appDecimal:1) + 'ms' : 'Pendente' }}</p>
+                </div>
+                <div class="rounded-lg bg-muted p-3 text-center">
+                  <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Perda</p>
+                  <p class="font-semibold text-sm font-mono">{{ avgMetrics().avgPacketLoss != null ? (avgMetrics().avgPacketLoss | appDecimal:1) + '%' : 'Pendente' }}</p>
+                </div>
               </div>
-              <div class="rounded-lg bg-muted p-3 text-center">
-                <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">RTT Avg</p>
-                <p class="font-semibold text-sm">{{ avgMetrics().avgMs != null ? (avgMetrics().avgMs | appDecimal:1) + 'ms' : '—' }}</p>
+            } @else {
+              <div class="grid grid-cols-3 gap-2">
+                <div class="rounded-lg bg-muted p-3 text-center">
+                  <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">DNS</p>
+                  <p class="font-semibold text-sm font-mono">{{ avgMetrics().avgDns != null ? (avgMetrics().avgDns | appDecimal:1) + 'ms' : 'Pendente' }}</p>
+                </div>
+                <div class="rounded-lg bg-muted p-3 text-center">
+                  <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">TCP</p>
+                  <p class="font-semibold text-sm font-mono">{{ avgMetrics().avgTcp != null ? (avgMetrics().avgTcp | appDecimal:1) + 'ms' : 'Pendente' }}</p>
+                </div>
+                <div class="rounded-lg bg-muted p-3 text-center">
+                  <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">TLS</p>
+                  <p class="font-semibold text-sm font-mono">{{ avgMetrics().avgTls != null ? (avgMetrics().avgTls | appDecimal:1) + 'ms' : 'Pendente' }}</p>
+                </div>
+                <div class="rounded-lg bg-muted p-3 text-center">
+                  <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">TTFB</p>
+                  <p class="font-semibold text-sm font-mono">{{ avgMetrics().avgTtfb != null ? (avgMetrics().avgTtfb | appDecimal:1) + 'ms' : 'Pendente' }}</p>
+                </div>
+                <div class="rounded-lg bg-muted p-3 text-center col-span-2">
+                  <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">TOTAL</p>
+                  <p class="font-semibold text-sm font-mono">{{ avgMetrics().avgTotal != null ? (avgMetrics().avgTotal | appDecimal:1) + 'ms' : 'Pendente' }}</p>
+                </div>
               </div>
-              <div class="rounded-lg bg-muted p-3 text-center">
-                <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">RTT Máx</p>
-                <p class="font-semibold text-sm">{{ avgMetrics().avgMaxMs != null ? (avgMetrics().avgMaxMs | appDecimal:1) + 'ms' : '—' }}</p>
-              </div>
-              <div class="rounded-lg bg-muted p-3 text-center">
-                <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Perda</p>
-                <p class="font-semibold text-sm">{{ avgMetrics().avgPacketLoss != null ? (avgMetrics().avgPacketLoss | appDecimal:1) + '%' : '—' }}</p>
-              </div>
-            </div>
-          } @else {
-            <div class="grid grid-cols-3 gap-2">
-              <div class="rounded-lg bg-muted p-3 text-center">
-                <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">DNS</p>
-                <p class="font-semibold text-sm">{{ avgMetrics().avgDns != null ? (avgMetrics().avgDns | appDecimal:1) + 'ms' : '—' }}</p>
-              </div>
-              <div class="rounded-lg bg-muted p-3 text-center">
-                <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">TCP</p>
-                <p class="font-semibold text-sm">{{ avgMetrics().avgTcp != null ? (avgMetrics().avgTcp | appDecimal:1) + 'ms' : '—' }}</p>
-              </div>
-              <div class="rounded-lg bg-muted p-3 text-center">
-                <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">TLS</p>
-                <p class="font-semibold text-sm">{{ avgMetrics().avgTls != null ? (avgMetrics().avgTls | appDecimal:1) + 'ms' : '—' }}</p>
-              </div>
-              <div class="rounded-lg bg-muted p-3 text-center">
-                <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">TTFB</p>
-                <p class="font-semibold text-sm">{{ avgMetrics().avgTtfb != null ? (avgMetrics().avgTtfb | appDecimal:1) + 'ms' : '—' }}</p>
-              </div>
-              <div class="rounded-lg bg-muted p-3 text-center col-span-2">
-                <p class="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">TOTAL</p>
-                <p class="font-semibold text-sm">{{ avgMetrics().avgTotal != null ? (avgMetrics().avgTotal | appDecimal:1) + 'ms' : '—' }}</p>
-              </div>
-            </div>
-          }
+            }
+          </div>
         </div>
       }
     </div>
 
-    <div class="rounded-xl border bg-card p-6 space-y-3">
-      <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Últimos incidentes</p>
-      <app-table
-        [columns]="['Situação', 'Causa raiz', 'Iniciado', 'Resolvido', 'Duração']"
-        [rows]="recentIncidents()"
-        emptyMessage="Nenhum incidente registrado."
-        [total]="recentIncidents().length"
-        maxHeight="400px"
-      >
-        <ng-template #rowTemplate let-incident>
-          <tr hlmTr class="cursor-pointer" (click)="router.navigate(['/panel/monitoring/incidents/view', incident.id])">
-            <td hlmTd>
-              @if (incident.ended_at) {
-                <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
-                  <ng-icon name="lucideCheck" class="size-3 text-emerald-500" />
-                  Resolvido
-                </span>
-              } @else {
-                <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
-                  <span class="relative flex h-1.5 w-1.5 shrink-0">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500"></span>
-                  </span>
-                  Em andamento
-                </span>
-              }
-            </td>
-            <td hlmTd>
-              @if (incident.firstError) {
-                <span hlmBadge variant="outline" class="w-fit">
-                  {{ getStatusLabel(incident.firstError) }}
-                </span>
-              } @else {
-                —
-              }
-            </td>
-            <td hlmTd>
-              <span class="text-xs text-muted-foreground">{{ incident.created_at | date:'dd/MM/yyyy HH:mm' }}</span>
-            </td>
-            <td hlmTd>
-              <span class="text-xs text-muted-foreground">
+    <div class="rounded-lg border bg-card overflow-hidden">
+      <div class="px-4 py-3 bg-secondary border-b">
+        <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Últimos incidentes</p>
+      </div>
+      <div class="p-4">
+        <app-table
+          [columns]="['Situação', 'Causa raiz', 'Iniciado', 'Resolvido', 'Duração']"
+          [rows]="recentIncidents()"
+          emptyMessage="Nenhum incidente registrado."
+          [total]="recentIncidents().length"
+          maxHeight="400px"
+        >
+          <ng-template #rowTemplate let-incident>
+            <tr hlmTr class="cursor-pointer" (click)="router.navigate(['/panel/monitoring/incidents/view', incident.id])">
+              <td hlmTd>
                 @if (incident.ended_at) {
-                  {{ incident.ended_at | date:'dd/MM/yyyy HH:mm' }}
+                  <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+                    <ng-icon name="lucideCheck" class="size-3 text-emerald-500" />
+                    Resolvido
+                  </span>
                 } @else {
-                  Não resolvido
+                  <span hlmBadge variant="outline" class="flex items-center gap-1.5 px-1.5 w-fit">
+                    <span class="relative flex h-1.5 w-1.5 shrink-0">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500"></span>
+                    </span>
+                    Em andamento
+                  </span>
                 }
-              </span>
-            </td>
-            <td hlmTd>
-              <span class="text-xs text-muted-foreground">{{ incident.duration || '-' }}</span>
-            </td>
-          </tr>
-        </ng-template>
-      </app-table>
+              </td>
+              <td hlmTd>
+                @if (incident.firstError) {
+                  <span hlmBadge variant="outline" class="w-fit">
+                    {{ getStatusLabel(incident.firstError) }}
+                  </span>
+                } @else {
+                  <span class="text-xs text-muted-foreground">Desconhecido</span>
+                }
+              </td>
+              <td hlmTd>
+                <span class="text-xs text-muted-foreground font-mono">{{ incident.created_at | date:'dd/MM/yyyy HH:mm' }}</span>
+              </td>
+              <td hlmTd>
+                <span class="text-xs text-muted-foreground font-mono">
+                  @if (incident.ended_at) {
+                    {{ incident.ended_at | date:'dd/MM/yyyy HH:mm' }}
+                  } @else {
+                    Não resolvido
+                  }
+                </span>
+              </td>
+              <td hlmTd>
+                <span class="text-xs text-muted-foreground font-mono">{{ incident.duration || 'Pendente' }}</span>
+              </td>
+            </tr>
+          </ng-template>
+        </app-table>
+      </div>
     </div>
 
   </div>
 } @else {
-  <div class="flex flex-col gap-6">
+  <div class="flex flex-col gap-4">
     <div class="flex items-center justify-between">
       <div class="space-y-1.5">
         <div hlmSkeleton class="h-5 w-40"></div>
@@ -251,18 +265,22 @@
       <div hlmSkeleton class="h-9 w-20"></div>
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div class="rounded-xl border bg-card p-6 space-y-5">
-        <div hlmSkeleton class="h-3 w-16"></div>
-        <div class="space-y-3">
+      <div class="rounded-lg border bg-card overflow-hidden">
+        <div class="px-4 py-3 bg-secondary border-b">
+          <div hlmSkeleton class="h-3 w-16"></div>
+        </div>
+        <div class="p-6 space-y-3">
           <div hlmSkeleton class="h-4 w-3/4"></div>
           <div hlmSkeleton class="h-4 w-full"></div>
           <div hlmSkeleton class="h-4 w-1/2"></div>
           <div hlmSkeleton class="h-1.5 w-full"></div>
         </div>
       </div>
-      <div class="rounded-xl border bg-card p-6 space-y-5">
-        <div hlmSkeleton class="h-3 w-32"></div>
-        <div class="space-y-3">
+      <div class="rounded-lg border bg-card overflow-hidden">
+        <div class="px-4 py-3 bg-secondary border-b">
+          <div hlmSkeleton class="h-3 w-32"></div>
+        </div>
+        <div class="p-6 space-y-3">
           <div hlmSkeleton class="h-4 w-full"></div>
           <div hlmSkeleton class="h-4 w-full"></div>
           <div hlmSkeleton class="h-4 w-full"></div>
@@ -271,22 +289,34 @@
       </div>
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div class="rounded-xl border bg-card p-6 space-y-4">
-        <div hlmSkeleton class="h-3 w-40"></div>
-        <div hlmSkeleton class="h-[140px] w-full"></div>
+      <div class="rounded-lg border bg-card overflow-hidden">
+        <div class="px-4 py-3 bg-secondary border-b">
+          <div hlmSkeleton class="h-3 w-40"></div>
+        </div>
+        <div class="p-4">
+          <div hlmSkeleton class="h-[140px] w-full"></div>
+        </div>
       </div>
-      <div class="rounded-xl border bg-card p-6 space-y-4">
-        <div hlmSkeleton class="h-3 w-44"></div>
-        <div class="grid grid-cols-3 gap-2">
-          <div hlmSkeleton class="h-16"></div>
-          <div hlmSkeleton class="h-16"></div>
-          <div hlmSkeleton class="h-16"></div>
+      <div class="rounded-lg border bg-card overflow-hidden">
+        <div class="px-4 py-3 bg-secondary border-b">
+          <div hlmSkeleton class="h-3 w-44"></div>
+        </div>
+        <div class="p-4">
+          <div class="grid grid-cols-3 gap-2">
+            <div hlmSkeleton class="h-16"></div>
+            <div hlmSkeleton class="h-16"></div>
+            <div hlmSkeleton class="h-16"></div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="rounded-xl border bg-card p-6 space-y-3">
-      <div hlmSkeleton class="h-3 w-32"></div>
-      <div hlmSkeleton class="h-36 w-full"></div>
+    <div class="rounded-lg border bg-card overflow-hidden">
+      <div class="px-4 py-3 bg-secondary border-b">
+        <div hlmSkeleton class="h-3 w-32"></div>
+      </div>
+      <div class="p-4">
+        <div hlmSkeleton class="h-36 w-full"></div>
+      </div>
     </div>
   </div>
 }
