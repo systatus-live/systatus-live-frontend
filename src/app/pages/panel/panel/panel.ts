@@ -102,7 +102,7 @@ export class Panel implements OnInit, OnDestroy {
   public readonly currentUrl = toSignal(
     this.router.events.pipe(
       filter((e) => e instanceof NavigationEnd),
-      map((e) => (e as NavigationEnd).url),
+      map((e) => (e as NavigationEnd).urlAfterRedirects),
       startWith(this.router.url),
     ), {
     initialValue: this.router.url
