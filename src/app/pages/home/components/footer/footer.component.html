@@ -1,35 +1,34 @@
-<footer class="bg-[#040E1F] border-t border-white/8 text-[#8BA3C7]">
-  <div class="max-w-7xl mx-auto py-14 px-4 sm:px-6 lg:px-8">
+<footer class="bg-[#080C11] border-t border-white/6 text-[#8BA3C7]">
+  <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
     <div class="xl:grid xl:grid-cols-3 xl:gap-10">
       <!-- Brand column -->
       <div class="xl:col-span-1">
         <app-logo [inverted]="true" />
-        <p class="text-sm leading-relaxed text-center mt-6">
+        <p class="text-xs leading-relaxed mt-5">
           Monitoramento contínuo de sites, APIs e servidores com alertas em tempo real.
-          Saiba antes dos seus clientes quando algo sai do ar.
         </p>
         <!-- Status indicator -->
-        <div class="mt-5 inline-flex items-center gap-2 text-xs">
-          <span class="relative flex h-2 w-2">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+        <div class="mt-4 inline-flex items-center gap-2 text-xs">
+          <span class="relative flex h-1.5 w-1.5" aria-hidden="true">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#22C55E] opacity-60"></span>
+            <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#22C55E]"></span>
           </span>
-          <span class="text-emerald-400">Todos os sistemas operacionais</span>
+          <span class="text-[#22C55E] text-[10px] font-mono">Todos os sistemas operacionais</span>
         </div>
       </div>
 
       <!-- Nav link columns -->
-      <div class="mt-12 grid grid-cols-3 gap-8 xl:mt-0 xl:col-span-2">
+      <div class="mt-10 grid grid-cols-3 gap-6 xl:mt-0 xl:col-span-2">
         @for (nav of navItemList; track nav.title) {
           <div>
-            <h3 class="text-xs font-semibold text-[#4D9EFF] tracking-wider uppercase mb-4">{{ nav.title }}</h3>
-            <ul class="space-y-3">
+            <h3 class="text-[10px] font-mono text-[#4D9EFF] tracking-widest uppercase mb-3">{{ nav.title }}</h3>
+            <ul class="space-y-2.5">
               @for (item of nav.items; track item.name) {
                 <li>
                   <a
                     [href]="item.href"
                     [target]="item.target"
-                    class="text-sm hover:text-[#E8F0FE] transition-colors duration-200"
+                    class="text-xs hover:text-[#E8EDF2] transition-colors duration-200"
                   >
                     {{ item.name }}
                   </a>
@@ -42,16 +41,17 @@
     </div>
 
     <!-- Bottom bar -->
-    <div class="mt-12 pt-8 border-t border-white/8 flex flex-col md:flex-row justify-between items-center gap-4">
-      <p class="text-xs">
+    <div class="mt-10 pt-6 border-t border-white/6 flex flex-col md:flex-row justify-between items-center gap-3">
+      <p class="text-[10px] font-mono text-[#4A6A8A]">
         &copy; {{ currentYear }} Systatus. Todos os direitos reservados.
       </p>
       <button
         (click)="scrollToTop()"
-        class="w-9 h-9 rounded-full bg-white/8 hover:bg-white/15 border border-white/10 flex items-center justify-center transition-colors duration-200 group cursor-pointer"
+        class="w-8 h-8 rounded border border-white/8 bg-white/4 hover:bg-white/8 flex items-center justify-center transition-colors duration-200 cursor-pointer"
         hlmTooltip="Voltar ao topo"
+        aria-label="Voltar ao topo da página"
       >
-        <svg lucideArrowUp class="h-4 w-4 group-hover:text-[#E8F0FE] transition-colors duration-200"></svg>
+        <svg lucideArrowUp class="h-3.5 w-3.5 text-[#8BA3C7]"></svg>
       </button>
     </div>
   </div>

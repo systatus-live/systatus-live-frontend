@@ -22,14 +22,16 @@ export class FooterComponent {
     {
       title: 'Produto',
       items: [
-        { name: 'Funcionalidades', href: '/#features', target: '' },
-        { name: 'Como Funciona', href: '/#how-it-works', target: '' },
+        { name: 'Plataforma', href: '/#features', target: '' },
+        { name: 'Como funciona', href: '/#how-it-works', target: '' },
         { name: 'Preços', href: '/#pricing', target: '' },
       ],
     },
     {
-      title: 'Contato',
+      title: 'Conta',
       items: [
+        { name: 'Entrar', href: '/auth/signin', target: '' },
+        { name: 'Criar conta', href: '/auth/signup', target: '' },
         { name: 'Fale Conosco', href: '/contact', target: '' },
       ],
     },

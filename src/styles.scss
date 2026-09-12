@@ -46,55 +46,77 @@
 :root.dark {
   color-scheme: dark;
 
-  /* Background hierarchy (dark → light): popover < sidebar < bg < muted < card */
-  --background: #0D1B35;
-  --foreground: #E8F0FE;
-  --card: #132240;
-  --card-foreground: #E8F0FE;
-  --popover: #040E1F;
-  --popover-foreground: #E8F0FE;
-  --primary: #4D9EFF;
+  /* Background hierarchy (dark → light): popover < bg < sidebar < muted < secondary < card < accent */
+  --background: #0B0F14;
+  --foreground: #E8EDF2;
+  --card: #1A222D;
+  --card-foreground: #E8EDF2;
+  --popover: #080C11;
+  --popover-foreground: #E8EDF2;
+  --primary: #22C55E;
   --primary-foreground: #FFFFFF;
-  --secondary: #0F2040;
-  --secondary-foreground: #E8F0FE;
-  --muted: #102038;
+  --secondary: #141B24;
+  --secondary-foreground: #E8EDF2;
+  --muted: #0D1119;
   --muted-foreground: #8BA3C7;
-  --accent: #1E3254;
-  --accent-foreground: #E8F0FE;
+  --accent: #1E2A38;
+  --accent-foreground: #E8EDF2;
   --destructive: oklch(0.704 0.191 22.216);
-  --border: rgb(255 255 255 / 10%);
-  --input: #162434;
-  --ring: #4D9EFF;
-  --sidebar: #071428;
-  --sidebar-foreground: #E8F0FE;
-  --sidebar-primary: #E8F0FE;
-  --sidebar-primary-foreground: #0D1B35;
-  --sidebar-accent: #162434;
-  --sidebar-accent-foreground: #E8F0FE;
-  --sidebar-border: rgb(255 255 255 / 8%);
-  --sidebar-ring: #4D9EFF;
+  --border: rgb(255 255 255 / 8%);
+  --input: #141B24;
+  --ring: #22C55E;
+  --sidebar: #0D1119;
+  --sidebar-foreground: #E8EDF2;
+  --sidebar-primary: #E8EDF2;
+  --sidebar-primary-foreground: #0B0F14;
+  --sidebar-accent: #1E2A38;
+  --sidebar-accent-foreground: #E8EDF2;
+  --sidebar-border: rgb(255 255 255 / 6%);
+  --sidebar-ring: #22C55E;
+}
+
+.auth-dark {
+  color-scheme: dark;
+  --background: #0B0F14;
+  --foreground: #E8EDF2;
+  --card: #1A222D;
+  --card-foreground: #E8EDF2;
+  --popover: #080C11;
+  --popover-foreground: #E8EDF2;
+  --primary: #22C55E;
+  --primary-foreground: #FFFFFF;
+  --secondary: #141B24;
+  --secondary-foreground: #E8EDF2;
+  --muted: #0D1119;
+  --muted-foreground: #8BA3C7;
+  --accent: #1E2A38;
+  --accent-foreground: #E8EDF2;
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: rgb(255 255 255 / 8%);
+  --input: #141B24;
+  --ring: #22C55E;
 }
 
 .page-dark {
   color-scheme: dark;
-  --background: #0D1B35;
-  --foreground: #E8F0FE;
-  --card: #132240;
-  --card-foreground: #E8F0FE;
-  --popover: #040E1F;
-  --popover-foreground: #E8F0FE;
-  --primary: #4D9EFF;
+  --background: #0B0F14;
+  --foreground: #E8EDF2;
+  --card: #1A222D;
+  --card-foreground: #E8EDF2;
+  --popover: #080C11;
+  --popover-foreground: #E8EDF2;
+  --primary: #22C55E;
   --primary-foreground: #FFFFFF;
-  --secondary: #0F2040;
-  --secondary-foreground: #E8F0FE;
-  --muted: #102038;
+  --secondary: #141B24;
+  --secondary-foreground: #E8EDF2;
+  --muted: #0D1119;
   --muted-foreground: #8BA3C7;
-  --accent: #1E3254;
-  --accent-foreground: #E8F0FE;
+  --accent: #1E2A38;
+  --accent-foreground: #E8EDF2;
   --destructive: oklch(0.704 0.191 22.216);
-  --border: rgb(255 255 255 / 10%);
-  --input: #162434;
-  --ring: #4D9EFF;
+  --border: rgb(255 255 255 / 8%);
+  --input: #141B24;
+  --ring: #22C55E;
 }
 
 @layer base {
@@ -126,15 +148,18 @@ div[hlmtablecontainer] thead {
 :root.dark [data-slot="select-trigger"],
 :root.dark [data-slot="textarea"],
 .auth-dark [data-slot="input"],
+.auth-dark [data-slot="select-trigger"],
+.auth-dark [data-slot="textarea"],
 .page-dark [data-slot="input"],
 .page-dark [data-slot="select-trigger"],
 .page-dark [data-slot="textarea"] {
-  background-color: #162434;
-  border-color: rgb(255 255 255 / 10%);
-  color: #E8F0FE;
+  background-color: #141B24;
+  border-color: rgb(255 255 255 / 8%);
+  color: #E8EDF2;
 }
 
 :root.dark [data-slot="select-trigger"]:hover,
+.auth-dark [data-slot="select-trigger"]:hover,
 .page-dark [data-slot="select-trigger"]:hover {
   background-color: var(--accent);
 }
@@ -144,8 +169,8 @@ div[hlmtablecontainer] thead {
 .auth-dark [data-slot="input"]:focus-visible,
 .page-dark [data-slot="input"]:focus-visible,
 .page-dark [data-slot="textarea"]:focus-visible {
-  border-color: #4D9EFF;
-  box-shadow: 0 0 0 3px rgb(77 158 255 / 20%);
+  border-color: #22C55E;
+  box-shadow: 0 0 0 3px rgb(34 197 94 / 20%);
 }
 
 :root.dark [data-slot="input"]::placeholder,
@@ -157,13 +182,13 @@ div[hlmtablecontainer] thead {
 }
 
 :root.dark [data-slot="checkbox"] [data-state="unchecked"] {
-  background-color: #162434;
-  border-color: rgb(255 255 255 / 10%);
+  background-color: #141B24;
+  border-color: rgb(255 255 255 / 8%);
 }
 
 :root.dark [data-slot="button"][class*="dark:bg-input"] {
-  background-color: #162434;
-  border-color: rgb(255 255 255 / 10%);
+  background-color: #141B24;
+  border-color: rgb(255 255 255 / 8%);
 }
 
 :root.dark [data-slot="button"][class*="dark:bg-input"]:hover {
@@ -171,14 +196,48 @@ div[hlmtablecontainer] thead {
 }
 
 .auth-dark [data-slot="card"] {
-  background-color: #0A1829;
+  background-color: #141B24;
   border-radius: 1rem;
-  border: 1px solid rgb(255 255 255 / 10%);
+  border: 1px solid rgb(255 255 255 / 8%);
   box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.5);
   outline: none;
 }
 
 @theme inline {
+  /* Typography tokens */
+  --font-heading: 'Sora', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  /*
+   * Landing page semantic color tokens.
+   * These generate Tailwind utilities: bg-lp-*, text-lp-*, border-lp-*
+   * Use these instead of hardcoded hex values in landing page components.
+   *
+   * Background hierarchy (darkest → lightest):
+   *   lp-bg < lp-alt < lp-stripe < lp-surface < lp-raised
+   */
+  --color-lp-bg:     #0B0F14;   /* page background */
+  --color-lp-alt:    #0D1119;   /* alternate section background */
+  --color-lp-stripe: #0F1720;   /* panel header/footer stripe */
+  --color-lp-surface: #141B24;  /* raised panel body */
+  --color-lp-raised:  #1A222D;  /* card / alert body */
+
+  /* Text */
+  --color-lp-text:   #E8EDF2;   /* primary text */
+  --color-lp-muted:  #8BA3C7;   /* secondary text */
+  --color-lp-faint:  #4A6A8A;   /* labels, timestamps, disabled */
+
+  /* Signal */
+  --color-lp-green:       #22C55E;  /* brand green (badges, buttons) */
+  --color-lp-green-hover: #16A34A;
+  --color-lp-blue:        #4D9EFF;  /* links, accents (NOT buttons) */
+  --color-panel-link:     #4D9EFF;  /* inline hyperlinks in panel/auth — distinct from --primary (green) */
+
+  /* Monitor status bar colors — match real getHistoricalStyle() exactly */
+  --color-status-up:       #05DF72;
+  --color-status-degraded: #FDC700;
+  --color-status-down:     #FF6467;
+
   --animate-indeterminate: indeterminate 1.5s ease-in-out infinite;
   --animate-fade-in-up: fade-in-up 0.6s ease-out both;
   --animate-gradient-shift: gradient-shift 8s ease infinite;
@@ -211,4 +270,63 @@ div[hlmtablecontainer] thead {
       background-position: 100% 50%;
     }
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-ping,
+  .animate-pulse,
+  .animate-spin,
+  .animate-bounce {
+    animation: none;
+  }
+}
+
+/*
+ * Landing page component patterns.
+ * Use these classes whenever the pattern appears — do NOT copy the raw
+ * Tailwind string a second time.
+ */
+
+/* Panel surface — dark card used for console / notification windows */
+.lp-panel {
+  background-color: #141B24;
+  border-radius: 0.5rem;
+  border: 1px solid rgb(255 255 255 / 8%);
+  overflow: hidden;
+}
+
+/* Header or footer stripe inside a .lp-panel */
+.lp-stripe {
+  padding: 0.625rem 1rem;
+  background-color: #0F1720;
+  border-color: rgb(255 255 255 / 6%);
+}
+
+/*
+ * Column label — table <th>, panel section headings, console titles.
+ * Pair with border-b or border-t as needed; add px-* for cell padding.
+ */
+.lp-col-label {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: #4A6A8A;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 400;
+}
+
+/*
+ * Status badge — mirrors real hlmBadge variant="outline" in dark mode.
+ * Contains a ping dot + label. Add a child ping dot inside.
+ */
+.lp-badge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: 9999px;
+  border: 1px solid rgb(255 255 255 / 10%);
+  padding: 0.125rem 0.5rem;
+  font-size: 10px;
+  color: #E8EDF2;
+  white-space: nowrap;
 }

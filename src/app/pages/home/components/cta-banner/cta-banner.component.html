@@ -1,43 +1,40 @@
-<section class="relative overflow-hidden bg-[#071428] py-24">
-  <!-- Gradient glow background -->
-  <div class="absolute inset-0 pointer-events-none">
-    <div class="absolute inset-0 bg-gradient-to-br from-[#4D9EFF]/15 via-[#7C3AED]/10 to-[#0D1B35]/0"></div>
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full bg-[#4D9EFF]/8 blur-[100px]"></div>
-  </div>
+<section class="relative bg-[#0D1119] py-24 border-t border-white/6">
+  <!-- Subtle horizontal glow at top -->
+  <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#4D9EFF]/15 to-transparent pointer-events-none" aria-hidden="true"></div>
 
-  <div class="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <!-- Badge -->
-    <div class="inline-flex items-center gap-2 rounded-full border border-[#4D9EFF]/30 bg-[#4D9EFF]/10 px-4 py-1.5 mb-8">
-      <span class="relative flex h-2 w-2">
-        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-      </span>
-      <span class="text-sm font-medium text-[#4D9EFF]">Sem cartão de crédito · Pronto em 2 minutos</span>
-    </div>
-
+  <div class="relative max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
     <!-- Headline -->
-    <h2 class="text-3xl font-extrabold tracking-tight text-[#E8F0FE] sm:text-5xl leading-tight">
-      Seu site pode estar fora do ar<br />
-      <span class="text-[#4D9EFF]">agora mesmo.</span>
+    <h2 class="text-3xl font-bold tracking-tight text-[#E8EDF2] sm:text-4xl leading-tight font-heading">
+      Fique um passo à frente das falhas.
     </h2>
-    <p class="mt-6 text-lg text-[#8BA3C7] max-w-xl mx-auto leading-relaxed">
-      Não espere o cliente reclamar. Configure o monitoramento em 2 minutos e durma tranquilo
-      sabendo que receberá o alerta antes de qualquer um.
+
+    <p class="mt-5 text-base text-[#8BA3C7] leading-relaxed">
+      Comece com 50 monitores gratuitos, sem cartão de crédito.
+      Configure em menos de 2 minutos e receba alertas antes dos seus clientes.
     </p>
 
     <!-- CTAs -->
-    <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-      <button hlmBtn routerLink="/auth/signup" class="bg-[#4D9EFF] hover:bg-[#3A85E8] text-white border-0 text-base px-8 py-3 h-auto">
+    <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+      <button
+        hlmBtn
+        routerLink="/auth/signup"
+        class="bg-[#22C55E] hover:bg-[#16A34A] text-white border-0 text-sm px-7 py-2.5 h-auto font-medium"
+      >
         Criar conta grátis
-        <svg lucideArrowRight class="w-4 h-4 ml-2"></svg>
+        <svg lucideArrowRight class="w-3.5 h-3.5 ml-2"></svg>
       </button>
-      <button hlmBtn variant="outline" routerLink="/contact" class="bg-white/5 border-white/15 text-[#8BA3C7] hover:bg-[#4D9EFF]/12 hover:border-[#4D9EFF]/30 hover:text-[#A8C4E8] text-base px-8 py-3 h-auto">
-        Falar com o time
+      <button
+        hlmBtn
+        variant="outline"
+        routerLink="/contact"
+        class="bg-white/4 border-white/10 text-[#8BA3C7] hover:bg-white/8 hover:border-white/20 hover:text-[#E8EDF2] text-sm px-7 py-2.5 h-auto"
+      >
+        Falar com vendas
       </button>
     </div>
 
-    <!-- Bottom trust line -->
-    <p class="mt-8 text-sm text-[#8BA3C7]">
+    <!-- Trust line -->
+    <p class="mt-6 text-xs text-[#4A6A8A] font-mono">
       Plano gratuito · Cancele quando quiser · Suporte incluso
     </p>
   </div>

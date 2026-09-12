@@ -15,9 +15,8 @@ export class NavbarComponent {
   public readonly isMenuOpen = signal(false);
 
   public readonly navItemList = [
-    { name: 'Funcionalidades', href: '/#features' },
-    { name: 'Como Funciona', href: '/#how-it-works' },
+    { name: 'Plataforma', href: '/#features' },
+    { name: 'Como funciona', href: '/#how-it-works' },
     { name: 'Preços', href: '/#pricing' },
-    { name: 'Contato', href: '/contact' },
   ];
 }

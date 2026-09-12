@@ -1,49 +1,50 @@
-<div class="min-h-screen flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
-  <div class="mx-auto w-full max-w-md">
-    <section hlmCard>
-      <div hlmCardHeader class="items-center text-center">
-        <app-logo [inverted]="true" />
-        <h2 class="mt-2 text-xl font-semibold leading-none">Insira o código</h2>
-        <p hlmCardDescription>
-          Código de verificação enviado para
-          @if (authFlow()) {
-            <strong>{{ authFlow().email }}</strong>
-          } @else {
-            seu e-mail
+<div class="min-h-screen flex flex-col items-center justify-center py-12 px-4 sm:px-6">
+  <div class="w-full max-w-md">
+
+    <div class="flex flex-col items-center text-center mb-7">
+      <app-logo [inverted]="true" />
+      <h2 class="mt-4 text-xl font-semibold">Insira o código</h2>
+      <p class="mt-1.5 text-sm text-muted-foreground">
+        Código de verificação enviado para
+        @if (authFlow()) {
+          <strong>{{ authFlow().email }}</strong>
+        } @else {
+          seu e-mail
+        }
+      </p>
+    </div>
+
+    <div class="bg-[#141B24] rounded-2xl border border-white/8 shadow-[0_25px_50px_-12px_rgb(0_0_0_/_0.5)] p-7">
+      <div class="space-y-4">
+        <div class="flex justify-center">
+          <brn-input-otp hlmInputOtp [maxLength]="6" [value]="otp()" (valueChange)="otp.set($event)">
+            <hlm-input-otp-group>
+              <hlm-input-otp-slot [index]="0" />
+              <hlm-input-otp-slot [index]="1" />
+              <hlm-input-otp-slot [index]="2" />
+              <hlm-input-otp-slot [index]="3" />
+              <hlm-input-otp-slot [index]="4" />
+              <hlm-input-otp-slot [index]="5" />
+            </hlm-input-otp-group>
+          </brn-input-otp>
+        </div>
+        <p class="text-sm leading-normal text-muted-foreground">
+          Verifique o spam ou lixeira, ou
+          <span
+            (click)="sendCode()"
+            [class]="timer() > 0 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'"
+            class="font-medium text-foreground underline-offset-4 hover:underline">clique aqui para reenviar</span>
+          @if (timer() > 0) {
+            <i> (aguarde {{ timer() }}s)</i>
           }
         </p>
+        <button hlmBtn type="button" class="w-full bg-lp-green hover:bg-lp-green-hover text-white border-0" (click)="onSubmit()">Verificar Conta</button>
+        <p class="text-center text-sm text-muted-foreground pt-1">
+          Lembrou a senha?
+          <a routerLink="/auth/signin" class="font-medium text-foreground underline-offset-4 hover:underline">Entrar na sua conta</a>
+        </p>
       </div>
-      <div hlmCardContent>
-        <div class="space-y-3">
-          <div class="flex justify-center">
-            <brn-input-otp hlmInputOtp [maxLength]="6" [value]="otp()" (valueChange)="otp.set($event)">
-              <hlm-input-otp-group>
-                <hlm-input-otp-slot [index]="0" />
-                <hlm-input-otp-slot [index]="1" />
-                <hlm-input-otp-slot [index]="2" />
-                <hlm-input-otp-slot [index]="3" />
-                <hlm-input-otp-slot [index]="4" />
-                <hlm-input-otp-slot [index]="5" />
-              </hlm-input-otp-group>
-            </brn-input-otp>
-          </div>
-          <p class="text-left text-sm leading-normal font-normal text-muted-foreground">
-            Verifique o spam ou lixeira, ou
-            <span
-              (click)="sendCode()"
-              [class]="timer() > 0 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'"
-              class="font-medium underline-offset-4 hover:underline text-foreground">clique aqui para reenviar</span>
-            @if (timer() > 0) {
-              <i> (aguarde {{ timer() }}s)</i>
-            }
-          </p>
-          <button hlmBtn type="button" class="w-full" (click)="onSubmit()">Verificar Conta</button>
-          <p class="text-center text-sm text-muted-foreground">
-            Lembrou a senha?
-            <a routerLink="/auth/signin" class="font-medium underline-offset-4 hover:underline text-foreground">Entrar na sua conta</a>
-          </p>
-        </div>
-      </div>
-    </section>
+    </div>
+
   </div>
 </div>

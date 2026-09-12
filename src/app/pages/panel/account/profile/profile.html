@@ -1,38 +1,34 @@
-<div class="space-y-8">
-  <section>
-    <div class="flex items-center gap-2 mb-4">
-      <ng-icon name="lucideUser" class="h-4 w-4 text-muted-foreground" />
-      <h2 class="text-sm font-semibold tracking-wide uppercase text-muted-foreground">Perfil</h2>
-    </div>
-    <div hlmSeparator class="mb-6"></div>
+<div class="space-y-6">
 
-    <div class="rounded-xl border bg-card p-6 space-y-4">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <ng-icon name="lucideUser" class="h-4 w-4 text-muted-foreground" />
-          <span class="text-sm font-medium">Dados do perfil</span>
-        </div>
-        @if (detailsExpanded()) {
-          <div class="flex items-center gap-2">
-            <button hlmBtn size="icon" variant="outline" type="button" (click)="toggleDetails()" hlmTooltip="Cancelar">
-              <ng-icon name="lucideRefreshCcw" />
-            </button>
-            <button hlmBtn size="icon" variant="outline" type="button" (click)="onSubmitDetails()" hlmTooltip="Salvar">
-              <ng-icon name="lucideCheck" />
-            </button>
-          </div>
-        } @else {
-          <button hlmBtn size="icon" variant="outline" type="button" (click)="toggleDetails()" hlmTooltip="Editar">
-            <ng-icon name="lucidePencil" />
-          </button>
-        }
+  <!-- Dados do perfil -->
+  <div class="rounded-lg border bg-card overflow-hidden">
+    <div class="flex items-center justify-between px-4 py-3 bg-secondary border-b">
+      <div class="flex items-center gap-2">
+        <ng-icon name="lucideUser" class="h-4 w-4 text-muted-foreground shrink-0" />
+        <span class="text-sm font-medium">Dados do perfil</span>
       </div>
+      @if (detailsExpanded()) {
+        <div class="flex items-center gap-2">
+          <button hlmBtn size="icon" variant="outline" type="button" (click)="toggleDetails()" hlmTooltip="Cancelar">
+            <ng-icon name="lucideRefreshCcw" />
+          </button>
+          <button hlmBtn size="icon" variant="outline" type="button" (click)="onSubmitDetails()" hlmTooltip="Salvar">
+            <ng-icon name="lucideCheck" />
+          </button>
+        </div>
+      } @else {
+        <button hlmBtn size="icon" variant="outline" type="button" (click)="toggleDetails()" hlmTooltip="Editar">
+          <ng-icon name="lucidePencil" />
+        </button>
+      }
+    </div>
 
+    <div class="p-5">
       @if (detailsExpanded()) {
         <form [formGroup]="detailsForm" (ngSubmit)="onSubmitDetails()">
-          <div class="flex flex-col sm:flex-row gap-8">
+          <div class="flex flex-col sm:flex-row gap-6">
             <div class="flex flex-col items-center gap-3 shrink-0">
-              <div class="relative h-24 w-24 rounded-full overflow-hidden border bg-muted">
+              <div class="relative h-20 w-20 rounded-full overflow-hidden border bg-muted">
                 <img [src]="getAvatarSrc()" alt="Avatar" class="w-full h-full object-cover" />
               </div>
               <div class="flex items-center gap-2">
@@ -58,7 +54,7 @@
             </div>
 
             <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div class="flex flex-col gap-1">
+              <div class="flex flex-col gap-1.5">
                 <label hlmLabel for="name">Nome <span class="text-destructive">*</span></label>
                 <input hlmInput id="name" formControlName="name" maxlength="50" placeholder="Seu nome" />
                 <p class="text-xs text-muted-foreground text-right">
@@ -66,7 +62,7 @@
                 </p>
               </div>
 
-              <div class="flex flex-col gap-1">
+              <div class="flex flex-col gap-1.5">
                 <label hlmLabel for="email">E-mail <span class="text-destructive">*</span></label>
                 <input hlmInput id="email" type="email" formControlName="email" maxlength="255" placeholder="seu@email.com" />
                 <p class="text-xs text-muted-foreground text-right">
@@ -74,74 +70,71 @@
                 </p>
               </div>
 
-              <div class="flex flex-col gap-1">
+              <div class="flex flex-col gap-1.5">
                 <label hlmLabel class="flex items-center gap-1.5">
                   <ng-icon name="lucideCalendar" class="h-3.5 w-3.5 text-muted-foreground" />
                   Membro desde
                 </label>
                 <input hlmInput disabled [value]="appState.user()?.createdAt ? formatMemberSince(appState.user().createdAt) : ''" />
               </div>
-
             </div>
           </div>
         </form>
       } @else {
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-4">
           <div class="h-10 w-10 rounded-full overflow-hidden border bg-muted shrink-0">
             <img [src]="getAvatarSrc()" alt="Avatar" class="w-full h-full object-cover" />
           </div>
-          <div class="space-y-0.5 text-sm text-muted-foreground">
-            <p class="text-foreground font-medium">{{ appState.user()?.name }}</p>
-            <p>{{ appState.user()?.email }}</p>
+          <div>
+            <p class="text-sm font-medium text-foreground">{{ appState.user()?.name }}</p>
+            <p class="text-sm text-muted-foreground">{{ appState.user()?.email }}</p>
+            @if (appState.user()?.createdAt) {
+              <p class="text-xs text-muted-foreground mt-0.5">Membro desde {{ formatMemberSince(appState.user().createdAt) }}</p>
+            }
           </div>
         </div>
       }
     </div>
-  </section>
+  </div>
 
-  <section>
-    <div class="flex items-center gap-2 mb-4">
-      <ng-icon name="lucideShield" class="h-4 w-4 text-muted-foreground" />
-      <h2 class="text-sm font-semibold tracking-wide uppercase text-muted-foreground">Segurança</h2>
-    </div>
-    <div hlmSeparator class="mb-6"></div>
-
-    <div class="rounded-xl border bg-card p-6 space-y-4">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <ng-icon name="lucideKeyRound" class="h-4 w-4 text-muted-foreground" />
-          <span class="text-sm font-medium">Alterar senha</span>
-        </div>
-        @if (passwordExpanded()) {
-          <div class="flex items-center gap-2">
-            <button hlmBtn size="icon" variant="outline" type="button" (click)="togglePassword()" hlmTooltip="Cancelar">
-              <ng-icon name="lucideRefreshCcw" />
-            </button>
-            <button hlmBtn size="icon" variant="outline" type="button" (click)="onSubmitPassword()" hlmTooltip="Salvar">
-              <ng-icon name="lucideCheck" />
-            </button>
-          </div>
-        } @else {
-          <button hlmBtn size="icon" variant="outline" type="button" (click)="togglePassword()" hlmTooltip="Editar">
-            <ng-icon name="lucidePencil" />
-          </button>
-        }
+  <!-- Alterar senha -->
+  <div class="rounded-lg border bg-card overflow-hidden">
+    <div class="flex items-center justify-between px-4 py-3 bg-secondary border-b">
+      <div class="flex items-center gap-2">
+        <ng-icon name="lucideKeyRound" class="h-4 w-4 text-muted-foreground shrink-0" />
+        <span class="text-sm font-medium">Alterar senha</span>
       </div>
+      @if (passwordExpanded()) {
+        <div class="flex items-center gap-2">
+          <button hlmBtn size="icon" variant="outline" type="button" (click)="togglePassword()" hlmTooltip="Cancelar">
+            <ng-icon name="lucideRefreshCcw" />
+          </button>
+          <button hlmBtn size="icon" variant="outline" type="button" (click)="onSubmitPassword()" hlmTooltip="Salvar">
+            <ng-icon name="lucideCheck" />
+          </button>
+        </div>
+      } @else {
+        <button hlmBtn size="icon" variant="outline" type="button" (click)="togglePassword()" hlmTooltip="Editar">
+          <ng-icon name="lucidePencil" />
+        </button>
+      }
+    </div>
 
+    <div class="p-5">
       @if (passwordExpanded()) {
         <form [formGroup]="passwordForm" (ngSubmit)="onSubmitPassword()">
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl">
             @if (appState.user()?.signinType === SignInTypeEnum.EMAIL_PASSWORD) {
-              <div class="flex flex-col gap-1">
+              <div class="flex flex-col gap-1.5">
                 <label hlmLabel for="currentPassword">Senha atual <span class="text-destructive">*</span></label>
                 <input hlmInput id="currentPassword" type="password" formControlName="currentPassword" placeholder="••••••••" />
               </div>
             }
-            <div class="flex flex-col gap-1">
+            <div class="flex flex-col gap-1.5">
               <label hlmLabel for="newPassword">Nova senha <span class="text-destructive">*</span></label>
               <input hlmInput id="newPassword" type="password" formControlName="newPassword" placeholder="••••••••" />
             </div>
-            <div class="flex flex-col gap-1">
+            <div class="flex flex-col gap-1.5">
               <label hlmLabel for="confirmPassword">Confirmar senha <span class="text-destructive">*</span></label>
               <input hlmInput id="confirmPassword" type="password" formControlName="confirmPassword" placeholder="••••••••" />
             </div>
@@ -151,14 +144,14 @@
         <p class="text-sm text-muted-foreground">••••••••</p>
       }
     </div>
-  </section>
+  </div>
 
-  <section>
-    <div class="flex items-center gap-2 mb-4">
-      <ng-icon name="lucideMonitor" class="h-4 w-4 text-muted-foreground" />
-      <h2 class="text-sm font-semibold tracking-wide uppercase text-muted-foreground">Histórico de login</h2>
+  <!-- Histórico de login -->
+  <div class="rounded-lg border bg-card overflow-hidden">
+    <div class="flex items-center gap-2 px-4 py-3 bg-secondary border-b">
+      <ng-icon name="lucideMonitor" class="h-4 w-4 text-muted-foreground shrink-0" />
+      <span class="text-sm font-medium">Histórico de login</span>
     </div>
-    <div hlmSeparator class="mb-6"></div>
 
     <app-table
       [columns]="['Data', 'Dispositivo', 'IP']"
@@ -183,5 +176,6 @@
         </tr>
       </ng-template>
     </app-table>
-  </section>
+  </div>
+
 </div>

@@ -1,4 +1,4 @@
-<button type="button" (click)="isOpen.set(true)" class="text-xs text-primary underline underline-offset-4">
+<button type="button" (click)="isOpen.set(true)" class="text-xs text-panel-link underline underline-offset-4">
   Como obter a URL do Webhook?
 </button>
 
@@ -23,7 +23,7 @@
         </div>
         <div class="overflow-y-auto flex-1 px-6 py-4 space-y-4">
           @if (activeTab() === 'slack') {
-            <p class="rounded-lg bg-muted p-2.5 text-sm"><b>Passo 1: </b>Acesse <a class="text-primary underline underline-offset-4" href="https://api.slack.com/apps" target="_blank">https://api.slack.com/apps</a> autenticado e clique em <b>"Create an App"</b>.</p>
+            <p class="rounded-lg bg-muted p-2.5 text-sm"><b>Passo 1: </b>Acesse <a class="text-panel-link underline underline-offset-4" href="https://api.slack.com/apps" target="_blank">https://api.slack.com/apps</a> autenticado e clique em <b>"Create an App"</b>.</p>
             <img src="/images/tutorial/slack/1.png" alt="" class="rounded-lg w-full" />
             <p class="rounded-lg bg-muted p-2.5 text-sm"><b>Passo 2: </b>Crie um app a partir da opção <b>"From scratch"</b>.</p>
             <img src="/images/tutorial/slack/2.png" alt="" class="rounded-lg w-full" />
@@ -37,7 +37,7 @@
             <img src="/images/tutorial/slack/6.png" alt="" class="rounded-lg w-full" />
             <p class="rounded-lg bg-muted p-2.5 text-sm"><b>Passo 7: </b>Copie a URL do Webhook e use ela no Systatus.</p>
             <img src="/images/tutorial/slack/7.png" alt="" class="rounded-lg w-full" />
-            <p class="rounded-lg bg-muted p-2.5 text-sm"><b>Dúvidas? </b>Acesse a <a class="text-primary underline underline-offset-4" href="https://docs.slack.dev/messaging/sending-messages-using-incoming-webhooks/" target="_blank">documentação oficial do Slack</a> ou entre em contato pelo <a class="text-primary underline underline-offset-4" href="/contact" target="_blank">formulário de contato</a>.</p>
+            <p class="rounded-lg bg-muted p-2.5 text-sm"><b>Dúvidas? </b>Acesse a <a class="text-panel-link underline underline-offset-4" href="https://docs.slack.dev/messaging/sending-messages-using-incoming-webhooks/" target="_blank">documentação oficial do Slack</a> ou entre em contato pelo <a class="text-panel-link underline underline-offset-4" href="/contact" target="_blank">formulário de contato</a>.</p>
           }
           @if (activeTab() === 'google-chat') {
             <p class="rounded-lg bg-muted p-2.5 text-sm"><b>Passo 1: </b>Acesse as configurações <b>"Apps &amp; integrations"</b> do espaço.</p>
@@ -48,14 +48,14 @@
             <img src="/images/tutorial/google-chat/3.png" alt="" class="rounded-lg w-full" />
             <p class="rounded-lg bg-muted p-2.5 text-sm"><b>Passo 4: </b>Copie a URL do Webhook e use ela no Systatus.</p>
             <img src="/images/tutorial/google-chat/4.png" alt="" class="rounded-lg w-full" />
-            <p class="rounded-lg bg-muted p-2.5 text-sm"><b>Dúvidas? </b>Acesse a <a class="text-primary underline underline-offset-4" href="https://developers.google.com/workspace/chat/quickstart/webhooks?hl=pt-br" target="_blank">documentação oficial do Google Chat</a> ou entre em contato pelo <a class="text-primary underline underline-offset-4" href="/contact" target="_blank">formulário de contato</a>.</p>
+            <p class="rounded-lg bg-muted p-2.5 text-sm"><b>Dúvidas? </b>Acesse a <a class="text-panel-link underline underline-offset-4" href="https://developers.google.com/workspace/chat/quickstart/webhooks?hl=pt-br" target="_blank">documentação oficial do Google Chat</a> ou entre em contato pelo <a class="text-panel-link underline underline-offset-4" href="/contact" target="_blank">formulário de contato</a>.</p>
           }
           @if (activeTab() === 'mattermost') {
             <p class="rounded-lg bg-muted p-2.5 text-sm"><b>Passo 1: </b>Acesse o <b>Menu Principal</b> do seu servidor Mattermost e clique em <b>"Integrações"</b>.</p>
             <p class="rounded-lg bg-muted p-2.5 text-sm"><b>Passo 2: </b>Clique em <b>"Incoming Webhooks"</b> e depois em <b>"Add Incoming Webhook"</b>.</p>
             <p class="rounded-lg bg-muted p-2.5 text-sm"><b>Passo 3: </b>Defina um título, selecione o canal de destino e clique em <b>"Save"</b>.</p>
             <p class="rounded-lg bg-muted p-2.5 text-sm"><b>Passo 4: </b>Copie a URL do Webhook e use ela no Systatus.</p>
-            <p class="rounded-lg bg-muted p-2.5 text-sm"><b>Dúvidas? </b>Acesse a <a class="text-primary underline underline-offset-4" href="https://docs.mattermost.com/integrations-guide/incoming-webhooks" target="_blank">documentação oficial do Mattermost</a> ou entre em contato pelo <a class="text-primary underline underline-offset-4" href="/contact" target="_blank">formulário de contato</a>.</p>
+            <p class="rounded-lg bg-muted p-2.5 text-sm"><b>Dúvidas? </b>Acesse a <a class="text-panel-link underline underline-offset-4" href="https://docs.mattermost.com/integrations-guide/incoming-webhooks" target="_blank">documentação oficial do Mattermost</a> ou entre em contato pelo <a class="text-panel-link underline underline-offset-4" href="/contact" target="_blank">formulário de contato</a>.</p>
           }
           @if (activeTab() === 'discord') {
             <p class="rounded-lg bg-muted p-2.5 text-sm"><b>Passo 1: </b>Abra as <b>Configurações do Servidor</b>.</p>
@@ -64,7 +64,7 @@
             <img src="/images/tutorial/discord/2.png" alt="" class="rounded-lg w-full" />
             <p class="rounded-lg bg-muted p-2.5 text-sm"><b>Passo 3: </b>Defina um nome e avatar (opcional). Copie a URL do Webhook e use ela no Systatus.</p>
             <img src="/images/tutorial/discord/3.png" alt="" class="rounded-lg w-full" />
-            <p class="rounded-lg bg-muted p-2.5 text-sm"><b>Dúvidas? </b>Acesse a <a class="text-primary underline underline-offset-4" href="https://support.discord.com/hc/pt-br/articles/228383668-Usando-Webhooks" target="_blank">documentação oficial do Discord</a> ou entre em contato pelo <a class="text-primary underline underline-offset-4" href="/contact" target="_blank">formulário de contato</a>.</p>
+            <p class="rounded-lg bg-muted p-2.5 text-sm"><b>Dúvidas? </b>Acesse a <a class="text-panel-link underline underline-offset-4" href="https://support.discord.com/hc/pt-br/articles/228383668-Usando-Webhooks" target="_blank">documentação oficial do Discord</a> ou entre em contato pelo <a class="text-panel-link underline underline-offset-4" href="/contact" target="_blank">formulário de contato</a>.</p>
           }
         </div>
       </div>

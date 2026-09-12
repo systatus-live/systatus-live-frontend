@@ -1,150 +1,137 @@
-<section class="relative overflow-hidden bg-[#0D1B35] pt-20 pb-24 lg:pt-28 lg:pb-32">
-  <!-- Background glow -->
-  <div class="absolute inset-0 pointer-events-none">
-    <div class="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full bg-[#4D9EFF]/10 blur-[120px]"></div>
-    <div class="absolute top-20 right-0 w-[400px] h-[400px] rounded-full bg-[#7C3AED]/8 blur-[100px]"></div>
-  </div>
+<section id="features" class="relative overflow-hidden bg-[#0B0F14] pt-16 pb-24 lg:pt-20 lg:pb-32">
+  <!-- Subtle top accent line -->
+  <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#22C55E]/20 to-transparent pointer-events-none" aria-hidden="true"></div>
 
-  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
+  <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
-      <!-- Left: Text content -->
-      <div class="text-center lg:text-left">
-        <!-- Badge -->
-        <div class="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 mb-8">
-          <span class="relative flex h-2 w-2">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-          </span>
-          <span class="text-sm font-medium text-emerald-400">99.9% de uptime monitorado em tempo real</span>
-        </div>
-
-        <!-- Headline -->
-        <h1 class="text-4xl font-extrabold tracking-tight text-[#E8F0FE] sm:text-5xl lg:text-6xl leading-tight">
-          Saiba antes dos<br />
-          seus clientes<br />
-          <span class="text-[#4D9EFF]">quando algo cair</span>
-        </h1>
-
-        <!-- Subtitle -->
-        <p class="mt-6 text-lg text-[#8BA3C7] max-w-xl mx-auto lg:mx-0 leading-relaxed">
-          Alertas instantâneos no Slack, Discord, WhatsApp e mais, em menos de 30 segundos. Sem instalar nada.
-        </p>
-
-        <!-- CTA -->
-        <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-          <button hlmBtn routerLink="/auth/signup" class="bg-[#4D9EFF] hover:bg-[#3A85E8] text-white border-0 text-base px-8 py-3 h-auto">
-            Criar conta grátis
-          </button>
-          <button hlmBtn variant="outline" (click)="scrollToFeatures()" class="bg-white/5 border-white/15 text-[#8BA3C7] hover:bg-[#4D9EFF]/12 hover:border-[#4D9EFF]/30 hover:text-[#A8C4E8] text-base px-8 py-3 h-auto">
-            Ver Funcionalidades
-          </button>
-        </div>
-
-        <!-- Feature pills -->
-        <div class="mt-10 flex flex-wrap gap-2 justify-center lg:justify-start">
-          @for (pill of featurePills; track pill) {
-            <span class="inline-flex items-center gap-1.5 text-xs text-[#8BA3C7] bg-white/5 border border-white/8 rounded-full px-3 py-1.5">
-              <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 flex-shrink-0"></span>
-              {{ pill }}
-            </span>
-          }
-        </div>
+    <!-- TITLE FIRST -->
+    <div class="text-center mb-14 max-w-3xl mx-auto">
+      <!-- Status badge -->
+      <div class="inline-flex items-center gap-2 rounded border border-[#22C55E]/20 bg-[#22C55E]/8 px-3 py-1 mb-8">
+        <span class="relative flex h-1.5 w-1.5" aria-hidden="true">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#22C55E] opacity-60"></span>
+          <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#22C55E]"></span>
+        </span>
+        <span class="text-xs font-mono text-[#22C55E] tracking-wide">{{ availability }} de uptime monitorado</span>
       </div>
 
-      <!-- Right: Dashboard Mockup -->
-      <div class="mt-16 lg:mt-0">
-        <div class="relative mx-auto max-w-lg lg:max-w-none">
-          <!-- Glow behind card -->
-          <div class="absolute inset-0 bg-[#4D9EFF]/10 blur-2xl rounded-2xl scale-95"></div>
+      <h1 class="text-4xl font-bold tracking-tight text-[#E8EDF2] sm:text-5xl lg:text-6xl leading-tight font-heading">
+        Descubra falhas antes<br />dos seus clientes.
+      </h1>
 
-          <!-- Dashboard card -->
-          <div class="relative bg-[#0A1829] rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
-            <!-- Browser bar -->
-            <div class="flex items-center gap-2 px-4 py-3 bg-[#071120] border-b border-white/10">
-              <div class="flex gap-1.5">
-                <span class="w-3 h-3 rounded-full bg-red-500/60"></span>
-                <span class="w-3 h-3 rounded-full bg-amber-500/60"></span>
-                <span class="w-3 h-3 rounded-full bg-emerald-500/60"></span>
-              </div>
-              <span class="ml-2 text-xs text-[#4D9EFF] font-mono">Systatus - Monitores</span>
-            </div>
+      <p class="mt-5 text-base text-[#8BA3C7] max-w-xl mx-auto leading-relaxed">
+        Monitore sites, APIs e servidores com verificação contínua.
+        Alertas no Slack, WhatsApp, Discord e mais, em menos de 30 segundos.
+      </p>
 
-            <!-- Monitor rows -->
-            <div class="p-5 space-y-4">
-              <!-- Header row -->
-              <div class="flex items-center justify-between text-xs text-[#8BA3C7] px-1 mb-2">
-                <span>Monitor</span>
-                <div class="flex items-center gap-8">
-                  <span>Latência</span>
-                  <span>30 dias</span>
-                  <span>Uptime</span>
-                </div>
-              </div>
+      <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+        <button
+          hlmBtn
+          routerLink="/auth/signup"
+          class="bg-[#22C55E] hover:bg-[#16A34A] text-white border-0 text-sm px-7 py-2.5 h-auto font-medium"
+        >
+          Criar conta grátis
+        </button>
+        <button
+          hlmBtn
+          variant="outline"
+          (click)="scrollToPricing()"
+          class="bg-white/4 border-white/10 text-[#8BA3C7] hover:bg-white/8 hover:border-white/20 hover:text-[#E8EDF2] text-sm px-7 py-2.5 h-auto"
+        >
+          Ver planos
+        </button>
+      </div>
+    </div>
 
-              @for (monitor of monitorList; track monitor.name) {
-                <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/8 transition-colors duration-200 border border-white/5">
-                  <!-- Status dot + name -->
-                  <div class="flex items-center gap-2 flex-1 min-w-0">
-                    <span class="relative flex h-2.5 w-2.5 flex-shrink-0">
-                      @if (monitor.status !== 'degraded') {
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-60" [class]="getBarClass(monitor.status)"></span>
-                      }
-                      <span class="relative inline-flex rounded-full h-2.5 w-2.5" [class]="getBarClass(monitor.status)"></span>
+    <!-- MONITOR CONSOLE BELOW - modeled after the real monitors-list table -->
+    <div
+      class="w-full rounded-lg border border-white/8 bg-[#141B24] overflow-hidden shadow-xl"
+      role="img"
+      aria-label="Prévia do painel de monitoramento"
+    >
+      <!-- Console header -->
+      <div class="px-4 py-2.5 bg-[#0F1720] border-b border-white/6">
+        <span class="text-[10px] font-mono text-[#8BA3C7] tracking-widest uppercase">Monitor Console</span>
+      </div>
+
+      <!-- Table (mirrors real monitors-list columns) -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-xs">
+          <thead>
+            <tr class="border-b border-white/6 bg-[#0F1720]">
+              <th scope="col" class="px-4 py-2.5 text-left font-mono text-[10px] text-[#4A6A8A] uppercase tracking-wide font-normal">Monitor</th>
+              <th scope="col" class="px-4 py-2.5 text-left font-mono text-[10px] text-[#4A6A8A] uppercase tracking-wide font-normal">Status</th>
+              <th scope="col" class="px-4 py-2.5 text-left font-mono text-[10px] text-[#4A6A8A] uppercase tracking-wide font-normal hidden sm:table-cell">Latência</th>
+              <th scope="col" class="px-4 py-2.5 text-left font-mono text-[10px] text-[#4A6A8A] uppercase tracking-wide font-normal hidden md:table-cell">Verificado em</th>
+              <th scope="col" class="px-4 py-2.5 text-right font-mono text-[10px] text-[#4A6A8A] uppercase tracking-wide font-normal hidden lg:table-cell">Disponibilidade (30 dias)</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/5">
+            @for (monitor of monitorList; track monitor.name) {
+              <tr class="hover:bg-white/[0.015] transition-colors duration-150">
+                <!-- Monitor name + type + url -->
+                <td class="px-4 py-3">
+                  <div class="flex items-center gap-2">
+                    <div class="min-w-0">
+                      <p class="text-xs text-[#E8EDF2] font-medium leading-tight">{{ monitor.name }}</p>
+                      <p class="text-[10px] font-mono text-[#4A6A8A] mt-0.5">{{ monitor.type }} · {{ monitor.url }}</p>
+                    </div>
+                  </div>
+                </td>
+
+                <!-- Status badge matching real hlmBadge variant="outline" pattern -->
+                <td class="px-4 py-3">
+                  @if (monitor.status === 'up') {
+                    <span class="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-2 py-0.5 text-[10px] text-[#E8EDF2] whitespace-nowrap">
+                      <span class="relative flex h-1.5 w-1.5 shrink-0" aria-hidden="true">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#05DF72] opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#05DF72]"></span>
+                      </span>
+                      Operacional
                     </span>
-                    <span class="text-sm font-medium text-[#E8F0FE] truncate">{{ monitor.name }}</span>
-                  </div>
+                  } @else {
+                    <span class="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-2 py-0.5 text-[10px] text-[#E8EDF2] whitespace-nowrap">
+                      <span class="relative flex h-1.5 w-1.5 shrink-0" aria-hidden="true">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF6467] opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#FF6467]"></span>
+                      </span>
+                      Indisponível
+                    </span>
+                  }
+                </td>
 
-                  <!-- Latency -->
-                  <span
-                    class="text-xs font-mono px-2 py-0.5 rounded-md flex-shrink-0"
-                    [class]="monitor.status === 'degraded' ? 'text-amber-400 bg-amber-500/10' : 'text-emerald-400 bg-emerald-500/10'"
-                  >
-                    {{ monitor.latency }}
+                <!-- Latency -->
+                <td class="px-4 py-3 hidden sm:table-cell">
+                  <span class="font-mono text-[#8BA3C7]">{{ monitor.latency }}</span>
+                </td>
+
+                <!-- Last check + interval (mirrors real "Verificado em" column) -->
+                <td class="px-4 py-3 hidden md:table-cell">
+                  <span class="inline-flex items-center gap-1.5 font-mono text-[10px] text-[#8BA3C7] whitespace-nowrap">
+                    {{ monitor.lastCheck }}
+                    <span class="text-[#4A6A8A]">·</span>
+                    {{ monitor.interval }}
                   </span>
+                </td>
 
-                  <!-- Uptime bars (30 days) -->
-                  <div class="flex items-end gap-0.5 flex-shrink-0">
-                    @for (bar of monitor.bars; track $index) {
-                      <div
-                        class="w-[4px] h-6 rounded-[1px] opacity-90 transition-opacity hover:opacity-100"
-                        [class]="getBarClass(bar)"
-                      ></div>
-                    }
+                <!-- 30-day history bars + uptime (mirrors real "Disponibilidade (30 dias)" column) -->
+                <td class="px-4 py-3 hidden lg:table-cell">
+                  <div class="flex items-center justify-end gap-2">
+                    <div class="flex items-end gap-[2px]">
+                      @for (bar of monitor.bars; track $index) {
+                        <div class="w-1.5 h-4 rounded-[2px]" [style]="getBarStyle(bar)"></div>
+                      }
+                    </div>
+                    <span class="font-mono text-[10px] text-[#8BA3C7] w-11 text-right">{{ monitor.uptime }}</span>
                   </div>
-
-                  <!-- Uptime % -->
-                  <span class="text-xs font-semibold flex-shrink-0" [class]="getStatusTextClass(monitor.status)">
-                    {{ monitor.uptime }}
-                  </span>
-                </div>
-              }
-
-              <!-- Incident alert -->
-              <div class="mt-2 flex items-center gap-2 p-2.5 rounded-lg bg-red-500/10 border border-red-500/20">
-                <span class="h-2 w-2 rounded-full bg-red-500 animate-pulse flex-shrink-0"></span>
-                <span class="text-xs text-red-300">Incidente detectado em <strong>api.service.com</strong>. Alerta enviado há 2min</span>
-              </div>
-            </div>
-
-            <!-- Footer bar -->
-            <div class="px-5 py-3 bg-[#071120] border-t border-white/10 flex items-center justify-between">
-              <!-- Integration logos -->
-              <div class="flex items-center gap-3">
-                <div>
-                  <span class="text-xs text-[#8BA3C7]">Integra com</span>
-                </div>
-                @for (channel of channelList; track channel.name) {
-                  <div class="w-7 h-7 rounded-full bg-white/8 border border-white/10 flex items-center justify-center p-1" [hlmTooltip]="channel.name">
-                    <img [src]="channel.logo" [alt]="channel.name" class="w-full h-full object-contain" />
-                  </div>
-                }
-              </div>
-            </div>
-          </div>
-        </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
       </div>
 
     </div>
+
   </div>
 </section>
