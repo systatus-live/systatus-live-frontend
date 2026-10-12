@@ -1,6 +1,8 @@
+# ⚠️ INATIVO: repositório se tornou open source e migrou para o GitHub, que não executa .gitlab-ci.yml.
+# Caso queira configurar CI/CD, migre para o GitHub Actions.
+
 stages:
   - deploy-systatus-web
-  - deploy-systatus-web-hml
 
 deploy-systatus-web:
   environment:
@@ -21,17 +23,3 @@ deploy-systatus-web:
     - docker image prune -f
   only:
     - master
-
-deploy-systatus-web-hml:
-  environment:
-    name: homolog
-  stage: deploy-systatus-web-hml
-  tags:
-    - systatus-runner
-  script:
-    - docker compose build --no-cache systatus-live-web-hml
-    - docker compose down systatus-live-web-hml
-    - docker compose up -d systatus-live-web-hml
-    - docker image prune -f
-  only:
-    - homolog

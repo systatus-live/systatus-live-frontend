@@ -15,20 +15,3 @@ services:
         max-size: "10m"
         max-file: "1"
     restart: unless-stopped
-
-  systatus-live-web-hml:
-    image: systatus-live-web-hml:latest
-    container_name: systatus-live-web-hml
-    build:
-      context: .
-      dockerfile: Dockerfile.hml
-    ports:
-      - "4001:80"
-    environment:
-      NODE_ENV: ${NODE_ENV}
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "1"
-    restart: unless-stopped
